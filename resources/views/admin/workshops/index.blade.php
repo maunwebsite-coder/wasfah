@@ -555,7 +555,7 @@
             `,
             icon: 'question',
             showCancelButton: true,
-            confirmButtonColor: '#f59e0b',
+            confirmButtonColor: '#0d8b76',
             cancelButtonColor: '#6b7280',
             confirmButtonText: '<i class="fas fa-crown ml-2"></i>نعم، اجعلها مميزة',
             cancelButtonText: '<i class="fas fa-times ml-2"></i>إلغاء',
@@ -643,4 +643,7 @@
 @push('styles')
     @include('admin.workshops.partials.swal-styles')
 @endpush
+
+
+
 

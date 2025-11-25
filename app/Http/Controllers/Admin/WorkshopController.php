@@ -164,7 +164,7 @@ class WorkshopController extends Controller
         $workshop->category = $request->category;
         $workshop->level = $request->level;
         $workshop->duration = $request->duration;
-        $workshop->registration_deadline = $this->convertLocalInputToUtc($request->registration_deadline, $timezone);
+        $workshop->registration_deadline = $this->calculateRegistrationDeadline($workshop->start_date);
         $workshop->address = $request->address ?? '';
         $workshop->content = $request->content ?? '';
         $workshop->what_you_will_learn = $request->what_you_will_learn ?? '';
@@ -336,7 +336,7 @@ class WorkshopController extends Controller
         $workshop->category = $request->category;
         $workshop->level = $request->level;
         $workshop->duration = $request->duration;
-        $workshop->registration_deadline = $this->convertLocalInputToUtc($request->registration_deadline, $timezone);
+        $workshop->registration_deadline = $this->calculateRegistrationDeadline($workshop->start_date);
         $workshop->address = $request->address ?? '';
         $workshop->content = $request->content ?? '';
         $workshop->what_you_will_learn = $request->what_you_will_learn ?? '';
@@ -610,6 +610,15 @@ class WorkshopController extends Controller
         return $this->googleMeetService->isEnabled();
     }
 
+    protected function calculateRegistrationDeadline(?Carbon $startDateUtc): ?Carbon
+    {
+        if (! $startDateUtc instanceof Carbon) {
+            return null;
+        }
+
+        return $startDateUtc->copy()->subMinutes(2);
+    }
+
     protected function enforceAutoMeetingLinkPolicy(Request $request): void
     {
         $googleMeetEnabled = $this->googleMeetService->isEnabled();
@@ -703,7 +712,7 @@ class WorkshopController extends Controller
             );
         } catch (\Throwable $exception) {
             throw \Illuminate\Validation\ValidationException::withMessages([
-                'meeting_link' => 'تعذر إنشاء اجتماع Google Meet، يرجى إدخال الرابط يدوياً أو المحاولة لاحقاً.',
+                'meeting_link' => 'تعذر إنشاء اجتماع Google Meet، يرجى إدخال الرابط يدوياً أو المحاولة لاحقاً. ' . $exception->getMessage(),
             ]);
         }
     }

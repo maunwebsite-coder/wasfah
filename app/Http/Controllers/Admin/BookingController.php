@@ -594,7 +594,7 @@ class BookingController extends Controller
                 'workshop_slug' => $workshopSlug,
                 'booking_id' => $booking->id,
                 'profile_url' => $profileUrl,
-                'cancellation_reason' => $request->cancellation_reason ?? 'Cancelled by the Wasfah team',
+                'cancellation_reason' => $request->cancellation_reason ?? ('Cancelled by the ' . config('app.name', 'Peahskill') . ' team'),
                 'action_url' => $bookingShowUrl,
             ]
         );

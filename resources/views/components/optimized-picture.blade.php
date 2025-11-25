@@ -120,3 +120,4 @@
     {!! $sourceTags->implode(PHP_EOL) !!}
     <img src="{{ $fallbackSrc }}" alt="{{ $alt }}" {{ $imgAttributes }}>
 </picture>
+

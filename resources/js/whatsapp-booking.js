@@ -16,6 +16,9 @@ const WhatsAppBooking = (() => {
             user: { ...defaultUser },
         },
         activeContext: null,
+        refreshTimer: null,
+        refreshPending: false,
+        refreshFallbackBound: false,
     };
 
     function configure(partial = {}) {
@@ -93,7 +96,7 @@ const WhatsAppBooking = (() => {
         };
 
         if (state.config.isLoggedIn) {
-            showBookingConfirmation(details);
+            confirmBooking();
         } else {
             showLoginRequiredModal(details);
         }
@@ -121,8 +124,9 @@ const WhatsAppBooking = (() => {
 
     function formatDetailValue(value, fallback = 'سيتم التحديد لاحقاً') {
         if (typeof value === 'string') {
-            const trimmed = value.trim();
-            if (trimmed.length) {
+            const decoded = decodeHtmlEntities(value);
+            const trimmed = decoded.trim();
+            if (trimmed.length && !isPlaceholder(trimmed)) {
                 return trimmed;
             }
         }
@@ -136,8 +140,9 @@ const WhatsAppBooking = (() => {
 
     function sanitizeUserField(value, fallback) {
         if (typeof value === 'string') {
-            const trimmed = value.trim();
-            if (trimmed.length && trimmed !== 'غير محدد') {
+            const decoded = decodeHtmlEntities(value);
+            const trimmed = decoded.trim();
+            if (trimmed.length && !isPlaceholder(trimmed)) {
                 return trimmed;
             }
         }
@@ -162,6 +167,23 @@ const WhatsAppBooking = (() => {
             phone: sanitizeUserField(profile.phone, defaults.phone),
             email: sanitizeUserField(profile.email, defaults.email),
         };
+    }
+
+    function decodeHtmlEntities(value) {
+        if (typeof value !== 'string') return value;
+        const textarea = document.createElement('textarea');
+        textarea.innerHTML = value;
+        return textarea.value;
+    }
+
+    function isPlaceholder(value) {
+        const normalized = value.toLowerCase();
+        return (
+            normalized === 'غير محدد' ||
+            normalized === 'غير متوفر' ||
+            normalized === 'not specified' ||
+            normalized === 'not available'
+        );
     }
 
     function createWorkshopSummaryHTML(details) {
@@ -195,9 +217,8 @@ const WhatsAppBooking = (() => {
             <div class="bg-gradient-to-b from-amber-50 via-white to-white border border-amber-100 rounded-3xl p-5 mb-6 shadow-lg">
                 <div class="flex items-center justify-between gap-4 mb-4">
                     <div class="text-right">
-                        <p class="text-xs font-semibold text-amber-500 uppercase tracking-widest">تفاصيل مختصرة</p>
+                        <p class="text-xs font-semibold text-amber-500 uppercase tracking-widest">تفاصيل الورشة</p>
                         <h4 class="text-lg font-bold text-gray-900 mb-1">${title}</h4>
-                        <p class="text-sm text-gray-500">كل ما تحتاجه قبل الدفع عبر الواتساب مع احتساب رسوم خدمة إضافية بقيمة 1 USD</p>
                     </div>
                     <div class="text-left">
                         <p class="text-xs text-gray-500 mb-1">قيمة المشاركة</p>
@@ -234,52 +255,16 @@ const WhatsAppBooking = (() => {
             return;
         }
 
-        const existingModal = document.getElementById('booking-confirmation-modal');
-        if (existingModal) {
-            existingModal.remove();
+        if (!state.activeContext) {
+            state.activeContext = {
+                triggerButton: null,
+                details,
+            };
+        } else {
+            state.activeContext.details = details;
         }
 
-        const summaryHTML = createWorkshopSummaryHTML(details);
-
-        const modalHTML = `
-            <div id="booking-confirmation-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 px-4">
-                <div class="bg-white rounded-3xl p-8 w-full max-w-lg mx-auto shadow-2xl relative overflow-hidden">
-                    <div class="absolute -top-20 -left-10 w-40 h-40 bg-amber-100 rounded-full opacity-40 pointer-events-none" aria-hidden="true"></div>
-                    <div class="absolute -bottom-24 -right-6 w-56 h-56 bg-orange-100 rounded-full opacity-30 pointer-events-none" aria-hidden="true"></div>
-                    <div class="relative text-right">
-                        <div class="text-center mb-6">
-                            <span class="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-amber-50 text-amber-600 font-semibold text-xs">
-                                <i class="fas fa-bolt text-sm"></i>
-                                حجز سريع
-                            </span>
-                            <h3 class="text-2xl font-black text-gray-900 mt-4 mb-2">راجع التفاصيل قبل الدفع</h3>
-                            <p class="text-gray-600 text-sm">اطّلع على تفاصيل الورشة المختصرة ثم اضغط زر الدفع لإكمال الحجز عبر الواتساب، مع ملاحظة أنه سيتم إضافة 1 USD على قيمة المشاركة كرسوم خدمة للحجز عبر الواتساب.</p>
-                        </div>
-                        ${summaryHTML}
-                        <div class="space-y-3">
-                            <button data-action="confirm-booking" class="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-4 px-6 rounded-2xl transition-all duration-200 shadow-lg hover:shadow-xl flex items-center justify-center gap-2">
-                                <i class="fas fa-credit-card text-lg"></i>
-                                إتمام الدفع
-                            </button>
-                            <button data-action="close-booking-modal" class="w-full bg-white border border-gray-200 text-gray-600 hover:text-gray-800 font-semibold py-3 px-6 rounded-2xl transition-all duration-200 flex items-center justify-center gap-2">
-                                <i class="fas fa-arrow-right"></i>
-                                تراجع
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        `;
-
-        document.body.insertAdjacentHTML('beforeend', modalHTML);
-
-        document
-            .querySelector('#booking-confirmation-modal [data-action="confirm-booking"]')
-            ?.addEventListener('click', confirmBooking, { once: true });
-
-        document
-            .querySelector('#booking-confirmation-modal [data-action="close-booking-modal"]')
-            ?.addEventListener('click', closeBookingConfirmation, { once: true });
+        confirmBooking();
     }
 
     async function confirmBooking() {
@@ -291,6 +276,8 @@ const WhatsAppBooking = (() => {
         closeBookingConfirmation();
 
         const whatsappBridgeWindow = openWhatsAppBridgeWindow();
+        // Fire WhatsApp redirect immediately to avoid any popup blockers or API errors blocking navigation
+        sendMessage(context.details, whatsappBridgeWindow);
         setButtonLoadingState(context.triggerButton, true);
 
         try {
@@ -298,18 +285,13 @@ const WhatsAppBooking = (() => {
 
             if (data?.success) {
                 markWorkshopAsBooked(context.details.id, data?.booking ?? null);
-                sendMessage(context.details, whatsappBridgeWindow);
                 const livewireUpdated = dispatchLivewireWhatsappEvent(
                     context.details.id,
                     data?.booking?.id ?? null
                 );
                 notify('تم حفظ الحجز في النظام وإرسال رسالة الواتساب!', 'success');
 
-                if (!livewireUpdated) {
-                    setTimeout(() => {
-                        window.location.reload();
-                    }, 2000);
-                }
+                schedulePageRefresh(livewireUpdated ? 1800 : 2000);
 
                 return;
             }
@@ -322,15 +304,7 @@ const WhatsAppBooking = (() => {
                     data?.booking?.id ?? null
                 );
 
-                if (!livewireUpdated) {
-                    setTimeout(() => {
-                        window.location.reload();
-                    }, 2000);
-                }
-
-                if (whatsappBridgeWindow && !whatsappBridgeWindow.closed) {
-                    whatsappBridgeWindow.close();
-                }
+                schedulePageRefresh(livewireUpdated ? 1800 : 2000);
                 return;
             }
 
@@ -338,9 +312,6 @@ const WhatsAppBooking = (() => {
         } catch (error) {
             console.error('Booking error:', error);
             notify('حدث خطأ أثناء حفظ الحجز', 'error');
-            if (whatsappBridgeWindow && !whatsappBridgeWindow.closed) {
-                whatsappBridgeWindow.close();
-            }
         } finally {
             setButtonLoadingState(context.triggerButton, false);
             state.activeContext = null;
@@ -590,8 +561,7 @@ const WhatsAppBooking = (() => {
 📞 الهاتف: ${normalizedUser.phone}
 📧 البريد الإلكتروني: ${normalizedUser.email}
 
-💬 فضلاً تأكيد الحجز أو تزويدي بطريقة الدفع المناسبة.
-💡 ملاحظة: أعلم أن الحجز داخل الورشة يضيف دولاراً إضافياً على السعر، لذلك أفضّل إتمامه الآن عبر واتساب.`;
+💬 فضلاً تأكيد الحجز أو تزويدي بطريقة الدفع المناسبة.`;
 
         const encodedMessage = encodeURIComponent(whatsappMessage);
         const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
@@ -611,6 +581,54 @@ const WhatsAppBooking = (() => {
         }
 
         console[type === 'error' ? 'error' : 'log'](message); // fallback
+    }
+
+    function bindRefreshFallback() {
+        if (state.refreshFallbackBound) {
+            return;
+        }
+
+        const reloadIfPending = () => {
+            if (!state.refreshPending) {
+                return;
+            }
+
+            state.refreshPending = false;
+
+            if (state.refreshTimer) {
+                clearTimeout(state.refreshTimer);
+                state.refreshTimer = null;
+            }
+
+            window.location.reload();
+        };
+
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'visible') {
+                reloadIfPending();
+            }
+        });
+
+        window.addEventListener('focus', reloadIfPending);
+        state.refreshFallbackBound = true;
+    }
+
+    function schedulePageRefresh(delay = 1800) {
+        const parsedDelay = Number(delay);
+        const finalDelay = Number.isFinite(parsedDelay) && parsedDelay >= 0 ? parsedDelay : 1800;
+
+        if (state.refreshTimer) {
+            clearTimeout(state.refreshTimer);
+        }
+
+        state.refreshPending = true;
+        bindRefreshFallback();
+
+        state.refreshTimer = window.setTimeout(() => {
+            state.refreshPending = false;
+            state.refreshTimer = null;
+            window.location.reload();
+        }, finalDelay);
     }
 
     function initInquiryButtons(selector = '.js-whatsapp-inquiry-button') {

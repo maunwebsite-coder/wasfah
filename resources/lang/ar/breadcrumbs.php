@@ -2,6 +2,7 @@
 
 return [
     'home' => 'الرئيسية',
+    'recipes' => 'أدلة Peahskill',
     'search' => 'نتائج البحث',
     'workshops' => 'ورشات العمل',
     'bookings' => [
@@ -19,12 +20,12 @@ return [
         'dashboard' => 'برنامج الشركاء',
     ],
     'chef' => [
-        'area' => 'منطقة الشيف',
+        'area' => 'منطقة Peahskill',
         'sections' => [
-            'dashboard' => 'لوحة الشيف',
+            'dashboard' => 'لوحة Peahskill',
             'links' => 'روابط Wasfah',
             'recipes' => 'وصفاتي',
-            'workshops' => 'ورش الشيف',
+            'workshops' => 'ورش Peahskill',
         ],
         'links' => [
             'edit' => 'تعديل صفحة الروابط',

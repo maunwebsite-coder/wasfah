@@ -8,26 +8,26 @@
     <meta property="og:title" content="{{ __('links.meta.og_title') }}">
     <meta property="og:description" content="{{ __('links.meta.og_description') }}">
     <meta property="og:image" content="{{ \App\Support\BrandAssets::logoAsset('webp') }}">
-    <meta name="theme-color" content="#f97316">
+    <meta name="theme-color" content="#0f4c73">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
             color-scheme: light;
-            --bg: linear-gradient(180deg, #fff7ed 0%, #fef9f2 45%, #ffffff 100%);
+            --bg: linear-gradient(180deg, #eaf3f6 0%, #eef7f4 45%, #ffffff 100%);
             --bg-alt: linear-gradient(160deg, rgba(255, 255, 255, 0.98), rgba(255, 250, 245, 0.9));
             --panel: rgba(255, 255, 255, 0.96);
-            --panel-border: rgba(249, 115, 22, 0.18);
-            --accent: #f97316;
-            --accent-strong: #ea580c;
-            --accent-soft: rgba(249, 115, 22, 0.14);
+            --panel-border: rgba(15, 76, 115, 0.18);
+            --accent: #0f4c73;
+            --accent-strong: #0a8070;
+            --accent-soft: rgba(15, 76, 115, 0.14);
             --muted: #6b7280;
             --text: #1f2937;
             --card: rgba(255, 255, 255, 0.94);
-            --card-border: rgba(249, 115, 22, 0.12);
-            --shadow-lg: 0 28px 70px rgba(249, 115, 22, 0.18);
-            --shadow-card: 0 20px 45px rgba(249, 115, 22, 0.12);
+            --card-border: rgba(15, 76, 115, 0.12);
+            --shadow-lg: 0 28px 70px rgba(15, 76, 115, 0.18);
+            --shadow-card: 0 20px 45px rgba(15, 76, 115, 0.12);
             --radius-xl: 36px;
             --radius-lg: 24px;
             --radius-md: 18px;
@@ -56,7 +56,7 @@
         }
 
         body::before {
-            background: radial-gradient(circle at 12% 35%, rgba(249, 115, 22, 0.18), transparent 60%);
+            background: radial-gradient(circle at 12% 35%, rgba(15, 76, 115, 0.18), transparent 60%);
             opacity: 0.6;
         }
 
@@ -76,13 +76,13 @@
         }
 
         .glow-a {
-            background: #fed7aa;
+            background: #a1dfd1;
             top: 12vh;
             right: 12vw;
         }
 
         .glow-b {
-            background: #fde68a;
+            background: #c8ede3;
             bottom: 8vh;
             left: 10vw;
         }
@@ -116,7 +116,7 @@
             padding: 8px 24px;
             border-radius: 999px;
             border: 1px solid var(--accent-soft);
-            background: rgba(249, 115, 22, 0.08);
+            background: rgba(15, 76, 115, 0.08);
             color: var(--accent-strong);
             letter-spacing: 0.22em;
             font-size: 0.8rem;
@@ -160,9 +160,9 @@
 
         .btn.primary {
             border: none;
-            background: linear-gradient(130deg, #f97316 0%, #f59e0b 100%);
+            background: linear-gradient(130deg, #0f4c73 0%, #0d8b76 100%);
             color: #ffffff;
-            box-shadow: 0 18px 38px rgba(249, 115, 22, 0.35);
+            box-shadow: 0 18px 38px rgba(15, 76, 115, 0.35);
         }
 
         .btn.secondary {
@@ -174,7 +174,7 @@
         .btn.tertiary {
             border: none;
             border-radius: var(--radius-md);
-            background: rgba(249, 115, 22, 0.12);
+            background: rgba(15, 76, 115, 0.12);
             color: var(--accent-strong);
             padding-inline: 20px;
         }
@@ -221,8 +221,8 @@
             gap: 26px;
             padding: 28px;
             border-radius: var(--radius-lg);
-            background: linear-gradient(135deg, rgba(255, 247, 237, 0.95), rgba(255, 255, 255, 0.9));
-            border: 1px solid rgba(249, 115, 22, 0.25);
+            background: linear-gradient(135deg, rgba(234, 243, 246, 0.95), rgba(255, 255, 255, 0.9));
+            border: 1px solid rgba(15, 76, 115, 0.25);
             box-shadow: var(--shadow-card);
             margin-bottom: 42px;
             align-items: center;
@@ -272,8 +272,8 @@
         .feature-media {
             border-radius: var(--radius-lg);
             overflow: hidden;
-            border: 1px solid rgba(249, 115, 22, 0.2);
-            box-shadow: 0 20px 40px rgba(249, 115, 22, 0.18);
+            border: 1px solid rgba(15, 76, 115, 0.2);
+            box-shadow: 0 20px 40px rgba(15, 76, 115, 0.18);
             max-height: 260px;
         }
 
@@ -335,14 +335,14 @@
 
         .monthly-card:hover {
             transform: translateY(-4px);
-            border-color: rgba(249, 115, 22, 0.3);
+            border-color: rgba(15, 76, 115, 0.3);
         }
 
         .monthly-media {
             border-radius: var(--radius-md);
             overflow: hidden;
             aspect-ratio: 4 / 3;
-            background: rgba(249, 115, 22, 0.05);
+            background: rgba(15, 76, 115, 0.05);
         }
 
         .monthly-media img {
@@ -381,7 +381,7 @@
             border-radius: var(--radius-lg);
             padding: 22px;
             border: 1px solid var(--card-border);
-            background: linear-gradient(145deg, rgba(255, 255, 255, 0.95), rgba(255, 247, 237, 0.8));
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.95), rgba(234, 243, 246, 0.8));
             display: flex;
             flex-direction: column;
             gap: 12px;
@@ -447,7 +447,7 @@
             width: 54px;
             height: 54px;
             border-radius: 18px;
-            border: 1px solid rgba(249, 115, 22, 0.2);
+            border: 1px solid rgba(15, 76, 115, 0.2);
             background: #ffffff;
             display: inline-flex;
             align-items: center;
@@ -487,9 +487,9 @@
             height: 46px;
             border-radius: 16px;
             padding: 6px;
-            border: 1px solid rgba(249, 115, 22, 0.18);
+            border: 1px solid rgba(15, 76, 115, 0.18);
             background: rgba(255, 255, 255, 0.9);
-            box-shadow: 0 14px 25px rgba(249, 115, 22, 0.18);
+            box-shadow: 0 14px 25px rgba(15, 76, 115, 0.18);
         }
 
         @media (max-width: 720px) {
@@ -548,9 +548,9 @@
             $coreCards = __('links.core.cards');
             $coreCardOrder = ['workshops', 'recipes', 'tools'];
             $coreCardRoutes = [
-                'workshops' => '/workshops',
-                'recipes' => '/recipes',
-                'tools' => '/tools',
+                'workshops' => route('workshops'),
+                'recipes' => route('recipes'),
+                'tools' => route('tools'),
             ];
         @endphp
         <header class="hero">
@@ -558,8 +558,8 @@
             <h1>{{ __('links.hero.title') }}</h1>
             <p>{{ __('links.hero.description') }}</p>
             <div class="hero-actions">
-                <a class="btn primary" href="{{ url('/workshops') }}">{{ __('links.hero.primary_cta') }}</a>
-                <a class="btn secondary" href="{{ url('/recipes') }}">{{ __('links.hero.secondary_cta') }}</a>
+                <a class="btn primary" href="{{ route('workshops') }}">{{ __('links.hero.primary_cta') }}</a>
+                <a class="btn secondary" href="{{ route('recipes') }}">{{ __('links.hero.secondary_cta') }}</a>
             </div>
             <ul class="hero-stats">
                 @foreach ($heroStats as $stat)
@@ -634,7 +634,7 @@
                 <article class="core-card">
                     <h3>{{ $card['title'] }}</h3>
                     <p>{{ $card['body'] }}</p>
-                    <a href="{{ url($coreCardRoutes[$cardKey]) }}">{{ $card['cta'] }}</a>
+                    <a href="{{ $coreCardRoutes[$cardKey] }}">{{ $card['cta'] }}</a>
                 </article>
             @endforeach
         </section>
@@ -676,3 +676,11 @@
     </footer>
 </body>
 </html>
+
+
+
+
+
+
+
+

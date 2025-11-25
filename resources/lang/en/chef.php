@@ -1,16 +1,16 @@
 ﻿<?php
 
 return [
-    'title' => 'Chef dashboard',
+    'title' => 'Dashboard',
 
     'meta' => [
-        'title' => 'Chef :name profile',
+        'title' => ':name profile',
     ],
 
     'defaults' => [
-        'bio' => 'A creative chef sharing signature recipes with the Wasfah community.',
+        'bio' => 'A culinary expert sharing signature recipes with the Peahskill community.',
         'specialty_with_area' => 'Specialized in :area',
-        'specialty_generic' => 'Member of the Wasfah community',
+        'specialty_generic' => 'Member of the Peahskill community',
     ],
 
     'formats' => [
@@ -29,7 +29,7 @@ return [
         'descriptions' => [
             'draft' => 'Keep editing privately before you submit the recipe.',
             'pending' => 'Our editorial team is reviewing the recipe details.',
-            'approved' => 'Published on Wasfah and ready to share.',
+            'approved' => 'Published on Peahskill and ready to share.',
             'rejected' => 'Review the comments, update the recipe, and resubmit.',
         ],
     ],
@@ -37,7 +37,7 @@ return [
     'visibility' => [
         'public' => [
             'label' => 'Public',
-            'hint' => 'Visible to everyone on Wasfah.',
+            'hint' => 'Visible to everyone on Peahskill.',
         ],
         'private' => [
             'label' => 'Private link',
@@ -46,12 +46,12 @@ return [
     ],
 
     'hero' => [
-        'badge' => 'Chef tools',
-        'heading' => 'Chef :name',
+        'badge' => 'Dashboard tools',
+        'heading' => 'Welcome, :name',
         'description' => 'Manage your recipes, workshops, and payouts in one dashboard.',
-        'avatar_alt' => 'Photo of chef :name',
+        'avatar_alt' => 'Photo of :name',
         'stats' => [
-            'wasfah_followers' => 'Wasfah subscribers',
+            'wasfah_followers' => 'Peahskill subscribers',
             'other_platform_followers' => 'Other platform followers',
             'recipes' => 'Published recipes',
             'average_rating' => 'Average rating',
@@ -79,9 +79,9 @@ return [
     'impact' => [
         'badge' => 'Community pulse',
         'title' => 'Impact snapshot',
-        'description' => ':name\'s recipes inspire Wasfah members. Here is how the community responds.',
+        'description' => ':name\'s recipes inspire Peahskill members. Here is how the community responds.',
         'highlight_label' => 'Published recipes',
-        'highlight_hint' => 'Unique dishes shared on Wasfah',
+        'highlight_hint' => 'Unique dishes shared on Peahskill',
         'cards' => [
             'saves' => [
                 'title' => 'Saved recipes',
@@ -100,9 +100,9 @@ return [
 
     'dashboard' => [
         'workshops' => [
-            'meta_title' => 'Chef online workshops',
+            'meta_title' => 'Online workshops',
             'hero' => [
-                'eyebrow' => 'Chef zone',
+                'eyebrow' => 'Workshops area',
                 'title' => 'My workshops',
                 'description' => 'Create online sessions easily and share the Google Meet link once people book.',
             ],
@@ -147,7 +147,7 @@ return [
                     'label' => 'Google Meet link',
                     'open' => 'Open Google Meet now',
                     'refresh' => 'Refresh status',
-                    'secure_label' => 'Secure Wasfah link',
+                    'secure_label' => 'Secure Peahskill link',
                     'secure_help' => 'Opens Google Meet using your verified Google account so you skip waiting rooms.',
                     'secure_missing' => 'Add your Google Meet email from your profile to enable this shortcut.',
                 ],
@@ -206,7 +206,7 @@ return [
 
     'workshops' => [
         'eyebrow' => 'Workshops hub',
-        'title' => 'Chef workshops',
+        'title' => 'Workshops',
         'description' => 'Discover the learning experiences led by :name and explore upcoming and past workshops.',
         'view_all' => 'Browse all workshops',
         'upcoming' => 'Upcoming workshops',
@@ -254,7 +254,7 @@ return [
             ],
             'online' => [
                 'title' => 'Online workshops',
-                'hint' => 'Hosted virtually through Wasfah.',
+                'hint' => 'Hosted virtually through Peahskill.',
             ],
             'upcoming' => [
                 'title' => 'Upcoming',
@@ -323,14 +323,14 @@ return [
             'watch' => 'Watch the recording',
         ],
         'library_label' => 'Google Drive Library',
-        'drive_default_description' => 'A recorded workshop available in the chef’s archive.',
+        'drive_default_description' => 'A recorded workshop available in the archive.',
         'updated_unknown' => 'Last update unknown',
         'untitled' => 'Untitled recording',
     ],
 
     'workshops_create' => [
         'page_title' => 'Launch a new workshop',
-        'hero_badge' => 'Chef area',
+        'hero_badge' => 'Workshop area',
         'hero_heading' => 'Launch a new online workshop',
         'hero_description' => 'Once you save, we will prepare a shareable Google Meet link for your attendees.',
         'back_to_list' => 'Back to workshops list',
@@ -363,7 +363,9 @@ return [
                 'eyebrow' => 'Delivery method',
                 'title' => 'Online via Google Meet',
                 'description' => 'We can automatically generate a secured Google Meet link for you.',
-                'highlight' => 'We provide automatic Google Meet links for you.',
+                'highlight' => 'We create the Google Meet room directly from your Google account so you stay the host.',
+                'host_account_label' => 'Host account',
+                'host_account_missing' => 'Add your Google account to host the meeting from your calendar.',
             ],
             'host' => [
                 'eyebrow' => 'Your info',
@@ -459,10 +461,13 @@ return [
         'placeholders' => [
             'category' => 'e.g., Baking, main dishes, desserts...',
             'description' => 'Share the goals, your teaching style, and the value participants will take away.',
+            'content' => 'Lay out the detailed content or session agenda in a clear order.',
+            'learning_points' => 'List 3–5 takeaways participants will gain.',
+            'requirements' => 'Call out any skills or tools needed before joining.',
         ],
         'options' => [
             'online_label' => 'This workshop is online',
-            'online_hint' => 'You can switch it to an in-person session anytime.',
+            'online_hint' => 'This workshop is online-only and cannot be switched to in-person.',
             'auto_generate_label' => 'Auto-generate a Google Meet link on save',
         ],
         'buttons' => [
@@ -471,13 +476,16 @@ return [
         ],
         'messages' => [
             'pricing_notice_title' => 'Important:',
-            'pricing_notice_body' => 'Wasfah retains a :fee_range service fee to cover payment gateways, technical support, and marketing.',
+            'pricing_notice_body' => 'Peahskill retains a :fee_range service fee to cover payment gateways, technical support, and marketing.',
             'pricing_notice_followup' => 'After this fee is deducted, the net payout is transferred to you within 7 business days of the workshop.',
-            'meeting_hint_auto' => 'The link will be assigned automatically after saving.',
+            'meeting_hint_auto' => 'We provide automatic Google Meet links for you from your account—add the host Gmail and we will attach it.',
             'meeting_hint_manual' => 'You can paste an existing meeting link if you prefer.',
             'google_ready' => 'A Google Meet link is ready:',
-            'managed_link_title' => 'Link managed by the Wasfah team',
+            'managed_link_title' => 'Link managed by the Peahskill team',
             'managed_link_description' => 'We will generate and secure the meeting link automatically after saving, and the raw link stays hidden for privacy.',
+            'calendar_connect_required_title' => 'Please connect Google Calendar first',
+            'calendar_connect_required_body' => 'Please link your Google Calendar account so we can create the meeting link from your own calendar.',
+            'calendar_connect_button' => 'Connect Google Calendar',
             'image_max_size' => 'You cannot upload an image larger than 5 MB.',
         ],
         'js' => [
@@ -490,7 +498,7 @@ return [
     'workshops_earnings' => [
         'title' => 'Workshop earnings',
         'hero' => [
-            'eyebrow' => 'Chef area',
+            'eyebrow' => 'Dashboard area',
             'heading' => 'Workshop earnings',
             'description' => 'Review the financial performance of your online workshops and track the net payout that was already allocated to you.',
             'cta' => [
@@ -500,8 +508,8 @@ return [
         ],
         'notice' => [
             'eyebrow' => 'Important note',
-            'title' => 'Wasfah retains a 25%–30% platform commission',
-            'description' => 'Whenever you launch a new workshop we withhold 25% to 30% to cover payments, technical support, and marketing operations. The remaining balance is transferred within a week after the workshop ends once payouts are settled.',
+            'title' => 'Peahskill retains a 15%–20% platform commission',
+            'description' => 'Whenever you launch a new workshop we withhold 15% to 20% to cover payments, technical support, and marketing operations. The remaining balance is transferred within a week after the workshop ends once payouts are settled.',
         ],
         'stats' => [
             'gross' => [
@@ -554,15 +562,15 @@ return [
     ],
 
     'recipes_create' => [
-        'page_title' => 'Add New Recipe - Chef Area',
-        'hero_badge' => 'Chef area',
-        'hero_heading' => 'Add a new recipe',
-        'hero_description' => 'Fill in the details below to submit your recipe for review.',
-        'back_to_index' => 'Back to recipes dashboard',
-        'validation_heading' => 'Please review the following fields:',
+        'page_title' => 'Create Recipe | Peahskill Studio',
+        'hero_badge' => 'Peahskill Studio',
+        'hero_heading' => 'Share a new Peahskill recipe',
+        'hero_description' => 'Shape the story, visuals, and steps so we can publish it with your signature on Peahskill.',
+        'back_to_index' => 'Back to my recipes',
+        'validation_heading' => 'Please double-check these fields before sending:',
         'actions' => [
             'save_draft' => 'Save as draft',
-            'submit_review' => 'Submit for review',
+            'submit_review' => 'Send to Peahskill review',
         ],
     ],
 
@@ -664,7 +672,7 @@ return [
             'public' => 'Public recipes',
             'exclusive' => 'Exclusive recipes',
         ],
-        'public_empty' => 'No public recipes yet. Stay tuned for the chef’s upcoming creations!',
+        'public_empty' => 'No public recipes yet. Stay tuned for the upcoming creations!',
         'exclusive_empty' => 'No exclusive recipes yet. Share your premium creations here.',
         'category_fallback' => 'Recipe',
         'no_rating' => 'No rating yet',
@@ -677,7 +685,7 @@ return [
     ],
 
     'link_page' => [
-        'title' => 'Wasfah link page',
+        'title' => 'Peahskill link page',
         'description' => 'Share one branded URL that gathers your recipes, workshops, and booking links.',
         'features' => [
             'customize' => 'Custom branding',
@@ -716,7 +724,7 @@ return [
     ],
 
     'popular' => [
-        'title' => 'Most-viewed chef recipes',
+        'title' => 'Most-viewed recipes',
         'subtitle' => 'Explore the standout dishes winning over food lovers and followers.',
         'view_details' => 'Discover the details',
     ],

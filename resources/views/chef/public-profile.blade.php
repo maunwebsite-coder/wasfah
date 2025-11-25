@@ -58,11 +58,11 @@
         .chef-profile-page {
             position: relative;
             min-height: 100vh;
-            background: linear-gradient(180deg, rgba(255, 247, 237, 0.75), rgba(255, 255, 255, 0.9) 55%, #fdfcfb 100%);
+            background: linear-gradient(180deg, rgba(234, 243, 246, 0.75), rgba(255, 255, 255, 0.9) 55%, #fdfcfb 100%);
             overflow-x: hidden;
             padding-block: clamp(3.5rem, 7vw, 6rem) clamp(4rem, 8vw, 6.5rem);
-            --chef-primary: #f97316;
-            --chef-primary-strong: #ea580c;
+            --chef-primary: #0f4c73;
+            --chef-primary-strong: #0a8070;
             --chef-neutral-900: #111827;
             --chef-neutral-700: #374151;
             --chef-neutral-500: #6b7280;
@@ -88,7 +88,7 @@
             inset-inline-start: unset;
             inset-inline-end: -140px;
             inset-block-start: 55%;
-            background: radial-gradient(circle, rgba(249, 115, 22, 0.14), transparent 72%);
+            background: radial-gradient(circle, rgba(15, 76, 115, 0.14), transparent 72%);
         }
 
         .chef-profile-shell {
@@ -104,7 +104,7 @@
             border-radius: 2.75rem;
             padding: clamp(2.5rem, 5vw, 3.5rem);
             background: linear-gradient(135deg, rgba(255, 255, 255, 0.94), rgba(255, 248, 238, 0.98));
-            border: 1px solid rgba(249, 115, 22, 0.18);
+            border: 1px solid rgba(15, 76, 115, 0.18);
             box-shadow: var(--chef-card-shadow);
             overflow: hidden;
         }
@@ -114,7 +114,7 @@
             content: "";
             position: absolute;
             border-radius: 9999px;
-            background: linear-gradient(160deg, rgba(249, 115, 22, 0.2), rgba(249, 115, 22, 0));
+            background: linear-gradient(160deg, rgba(15, 76, 115, 0.2), rgba(15, 76, 115, 0));
             pointer-events: none;
         }
 
@@ -154,7 +154,7 @@
             position: absolute;
             inset: clamp(-1.8rem, -3vw, -1.3rem);
             border-radius: 50%;
-            background: conic-gradient(from 90deg, rgba(249, 115, 22, 0.24), rgba(249, 115, 22, 0));
+            background: conic-gradient(from 90deg, rgba(15, 76, 115, 0.24), rgba(15, 76, 115, 0));
             z-index: 0;
         }
 
@@ -259,7 +259,7 @@
             background: linear-gradient(135deg, var(--chef-primary), var(--chef-primary-strong));
             border: none;
             cursor: pointer;
-            box-shadow: 0 20px 45px rgba(249, 115, 22, 0.26);
+            box-shadow: 0 20px 45px rgba(15, 76, 115, 0.26);
             transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
         }
 
@@ -293,16 +293,16 @@
             gap: 0.5rem;
             padding: 0.65rem 1.2rem;
             border-radius: 999px;
-            border: 1px solid rgba(249, 115, 22, 0.18);
+            border: 1px solid rgba(15, 76, 115, 0.18);
             color: var(--chef-primary-strong);
-            background: rgba(249, 115, 22, 0.08);
+            background: rgba(15, 76, 115, 0.08);
             font-weight: 600;
             font-size: 0.95rem;
             transition: background 0.2s ease, transform 0.2s ease;
         }
 
         .chef-profile-hero__social .social-link:hover {
-            background: rgba(249, 115, 22, 0.16);
+            background: rgba(15, 76, 115, 0.16);
             transform: translateY(-2px);
         }
 
@@ -315,8 +315,8 @@
             gap: 0.6rem;
             padding: 0.4rem;
             border-radius: 999px;
-            background: rgba(249, 115, 22, 0.08);
-            border: 1px solid rgba(249, 115, 22, 0.1);
+            background: rgba(15, 76, 115, 0.08);
+            border: 1px solid rgba(15, 76, 115, 0.1);
             margin-bottom: 2.2rem;
         }
 
@@ -335,7 +335,7 @@
         .chef-tab-btn.is-active {
             color: var(--chef-neutral-900);
             background: #ffffff;
-            box-shadow: 0 20px 45px rgba(249, 115, 22, 0.16);
+            box-shadow: 0 20px 45px rgba(15, 76, 115, 0.16);
         }
 
         .chef-tab-panel {
@@ -358,7 +358,7 @@
             border-radius: 1.85rem;
             overflow: hidden;
             background: #ffffff;
-            border: 1px solid rgba(249, 115, 22, 0.1);
+            border: 1px solid rgba(15, 76, 115, 0.1);
             box-shadow: 0 28px 55px -35px rgba(15, 23, 42, 0.45);
             display: flex;
             flex-direction: column;
@@ -368,14 +368,14 @@
 
         .chef-recipe-card:hover {
             transform: translateY(-8px);
-            box-shadow: 0 32px 60px -32px rgba(249, 115, 22, 0.48);
+            box-shadow: 0 32px 60px -32px rgba(15, 76, 115, 0.48);
         }
 
         .chef-recipe-card__cover {
             position: relative;
             aspect-ratio: 4 / 3;
             overflow: hidden;
-            background: #fff7ed;
+            background: #eaf3f6;
         }
 
         .chef-recipe-card__cover img {
@@ -435,7 +435,7 @@
             font-size: 0.85rem;
             font-weight: 600;
             color: var(--chef-neutral-500);
-            background: rgba(249, 115, 22, 0.08);
+            background: rgba(15, 76, 115, 0.08);
         }
 
         .chef-recipe-card__footer {
@@ -462,7 +462,7 @@
 
         .chef-empty-state {
             border-radius: 2rem;
-            border: 1px dashed rgba(249, 115, 22, 0.24);
+            border: 1px dashed rgba(15, 76, 115, 0.24);
             padding: 3rem 2rem;
             background: rgba(255, 248, 238, 0.65);
             text-align: center;
@@ -475,8 +475,8 @@
             margin-top: clamp(2.2rem, 5vw, 4rem);
             padding: clamp(2rem, 4vw, 3rem);
             border-radius: 2.5rem;
-            background: linear-gradient(135deg, rgba(249, 115, 22, 0.08), rgba(249, 115, 22, 0));
-            border: 1px solid rgba(249, 115, 22, 0.12);
+            background: linear-gradient(135deg, rgba(15, 76, 115, 0.08), rgba(15, 76, 115, 0));
+            border: 1px solid rgba(15, 76, 115, 0.12);
             box-shadow: 0 26px 48px -38px rgba(15, 23, 42, 0.3);
         }
 
@@ -498,7 +498,7 @@
             font-size: 0.85rem;
             font-weight: 600;
             color: var(--chef-primary-strong);
-            background: rgba(249, 115, 22, 0.12);
+            background: rgba(15, 76, 115, 0.12);
             margin-bottom: 0.8rem;
         }
 
@@ -520,8 +520,8 @@
             padding: 1.25rem 1.5rem;
             border-radius: 1.75rem;
             background: #fff;
-            border: 1px solid rgba(249, 115, 22, 0.1);
-            box-shadow: inset 0 0 0 1px rgba(249, 115, 22, 0.05);
+            border: 1px solid rgba(15, 76, 115, 0.1);
+            box-shadow: inset 0 0 0 1px rgba(15, 76, 115, 0.05);
             text-align: center;
         }
 
@@ -550,7 +550,7 @@
             border-radius: 1.75rem;
             padding: 1.5rem;
             background: #fff;
-            border: 1px solid rgba(249, 115, 22, 0.08);
+            border: 1px solid rgba(15, 76, 115, 0.08);
             box-shadow: 0 18px 32px -34px rgba(15, 23, 42, 0.45);
             display: flex;
             gap: 1rem;
@@ -568,7 +568,7 @@
         }
 
         .chef-impact-card__icon.is-saves {
-            background: linear-gradient(135deg, #f97316, #fbbf24);
+            background: linear-gradient(135deg, #0f4c73, #0fa289);
         }
 
         .chef-impact-card__icon.is-made {
@@ -576,7 +576,7 @@
         }
 
         .chef-impact-card__icon.is-reviews {
-            background: linear-gradient(135deg, #f43f5e, #f97316);
+            background: linear-gradient(135deg, #f43f5e, #0f4c73);
         }
 
         .chef-impact-card__content {
@@ -608,8 +608,8 @@
             margin-top: clamp(3rem, 6vw, 4.5rem);
             padding: clamp(2rem, 5vw, 3.5rem);
             border-radius: 2.75rem;
-            background: linear-gradient(140deg, rgba(15, 23, 42, 0.04), rgba(249, 115, 22, 0.08));
-            border: 1px solid rgba(249, 115, 22, 0.12);
+            background: linear-gradient(140deg, rgba(15, 23, 42, 0.04), rgba(15, 76, 115, 0.08));
+            border: 1px solid rgba(15, 76, 115, 0.12);
             box-shadow: 0 32px 60px -35px rgba(15, 23, 42, 0.28);
         }
 
@@ -630,7 +630,7 @@
             border-radius: 999px;
             font-size: 0.82rem;
             font-weight: 600;
-            background: rgba(249, 115, 22, 0.15);
+            background: rgba(15, 76, 115, 0.15);
             color: var(--chef-primary-strong);
         }
 
@@ -657,14 +657,14 @@
             color: var(--chef-primary-strong);
             font-weight: 700;
             text-decoration: none;
-            border: 1px solid rgba(249, 115, 22, 0.2);
-            box-shadow: 0 18px 32px -24px rgba(249, 115, 22, 0.4);
+            border: 1px solid rgba(15, 76, 115, 0.2);
+            box-shadow: 0 18px 32px -24px rgba(15, 76, 115, 0.4);
             transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
 
         .chef-recordings-link:hover {
             transform: translateY(-2px);
-            box-shadow: 0 22px 36px -24px rgba(249, 115, 22, 0.42);
+            box-shadow: 0 22px 36px -24px rgba(15, 76, 115, 0.42);
         }
 
         .chef-recordings-grid {
@@ -678,7 +678,7 @@
             flex-direction: column;
             border-radius: 2rem;
             background: rgba(255, 255, 255, 0.95);
-            border: 1px solid rgba(249, 115, 22, 0.1);
+            border: 1px solid rgba(15, 76, 115, 0.1);
             overflow: hidden;
             box-shadow: 0 28px 45px -38px rgba(15, 23, 42, 0.35);
             min-height: 100%;
@@ -788,7 +788,7 @@
         .chef-recording-card__cta.is-primary {
             background: linear-gradient(135deg, var(--chef-primary), var(--chef-primary-strong));
             color: #fff;
-            box-shadow: 0 18px 32px -20px rgba(249, 115, 22, 0.35);
+            box-shadow: 0 18px 32px -20px rgba(15, 76, 115, 0.35);
         }
 
         .chef-recording-card__cta.is-primary:hover {
@@ -810,7 +810,7 @@
             margin-block: clamp(3rem, 7vw, 4.5rem);
             padding: clamp(2rem, 5vw, 3.5rem);
             background: linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(255, 245, 235, 0.92));
-            border: 1px solid rgba(249, 115, 22, 0.14);
+            border: 1px solid rgba(15, 76, 115, 0.14);
             border-radius: 2.75rem;
             box-shadow: 0 32px 46px -34px rgba(15, 23, 42, 0.25);
         }
@@ -847,7 +847,7 @@
             align-items: center;
             gap: 0.5rem;
             padding: 0.75rem 1.5rem;
-            background: rgba(249, 115, 22, 0.1);
+            background: rgba(15, 76, 115, 0.1);
             color: var(--chef-primary-strong);
             border-radius: 999px;
             font-weight: 600;
@@ -856,7 +856,7 @@
         }
 
         .chef-workshops-link:hover {
-            background: rgba(249, 115, 22, 0.18);
+            background: rgba(15, 76, 115, 0.18);
             transform: translateY(-2px);
         }
 
@@ -886,7 +886,7 @@
             flex-direction: column;
             background: #ffffff;
             border-radius: 1.75rem;
-            border: 1px solid rgba(249, 115, 22, 0.12);
+            border: 1px solid rgba(15, 76, 115, 0.12);
             box-shadow: 0 22px 38px -26px rgba(15, 23, 42, 0.16);
             overflow: hidden;
             position: relative;
@@ -920,7 +920,7 @@
             font-size: 0.82rem;
             padding: 0.35rem 0.9rem;
             border-radius: 999px;
-            box-shadow: 0 12px 24px -16px rgba(249, 115, 22, 0.45);
+            box-shadow: 0 12px 24px -16px rgba(15, 76, 115, 0.45);
         }
 
         .chef-workshop-card__badge.is-closed {
@@ -1037,7 +1037,7 @@
             padding: clamp(2.6rem, 5vw, 3.6rem);
             border-radius: 2.5rem;
             background: linear-gradient(135deg, rgba(255, 255, 255, 0.94), rgba(255, 243, 221, 0.88));
-            border: 1px solid rgba(249, 115, 22, 0.12);
+            border: 1px solid rgba(15, 76, 115, 0.12);
             box-shadow: 0 30px 60px -40px rgba(15, 23, 42, 0.42);
         }
 
@@ -1069,7 +1069,7 @@
             border-radius: 2rem;
             overflow: hidden;
             background: #ffffff;
-            border: 1px solid rgba(249, 115, 22, 0.12);
+            border: 1px solid rgba(15, 76, 115, 0.12);
             box-shadow: 0 28px 55px -35px rgba(15, 23, 42, 0.4);
             height: 100%;
             display: flex;
@@ -1124,7 +1124,7 @@
         .chef-carousel-pagination .swiper-pagination-bullet {
             width: 10px;
             height: 10px;
-            background: rgba(249, 115, 22, 0.35);
+            background: rgba(15, 76, 115, 0.35);
             opacity: 1;
         }
 
@@ -1193,7 +1193,7 @@
                 padding: 1.75rem 1.35rem;
                 border-radius: 2rem;
                 background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(255, 248, 238, 0.98));
-                border: 1px solid rgba(249, 115, 22, 0.18);
+                border: 1px solid rgba(15, 76, 115, 0.18);
                 color: var(--chef-neutral-900);
             }
 
@@ -1314,7 +1314,7 @@
                 padding-inline: 1rem;
                 min-width: 0;
                 background: #ffffff;
-                border-color: rgba(249, 115, 22, 0.2);
+                border-color: rgba(15, 76, 115, 0.2);
                 color: var(--chef-primary-strong);
                 box-shadow: 0 12px 24px -20px rgba(15, 23, 42, 0.25);
             }
@@ -1714,7 +1714,7 @@
                                     @php
                                         $coverImage = $workshop->image
                                             ? asset('storage/' . ltrim($workshop->image, '/'))
-                                            : "https://placehold.co/600x400/f97316/FFFFFF?text={$workshopPlaceholderText}";
+                                            : "https://placehold.co/600x400/0f4c73/FFFFFF?text={$workshopPlaceholderText}";
                                         $startDateLabel = $workshop->start_date
                                             ? $workshop->start_date->copy()->locale($carbonLocale)->translatedFormat($workshopDateTimeFormat)
                                             : __('chef.workshops.tbd_time');
@@ -1821,7 +1821,7 @@
                                     @php
                                         $coverImage = $workshop->image
                                             ? asset('storage/' . ltrim($workshop->image, '/'))
-                                            : "https://placehold.co/600x400/f97316/FFFFFF?text={$workshopPlaceholderText}";
+                                            : "https://placehold.co/600x400/0f4c73/FFFFFF?text={$workshopPlaceholderText}";
                                         $startDateLabel = $workshop->start_date
                                             ? $workshop->start_date->copy()->locale($carbonLocale)->translatedFormat($workshopDateTimeFormat)
                                             : __('chef.workshops.unscheduled_time');
@@ -2210,6 +2210,15 @@
         });
     </script>
 @endpush
+
+
+
+
+
+
+
+
+
 
 
 

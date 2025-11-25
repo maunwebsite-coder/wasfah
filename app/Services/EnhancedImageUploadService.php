@@ -128,6 +128,18 @@ class EnhancedImageUploadService
         int $maxWidth = 1920,
         int $maxHeight = 1920
     ): array {
+        $gdAvailable = extension_loaded('gd')
+            && function_exists('imagecreatetruecolor')
+            && function_exists('imagecreatefromstring');
+
+        if (!$gdAvailable) {
+            $maxMb = round($maxBytes / 1024 / 1024, 1);
+            return [
+                'success' => false,
+                'error' => "تعذر تصغير حجم الصورة على الخادم. رجاءً قلل حجم الملف ليكون تحت {$maxMb}MB أو فعّل دعم الصور (GD).",
+            ];
+        }
+
         $extension = self::guessExtension($file);
         $mimeType = $file->getMimeType();
 
@@ -290,6 +302,13 @@ class EnhancedImageUploadService
         int $maxHeight,
         ?string $forceFormat = null
     ): array {
+        if (!function_exists('imagecreatefromstring') || !function_exists('imagecreatetruecolor')) {
+            return [
+                'success' => false,
+                'error' => 'لا يمكن ضغط الصورة على الخادم حالياً. يرجى تقليل حجم الصورة وإعادة المحاولة.',
+            ];
+        }
+
         try {
             $path = $file->getPathname();
             if (!$path || !is_readable($path)) {

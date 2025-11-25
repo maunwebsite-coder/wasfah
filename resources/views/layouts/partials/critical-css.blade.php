@@ -3,6 +3,19 @@
         color-scheme: light;
         font-feature-settings: 'kern';
         --layer-navbar: 40;
+        --brand-navy: #0f4c73;
+        --brand-navy-700: #0a344f;
+        --brand-teal: #0fa289;
+        --brand-teal-700: #0b705f;
+        --brand-gold: #0fa289;
+        --brand-gold-soft: #c8ede3;
+        --brand-gold-tint: #a1dfd1;
+        --brand-cream: #eaf3f6;
+        --brand-ink: #0a2f46;
+        --brand-muted: #4f6b82;
+        --brand-navy-rgb: 15, 76, 115;
+        --brand-teal-rgb: 15, 162, 137;
+        --brand-gold-rgb: 15, 162, 137;
     }
 
     html,
@@ -13,7 +26,7 @@
 
     body {
         font-family: 'Tajawal', var(--font-sans, ui-sans-serif), system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-        background-color: #f8f8f8;
+        background-color: var(--brand-cream);
         min-height: 100vh;
         text-rendering: optimizeLegibility;
         -webkit-font-smoothing: antialiased;
@@ -54,7 +67,7 @@
         z-index: 2000;
         padding: calc(1rem + env(safe-area-inset-top)) 1.25rem calc(1.5rem + env(safe-area-inset-bottom));
         background: rgba(255, 255, 255, 0.98);
-        border: 1px solid rgba(248, 113, 113, 0.15);
+        border: 1px solid rgb(var(--brand-navy-rgb) / 0.14);
         border-top: none;
         box-shadow: 0 30px 60px rgba(15, 23, 42, 0.3);
         overflow-y: auto;
@@ -84,7 +97,7 @@
     }
 
     .mobile-menu-btn:hover {
-        background-color: #fff7ed;
+        background-color: var(--brand-gold-soft);
     }
 
     header .header-container {
@@ -116,7 +129,7 @@
         display: block;
         padding: 0.35rem 0.85rem calc(0.75rem + env(safe-area-inset-bottom));
         background: rgba(255, 255, 255, 0.98);
-        border-top: 1px solid rgba(248, 113, 113, 0.15);
+        border-top: 1px solid rgb(var(--brand-navy-rgb) / 0.12);
         box-shadow: 0 -8px 20px rgba(15, 23, 42, 0.08);
         backdrop-filter: blur(10px);
         overflow: hidden;
@@ -139,7 +152,7 @@
         top: 0.35rem;
         height: 0.2rem;
         border-radius: 999px;
-        background: rgba(251, 146, 60, 0.2);
+        background: rgb(var(--brand-gold-rgb) / 0.22);
         opacity: 0;
         transform: translateY(-0.35rem);
         transition: opacity 0.2s ease, transform 0.2s ease;
@@ -152,7 +165,7 @@
         position: absolute;
         inset: 0;
         border-radius: inherit;
-        background: linear-gradient(90deg, rgba(253, 186, 116, 0.2), rgba(249, 115, 22, 0.9));
+        background: linear-gradient(90deg, rgb(var(--brand-teal-rgb) / 0.18), rgb(var(--brand-gold-rgb) / 0.9));
         transform-origin: left center;
         transform: scaleX(0);
         opacity: 0;
@@ -161,7 +174,7 @@
 
     .mobile-tab-bar__inner {
         display: grid;
-        grid-template-columns: repeat(4, minmax(0, 1fr));
+        grid-template-columns: repeat(5, minmax(0, 1fr));
         gap: 0.25rem;
     }
 
@@ -175,13 +188,14 @@
         border-radius: 999px;
         font-size: 0.7rem;
         font-weight: 600;
-        color: #475569;
+        color: var(--brand-muted);
         text-decoration: none;
     }
 
     .mobile-tab-bar__item.is-active {
-        color: #c2410c;
-        background-color: rgba(251, 146, 60, 0.18);
+        color: var(--brand-navy);
+        background-color: rgb(var(--brand-gold-rgb) / 0.22);
+        box-shadow: inset 0 0 0 1px rgb(var(--brand-navy-rgb) / 0.12);
     }
 
     .mobile-tab-bar__item:active {
@@ -202,6 +216,10 @@
 
     .mobile-tab-bar:not(.mobile-tab-bar--hidden) .mobile-tab-bar__item:nth-child(4) {
         animation-delay: 0.15s;
+    }
+
+    .mobile-tab-bar:not(.mobile-tab-bar--hidden) .mobile-tab-bar__item:nth-child(5) {
+        animation-delay: 0.2s;
     }
 
     .mobile-tab-bar--loading {
@@ -261,3 +279,6 @@
         }
     }
 </style>
+
+
+

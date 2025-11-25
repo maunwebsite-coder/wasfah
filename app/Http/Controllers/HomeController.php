@@ -7,6 +7,7 @@ use App\Models\HeroSlide;
 use App\Models\Tool;
 use App\Models\Workshop;
 use App\Support\HeroSlideSchemaState;
+use App\Support\VideoEmbed;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
@@ -57,6 +58,15 @@ class HomeController extends Controller
 
         $workshops = $workshopsQuery->limit(4)->get();
 
+        $latestWorkshops = Workshop::active()
+            ->withCount(['bookings' => function ($query) {
+                $query->where('status', 'confirmed');
+            }])
+            ->orderByDesc('created_at')
+            ->orderByDesc('start_date')
+            ->limit(4)
+            ->get();
+
         // جلب أحدث الوصفات للعرض في الشريط الجانبي
         $latestRecipes = Recipe::approved()
             ->public()
@@ -73,10 +83,12 @@ class HomeController extends Controller
             ->limit(4)
             ->get();
 
-        // جلب الوصفات المميزة للعرض في القسم الرئيسي
-        $featuredRecipes = Recipe::approved()
+        // جلب فيديوهات الخلاصة للعرض في القسم الرئيسي
+        $feedVideos = Recipe::approved()
             ->public()
-            ->with(['category'])
+            ->whereNotNull('video_url')
+            ->whereRaw("TRIM(video_url) <> ''")
+            ->with(['category', 'chef'])
             ->withCount(['interactions as saved_count' => function ($query) {
                 $query->where('is_saved', true);
             }])
@@ -85,9 +97,25 @@ class HomeController extends Controller
             }])
             ->withCount(['interactions as interactions_count'])
             ->withAvg('interactions', 'rating')
-            ->inRandomOrder()
-            ->limit(8)
-            ->get();
+            ->orderBy('created_at', 'desc')
+            ->limit(24)
+            ->get()
+            ->filter(function ($recipe) {
+                return VideoEmbed::inlinePlayable($recipe->video_url)
+                    || VideoEmbed::embedUrl($recipe->video_url);
+            })
+            ->map(function ($recipe) {
+                // Mark videos whose title should stay hidden on the slider.
+                $title = Str::lower(trim($recipe->title ?? ''));
+
+                if (Str::contains($title, 'pre-coding routine') || Str::contains($title, 'فيديو قصير جديد')) {
+                    $recipe->hide_title = true;
+                }
+
+                return $recipe;
+            })
+            ->values()
+            ->take(8);
 
         $authenticatedUser = auth()->user();
 
@@ -103,7 +131,7 @@ class HomeController extends Controller
                 $recipe->is_saved = in_array($recipe->recipe_id, $savedRecipes);
             });
 
-            $featuredRecipes->each(function ($recipe) use ($savedRecipes) {
+            $feedVideos->each(function ($recipe) use ($savedRecipes) {
                 $recipe->is_saved = in_array($recipe->recipe_id, $savedRecipes);
             });
         } else {
@@ -111,7 +139,7 @@ class HomeController extends Controller
                 $recipe->is_saved = false;
             });
 
-            $featuredRecipes->each(function ($recipe) {
+            $feedVideos->each(function ($recipe) {
                 $recipe->is_saved = false;
             });
         }
@@ -120,7 +148,7 @@ class HomeController extends Controller
 
         $heroMedia = [
             'workshop' => $this->resolveWorkshopHeroMedia($featuredWorkshop, $workshops),
-            'recipe' => $this->resolveRecipeHeroMedia($featuredRecipes, $latestRecipes),
+            'recipe' => $this->resolveRecipeHeroMedia($feedVideos, $latestRecipes),
             'tool' => $this->resolveToolHeroMedia(),
             'links' => $this->resolveLinksHeroMedia(),
         ];
@@ -129,7 +157,7 @@ class HomeController extends Controller
         $isChefUser = $authenticatedUser?->isChef() ?? false;
 
         $createWorkshopAction = [
-            'label' => $isChefUser ? 'أنشئ ورشتك الآن' : ($isAuthenticated ? 'أكمل ملفك كشيف وأنشئ ورشتك' : 'انضم كشيف وأنشئ ورشتك'),
+            'label' => $isChefUser ? 'أطلق تجربتك الآن' : ($isAuthenticated ? 'أكمل ملفك كخبير وأطلق تجربتك' : 'انضم كخبير وأطلق تجربتك'),
             'url' => $isChefUser ? route('chef.workshops.create') : ($isAuthenticated ? route('onboarding.show') : route('login')),
             'icon' => $isChefUser ? 'fas fa-plus-circle' : 'fas fa-user-plus',
             'type' => 'accent',
@@ -137,7 +165,7 @@ class HomeController extends Controller
         ];
 
         $createWasfahLinkAction = [
-            'label' => $isChefUser ? 'أنشئ Wasfah Link الآن' : ($isAuthenticated ? 'أكمل ملفك لتفعيل Wasfah Links' : 'سجل وابدأ Wasfah Links'),
+            'label' => $isChefUser ? 'أنشئ Peahskill Link الآن' : ($isAuthenticated ? 'أكمل ملفك لتفعيل Peahskill Links' : 'سجل وابدأ Peahskill Links'),
             'url' => $isChefUser ? route('chef.links.edit') : ($isAuthenticated ? route('onboarding.show') : route('register')),
             'icon' => 'fas fa-link',
             'type' => 'primary',
@@ -161,8 +189,8 @@ class HomeController extends Controller
         return view('home', compact(
             'workshops',
             'featuredWorkshop',
-            'latestRecipes',
-            'featuredRecipes',
+            'latestWorkshops',
+            'feedVideos',
             'hasUpcomingWorkshops',
             'heroMedia',
             'heroSlides',
@@ -229,12 +257,12 @@ class HomeController extends Controller
     /**
      * حدد صور شريحة الوصفات
      */
-    protected function resolveRecipeHeroMedia(Collection $featuredRecipes, Collection $latestRecipes): array
+    protected function resolveRecipeHeroMedia(Collection $highlightedRecipes, Collection $latestRecipes): array
     {
         $candidates = collect();
 
-        if ($featuredRecipes->isNotEmpty()) {
-            $candidates = $candidates->merge($featuredRecipes);
+        if ($highlightedRecipes->isNotEmpty()) {
+            $candidates = $candidates->merge($highlightedRecipes);
         }
 
         if ($latestRecipes->isNotEmpty()) {

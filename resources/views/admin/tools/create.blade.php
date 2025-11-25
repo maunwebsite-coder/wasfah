@@ -530,3 +530,4 @@ function showPriceConversion(usdPrice, aedPrice) {
 </script>
 @endpush
 @endsection
+

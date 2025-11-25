@@ -51,7 +51,7 @@
 <style>
     .SearchHighlight {
         background-color: rgba(251, 146, 60, 0.18);
-        color: #c2410c;
+        color: #0b344f;
         border-radius: 0.45rem;
         padding: 0 0.35rem;
     }
@@ -339,6 +339,8 @@
     </div>
 </div>
 @endsection
+
+
 
 
 

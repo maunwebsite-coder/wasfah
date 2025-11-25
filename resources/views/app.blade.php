@@ -54,6 +54,7 @@
         background-color: #f8f8f8;
     }
     .swiper-wrapper {
+        background: transparent;
         scrollbar-width: none; /* For Firefox */
     }
     .swiper-wrapper::-webkit-scrollbar {
@@ -222,7 +223,7 @@
             <ul class="flex justify-center space-x-8 rtl:space-x-reverse text-gray-700 font-semibold">
                 <li><a href="{{ route('home') }}" class="hover:text-orange-500 transition-colors">Home</a></li>
                 <li><a href="#" class="hover:text-orange-500 transition-colors">Workshops</a></li>
-                <li><a href="#" class="hover:text-orange-500 transition-colors">Chef tools</a></li>
+                <li><a href="#" class="hover:text-orange-500 transition-colors">Tools</a></li>
                 <li><a href="#" class="hover:text-orange-500 transition-colors">Dessert recipes</a></li>
             </ul>
         </div>
@@ -239,3 +240,4 @@
     @stack('scripts')
 </body>
 </html>
+

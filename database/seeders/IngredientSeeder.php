@@ -9,56 +9,58 @@ class IngredientSeeder extends Seeder
 {
     public function run(): void
     {
+        DB::table('ingredients')->truncate();
+
         DB::table('ingredients')->insert([
-            // Recipe 1: Tiramisu Brownies
-            ['recipe_id' => 1, 'name' => 'دقيق', 'quantity' => '2 كوب', 'created_at' => now(), 'updated_at' => now()],
-            ['recipe_id' => 1, 'name' => 'كاكاو', 'quantity' => '3 ملاعق كبيرة', 'created_at' => now(), 'updated_at' => now()],
-            ['recipe_id' => 1, 'name' => 'جبنة ماسكاربوني', 'quantity' => '250 جرام', 'created_at' => now(), 'updated_at' => now()],
+            // 1. كرواسان الزبدة المورّق على البارد
+            ['recipe_id' => 1, 'name' => 'دقيق قوي', 'quantity' => '500 جرام', 'created_at' => now(), 'updated_at' => now()],
+            ['recipe_id' => 1, 'name' => 'زبدة باردة 82%', 'quantity' => '300 جرام', 'created_at' => now(), 'updated_at' => now()],
+            ['recipe_id' => 1, 'name' => 'خميرة فورية', 'quantity' => '10 جرام', 'created_at' => now(), 'updated_at' => now()],
 
-            // Recipe 2: Fattoush
-            ['recipe_id' => 2, 'name' => 'خس', 'quantity' => '1 رأس', 'created_at' => now(), 'updated_at' => now()],
-            ['recipe_id' => 2, 'name' => 'طماطم', 'quantity' => '2 حبة', 'created_at' => now(), 'updated_at' => now()],
-            ['recipe_id' => 2, 'name' => 'خيار', 'quantity' => '2', 'created_at' => now(), 'updated_at' => now()],
+            // 2. سلطة بوراتا بالشمندر المشوي والجرجير
+            ['recipe_id' => 2, 'name' => 'شمندر طازج', 'quantity' => '3 حبات', 'created_at' => now(), 'updated_at' => now()],
+            ['recipe_id' => 2, 'name' => 'جرجير', 'quantity' => '2 حزمة', 'created_at' => now(), 'updated_at' => now()],
+            ['recipe_id' => 2, 'name' => 'جبنة بوراتا', 'quantity' => '1 كرة كبيرة', 'created_at' => now(), 'updated_at' => now()],
 
-            // Recipe 3: Golden Chocolate Tart
-            ['recipe_id' => 3, 'name' => 'زبدة', 'quantity' => '150 جرام', 'created_at' => now(), 'updated_at' => now()],
-            ['recipe_id' => 3, 'name' => 'شوكولاتة داكنة', 'quantity' => '200 جرام', 'created_at' => now(), 'updated_at' => now()],
-            ['recipe_id' => 3, 'name' => 'طحين', 'quantity' => '200 جرام', 'created_at' => now(), 'updated_at' => now()],
+            // 3. رامن ميزو بالدجاج والخضار الموسمية
+            ['recipe_id' => 3, 'name' => 'مرق دجاج', 'quantity' => '1.5 لتر', 'created_at' => now(), 'updated_at' => now()],
+            ['recipe_id' => 3, 'name' => 'معجون ميزو', 'quantity' => '3 ملاعق كبيرة', 'created_at' => now(), 'updated_at' => now()],
+            ['recipe_id' => 3, 'name' => 'نودلز رامن طازجة', 'quantity' => '300 جرام', 'created_at' => now(), 'updated_at' => now()],
 
-            // Recipe 4: Lemon Yogurt Cake
-            ['recipe_id' => 4, 'name' => 'طحين', 'quantity' => '2 كوب', 'created_at' => now(), 'updated_at' => now()],
-            ['recipe_id' => 4, 'name' => 'زبادي', 'quantity' => '1 كوب', 'created_at' => now(), 'updated_at' => now()],
-            ['recipe_id' => 4, 'name' => 'عصير ليمون', 'quantity' => 'ربع كوب', 'created_at' => now(), 'updated_at' => now()],
+            // 4. بريسكيت تاكو بصلصة مانجو حارة
+            ['recipe_id' => 4, 'name' => 'لحم بريسكيت', 'quantity' => '1 كيلوجرام', 'created_at' => now(), 'updated_at' => now()],
+            ['recipe_id' => 4, 'name' => 'تورتيلا ذرة', 'quantity' => '12 قطعة', 'created_at' => now(), 'updated_at' => now()],
+            ['recipe_id' => 4, 'name' => 'مانجو ناضجة', 'quantity' => '2 حبة', 'created_at' => now(), 'updated_at' => now()],
 
-            // Recipe 5: Energy Balls
-            ['recipe_id' => 5, 'name' => 'تمر', 'quantity' => '1 كوب', 'created_at' => now(), 'updated_at' => now()],
-            ['recipe_id' => 5, 'name' => 'مكسرات', 'quantity' => '1 كوب', 'created_at' => now(), 'updated_at' => now()],
-            ['recipe_id' => 5, 'name' => 'شوفان', 'quantity' => 'نصف كوب', 'created_at' => now(), 'updated_at' => now()],
+            // 5. سلمون مشوي بقشرة أعشاب الليمون
+            ['recipe_id' => 5, 'name' => 'فيليه سلمون بجلده', 'quantity' => '2 قطعة', 'created_at' => now(), 'updated_at' => now()],
+            ['recipe_id' => 5, 'name' => 'قشر ليمون', 'quantity' => 'ملعقة كبيرة', 'created_at' => now(), 'updated_at' => now()],
+            ['recipe_id' => 5, 'name' => 'شبت طازج', 'quantity' => '2 ملاعق كبيرة', 'created_at' => now(), 'updated_at' => now()],
 
-            // Recipe 6: Chicken Alfredo
-            ['recipe_id' => 6, 'name' => 'باستا فيتوتشيني', 'quantity' => '400 جرام', 'created_at' => now(), 'updated_at' => now()],
-            ['recipe_id' => 6, 'name' => 'صدر دجاج', 'quantity' => '2', 'created_at' => now(), 'updated_at' => now()],
-            ['recipe_id' => 6, 'name' => 'كريمة طبخ', 'quantity' => '1 كوب', 'created_at' => now(), 'updated_at' => now()],
+            // 6. تارت الليمون المحروق مع مرنغ إيطالي
+            ['recipe_id' => 6, 'name' => 'عجينة بريزيه', 'quantity' => '1 قرص جاهز', 'created_at' => now(), 'updated_at' => now()],
+            ['recipe_id' => 6, 'name' => 'عصير ليمون طازج', 'quantity' => '200 مل', 'created_at' => now(), 'updated_at' => now()],
+            ['recipe_id' => 6, 'name' => 'بياض بيض', 'quantity' => '4', 'created_at' => now(), 'updated_at' => now()],
 
-            // Recipe 7: Classic Beef Burger
-            ['recipe_id' => 7, 'name' => 'لحم مفروم', 'quantity' => '500 جرام', 'created_at' => now(), 'updated_at' => now()],
-            ['recipe_id' => 7, 'name' => 'خبز برجر', 'quantity' => '4', 'created_at' => now(), 'updated_at' => now()],
-            ['recipe_id' => 7, 'name' => 'جبن شيدر', 'quantity' => '4 شرائح', 'created_at' => now(), 'updated_at' => now()],
-            
-            // Recipe 8: Lentil Soup
-            ['recipe_id' => 8, 'name' => 'عدس أحمر', 'quantity' => '1 كوب', 'created_at' => now(), 'updated_at' => now()],
-            ['recipe_id' => 8, 'name' => 'بصل', 'quantity' => '1', 'created_at' => now(), 'updated_at' => now()],
-            ['recipe_id' => 8, 'name' => 'كمون', 'quantity' => '1 ملعقة صغيرة', 'created_at' => now(), 'updated_at' => now()],
+            // 7. باستا بستو الفستق والكريمة المخففة
+            ['recipe_id' => 7, 'name' => 'باستا بيني', 'quantity' => '400 جرام', 'created_at' => now(), 'updated_at' => now()],
+            ['recipe_id' => 7, 'name' => 'فستق محمص', 'quantity' => '120 جرام', 'created_at' => now(), 'updated_at' => now()],
+            ['recipe_id' => 7, 'name' => 'كريمة طبخ خفيفة', 'quantity' => '200 مل', 'created_at' => now(), 'updated_at' => now()],
 
-            // Recipe 9: Greek Salad
-            ['recipe_id' => 9, 'name' => 'جبنة فيتا', 'quantity' => '200 جرام', 'created_at' => now(), 'updated_at' => now()],
-            ['recipe_id' => 9, 'name' => 'خيار', 'quantity' => '2', 'created_at' => now(), 'updated_at' => now()],
-            ['recipe_id' => 9, 'name' => 'زيتون كلاماتا', 'quantity' => 'نصف كوب', 'created_at' => now(), 'updated_at' => now()],
+            // 8. برجر نباتي بالفاصوليا السوداء والشيا
+            ['recipe_id' => 8, 'name' => 'فاصوليا سوداء مطبوخة', 'quantity' => '400 جرام', 'created_at' => now(), 'updated_at' => now()],
+            ['recipe_id' => 8, 'name' => 'شوفان مطحون', 'quantity' => '1 كوب', 'created_at' => now(), 'updated_at' => now()],
+            ['recipe_id' => 8, 'name' => 'بذور شيا', 'quantity' => '2 ملاعق كبيرة', 'created_at' => now(), 'updated_at' => now()],
 
-            // Recipe 10: Chocolate Chip Cookies
-            ['recipe_id' => 10, 'name' => 'رقائق شوكولاتة', 'quantity' => '1 كوب', 'created_at' => now(), 'updated_at' => now()],
-            ['recipe_id' => 10, 'name' => 'سكر بني', 'quantity' => 'نصف كوب', 'created_at' => now(), 'updated_at' => now()],
-            ['recipe_id' => 10, 'name' => 'زبدة', 'quantity' => 'نصف كوب', 'created_at' => now(), 'updated_at' => now()],
+            // 9. بودينغ الأرز بحليب جوز الهند والهيل
+            ['recipe_id' => 9, 'name' => 'أرز مصري قصير', 'quantity' => '1 كوب', 'created_at' => now(), 'updated_at' => now()],
+            ['recipe_id' => 9, 'name' => 'حليب جوز الهند', 'quantity' => '400 مل', 'created_at' => now(), 'updated_at' => now()],
+            ['recipe_id' => 9, 'name' => 'هيل مطحون', 'quantity' => 'نصف ملعقة صغيرة', 'created_at' => now(), 'updated_at' => now()],
+
+            // 10. شيا بودنغ بالتوت الأزرق واللافندر
+            ['recipe_id' => 10, 'name' => 'بذور شيا', 'quantity' => '6 ملاعق كبيرة', 'created_at' => now(), 'updated_at' => now()],
+            ['recipe_id' => 10, 'name' => 'حليب لوز غير محلى', 'quantity' => '500 مل', 'created_at' => now(), 'updated_at' => now()],
+            ['recipe_id' => 10, 'name' => 'توت أزرق', 'quantity' => '1 كوب', 'created_at' => now(), 'updated_at' => now()],
         ]);
     }
 }

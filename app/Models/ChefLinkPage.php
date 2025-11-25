@@ -128,7 +128,7 @@ class ChefLinkPage extends Model
     public function getAvatarUrlAttribute(): ?string
     {
         if ($this->hero_image_path) {
-            return \Storage::disk('public')->url($this->hero_image_path);
+            return $this->toPublicStorageUrl($this->hero_image_path);
         }
 
         $avatar = $this->user?->avatar;
@@ -137,10 +137,18 @@ class ChefLinkPage extends Model
             return null;
         }
 
-        if (str_starts_with($avatar, 'http://') || str_starts_with($avatar, 'https://')) {
-            return $avatar;
+        return $this->toPublicStorageUrl($avatar);
+    }
+
+    /**
+     * Resolve a public storage path to a full URL using the current host.
+     */
+    private function toPublicStorageUrl(string $path): string
+    {
+        if (str_starts_with($path, 'http://') || str_starts_with($path, 'https://')) {
+            return $path;
         }
 
-        return \Storage::disk('public')->url($avatar);
+        return url('/storage/' . ltrim($path, '/'));
     }
 }

@@ -7,8 +7,8 @@
     body { font-family: Arial, sans-serif; margin: 20px; }
     .debug-section { margin: 20px 0; padding: 20px; border: 1px solid #ccc; }
     .tool-card {
-        background: linear-gradient(135deg, #fef3e7 0%, #fed7aa 100%);
-        border: 1px solid #fb923c;
+        background: linear-gradient(135deg, #eaf3f6 0%, #a1dfd1 100%);
+        border: 1px solid #0fb39a;
         border-radius: 12px;
         padding: 1.5rem;
         margin: 10px;
@@ -18,7 +18,7 @@
     .tool-icon {
         width: 3rem;
         height: 3rem;
-        background: linear-gradient(135deg, #f97316, #fb923c);
+        background: linear-gradient(135deg, #0f4c73, #0fb39a);
         border-radius: 50%;
         display: flex;
         align-items: center;
@@ -173,3 +173,7 @@
     });
 </script>
 @endpush
+
+
+
+

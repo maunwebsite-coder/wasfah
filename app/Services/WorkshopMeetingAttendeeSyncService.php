@@ -13,10 +13,6 @@ class WorkshopMeetingAttendeeSyncService
 
     public function sync(Workshop $workshop): void
     {
-        if (!$this->googleMeetService->isEnabled()) {
-            return;
-        }
-
         if ($workshop->meeting_provider !== 'google_meet') {
             return;
         }
@@ -27,7 +23,14 @@ class WorkshopMeetingAttendeeSyncService
             return;
         }
 
+        $hostCredentials = $workshop->hostGoogleMeetCredentials();
+
+        if (!$this->googleMeetService->isEnabled() && !$hostCredentials) {
+            return;
+        }
+
         $calendarId = $workshop->meeting_calendar_id
+            ?: ($hostCredentials['calendar_id'] ?? null)
             ?: config('services.google_meet.calendar_id')
             ?: config('services.google_meet.organizer_email');
 
@@ -39,7 +42,7 @@ class WorkshopMeetingAttendeeSyncService
 
         $attendees = [];
 
-        $organizerEmail = $this->normalizeEmail(config('services.google_meet.organizer_email'));
+        $organizerEmail = $this->normalizeEmail($hostCredentials['organizer_email'] ?? config('services.google_meet.organizer_email'));
 
         if ($organizerEmail) {
             $attendees[$organizerEmail] = [
@@ -90,7 +93,8 @@ class WorkshopMeetingAttendeeSyncService
             $this->googleMeetService->syncEventAttendees(
                 $eventId,
                 array_values($attendees),
-                $calendarId
+                $calendarId,
+                $hostCredentials
             );
         } catch (\Throwable $exception) {
             Log::warning('Failed to sync Google Meet attendees for workshop.', [

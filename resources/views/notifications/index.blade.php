@@ -108,14 +108,44 @@
                         <span class="pointer-events-none absolute -right-10 top-8 h-48 w-48 rounded-full bg-orange-100/60 blur-3xl"></span>
                         <span class="pointer-events-none absolute -left-8 bottom-0 h-32 w-32 rounded-full bg-rose-100/60 blur-3xl"></span>
                     </div>
-                    <div class="grid grid-cols-1 gap-4 sm:grid-cols-3 lg:grid-cols-1">
-                        @foreach($statsCopy as $stat)
-                            <div class="rounded-3xl border border-slate-100 bg-white px-5 py-4 text-slate-700 shadow-sm">
-                                <p class="text-xs font-semibold uppercase tracking-widest text-slate-400">{{ $stat['label'] }}</p>
-                                <p class="mt-1 text-3xl font-black text-slate-900">{{ $stat['value'] }}</p>
-                                <p class="text-xs text-slate-400">{{ $stat['description'] }}</p>
+                    <div class="flex flex-col gap-4">
+                        <div class="sm:hidden" data-stats-container>
+                            <div class="mb-2 flex items-center justify-between px-1 text-slate-900">
+                                <p class="text-sm font-semibold">{{ $isArabic ? 'ملخص اليوم' : 'Today at a glance' }}</p>
+                                <div class="flex items-center gap-2">
+                                    <button type="button" class="stats-nav-btn" data-stats-prev aria-label="{{ $isArabic ? 'السابق' : 'Previous' }}">
+                                        <i class="fas {{ $isArabic ? 'fa-chevron-right' : 'fa-chevron-left' }}"></i>
+                                    </button>
+                                    <button type="button" class="stats-nav-btn" data-stats-next aria-label="{{ $isArabic ? 'التالي' : 'Next' }}">
+                                        <i class="fas {{ $isArabic ? 'fa-chevron-left' : 'fa-chevron-right' }}"></i>
+                                    </button>
+                                </div>
                             </div>
-                        @endforeach
+                            <div class="stats-slider" data-stats-slider>
+                                <div class="stats-slider-track" data-stats-track>
+                                    @foreach($statsCopy as $stat)
+                                        <div class="stats-slide" data-stat-slide>
+                                            <div class="rounded-3xl border border-slate-100 bg-white px-5 py-4 text-slate-700 shadow-sm">
+                                                <p class="text-xs font-semibold uppercase tracking-widest text-slate-400">{{ $stat['label'] }}</p>
+                                                <p class="mt-1 text-3xl font-black text-slate-900">{{ $stat['value'] }}</p>
+                                                <p class="text-xs text-slate-400">{{ $stat['description'] }}</p>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                                <div class="stats-dots" data-stats-dots></div>
+                            </div>
+                        </div>
+
+                        <div class="hidden gap-4 sm:grid sm:grid-cols-3 lg:grid-cols-1">
+                            @foreach($statsCopy as $stat)
+                                <div class="rounded-3xl border border-slate-100 bg-white px-5 py-4 text-slate-700 shadow-sm">
+                                    <p class="text-xs font-semibold uppercase tracking-widest text-slate-400">{{ $stat['label'] }}</p>
+                                    <p class="mt-1 text-3xl font-black text-slate-900">{{ $stat['value'] }}</p>
+                                    <p class="text-xs text-slate-400">{{ $stat['description'] }}</p>
+                                </div>
+                            @endforeach
+                        </div>
                     </div>
                 </div>
             </div>
@@ -273,8 +303,8 @@
     .filter-pill.is-active {
         color: #fff;
         border-color: transparent;
-        background-image: linear-gradient(135deg, #f97316, #fb923c);
-        box-shadow: 0 15px 30px rgba(249, 115, 22, 0.25);
+        background-image: linear-gradient(135deg, #0f4c73, #0fb39a);
+        box-shadow: 0 15px 30px rgba(15, 76, 115, 0.25);
     }
 
     .notification-item {
@@ -285,7 +315,7 @@
     .notification-item:hover {
         transform: translateY(-4px);
         box-shadow: 0 32px 50px rgba(15, 23, 42, 0.12);
-        border-color: rgba(249, 115, 22, 0.45);
+        border-color: rgba(15, 76, 115, 0.45);
     }
 
     .notification-message {
@@ -318,8 +348,8 @@
     }
 
     .notification-timeline-dot--active {
-        background: #f97316;
-        box-shadow: 0 8px 20px rgba(249, 115, 22, 0.35);
+        background: #0f4c73;
+        box-shadow: 0 8px 20px rgba(15, 76, 115, 0.35);
         transform: scale(1.05);
     }
 
@@ -329,6 +359,69 @@
 
     .notification-actions button {
         backdrop-filter: blur(10px);
+    }
+
+    .stats-slider {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .stats-slider-track {
+        display: flex;
+        gap: 1rem;
+        transition: transform 0.35s ease;
+        will-change: transform;
+        touch-action: pan-y;
+    }
+
+    .stats-slide {
+        flex: 0 0 100%;
+    }
+
+    .stats-nav-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 2.5rem;
+        height: 2.5rem;
+        border-radius: 999px;
+        border: 1px solid #e2e8f0;
+        background: #fff;
+        color: #0f4c73;
+        box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+        transition: all 0.2s ease;
+    }
+
+    .stats-nav-btn:hover {
+        border-color: #cbd5e1;
+        transform: translateY(-1px);
+    }
+
+    .stats-nav-btn:active {
+        transform: translateY(0);
+    }
+
+    .stats-dots {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        margin-top: 0.75rem;
+    }
+
+    .stats-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 999px;
+        background: #e2e8f0;
+        border: 1px solid #cbd5e1;
+        transition: all 0.2s ease;
+    }
+
+    .stats-dot.is-active {
+        background: #0f4c73;
+        border-color: #0f4c73;
+        transform: scale(1.05);
     }
 
     @media (max-width: 640px) {
@@ -452,11 +545,117 @@ function refreshNotificationCounts(force = false) {
         });
 }
 
+function initStatsSlider() {
+    const sliderContainer = document.querySelector('[data-stats-container]');
+    if (!sliderContainer) return;
+
+    const slider = sliderContainer.querySelector('[data-stats-slider]');
+    const track = slider?.querySelector('[data-stats-track]');
+    const slides = slider ? Array.from(slider.querySelectorAll('[data-stat-slide]')) : [];
+    const dotsContainer = sliderContainer.querySelector('[data-stats-dots]');
+    const prevBtn = sliderContainer.querySelector('[data-stats-prev]');
+    const nextBtn = sliderContainer.querySelector('[data-stats-next]');
+
+    if (!slider || !track || !slides.length) return;
+
+    let activeIndex = 0;
+    let isDragging = false;
+    let dragStartX = 0;
+    const SLIDER_TRANSITION = 'transform 0.35s ease';
+
+    const getGapSize = () => {
+        const styles = getComputedStyle(track);
+        const gapValue = parseFloat(styles.gap || styles.columnGap || '0');
+        return Number.isNaN(gapValue) ? 0 : gapValue;
+    };
+
+    const getOffset = () => {
+        const slideWidth = slider.getBoundingClientRect().width;
+        return activeIndex * (slideWidth + getGapSize());
+    };
+
+    const goTo = newIndex => {
+        activeIndex = (newIndex + slides.length) % slides.length;
+        updateSlides();
+    };
+
+    const buildDots = () => {
+        if (!dotsContainer) return;
+        dotsContainer.innerHTML = '';
+        slides.forEach((_, index) => {
+            const dot = document.createElement('button');
+            dot.type = 'button';
+            dot.className = `stats-dot${index === activeIndex ? ' is-active' : ''}`;
+            dot.setAttribute('aria-label', `${index + 1}`);
+            dot.addEventListener('click', () => goTo(index));
+            dotsContainer.appendChild(dot);
+        });
+    };
+
+    const updateSlides = () => {
+        if (window.matchMedia('(min-width: 640px)').matches) {
+            track.style.transform = 'translateX(0)';
+            return;
+        }
+
+        track.style.transition = track.style.transition || SLIDER_TRANSITION;
+        track.style.transform = `translateX(-${getOffset()}px)`;
+
+        dotsContainer?.querySelectorAll('.stats-dot').forEach((dot, idx) => {
+            dot.classList.toggle('is-active', idx === activeIndex);
+        });
+    };
+
+    const endDrag = clientX => {
+        if (!isDragging) return;
+        const delta = clientX - dragStartX;
+        track.style.transition = SLIDER_TRANSITION;
+
+        if (Math.abs(delta) > 45) {
+            goTo(delta > 0 ? activeIndex - 1 : activeIndex + 1);
+        } else {
+            updateSlides();
+        }
+
+        isDragging = false;
+    };
+
+    track.addEventListener('pointerdown', event => {
+        if (window.matchMedia('(min-width: 640px)').matches) return;
+        isDragging = true;
+        dragStartX = event.clientX;
+        track.style.transition = 'none';
+        track.setPointerCapture(event.pointerId);
+    });
+
+    track.addEventListener('pointermove', event => {
+        if (!isDragging) return;
+        const delta = event.clientX - dragStartX;
+        track.style.transform = `translateX(${-(getOffset()) + delta}px)`;
+    });
+
+    ['pointerup', 'pointercancel', 'pointerleave'].forEach(eventName => {
+        track.addEventListener(eventName, event => {
+            endDrag(event.clientX || 0);
+        });
+    });
+
+    prevBtn?.addEventListener('click', () => goTo(activeIndex - 1));
+    nextBtn?.addEventListener('click', () => goTo(activeIndex + 1));
+
+    window.addEventListener('resize', () => updateSlides());
+
+    buildDots();
+    updateSlides();
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     const filterButtons = Array.from(document.querySelectorAll('[data-filter-button]'));
     const searchInput = document.getElementById('notification-search');
     const filteredEmptyState = document.getElementById('filtered-empty-state');
     const notificationTimeline = document.getElementById('notification-timeline');
+
+    initStatsSlider();
 
     const applyFilters = () => {
         const activeFilter = document.querySelector('[data-filter-button].is-active')?.dataset.filter || 'all';
@@ -948,3 +1147,6 @@ function showErrorMessage(message) {
 }
 </script>
 @endpush
+
+
+

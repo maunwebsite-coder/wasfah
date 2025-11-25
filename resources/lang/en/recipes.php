@@ -2,18 +2,18 @@
 
 return [
     'meta' => [
-        'title' => 'All Recipes - Wasfah',
+        'title' => 'All Guides - Peahskill',
     ],
     'hero' => [
-        'title' => 'Every dessert recipe in one showcase',
+        'title' => 'Every guide in one showcase',
         'badge' => [
-            'default' => 'Wasfah Picks',
+            'default' => 'Peahskill Picks',
             'category' => 'Category :category',
             'search' => 'Search: ":term"',
         ],
         'subtitle' => [
-            'default' => 'Discover curated gourmet desserts from the Wasfah team.',
-            'category' => 'Everything about :category desserts in one place.',
+            'default' => 'Discover curated, practical guides from the Peahskill team.',
+            'category' => 'Everything about :category in one place.',
             'search' => 'Showing results for ":term".',
         ],
         'meta_search' => 'Search: ":term"',
@@ -31,8 +31,8 @@ return [
     ],
     'stats' => [
         'total' => [
-            'label' => 'Total recipes',
-            'hint' => 'Across the Wasfah library',
+            'label' => 'Total guides',
+            'hint' => 'Across the Peahskill library',
         ],
         'current' => [
             'label' => 'Currently showing',
@@ -47,12 +47,12 @@ return [
         ],
         'latest' => [
             'label' => 'Latest addition',
-            'hint' => 'Most recently published recipe',
+            'hint' => 'Most recently published guide',
         ],
     ],
     'filters' => [
-        'search_label' => 'Search recipe',
-        'search_placeholder' => 'Example: Seasonal fruit tart',
+        'search_label' => 'Search guide',
+        'search_placeholder' => 'Example: Product brief template',
         'category_label' => 'Categories',
         'sort_label' => 'Sort results',
         'all_categories' => 'All categories',
@@ -64,20 +64,20 @@ return [
         'chip_sort' => 'Sort: :label',
     ],
     'cards' => [
-        'category_fallback' => 'Recipe',
-        'fallback_excerpt' => 'Learn how to prepare this gourmet recipe with clear, friendly steps.',
+        'category_fallback' => 'Guide',
+        'fallback_excerpt' => 'Learn how to apply this guide with clear, friendly steps.',
         'prep_time' => ':minutes min',
-        'servings' => '{1} Serves one person|[2,*] Serves :count people',
+        'servings' => '{1} Delivers one output|[2,*] Delivers :count outputs',
         'booking_closed' => 'Booking closed',
-        'view_recipe' => 'View recipe',
+        'view_recipe' => 'View guide',
         'image_fallback_alt' => 'Fallback image',
     ],
     'pagination' => [
-        'summary' => ':first - :last of :total recipes',
+        'summary' => ':first - :last of :total guides',
     ],
     'empty' => [
         'title' => 'No matching results',
-        'subtitle' => 'Try adjusting your search or picking a different category. We add new recipes regularly.',
-        'cta' => 'Show all recipes',
+        'subtitle' => 'Try adjusting your search or picking a different category. We add new guides regularly.',
+        'cta' => 'Show all guides',
     ],
 ];

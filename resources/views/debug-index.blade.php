@@ -14,7 +14,7 @@
     .debug-icon {
         width: 3rem;
         height: 3rem;
-        background: linear-gradient(135deg, #f97316, #fb923c);
+        background: linear-gradient(135deg, #0f4c73, #0fb39a);
         border-radius: 50%;
         display: flex;
         align-items: center;
@@ -175,3 +175,5 @@
     </div>
 </div>
 @endsection
+
+

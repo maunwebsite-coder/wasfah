@@ -5,7 +5,7 @@
 @push('styles')
 <style>
     body {
-        background: linear-gradient(135deg, #f8fafc 0%, #e0f2fe 40%, #fff7ed 100%);
+        background: linear-gradient(135deg, #f8fafc 0%, #e0f2fe 40%, #eaf3f6 100%);
         min-height: 100vh;
     }
 
@@ -39,17 +39,17 @@
     }
 
     .notification.warning {
-        background: linear-gradient(135deg, #f59e0b, #d97706);
+        background: linear-gradient(135deg, #0d8b76, #0a344f);
     }
 
     .page-hero {
         position: relative;
         overflow: hidden;
-        background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255, 247, 237, 0.95) 55%, rgba(224, 242, 254, 0.95) 100%);
+        background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(234, 243, 246, 0.95) 55%, rgba(224, 242, 254, 0.95) 100%);
         border-radius: 1.75rem;
-        border: 1px solid rgba(249, 115, 22, 0.16);
+        border: 1px solid rgba(15, 76, 115, 0.16);
         padding: 2.75rem 2.5rem;
-        box-shadow: 0 30px 60px -40px rgba(249, 115, 22, 0.6);
+        box-shadow: 0 30px 60px -40px rgba(15, 76, 115, 0.6);
     }
 
     .page-hero::before,
@@ -74,7 +74,7 @@
         height: 420px;
         bottom: -180px;
         right: -150px;
-        background: radial-gradient(circle, rgba(249, 115, 22, 0.28), transparent 68%);
+        background: radial-gradient(circle, rgba(15, 76, 115, 0.28), transparent 68%);
     }
 
     .page-hero > * {
@@ -170,8 +170,8 @@
         justify-content: center;
         font-size: 1.25rem;
         color: #fff;
-        background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
-        box-shadow: 0 12px 30px -20px rgba(249, 115, 22, 0.7);
+        background: linear-gradient(135deg, #0f4c73 0%, #0a8070 100%);
+        box-shadow: 0 12px 30px -20px rgba(15, 76, 115, 0.7);
     }
 
     .section-title {
@@ -195,7 +195,7 @@
     .section-divider {
         height: 1px;
         width: 100%;
-        background: linear-gradient(90deg, rgba(249, 115, 22, 0.1), rgba(148, 163, 184, 0.45), rgba(249, 115, 22, 0.1));
+        background: linear-gradient(90deg, rgba(15, 76, 115, 0.1), rgba(148, 163, 184, 0.45), rgba(15, 76, 115, 0.1));
         margin: 2.5rem 0;
     }
 
@@ -224,9 +224,9 @@
     .form-select:focus,
     .form-textarea:focus {
         outline: none;
-        border-color: #f97316;
+        border-color: #0f4c73;
         background: #ffffff;
-        box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.12);
+        box-shadow: 0 0 0 4px rgba(15, 76, 115, 0.12);
         transform: translateY(-1px);
     }
 
@@ -265,8 +265,8 @@
     }
 
     .image-upload-area:hover {
-        border-color: rgba(249, 115, 22, 0.55);
-        background: #fff7ed;
+        border-color: rgba(15, 76, 115, 0.55);
+        background: #eaf3f6;
         transform: translateY(-2px);
     }
 
@@ -281,10 +281,10 @@
         gap: 0.5rem;
         padding: 0.55rem 1.1rem;
         border-radius: 9999px;
-        background: linear-gradient(135deg, #f97316, #f59e0b);
+        background: linear-gradient(135deg, #0f4c73, #0d8b76);
         color: #fff;
         font-weight: 700;
-        box-shadow: 0 18px 30px -25px rgba(249, 115, 22, 0.75);
+        box-shadow: 0 18px 30px -25px rgba(15, 76, 115, 0.75);
         margin-top: 1rem;
     }
 
@@ -299,8 +299,8 @@
         height: 160px;
         border-radius: 1.1rem;
         object-fit: cover;
-        border: 2px solid rgba(249, 115, 22, 0.4);
-        box-shadow: 0 20px 40px -25px rgba(249, 115, 22, 0.6);
+        border: 2px solid rgba(15, 76, 115, 0.4);
+        box-shadow: 0 20px 40px -25px rgba(15, 76, 115, 0.6);
     }
 
     .remove-preview-btn {
@@ -326,9 +326,9 @@
     .recipe-wrapper {
         background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(255, 237, 213, 0.9));
         border-radius: 1.5rem;
-        border: 1px solid rgba(249, 115, 22, 0.18);
+        border: 1px solid rgba(15, 76, 115, 0.18);
         padding: 2rem;
-        box-shadow: 0 40px 60px -50px rgba(249, 115, 22, 0.6);
+        box-shadow: 0 40px 60px -50px rgba(15, 76, 115, 0.6);
     }
 
     .recipe-tools {
@@ -369,9 +369,9 @@
     }
 
     .recipe-tools .select-all-btn {
-        background: linear-gradient(135deg, #f97316, #ea580c);
+        background: linear-gradient(135deg, #0f4c73, #0a8070);
         color: #fff;
-        box-shadow: 0 18px 30px -25px rgba(249, 115, 22, 0.75);
+        box-shadow: 0 18px 30px -25px rgba(15, 76, 115, 0.75);
     }
 
     .recipe-tools .clear-btn {
@@ -411,14 +411,14 @@
     }
 
     .recipe-item:hover {
-        border-color: rgba(249, 115, 22, 0.45);
+        border-color: rgba(15, 76, 115, 0.45);
         transform: translateY(-3px);
     }
 
     .recipe-item.selected {
-        border-color: rgba(249, 115, 22, 0.65);
-        background: #fff7ed;
-        box-shadow: 0 26px 45px -32px rgba(249, 115, 22, 0.6);
+        border-color: rgba(15, 76, 115, 0.65);
+        background: #eaf3f6;
+        box-shadow: 0 26px 45px -32px rgba(15, 76, 115, 0.6);
     }
 
     .status-grid {
@@ -456,26 +456,26 @@
         width: 2.65rem;
         height: 2.65rem;
         border-radius: 0.9rem;
-        background: linear-gradient(135deg, #f97316, #ea580c);
+        background: linear-gradient(135deg, #0f4c73, #0a8070);
         color: #fff;
         display: flex;
         align-items: center;
         justify-content: center;
         font-size: 1.05rem;
-        box-shadow: 0 18px 24px -18px rgba(249, 115, 22, 0.75);
+        box-shadow: 0 18px 24px -18px rgba(15, 76, 115, 0.75);
         flex-shrink: 0;
     }
 
     .status-card input:checked + .status-card-content {
-        border-color: rgba(249, 115, 22, 0.55);
-        background: #fff7ed;
+        border-color: rgba(15, 76, 115, 0.55);
+        background: #eaf3f6;
         transform: translateY(-2px);
-        box-shadow: 0 28px 40px -28px rgba(249, 115, 22, 0.55);
+        box-shadow: 0 28px 40px -28px rgba(15, 76, 115, 0.55);
     }
 
     .status-card input:checked + .status-card-content .status-card-icon {
-        background: linear-gradient(135deg, #f97316, #fbbf24);
-        box-shadow: 0 20px 30px -28px rgba(249, 115, 22, 0.6);
+        background: linear-gradient(135deg, #0f4c73, #0fa289);
+        box-shadow: 0 20px 30px -28px rgba(15, 76, 115, 0.6);
     }
 
     .form-actions {
@@ -510,15 +510,15 @@
     }
 
     .button-primary {
-        background: linear-gradient(135deg, #f97316 0%, #ea580c 50%, #f472b6 100%);
+        background: linear-gradient(135deg, #0f4c73 0%, #0a8070 50%, #f472b6 100%);
         color: #fff;
-        box-shadow: 0 28px 45px -28px rgba(249, 115, 22, 0.65);
+        box-shadow: 0 28px 45px -28px rgba(15, 76, 115, 0.65);
         border: none;
     }
 
     .button-primary:hover {
         transform: translateY(-2px);
-        box-shadow: 0 32px 45px -25px rgba(249, 115, 22, 0.8);
+        box-shadow: 0 32px 45px -25px rgba(15, 76, 115, 0.8);
     }
 
     .button-primary:disabled {
@@ -584,7 +584,7 @@
     }
 
     .meeting-status[data-state="manual"] {
-        background: #fef3c7;
+        background: #c8ede3;
         color: #92400e;
     }
 
@@ -903,13 +903,11 @@
                             </div>
 
                             <div>
-                                <label for="registration_deadline" class="form-label">آخر موعد للتسجيل</label>
-                                <input id="registration_deadline" name="registration_deadline" type="datetime-local" value="{{ old('registration_deadline') }}"
-                                       class="form-input @error('registration_deadline') is-invalid @enderror">
-                                @error('registration_deadline')
-                                    <p class="error-text">{{ $message }}</p>
-                                @enderror
-                                <p class="form-hint">يساعد على إظهار ما إذا كان التسجيل ما يزال متاحاً.</p>
+                                <p class="form-label">آخر موعد للتسجيل</p>
+                                <div class="rounded-xl border border-emerald-100 bg-emerald-50/70 px-4 py-3 text-sm text-emerald-800">
+                                    يتم ضبط هذا الموعد تلقائياً قبل بداية الورشة بدقيقتين وفقاً لتوقيت المضيف.
+                                </div>
+                                <p class="form-hint mt-2">يتم إغلاق التسجيل تلقائياً بدون الحاجة لأي إجراء يدوي.</p>
                             </div>
                         </div>
                     </div>
@@ -1729,5 +1727,13 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 @endpush
+
+
+
+
+
+
+
+
 
 

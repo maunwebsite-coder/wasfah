@@ -35,7 +35,8 @@ class GoogleMeetService
         $refreshToken = $config['refresh_token'] ?? null;
         $calendarId = $config['calendar_id'] ?? null;
         $this->organizerEmail = $config['organizer_email'] ?? null;
-        $this->defaultDuration = max(30, (int) ($config['default_duration'] ?? 90));
+        // Default to 45 minutes if no value is provided in configuration.
+        $this->defaultDuration = max(30, (int) ($config['default_duration'] ?? 45));
         $this->timezone = $config['timezone'] ?? config('app.timezone', 'UTC');
         $this->clientId = $clientId;
         $this->clientSecret = $clientSecret;
@@ -61,6 +62,63 @@ class GoogleMeetService
         }
     }
 
+    /**
+     * Normalize Google credentials, preferring per-host overrides when provided.
+     */
+    protected function normalizeCredentials(?array $overrides = null): array
+    {
+        $clientId = $overrides['client_id'] ?? $this->clientId;
+        $clientSecret = $overrides['client_secret'] ?? $this->clientSecret;
+        $refreshToken = $overrides['refresh_token'] ?? $this->refreshToken;
+        $organizerEmail = $overrides['organizer_email'] ?? $this->organizerEmail;
+        $calendarId = $overrides['calendar_id'] ?? $this->calendarId ?? $organizerEmail;
+        $timezone = $overrides['timezone'] ?? $this->timezone;
+        $defaultDuration = max(15, (int) ($overrides['default_duration'] ?? $this->defaultDuration));
+
+        $enabled = (bool) ($clientId && $clientSecret && $refreshToken && $calendarId);
+
+        return [
+            'client_id' => $clientId,
+            'client_secret' => $clientSecret,
+            'refresh_token' => $refreshToken,
+            'calendar_id' => $calendarId,
+            'organizer_email' => $organizerEmail,
+            'timezone' => $timezone,
+            'default_duration' => $defaultDuration,
+            'enabled' => $enabled,
+        ];
+    }
+
+    /**
+     * Resolve a Calendar service using either global or host-specific credentials.
+     *
+     * @return array{0:Calendar|null,1:array}
+     */
+    protected function resolveCalendarService(?array $credentialsOverride = null): array
+    {
+        $credentials = $this->normalizeCredentials($credentialsOverride);
+
+        if (!$credentials['enabled']) {
+            return [null, $credentials];
+        }
+
+        if ($credentialsOverride === null && $this->calendar) {
+            return [$this->calendar, $credentials];
+        }
+
+        $client = $this->refreshAccessToken($credentials);
+
+
+
+        $service = new Calendar($client);
+
+        if ($credentialsOverride === null) {
+            $this->calendar = $service;
+        }
+
+        return [$service, $credentials];
+    }
+
     public function createMeeting(
         string $title,
         int $userId = 0,
@@ -68,31 +126,37 @@ class GoogleMeetService
         ?int $durationMinutes = null,
         ?string $description = null,
         array $attendees = [],
-        ?array $organizerOverride = null
+        ?array $organizerOverride = null,
+        ?array $credentialsOverride = null
     ): array {
-        if (!$this->enabled || !$this->calendarId) {
-            throw new RuntimeException('Google Meet integration is not configured.');
+        [$service, $credentials] = $this->resolveCalendarService($credentialsOverride);
+
+        if (!$service || empty($credentials['calendar_id'])) {
+            if (empty($credentials['calendar_id'])) {
+                throw new RuntimeException('Google Meet integration error: Missing Calendar ID.');
+            }
+
+            if (!$credentials['enabled']) {
+                $missing = [];
+                if (empty($credentials['client_id'])) $missing[] = 'Client ID';
+                if (empty($credentials['client_secret'])) $missing[] = 'Client Secret';
+                if (empty($credentials['refresh_token'])) $missing[] = 'Refresh Token';
+                throw new RuntimeException('Google Meet integration error: Missing credentials (' . implode(', ', $missing) . ').');
+            }
+
+            throw new RuntimeException('Google Meet integration error: Failed to refresh access token. Please reconnect your Google Calendar.');
         }
-
-        $client = $this->refreshAccessToken();
-
-        if (!$client) {
-            throw new RuntimeException('Google Meet integration token expired. Needs re-auth.');
-        }
-
-        $service = new Calendar($client);
-        $this->calendar = $service;
 
         $start = $startsAt?->copy() ?? now();
-        $start = $start->setTimezone($this->timezone);
-        $duration = max(15, (int) ($durationMinutes ?? $this->defaultDuration));
+        $start = $start->setTimezone($credentials['timezone']);
+        $duration = max(15, (int) ($durationMinutes ?? $credentials['default_duration']));
         $end = $start->copy()->addMinutes($duration);
 
         $eventPayload = [
             'summary' => trim($title) !== '' ? $title : 'Wasfah Online Workshop',
             'description' => $description ?: sprintf('Auto-generated for Wasfah workshop #%s', $userId ?: 'N/A'),
-            'start' => $this->makeEventDateTime($start),
-            'end' => $this->makeEventDateTime($end),
+            'start' => $this->makeEventDateTime($start, $credentials['timezone']),
+            'end' => $this->makeEventDateTime($end, $credentials['timezone']),
             'conferenceData' => [
                 'createRequest' => [
                     'requestId' => (string) Str::uuid(),
@@ -105,9 +169,9 @@ class GoogleMeetService
 
         $attendeePayload = [];
 
-        if ($this->organizerEmail) {
-            $attendeePayload[$this->organizerEmail] = [
-                'email' => $this->organizerEmail,
+        if ($credentials['organizer_email']) {
+            $attendeePayload[$credentials['organizer_email']] = [
+                'email' => $credentials['organizer_email'],
                 'organizer' => true,
             ];
         }
@@ -168,7 +232,7 @@ class GoogleMeetService
 
         try {
             $created = $service->events->insert(
-                $this->calendarId,
+                $credentials['calendar_id'],
                 $event,
                 ['conferenceDataVersion' => 1, 'sendUpdates' => 'none']
             );
@@ -177,7 +241,7 @@ class GoogleMeetService
                 'error' => $exception->getMessage(),
             ]);
 
-            throw new RuntimeException('تعذر إنشاء اجتماع Google Meet. يرجى التحقق من الإعدادات وإعادة المحاولة.');
+            throw new RuntimeException('تعذر إنشاء اجتماع Google Meet: ' . $exception->getMessage());
         }
 
         $hangoutLink = $created->getHangoutLink();
@@ -199,7 +263,7 @@ class GoogleMeetService
         return [
             'meeting_link' => $hangoutLink,
             'event_id' => $created->getId(),
-            'calendar_id' => $this->calendarId,
+            'calendar_id' => $credentials['calendar_id'],
             'conference_id' => optional($created->getConferenceData())->getConferenceId(),
             'provider' => 'google_meet',
             'starts_at' => $start,
@@ -207,23 +271,27 @@ class GoogleMeetService
         ];
     }
 
-    public function refreshAccessToken(): ?Client
+    public function refreshAccessToken(?array $credentials = null): ?Client
     {
-        if (!$this->clientId || !$this->clientSecret || !$this->refreshToken) {
+        $creds = $this->normalizeCredentials($credentials);
+
+        if (!$creds['client_id'] || !$creds['client_secret'] || !$creds['refresh_token']) {
             return null;
         }
 
         try {
-            $googleClient = $this->buildConfiguredClient();
-            $token = $googleClient->fetchAccessTokenWithRefreshToken($this->refreshToken);
+            $googleClient = $this->buildConfiguredClient(null, $creds);
+            $token = $googleClient->fetchAccessTokenWithRefreshToken($creds['refresh_token']);
 
             if (isset($token['error'])) {
+                $error = $token['error'];
+                $desc = $token['error_description'] ?? 'No description';
                 Log::warning('Failed to refresh Google Meet access token.', [
-                    'error' => $token['error'],
-                    'error_description' => $token['error_description'] ?? null,
+                    'error' => $error,
+                    'error_description' => $desc,
                 ]);
 
-                return null;
+                throw new RuntimeException("Google Token Error: $error ($desc)");
             }
 
             if (is_array($token) && !empty($token)) {
@@ -236,7 +304,7 @@ class GoogleMeetService
                 'error' => $exception->getMessage(),
             ]);
 
-            return null;
+            throw new RuntimeException('Token refresh failed: ' . $exception->getMessage());
         }
     }
 
@@ -252,21 +320,19 @@ class GoogleMeetService
      * @param  array<array{email:string,displayName?:string,optional?:bool,organizer?:bool}>  $attendees
      * @param  string|null  $calendarId
      */
-    public function syncEventAttendees(string $eventId, array $attendees, ?string $calendarId = null): void
+    public function syncEventAttendees(string $eventId, array $attendees, ?string $calendarId = null, ?array $credentialsOverride = null): void
     {
-        if (!$this->enabled || !$this->calendar) {
-            throw new RuntimeException('Google Meet integration is not configured.');
-        }
-
         $eventId = trim($eventId);
 
         if ($eventId === '') {
             throw new RuntimeException('لا يمكن تحديث ضيوف Google Meet بدون معرف اجتماع صالح.');
         }
 
-        $targetCalendar = $calendarId ?: $this->calendarId;
+        [$service, $credentials] = $this->resolveCalendarService($credentialsOverride);
 
-        if (!$targetCalendar) {
+        $targetCalendar = $calendarId ?: $credentials['calendar_id'];
+
+        if (!$service || !$targetCalendar) {
             throw new RuntimeException('لا يوجد تقويم Google صالح لإرسال تحديثات الضيوف.');
         }
 
@@ -274,7 +340,7 @@ class GoogleMeetService
         $event = new Event();
         $event->setAttendees($attendeeObjects);
 
-        $this->calendar->events->patch(
+        $service->events->patch(
             $targetCalendar,
             $eventId,
             $event,
@@ -285,14 +351,16 @@ class GoogleMeetService
         );
     }
 
-    protected function bootstrapCalendarClient(?Client $client = null): Calendar
+    protected function bootstrapCalendarClient(?Client $client = null, ?array $credentials = null): Calendar
     {
-        if (!$this->clientId || !$this->clientSecret || !$this->refreshToken) {
+        $creds = $this->normalizeCredentials($credentials);
+
+        if (!$creds['client_id'] || !$creds['client_secret'] || !$creds['refresh_token']) {
             throw new RuntimeException('بيانات اعتماد Google Meet غير مكتملة.');
         }
 
-        $googleClient = $this->buildConfiguredClient($client);
-        $token = $googleClient->fetchAccessTokenWithRefreshToken($this->refreshToken);
+        $googleClient = $this->buildConfiguredClient($client, $creds);
+        $token = $googleClient->fetchAccessTokenWithRefreshToken($creds['refresh_token']);
 
         if (isset($token['error'])) {
             throw new RuntimeException('فشل تحديث صلاحيات Google: ' . ($token['error_description'] ?? $token['error']));
@@ -305,17 +373,19 @@ class GoogleMeetService
         return new Calendar($googleClient);
     }
 
-    protected function buildConfiguredClient(?Client $client = null): Client
+    protected function buildConfiguredClient(?Client $client = null, ?array $credentials = null): Client
     {
         $googleClient = $client ?: new Client();
         $googleClient->setApplicationName(config('app.name') . ' Workshops');
 
-        if ($this->clientId) {
-            $googleClient->setClientId($this->clientId);
+        $creds = $this->normalizeCredentials($credentials);
+
+        if ($creds['client_id']) {
+            $googleClient->setClientId($creds['client_id']);
         }
 
-        if ($this->clientSecret) {
-            $googleClient->setClientSecret($this->clientSecret);
+        if ($creds['client_secret']) {
+            $googleClient->setClientSecret($creds['client_secret']);
         }
 
         $googleClient->setAccessType('offline');
@@ -328,11 +398,11 @@ class GoogleMeetService
         return $googleClient;
     }
 
-    protected function makeEventDateTime(CarbonInterface $time): EventDateTime
+    protected function makeEventDateTime(CarbonInterface $time, ?string $timezone = null): EventDateTime
     {
         $dateTime = new EventDateTime();
         $dateTime->setDateTime($time->toRfc3339String());
-        $dateTime->setTimeZone($this->timezone);
+        $dateTime->setTimeZone($timezone ?? $this->timezone);
 
         return $dateTime;
     }
@@ -376,20 +446,18 @@ class GoogleMeetService
         return $result;
     }
 
-    public function eventHasAttendee(string $eventId, string $email, ?string $calendarId = null): ?bool
+    public function eventHasAttendee(string $eventId, string $email, ?string $calendarId = null, ?array $credentialsOverride = null): ?bool
     {
-        if (!$this->enabled || !$this->calendar) {
-            return null;
-        }
+        [$service, $credentials] = $this->resolveCalendarService($credentialsOverride);
 
-        $targetCalendar = $calendarId ?: $this->calendarId;
+        $targetCalendar = $calendarId ?: $credentials['calendar_id'];
 
-        if (!$targetCalendar) {
+        if (!$service || !$targetCalendar) {
             return null;
         }
 
         try {
-            $event = $this->calendar->events->get($targetCalendar, $eventId);
+            $event = $service->events->get($targetCalendar, $eventId);
         } catch (\Throwable $exception) {
             Log::warning('Failed to fetch Google Meet event for attendee verification.', [
                 'event_id' => $eventId,
@@ -398,6 +466,10 @@ class GoogleMeetService
             ]);
 
             return null;
+        }
+
+        if (!$service || !$event) {
+            return false;
         }
 
         $attendees = $event->getAttendees() ?? [];
@@ -416,20 +488,19 @@ class GoogleMeetService
     public function ensureAttendeePresent(
         string $eventId,
         array $attendee,
-        ?string $calendarId = null
+        ?string $calendarId = null,
+        ?array $credentialsOverride = null
     ): bool {
-        if (!$this->enabled || !$this->calendar) {
-            return false;
-        }
+        [$service, $credentials] = $this->resolveCalendarService($credentialsOverride);
 
-        $targetCalendar = $calendarId ?: $this->calendarId;
+        $targetCalendar = $calendarId ?: $credentials['calendar_id'];
 
         if (!$targetCalendar) {
             return false;
         }
 
         try {
-            $event = $this->calendar->events->get($targetCalendar, $eventId);
+            $event = $service?->events->get($targetCalendar, $eventId);
         } catch (\Throwable $exception) {
             Log::warning('Failed to fetch Google Meet event while ensuring attendee.', [
                 'event_id' => $eventId,
@@ -471,7 +542,7 @@ class GoogleMeetService
         $event->setAttendees($attendees);
 
         try {
-            $this->calendar->events->patch(
+            $service->events->patch(
                 $targetCalendar,
                 $eventId,
                 $event,

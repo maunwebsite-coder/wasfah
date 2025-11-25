@@ -182,25 +182,25 @@ function updateCount(isMade) {
 function updateText(isMade, count) {
     if (isMade) {
         // إذا قام المستخدم بتحضير الوصفة
-        questionTextEl.textContent = 'رائع! لقد جربت هذه الوصفة! 👨‍🍳';
-        questionTextEl.className = 'font-semibold text-green-600 text-lg';
+        questionTextEl.textContent = 'رائع! جرّبت هذا الدليل 👨‍🍳';
+        questionTextEl.className = 'font-semibold text-green-700 text-lg';
         
         // تحديث العداد - إزالة كلمة "أنت" وجعل العداد يزيد +1
         if (count > 1) {
-            madeItCountEl.innerHTML = `<span class="font-bold text-green-500 text-lg">${count}</span>  جربوا هذه الوصفة!`;
+            madeItCountEl.innerHTML = `<span class="font-bold text-green-600 text-lg">${count}</span> جرّبوا هذا الدليل!`;
         } else {
-            madeItCountEl.innerHTML = `أول من جرب هذه الوصفة! 🏆`;
+            madeItCountEl.innerHTML = `أول من جرّب هذا الدليل! 🏆`;
         }
     } else {
         // إذا لم يقم المستخدم بتحضير الوصفة
-        questionTextEl.textContent = 'هل جربت هذه الوصفة؟';
-        questionTextEl.className = 'font-semibold text-gray-800 text-lg';
+        questionTextEl.textContent = 'هل جرّبت هذا الدليل؟';
+        questionTextEl.className = 'font-semibold text-slate-900 text-lg';
         
         // تحديث العداد
         if (count > 0) {
-            madeItCountEl.innerHTML = `<span class="font-bold text-orange-500 text-lg">${count}</span>  جربوا هذه الوصفة!`;
+            madeItCountEl.innerHTML = `<span class="font-bold text-orange-500 text-lg">${count}</span> جرّبوا هذا الدليل!`;
         } else {
-            madeItCountEl.innerHTML = `كن أول من يجرب هذه الوصفة! 🚀`;
+            madeItCountEl.innerHTML = `كن أول من يجرّب هذا الدليل! 🚀`;
         }
     }
 }

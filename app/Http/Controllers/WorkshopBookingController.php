@@ -380,8 +380,10 @@ class WorkshopBookingController extends Controller
         WorkshopBooking $booking,
         Workshop $workshop
     ): ?\Illuminate\Http\RedirectResponse {
+        $hostCredentials = $workshop->hostGoogleMeetCredentials();
+
         if (
-            !$this->googleMeetService->isEnabled()
+            (!$this->googleMeetService->isEnabled() && !$hostCredentials)
             || !filter_var($workshop->meeting_link, FILTER_VALIDATE_URL)
         ) {
             return null;
@@ -411,6 +413,7 @@ class WorkshopBookingController extends Controller
 
         $eventId = trim((string) $workshop->meeting_event_id);
         $calendarId = $workshop->meeting_calendar_id
+            ?: ($hostCredentials['calendar_id'] ?? null)
             ?: config('services.google_meet.calendar_id')
             ?: config('services.google_meet.organizer_email');
 
@@ -418,7 +421,12 @@ class WorkshopBookingController extends Controller
             return null;
         }
 
-        $attendeeStatus = $this->googleMeetService->eventHasAttendee($eventId, $participantEmail, $calendarId);
+        $attendeeStatus = $this->googleMeetService->eventHasAttendee(
+            $eventId,
+            $participantEmail,
+            $calendarId,
+            $hostCredentials
+        );
 
         if ($attendeeStatus === false) {
             $ensured = $this->googleMeetService->ensureAttendeePresent(
@@ -427,12 +435,18 @@ class WorkshopBookingController extends Controller
                     'email' => $participantEmail,
                     'displayName' => $participant->name,
                 ],
-                $calendarId
+                $calendarId,
+                $hostCredentials
             );
 
             if (!$ensured) {
                 $this->meetingAttendeeSyncService->sync($workshop);
-                $attendeeStatus = $this->googleMeetService->eventHasAttendee($eventId, $participantEmail, $calendarId);
+                $attendeeStatus = $this->googleMeetService->eventHasAttendee(
+                    $eventId,
+                    $participantEmail,
+                    $calendarId,
+                    $hostCredentials
+                );
             } else {
                 $attendeeStatus = true;
             }

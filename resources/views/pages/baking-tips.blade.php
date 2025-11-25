@@ -5,3 +5,4 @@
 @section('content')
     @include('pages.partials.tips-page', ['namespace' => 'baking_tips'])
 @endsection
+

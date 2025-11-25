@@ -13,19 +13,19 @@
 
 /* تحسين الألوان المتدرجة */
 .gradient-blue {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #0f4c73 0%, #0a344f 100%);
 }
 
 .gradient-green {
-    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    background: linear-gradient(135deg, #0fa289 0%, #0b705f 100%);
 }
 
 .gradient-purple {
-    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    background: linear-gradient(135deg, #0c3f61 0%, #0fa289 100%);
 }
 
 .gradient-orange {
-    background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+    background: linear-gradient(135deg, #0a2f46 0%, #0fa289 100%);
 }
 
 /* تحسين الأيقونات */
@@ -154,8 +154,13 @@
 }
 
 .status-pending {
-    background-color: #fef3c7;
-    color: #92400e;
+    background-color: #e6f7f2;
+    color: #0a344f;
+}
+
+.status-cancelled {
+    background-color: #eaf3f6;
+    color: #0c3f61;
 }
 
 .status-cancelled {
@@ -217,9 +222,9 @@
 }
 
 .dashboard-alert-warning {
-    background-color: #fffbeb;
-    border-color: #f59e0b;
-    color: #92400e;
+    background-color: #eaf3f6;
+    border-color: #0fa289;
+    color: #0a344f;
 }
 
 .dashboard-alert-error {
@@ -483,3 +488,5 @@
         min-width: 100%;
     }
 }
+
+

@@ -15,9 +15,9 @@
         box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
     }
     .filter-btn.active {
-        background-color: #f97316;
+        background-color: #0f4c73;
         color: white;
-        border-color: #f97316;
+        border-color: #0f4c73;
     }
     .faq-question {
         transition: background-color 0.3s ease;
@@ -562,19 +562,66 @@ document.addEventListener('click', (event) => {
     filterWorkshops(filter);
 });
 
+const initFaqAccordion = () => {
+    const container = document.getElementById('faq-container');
+    if (!container) {
+        return;
+    }
+
+    if (container.dataset.accordionReady === 'true') {
+        return;
+    }
+    container.dataset.accordionReady = 'true';
+
+    const collapse = (answer) => {
+        answer.style.maxHeight = '0px';
+    };
+
+    const expand = (answer) => {
+        answer.style.maxHeight = `${answer.scrollHeight}px`;
+    };
+
+    container.addEventListener('click', (event) => {
+        const trigger = event.target.closest('.faq-question');
+        if (!trigger || !container.contains(trigger)) {
+            return;
+        }
+
+        const item = trigger.closest('.faq-item');
+        const answer = item?.querySelector('.faq-answer');
+        if (!item || !answer) {
+            return;
+        }
+
+        const isOpen = item.classList.toggle('open');
+        if (isOpen) {
+            expand(answer);
+        } else {
+            collapse(answer);
+        }
+    });
+
+    container.querySelectorAll('.faq-answer').forEach(collapse);
+};
+
 const bootstrapFilters = () => {
     ensureNoResultsElement();
     filterWorkshops(document.querySelector('.filter-btn.active')?.dataset.filter || 'all');
 };
 
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', bootstrapFilters, { once: true });
-} else {
+const bootstrapPage = () => {
     bootstrapFilters();
+    initFaqAccordion();
+};
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', bootstrapPage, { once: true });
+} else {
+    bootstrapPage();
 }
 
-document.addEventListener('livewire:navigated', bootstrapFilters);
-document.addEventListener('livewire:load', bootstrapFilters);
+document.addEventListener('livewire:navigated', bootstrapPage);
+document.addEventListener('livewire:load', bootstrapPage);
 
 window.filterWorkshops = filterWorkshops;
 })();
@@ -601,3 +648,5 @@ window.filterWorkshops = filterWorkshops;
 @endif
 
 @endpush
+
+

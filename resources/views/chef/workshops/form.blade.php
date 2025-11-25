@@ -13,7 +13,7 @@
     $currencies = [
         'USD' => __('chef.workshop_form.currencies.usd'),
     ];
-    $isOnline = old('is_online', $workshop->is_online ?? true);
+    $isOnline = true;
     $autoGenerateMeeting = old(
         'auto_generate_meeting',
         $workshop
@@ -22,7 +22,6 @@
     );
     $startDateValue = old('start_date', optional(optional($workshop)->start_date)->format('Y-m-d\TH:i'));
     $endDateValue = old('end_date', optional(optional($workshop)->end_date)->format('Y-m-d\TH:i'));
-    $deadlineValue = old('registration_deadline', optional(optional($workshop)->registration_deadline)->format('Y-m-d\TH:i'));
     $timezoneOptions = $timezoneOptions ?? Timezones::hostOptions();
     $detectedTimezone = request()->cookie('user_timezone');
     $hostTimezoneValue = old(
@@ -42,8 +41,12 @@
             : Storage::disk('public')->url($workshop->image);
     }
 
-    $forceAutoMeetingLinks = $forceAutoMeetingLinks ?? false;
     $currentUser = auth()->user();
+    $hostCalendarConnected = $hostCalendarConnected ?? false;
+    $hostCalendarEmail = $hostCalendarEmail ?? $currentUser?->google_calendar_email ?? $currentUser?->preferredGoogleEmail();
+    $calendarConnectUrl = route('chef.google.calendar.connect', ['redirect' => url()->current()]);
+
+    $forceAutoMeetingLinks = $forceAutoMeetingLinks ?? false;
     $hostsCanOverride = (bool) config('workshop-links.allow_host_meeting_link_override', true);
     $isAdminUser = $currentUser && method_exists($currentUser, 'isAdmin') && $currentUser->isAdmin();
     $canManageMeetingLinks = !$forceAutoMeetingLinks && ($isAdminUser || $hostsCanOverride);
@@ -53,11 +56,27 @@
     }
 @endphp
 
+@if (! $hostCalendarConnected)
+    <div class="mb-6 rounded-3xl border border-emerald-100 bg-emerald-50/80 px-4 py-4 shadow-sm">
+        <div class="flex flex-wrap items-center justify-between gap-3">
+            <div class="space-y-1 text-sm text-emerald-800">
+                <p class="font-semibold">{{ __('chef.workshop_form.messages.calendar_connect_required_title') }}</p>
+                <p class="text-xs text-emerald-700">{{ __('chef.workshop_form.messages.calendar_connect_required_body') }}</p>
+            </div>
+            <a href="{{ $calendarConnectUrl }}"
+               class="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-emerald-500 to-emerald-600 px-4 py-2 text-xs font-semibold text-white shadow hover:from-emerald-600 hover:to-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-200">
+                <i class="fas fa-link"></i>
+                {{ __('chef.workshop_form.messages.calendar_connect_button') }}
+            </a>
+        </div>
+    </div>
+@endif
+
 <div class="space-y-10">
     <section class="rounded-3xl bg-white p-6 shadow-sm ring-1 ring-slate-100">
         <div class="mb-6">
             <p class="text-sm font-semibold uppercase tracking-wider text-orange-500">{{ __('chef.workshop_form.sections.basics.eyebrow') }}</p>
-            <h2 class="mt-1 text-2xl font-bold text-slate-900">{{ __('chef.workshop_form.sections.basics.title') }}</h2>
+            <h2 class="mt-1 text-lg sm:text-xl font-bold leading-6 text-slate-900">{{ __('chef.workshop_form.sections.basics.title') }}</h2>
             <p class="mt-2 text-sm text-slate-500">{{ __('chef.workshop_form.sections.basics.description') }}</p>
         </div>
         <div class="grid gap-5 lg:grid-cols-2">
@@ -94,7 +113,7 @@
             <div class="space-y-3">
                 <label for="duration" class="text-sm font-semibold text-slate-700">{{ __('chef.workshop_form.fields.duration.label') }}</label>
                 <input type="number" id="duration" name="duration" required min="30" max="180" step="15"
-                       value="{{ old('duration', $workshop->duration ?? 90) }}"
+                       value="{{ old('duration', $workshop->duration ?? 45) }}"
                        class="w-full rounded-2xl border border-slate-200/80 bg-slate-50 px-4 py-3 text-slate-900 shadow-inner focus:border-orange-400 focus:bg-white focus:ring-4 focus:ring-orange-100 @error('duration') border-red-400 focus:ring-red-200 @enderror">
                 @error('duration')
                     <p class="text-sm text-red-600">{{ $message }}</p>
@@ -114,18 +133,21 @@
             <div class="space-y-3">
                 <label for="content" class="text-sm font-semibold text-slate-700">{{ __('chef.workshop_form.fields.content.label') }}</label>
                 <textarea id="content" name="content" rows="4"
-                          class="w-full rounded-3xl border border-slate-200/80 bg-slate-50 px-4 py-3 text-slate-900 shadow-inner focus:border-orange-400 focus:bg-white focus:ring-4 focus:ring-orange-100">{{ old('content', $workshop->content ?? '') }}</textarea>
+                          class="w-full rounded-3xl border border-slate-200/80 bg-slate-50 px-4 py-3 text-slate-900 shadow-inner focus:border-orange-400 focus:bg-white focus:ring-4 focus:ring-orange-100"
+                          placeholder="{{ __('chef.workshop_form.placeholders.content') }}">{{ old('content', $workshop->content ?? '') }}</textarea>
             </div>
             <div class="grid gap-4 md:grid-cols-2">
                 <div class="space-y-3">
                     <label for="what_you_will_learn" class="text-sm font-semibold text-slate-700">{{ __('chef.workshop_form.fields.learning_points.label') }}</label>
                     <textarea id="what_you_will_learn" name="what_you_will_learn" rows="3"
-                              class="w-full rounded-2xl border border-slate-200/80 bg-slate-50 px-4 py-3 text-slate-900 shadow-inner focus:border-orange-400 focus:bg-white focus:ring-4 focus:ring-orange-100">{{ old('what_you_will_learn', $workshop->what_you_will_learn ?? '') }}</textarea>
+                              class="w-full rounded-2xl border border-slate-200/80 bg-slate-50 px-4 py-3 text-slate-900 shadow-inner focus:border-orange-400 focus:bg-white focus:ring-4 focus:ring-orange-100"
+                              placeholder="{{ __('chef.workshop_form.placeholders.learning_points') }}">{{ old('what_you_will_learn', $workshop->what_you_will_learn ?? '') }}</textarea>
                 </div>
                 <div class="space-y-3">
                     <label for="requirements" class="text-sm font-semibold text-slate-700">{{ __('chef.workshop_form.fields.requirements.label') }}</label>
                     <textarea id="requirements" name="requirements" rows="3"
-                              class="w-full rounded-2xl border border-slate-200/80 bg-slate-50 px-4 py-3 text-slate-900 shadow-inner focus:border-orange-400 focus:bg-white focus:ring-4 focus:ring-orange-100">{{ old('requirements', $workshop->requirements ?? '') }}</textarea>
+                              class="w-full rounded-2xl border border-slate-200/80 bg-slate-50 px-4 py-3 text-slate-900 shadow-inner focus:border-orange-400 focus:bg-white focus:ring-4 focus:ring-orange-100"
+                              placeholder="{{ __('chef.workshop_form.placeholders.requirements') }}">{{ old('requirements', $workshop->requirements ?? '') }}</textarea>
                 </div>
             </div>
         </div>
@@ -135,7 +157,7 @@
         <div class="mb-6 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             <div>
                 <p class="text-sm font-semibold uppercase tracking-wider text-orange-500">{{ __('chef.workshop_form.sections.pricing.eyebrow') }}</p>
-                <h2 class="mt-1 text-2xl font-bold text-slate-900">{{ __('chef.workshop_form.sections.pricing.title') }}</h2>
+                <h2 class="mt-1 text-lg sm:text-xl font-bold leading-6 text-slate-900">{{ __('chef.workshop_form.sections.pricing.title') }}</h2>
             </div>
             <div class="rounded-full bg-orange-50 px-4 py-2 text-sm font-medium text-orange-600">
                 {{ __('chef.workshop_form.sections.pricing.description') }}
@@ -174,7 +196,7 @@
                         <div class="space-y-1">
                             <p class="font-semibold text-amber-900">{{ __('chef.workshop_form.messages.pricing_notice_title') }}</p>
                             <p class="leading-relaxed">
-                                {!! __('chef.workshop_form.messages.pricing_notice_body', ['fee_range' => '<strong>25% – 30%</strong>']) !!}
+                                {!! __('chef.workshop_form.messages.pricing_notice_body', ['fee_range' => '<strong>15% – 20%</strong>']) !!}
                                 <br>
                                 {{ __('chef.workshop_form.messages.pricing_notice_followup') }}
                             </p>
@@ -189,7 +211,7 @@
         <div class="mb-6 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             <div>
                 <p class="text-sm font-semibold uppercase tracking-wider text-orange-500">{{ __('chef.workshop_form.sections.schedule.eyebrow') }}</p>
-                <h2 class="mt-1 text-2xl font-bold text-slate-900">{{ __('chef.workshop_form.sections.schedule.title') }}</h2>
+                <h2 class="mt-1 text-lg sm:text-xl font-bold leading-6 text-slate-900">{{ __('chef.workshop_form.sections.schedule.title') }}</h2>
             </div>
             <p class="text-sm text-slate-500">{{ __('chef.workshop_form.sections.schedule.description') }}</p>
         </div>
@@ -230,10 +252,10 @@
                        class="w-full rounded-2xl border border-slate-200/80 bg-slate-50 px-4 py-3 text-slate-900 shadow-inner focus:border-orange-400 focus:bg-white focus:ring-4 focus:ring-orange-100 @error('end_date') border-red-400 focus:ring-red-200 @enderror">
             </div>
             <div class="space-y-3">
-                <label for="registration_deadline" class="text-sm font-semibold text-slate-700">{{ __('chef.workshop_form.fields.registration_deadline.label') }}</label>
-                <input type="datetime-local" id="registration_deadline" name="registration_deadline"
-                       value="{{ $deadlineValue }}"
-                       class="w-full rounded-2xl border border-slate-200/80 bg-slate-50 px-4 py-3 text-slate-900 shadow-inner focus:border-orange-400 focus:bg-white focus:ring-4 focus:ring-orange-100 @error('registration_deadline') border-red-400 focus:ring-red-200 @enderror">
+                <p class="text-sm font-semibold text-slate-700">{{ __('chef.workshop_form.fields.registration_deadline.label') }}</p>
+                <div class="rounded-2xl border border-emerald-100 bg-emerald-50/70 px-4 py-3 text-sm text-emerald-800 shadow-inner">
+                    سيتم إغلاق التسجيل تلقائياً قبل بداية الورشة بدقيقتين وفقاً لتوقيت المضيف.
+                </div>
             </div>
         </div>
     </section>
@@ -242,24 +264,65 @@
         <div class="mb-6 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             <div>
                 <p class="text-sm font-semibold uppercase tracking-wider text-orange-500">{{ __('chef.workshop_form.sections.delivery.eyebrow') }}</p>
-                <h2 class="mt-1 text-2xl font-bold text-slate-900">{{ __('chef.workshop_form.sections.delivery.title') }}</h2>
+                <h2 class="mt-1 text-lg sm:text-xl font-bold leading-6 text-slate-900">{{ __('chef.workshop_form.sections.delivery.title') }}</h2>
             </div>
-            <div class="flex items-center gap-3 rounded-2xl border border-emerald-100 bg-emerald-50/70 px-4 py-2 text-emerald-700">
-                <i class="fas fa-video text-lg"></i>
-                <span class="text-sm font-medium">{{ __('chef.workshop_form.sections.delivery.highlight') }}</span>
+            <div class="flex flex-col gap-1 rounded-2xl border border-emerald-100 bg-emerald-50/70 px-4 py-2 text-emerald-700 sm:flex-row sm:items-center sm:justify-between">
+                <div class="flex items-center gap-3">
+                    <i class="fas fa-video text-lg"></i>
+                    <span class="text-sm font-medium">{{ __('chef.workshop_form.sections.delivery.highlight') }}</span>
+                </div>
+                <div class="flex items-center gap-2 text-xs font-semibold sm:text-sm">
+                    <i class="fas fa-user-shield"></i>
+                    @if($hostCalendarEmail)
+                        <span>{{ __('chef.workshop_form.sections.delivery.host_account_label') }}:</span>
+                        <span class="truncate max-w-[12rem] sm:max-w-xs">{{ $hostCalendarEmail }}</span>
+                    @else
+                        <span class="text-emerald-700">{{ __('chef.workshop_form.sections.delivery.host_account_missing') }}</span>
+                    @endif
+                </div>
             </div>
         </div>
         <div class="space-y-6">
-            <div class="flex flex-wrap items-center gap-4">
-                <input type="hidden" name="is_online" value="0">
-                <label class="inline-flex items-center gap-3">
-                    <input type="checkbox" name="is_online" id="is_online" value="1" class="toggle-input" @checked($isOnline)>
+            <div class="flex flex-wrap items-center gap-3 rounded-2xl border border-emerald-100 bg-emerald-50/70 px-4 py-3">
+                <input type="hidden" name="is_online" id="is_online" value="1">
+                <div class="flex items-center gap-2">
+                    <i class="fas fa-video text-emerald-600"></i>
                     <span class="font-semibold text-slate-800">{{ __('chef.workshop_form.options.online_label') }}</span>
-                </label>
+                </div>
                 <span class="text-sm text-slate-500">{{ __('chef.workshop_form.options.online_hint') }}</span>
             </div>
 
             <div id="onlineFields" class="{{ $isOnline ? '' : 'hidden' }} space-y-5 rounded-2xl border border-orange-100 bg-orange-50/60 p-4">
+                <div class="rounded-2xl border border-white/60 bg-white/80 p-4 shadow-inner">
+                    @if ($hostCalendarConnected)
+                        <div class="flex items-start gap-3">
+                            <span class="flex h-9 w-9 items-center justify-center rounded-full bg-emerald-100 text-emerald-700">
+                                <i class="fas fa-check"></i>
+                            </span>
+                            <div class="space-y-1 text-sm text-slate-700">
+                                <p class="font-semibold">تم ربط Google Calendar</p>
+                                <p class="text-xs text-slate-500">
+                                    سيتم إنشاء رابط Google Meet من حسابك {{ $hostCalendarEmail ? '('.$hostCalendarEmail.')' : '' }} وإضافته لتقويمك تلقائياً.
+                                </p>
+                            </div>
+                        </div>
+                    @else
+                        <div class="flex flex-wrap items-center justify-between gap-3">
+                            <div class="space-y-1 text-sm text-slate-700">
+                                <p class="font-semibold">{{ __('chef.workshop_form.messages.calendar_connect_required_title') }}</p>
+                                <p class="text-xs text-slate-500">
+                                    {{ __('chef.workshop_form.messages.calendar_connect_required_body') }}
+                                </p>
+                            </div>
+                            <a href="{{ $calendarConnectUrl }}"
+                               class="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-emerald-500 to-emerald-600 px-4 py-2 text-xs font-semibold text-white shadow hover:from-emerald-600 hover:to-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-200">
+                                <i class="fas fa-link"></i>
+                                {{ __('chef.workshop_form.messages.calendar_connect_button') }}
+                            </a>
+                        </div>
+                    @endif
+                </div>
+
                 @if ($canManageMeetingLinks)
                     <div class="flex flex-wrap items-center gap-4">
                         <input type="hidden" name="auto_generate_meeting" value="0">
@@ -269,7 +332,8 @@
                         </label>
                         <button type="button" id="generateMeetLinkBtn"
                                 data-url="{{ route('chef.workshops.generate-link') }}"
-                                class="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-emerald-500 to-emerald-600 px-4 py-2 text-sm font-semibold text-white shadow hover:from-emerald-600 hover:to-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-300">
+                                class="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-emerald-500 to-emerald-600 px-4 py-2 text-sm font-semibold text-white shadow hover:from-emerald-600 hover:to-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-300"
+                                @if(!$hostCalendarConnected) disabled @endif>
                             <i class="fas fa-bolt"></i>
                             {{ __('chef.workshop_form.buttons.generate_link') }}
                         </button>
@@ -306,19 +370,21 @@
                 @endif
             </div>
 
-            <div id="offlineFields" class="{{ $isOnline ? 'hidden' : '' }} space-y-4 rounded-2xl border border-slate-100 bg-slate-50 p-4">
-                <div class="space-y-2">
-                    <label for="location" class="text-sm font-semibold text-slate-700">{{ __('chef.workshop_form.fields.location.label') }}</label>
-                    <input type="text" name="location" id="location"
-                           value="{{ old('location', $workshop->location ?? '') }}"
-                           class="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-slate-900 shadow-inner focus:border-slate-400 focus:ring-4 focus:ring-slate-100">
+            @if(!$isOnline)
+                <div id="offlineFields" class="space-y-4 rounded-2xl border border-slate-100 bg-slate-50 p-4">
+                    <div class="space-y-2">
+                        <label for="location" class="text-sm font-semibold text-slate-700">{{ __('chef.workshop_form.fields.location.label') }}</label>
+                        <input type="text" name="location" id="location"
+                               value="{{ old('location', $workshop->location ?? '') }}"
+                               class="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-slate-900 shadow-inner focus:border-slate-400 focus:ring-4 focus:ring-slate-100">
+                    </div>
+                    <div class="space-y-2">
+                        <label for="address" class="text-sm font-semibold text-slate-700">{{ __('chef.workshop_form.fields.address.label') }}</label>
+                        <textarea id="address" name="address" rows="2"
+                                  class="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-slate-900 shadow-inner focus:border-slate-400 focus:ring-4 focus:ring-slate-100">{{ old('address', $workshop->address ?? '') }}</textarea>
+                    </div>
                 </div>
-                <div class="space-y-2">
-                    <label for="address" class="text-sm font-semibold text-slate-700">{{ __('chef.workshop_form.fields.address.label') }}</label>
-                    <textarea id="address" name="address" rows="2"
-                              class="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-slate-900 shadow-inner focus:border-slate-400 focus:ring-4 focus:ring-slate-100">{{ old('address', $workshop->address ?? '') }}</textarea>
-                </div>
-            </div>
+            @endif
 
             <div class="space-y-2 rounded-2xl border border-slate-100 bg-white/70 p-4 shadow-inner">
                 <label for="recording_url" class="text-sm font-semibold text-slate-700">
@@ -345,7 +411,7 @@
     <section class="rounded-3xl bg-white p-6 shadow-sm ring-1 ring-slate-100">
         <div class="mb-6">
             <p class="text-sm font-semibold uppercase tracking-wider text-orange-500">{{ __('chef.workshop_form.sections.host.eyebrow') }}</p>
-            <h2 class="mt-1 text-2xl font-bold text-slate-900">{{ __('chef.workshop_form.sections.host.title') }}</h2>
+            <h2 class="mt-1 text-lg sm:text-xl font-bold leading-6 text-slate-900">{{ __('chef.workshop_form.sections.host.title') }}</h2>
         </div>
         <div class="grid gap-5 md:grid-cols-2">
             <div class="space-y-3">
@@ -365,7 +431,7 @@
     <section class="rounded-3xl bg-white p-6 shadow-sm ring-1 ring-slate-100">
         <div class="mb-6">
             <p class="text-sm font-semibold uppercase tracking-wider text-orange-500">{{ __('chef.workshop_form.sections.image.eyebrow') }}</p>
-            <h2 class="mt-1 text-2xl font-bold text-slate-900">{{ __('chef.workshop_form.sections.image.title') }}</h2>
+            <h2 class="mt-1 text-lg sm:text-xl font-bold leading-6 text-slate-900">{{ __('chef.workshop_form.sections.image.title') }}</h2>
             <p class="mt-1 text-sm text-slate-500">{{ __('chef.workshop_form.sections.image.description') }}</p>
         </div>
         <div class="grid gap-5 lg:grid-cols-[2fr,1fr]">
@@ -407,7 +473,7 @@
         <div class="flex flex-wrap items-center justify-between gap-4">
             <div>
                 <p class="text-sm font-semibold uppercase tracking-wider text-orange-500">{{ __('chef.workshop_form.sections.publish.eyebrow') }}</p>
-                <h2 class="mt-1 text-2xl font-bold text-slate-900">{{ __('chef.workshop_form.sections.publish.title') }}</h2>
+                <h2 class="mt-1 text-lg sm:text-xl font-bold leading-6 text-slate-900">{{ __('chef.workshop_form.sections.publish.title') }}</h2>
             </div>
             <label class="inline-flex items-center gap-2 text-sm font-semibold text-emerald-600">
                 <input type="hidden" name="is_active" value="0">
@@ -527,6 +593,7 @@
     });
 </script>
 @endpush
+
 
 
 

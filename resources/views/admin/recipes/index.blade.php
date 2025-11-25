@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'إدارة الوصفات - موقع وصفة')
+@section('title', 'إدارة الفيديوهات القصيرة - موقع وصفة')
 
 @php
     use Illuminate\Support\Facades\Storage;
@@ -11,25 +11,25 @@
 
     $statusFilters = [
         'all' => [
-            'label' => 'كل الوصفات',
-            'hint' => 'عرض جميع الحالات',
+            'label' => 'كل الفيديوهات',
+            'hint' => 'عرض جميع الفيديوهات القصيرة',
             'value' => 'all',
             'badge' => 'bg-gray-200 text-gray-700',
         ],
         'pending' => [
-            'label' => 'وصفات جديدة',
+            'label' => 'فيديوهات جديدة',
             'hint' => 'تنتظر المراجعة والموافقة',
             'value' => Recipe::STATUS_PENDING,
             'badge' => 'bg-orange-100 text-orange-700',
         ],
         'approved' => [
-            'label' => 'وصفات معتمدة',
+            'label' => 'فيديوهات معتمدة',
             'hint' => 'منشورة في الموقع',
             'value' => Recipe::STATUS_APPROVED,
             'badge' => 'bg-emerald-100 text-emerald-700',
         ],
         'draft' => [
-            'label' => 'مسودات',
+            'label' => 'مسودات فيديو',
             'hint' => 'لم يتم إرسالها بعد',
             'value' => Recipe::STATUS_DRAFT,
             'badge' => 'bg-slate-100 text-slate-600',
@@ -99,13 +99,13 @@
         position: absolute;
         top: -0.35rem;
         right: -0.35rem;
-        background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+        background: linear-gradient(135deg, #0f4c73 0%, #0a8070 100%);
         color: white;
         font-size: 0.6875rem;
         font-weight: 600;
         padding: 0.3rem 0.65rem;
         border-radius: 9999px;
-        box-shadow: 0 2px 6px rgba(249, 115, 22, 0.35);
+        box-shadow: 0 2px 6px rgba(15, 76, 115, 0.35);
     }
     .btn-sm {
         padding: 0.45rem 0.9rem;
@@ -115,7 +115,7 @@
         font-size: 0.8125rem;
     }
     .btn-primary {
-        background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+        background: linear-gradient(135deg, #0f4c73 0%, #0a8070 100%);
         border: none;
         color: white;
         padding: 0.75rem 1.5rem;
@@ -124,9 +124,9 @@
         transition: all 0.2s ease;
     }
     .btn-primary:hover {
-        background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%);
+        background: linear-gradient(135deg, #0a8070 0%, #0b344f 100%);
         transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(249, 115, 22, 0.4);
+        box-shadow: 0 4px 12px rgba(15, 76, 115, 0.4);
     }
     .btn-danger {
         background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
@@ -186,7 +186,7 @@
         background-color: currentColor;
     }
     .pending-row {
-        background: #fff7ed;
+        background: #eaf3f6;
     }
 </style>
 @endpush
@@ -198,26 +198,26 @@
         <div class="admin-card p-6 mb-8">
             <div class="flex flex-col md:flex-row md:items-center md:justify-between">
                 <div>
-                    <h1 class="text-3xl font-bold text-gray-900 mb-2">إدارة الوصفات</h1>
-                    <p class="text-gray-600">إدارة وإضافة وتعديل الوصفات</p>
+                    <h1 class="text-3xl font-bold text-gray-900 mb-2">إدارة الفيديوهات القصيرة</h1>
+                    <p class="text-gray-600">إدارة وإضافة وتعديل الفيديوهات القصيرة المنشورة في الموقع</p>
                 </div>
                 <div class="mt-4 md:mt-0 flex flex-col gap-3 sm:flex-row sm:items-center">
-                    @php $pendingRecipesCount = $approvalPendingCount ?? 0; @endphp
+                    @php $pendingVideosCount = $approvalPendingCount ?? 0; @endphp
                     <form method="POST" action="{{ route('admin.recipes.approve-all') }}" class="w-full sm:w-auto"
-                          onsubmit="return confirm('هل أنت متأكد من اعتماد جميع الوصفات قيد المراجعة دفعة واحدة؟');">
+                          onsubmit="return confirm('هل أنت متأكد من اعتماد جميع الفيديوهات قيد المراجعة دفعة واحدة؟');">
                         @csrf
-                        <button type="submit" class="btn-success w-full inline-flex items-center justify-center gap-2 font-semibold {{ $pendingRecipesCount === 0 ? 'opacity-70' : '' }}">
+                        <button type="submit" class="btn-success w-full inline-flex items-center justify-center gap-2 font-semibold {{ $pendingVideosCount === 0 ? 'opacity-70' : '' }}">
                             <i class="fas fa-check-double ml-2"></i>
-                            اعتماد جميع الوصفات مرة واحدة
-                            <span class="text-xs bg-white/20 text-white rounded-full px-2 py-0.5">({{ number_format($pendingRecipesCount) }})</span>
+                            اعتماد جميع الفيديوهات مرة واحدة
+                            <span class="text-xs bg-white/20 text-white rounded-full px-2 py-0.5">({{ number_format($pendingVideosCount) }})</span>
                         </button>
-                        @if($pendingRecipesCount === 0)
-                            <p class="text-xs text-gray-500 text-center mt-1">لا توجد وصفات قيد المراجعة حالياً</p>
+                        @if($pendingVideosCount === 0)
+                            <p class="text-xs text-gray-500 text-center mt-1">لا توجد فيديوهات قيد المراجعة حالياً</p>
                         @endif
                     </form>
                     <a href="{{ route('admin.recipes.create') }}" class="btn-primary w-full sm:w-auto inline-flex items-center justify-center gap-2 text-center">
                         <i class="fas fa-plus ml-2"></i>
-                        إضافة وصفة جديدة
+                        إضافة فيديو قصير جديد
                     </a>
                 </div>
             </div>
@@ -272,12 +272,10 @@
                     <table class="recipes-table">
                         <thead>
                             <tr>
-                                <th class="text-right">الوصفة</th>
-                                <th class="text-right">صاحب الوصفة</th>
+                                <th class="text-right">الفيديو</th>
+                                <th class="text-right">صاحب الفيديو</th>
                                 <th class="text-right">الحالة</th>
-                                <th class="text-right">المدة الإجمالية</th>
-                                <th class="text-right">عدد الحصص</th>
-                                <th class="text-right">التصنيف</th>
+                                <th class="text-right">رابط الفيديو</th>
                                 <th class="text-right w-64">الإجراءات</th>
                             </tr>
                         </thead>
@@ -285,14 +283,12 @@
                             @foreach($recipes as $recipe)
                                 @php
                                     $statusInfo = $statusMeta[$recipe->status] ?? $statusMeta[Recipe::STATUS_DRAFT];
-                                    $difficultyLabel = $recipe->difficulty ? ($difficultyLabels[$recipe->difficulty] ?? ucfirst($recipe->difficulty)) : null;
-                                    $totalDuration = (int) ($recipe->prep_time ?? 0) + (int) ($recipe->cook_time ?? 0);
-                                    $servings = (int) ($recipe->servings ?? 0);
                                     $imageSrc = $recipe->image
                                         ? Storage::disk('public')->url($recipe->image)
                                         : ($recipe->image_url ?: \App\Support\BrandAssets::logoAsset('webp'));
                                     $ownerName = $recipe->chef?->name ?? ($recipe->author ?: 'فريق وصفة');
                                     $ownerSubtitle = $recipe->chef ? 'شيف مسجل' : 'فريق وصفة';
+                                    $videoLabel = $recipe->video_url ? \Illuminate\Support\Str::limit($recipe->video_url, 55) : 'لا يوجد رابط';
                                 @endphp
                                 <tr class="{{ $recipe->status === Recipe::STATUS_PENDING ? 'pending-row' : '' }}">
                                     <td>
@@ -303,11 +299,6 @@
                                                     alt="{{ $recipe->title }}" 
                                                     class="recipe-thumbnail"
                                                     onerror="this.src='{{ \App\Support\BrandAssets::logoAsset('webp') }}'; this.alt='صورة افتراضية';" loading="lazy">
-                                                @if($difficultyLabel)
-                                                    <span class="difficulty-badge">
-                                                        {{ $difficultyLabel }}
-                                                    </span>
-                                                @endif
                                             </div>
                                             <div class="space-y-1">
                                                 <div class="font-semibold text-gray-900">
@@ -340,13 +331,14 @@
                                         @endif
                                     </td>
                                     <td class="text-sm text-gray-600">
-                                        {{ $totalDuration > 0 ? $totalDuration . ' دقيقة' : 'غير محدد' }}
-                                    </td>
-                                    <td class="text-sm text-gray-600">
-                                        {{ $servings > 0 ? $servings . ' حصة' : 'غير محدد' }}
-                                    </td>
-                                    <td class="text-sm text-gray-600">
-                                        {{ $recipe->category->name ?? 'غير محدد' }}
+                                        @if($recipe->video_url)
+                                            <a href="{{ $recipe->video_url }}" target="_blank" rel="noopener" class="inline-flex items-center gap-2 text-emerald-700 hover:text-emerald-900">
+                                                <i class="fas fa-play-circle ml-1"></i>
+                                                <span class="break-all">{{ $videoLabel }}</span>
+                                            </a>
+                                        @else
+                                            <span class="text-gray-500">لا يوجد رابط</span>
+                                        @endif
                                     </td>
                                     <td class="text-sm">
                                         <div class="flex flex-wrap justify-end gap-2">
@@ -363,7 +355,7 @@
                                             <form action="{{ route('admin.recipes.destroy', $recipe) }}" 
                                                   method="POST" 
                                                   class="inline-flex"
-                                                  onsubmit="return confirm('هل أنت متأكد من حذف هذه الوصفة؟');">
+                                                  onsubmit="return confirm('هل أنت متأكد من حذف هذا الفيديو؟');">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn-danger btn-sm inline-flex items-center gap-1">
@@ -375,7 +367,7 @@
                                                 <form method="POST" 
                                                       action="{{ route('admin.recipes.approve', $recipe) }}" 
                                                       class="inline-flex"
-                                                      onsubmit="return confirm('هل تريد اعتماد هذه الوصفة ونشرها الآن؟');">
+                                                      onsubmit="return confirm('هل تريد اعتماد هذا الفيديو ونشره الآن؟');">
                                                     @csrf
                                                     <button type="submit" class="btn-success btn-sm inline-flex items-center gap-1">
                                                         <i class="fas fa-check ml-1"></i>
@@ -387,7 +379,7 @@
                                                 <form method="POST" 
                                                       action="{{ route('admin.recipes.reject', $recipe) }}" 
                                                       class="inline-flex"
-                                                      onsubmit="return confirm('هل تريد رفض هذه الوصفة وإعادتها للشيف؟');">
+                                                      onsubmit="return confirm('هل تريد رفض هذا الفيديو وإعادته للشيف؟');">
                                                     @csrf
                                                     <button type="submit" class="btn-danger btn-sm inline-flex items-center gap-1">
                                                         <i class="fas fa-times ml-1"></i>
@@ -404,12 +396,12 @@
                 </div>
             @else
                 <div class="py-16 text-center">
-                    <i class="fas fa-utensils text-6xl text-gray-300 mb-4"></i>
-                    <h3 class="text-xl font-semibold text-gray-700 mb-2">لا توجد وصفات</h3>
-                    <p class="text-gray-500 mb-6">ابدأ بإضافة وصفة جديدة</p>
+                    <i class="fas fa-video text-6xl text-gray-300 mb-4"></i>
+                    <h3 class="text-xl font-semibold text-gray-700 mb-2">لا توجد فيديوهات قصيرة</h3>
+                    <p class="text-gray-500 mb-6">ابدأ بإضافة فيديو قصير جديد</p>
                     <a href="{{ route('admin.recipes.create') }}" class="btn-primary btn-sm inline-flex items-center gap-1">
                         <i class="fas fa-plus ml-1"></i>
-                        إضافة وصفة جديدة
+                        إضافة فيديو جديد
                     </a>
                 </div>
             @endif
@@ -424,5 +416,11 @@
     </div>
 </div>
 @endsection
+
+
+
+
+
+
 
 

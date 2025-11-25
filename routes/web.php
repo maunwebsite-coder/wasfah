@@ -8,6 +8,7 @@ use App\Http\Controllers\Auth\SocialiteController;
 use App\Http\Controllers\Chef\LinkItemController as ChefLinkItemController;
 use App\Http\Controllers\Chef\LinkPageController as ChefLinkPageController;
 use App\Http\Controllers\Chef\RecipeController as ChefRecipeController;
+use App\Http\Controllers\Chef\GoogleCalendarController as ChefGoogleCalendarController;
 use App\Http\Controllers\Chef\WorkshopController as ChefWorkshopController;
 use App\Http\Controllers\ChefLinkPublicController;
 use App\Http\Controllers\ChefPublicProfileController;
@@ -16,6 +17,7 @@ use App\Http\Controllers\ChefFollowController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\ReferralDashboardController;
 use App\Http\Controllers\MeetingRedirectController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\UserMeetingController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin\ContactMessageController;
@@ -76,7 +78,7 @@ Route::get('/wasfah-links', function () {
             'title' => __('links.fallback.recipe_box.title'),
             'image' => asset('image/works.webp'),
             'alt' => __('links.fallback.recipe_box.alt'),
-            'url' => url('/recipes'),
+            'url' => route('recipes'),
         ],
         [
             'title' => __('links.fallback.workshops.title'),
@@ -266,6 +268,8 @@ Route::middleware(['auth'])->group(function () {
 // منطقة الشيف - إدارة الوصفات الخاصة
 Route::middleware(['auth', 'chef'])->prefix('chef')->name('chef.')->group(function () {
     Route::get('/', [ChefRecipeController::class, 'index'])->name('dashboard');
+    Route::get('google/calendar/connect', [ChefGoogleCalendarController::class, 'redirect'])->name('google.calendar.connect');
+    Route::get('google/calendar/callback', [ChefGoogleCalendarController::class, 'callback'])->name('google.calendar.callback');
     Route::get('links', [ChefLinkPageController::class, 'edit'])->name('links.edit');
     Route::put('links', [ChefLinkPageController::class, 'update'])->name('links.update');
     Route::post('links/items', [ChefLinkItemController::class, 'store'])->name('links.items.store');
@@ -293,12 +297,30 @@ Route::get('/workshops/search', [App\Http\Controllers\WorkshopController::class,
 // مسار البحث
 Route::get('/search', [App\Http\Controllers\SearchController::class, 'index'])->name('search');
 
-// مسار الوصفات
-Route::get('/recipes', [App\Http\Controllers\RecipeController::class, 'index'])->name('recipes');
+// مسار الـ feed (الوصفات سابقاً)
+Route::get('/feed', [App\Http\Controllers\RecipeController::class, 'index'])->name('recipes');
+Route::get('/recipes', function (Request $request) {
+    return redirect()->route('recipes', $request->query());
+});
+Route::post('/feed/quick-post', [App\Http\Controllers\RecipeController::class, 'storeQuickPost'])
+    ->name('feed.quick-post')
+    ->middleware(['auth', 'admin']);
 
 // مسار الأدوات
 Route::get('/tools', [App\Http\Controllers\ToolsController::class, 'index'])->name('tools');
 Route::get('/tools/{tool}', [App\Http\Controllers\ToolsController::class, 'show'])->name('tools.show');
+
+// مسارات السلة
+Route::prefix('cart')->name('cart.')->group(function () {
+    Route::get('/', [CartController::class, 'index'])->name('index');
+    Route::post('/', [CartController::class, 'add'])->name('add');
+    Route::delete('/clear', [CartController::class, 'clear'])->name('clear');
+    Route::get('/count', [CartController::class, 'count'])->name('count');
+    Route::get('/quantities', [CartController::class, 'quantities'])->name('quantities');
+    Route::delete('/remove-by-tool', [CartController::class, 'removeByToolId'])->name('remove-by-tool');
+    Route::patch('/{cart}', [CartController::class, 'update'])->name('update');
+    Route::delete('/{cart}', [CartController::class, 'remove'])->name('remove');
+});
 
 // مسارات الحجوزات - محمية بـ middleware المصادقة (باستثناء الانضمام الذي يسمح للضيوف)
 Route::middleware('auth')->group(function () {

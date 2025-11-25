@@ -198,7 +198,7 @@ class AdminAreaController extends Controller
                     ],
                     [
                         'label' => 'صفحة روابط Wasfah',
-                        'url' => 'https://wasfah.ae/wasfah-links',
+                        'url' => 'https://peahskill.com/wasfah-links',
                     ],
                     [
                         'label' => 'إدارة سلايدر الهيرو',
@@ -261,3 +261,4 @@ class AdminAreaController extends Controller
         ));
     }
 }
+

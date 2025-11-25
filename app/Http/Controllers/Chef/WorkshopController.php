@@ -141,9 +141,13 @@ class WorkshopController extends Controller
 
     public function create(): \Illuminate\View\View
     {
+        $calendarContext = $this->hostCalendarContext();
+
         return view('chef.workshops.create', [
             'forceAutoMeetingLinks' => $this->shouldForceAutoMeetingLinks(),
             'timezoneOptions' => Timezones::hostOptions(),
+            'hostCalendarConnected' => $calendarContext['connected'],
+            'hostCalendarEmail' => $calendarContext['email'],
         ]);
     }
 
@@ -155,10 +159,10 @@ class WorkshopController extends Controller
         $timezone = $this->resolveWorkshopTimezone($request);
 
         $workshop = new Workshop();
+        $workshop->user_id = Auth::id();
         $this->fillWorkshopData($workshop, $data, $timezone);
         $this->handleImageUpload($request, $workshop);
         $this->applyMeetingProvider($request, $workshop, $data['meeting_link'] ?? null);
-        $workshop->user_id = Auth::id();
         $workshop->instructor = $data['instructor'] ?? Auth::user()->name;
         $workshop->instructor_bio = $data['instructor_bio'] ?? Auth::user()->chef_specialty_description;
         $workshop->instructor_avatar = Auth::user()->avatar;
@@ -167,19 +171,31 @@ class WorkshopController extends Controller
         $this->meetingAttendeeSync->sync($workshop);
         $this->notifyAdminsIfReviewRequired($workshop);
 
+        $successMessage = 'تم إنشاء الورشة بنجاح!';
+
+        if ($workshop->is_online && $workshop->meeting_link) {
+            $successMessage .= ' هذا هو رابط الاجتماع الخاص بك: ' . $workshop->meeting_link;
+        } else {
+            $successMessage .= ' يمكنك متابعة حالة الحجوزات من لوحة التحكم.';
+        }
+
         return redirect()
             ->route('chef.workshops.index')
-            ->with('success', 'تم إنشاء الورشة بنجاح! يمكنك متابعة حالة الحجوزات من لوحة التحكم.');
+            ->with('success', $successMessage);
     }
 
     public function edit(Workshop $workshop): \Illuminate\View\View
     {
         $this->authorizeWorkshop($workshop);
 
+        $calendarContext = $this->hostCalendarContext();
+
         return view('chef.workshops.edit', [
             'workshop' => $workshop,
             'forceAutoMeetingLinks' => $this->shouldForceAutoMeetingLinks(),
             'timezoneOptions' => Timezones::hostOptions(),
+            'hostCalendarConnected' => $calendarContext['connected'],
+            'hostCalendarEmail' => $calendarContext['email'],
         ]);
     }
 
@@ -517,10 +533,14 @@ class WorkshopController extends Controller
     {
         $currentUser = Auth::user();
 
-        abort_unless(
-            $currentUser && method_exists($currentUser, 'isAdmin') && $currentUser->isAdmin(),
-            403
-        );
+        abort_unless($currentUser, 403);
+
+        if (!$currentUser->hasGoogleCalendarCredentials()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'يرجى ربط حساب Google Calendar أولاً قبل توليد رابط الاجتماع.',
+            ], 422);
+        }
 
         $validated = $request->validate([
             'title' => ['required', 'string', 'max:255'],
@@ -543,11 +563,21 @@ class WorkshopController extends Controller
             }
         }
 
+        $hostCredentials = $currentUser->googleMeetCredentials();
+
         try {
             $meeting = $this->googleMeetService->createMeeting(
                 $validated['title'],
                 Auth::id(),
-                $startsAt
+                $startsAt,
+                null,
+                null,
+                [],
+                [
+                    'email' => $currentUser->preferredGoogleEmail(),
+                    'displayName' => $currentUser->name,
+                ],
+                $hostCredentials
             );
         } catch (\Throwable $exception) {
             report($exception);
@@ -726,7 +756,6 @@ class WorkshopController extends Controller
             'currency' => ['required', Rule::in(['USD'])],
             'start_date' => ['required', 'date'],
             'end_date' => ['required', 'date', 'after:start_date'],
-            'registration_deadline' => ['nullable', 'date', 'before:start_date'],
             'location' => ['nullable', 'string', 'max:255'],
             'address' => ['nullable', 'string', 'max:255'],
             'is_online' => ['required', 'boolean'],
@@ -756,7 +785,8 @@ class WorkshopController extends Controller
         $data = $request->validate($rules, $messages);
 
         $autoGenerateRequested = $request->boolean('auto_generate_meeting');
-        $autoGenerationAvailable = $autoGenerateRequested && $this->googleMeetIntegrationEnabled();
+        $autoGenerationAvailable = $autoGenerateRequested
+            && ($this->googleMeetIntegrationEnabled() || (Auth::user()?->hasGoogleCalendarCredentials() ?? false));
 
         if (!empty($data['is_online']) && empty($data['meeting_link']) && !$autoGenerationAvailable) {
             throw ValidationException::withMessages([
@@ -829,6 +859,10 @@ class WorkshopController extends Controller
 
     protected function fillWorkshopData(Workshop $workshop, array $data, string $hostTimezone): void
     {
+        $startDateUtc = $this->convertLocalInputToUtc($data['start_date'], $hostTimezone);
+        $endDateUtc = $this->convertLocalInputToUtc($data['end_date'], $hostTimezone);
+        $registrationDeadlineUtc = $this->calculateRegistrationDeadline($startDateUtc);
+
         $workshop->fill([
             'title' => $data['title'],
             'description' => $data['description'],
@@ -840,9 +874,9 @@ class WorkshopController extends Controller
             'price' => $data['price'],
             'currency' => $data['currency'],
             'host_timezone' => $hostTimezone,
-            'start_date' => $this->convertLocalInputToUtc($data['start_date'], $hostTimezone),
-            'end_date' => $this->convertLocalInputToUtc($data['end_date'], $hostTimezone),
-            'registration_deadline' => $this->convertLocalInputToUtc($data['registration_deadline'] ?? null, $hostTimezone),
+            'start_date' => $startDateUtc,
+            'end_date' => $endDateUtc,
+            'registration_deadline' => $registrationDeadlineUtc,
             'location' => $data['location'] ?? null,
             'address' => $data['address'] ?? null,
             'what_you_will_learn' => $data['what_you_will_learn'] ?? null,
@@ -877,6 +911,15 @@ class WorkshopController extends Controller
 
             return null;
         }
+    }
+
+    protected function calculateRegistrationDeadline(?Carbon $startDateUtc): ?Carbon
+    {
+        if (! $startDateUtc instanceof Carbon) {
+            return null;
+        }
+
+        return $startDateUtc->copy()->subMinutes(2);
     }
 
     protected function resolveWorkshopTimezone(Request $request, ?Workshop $workshop = null): string
@@ -973,6 +1016,9 @@ class WorkshopController extends Controller
     {
         $supportsHostLock = $this->hostDeviceLockSupported();
         $supportsMeetingLock = $this->meetingLockSupported();
+        $hostUser = $workshop->chef ?? Auth::user();
+        $hostCredentials = $hostUser?->googleMeetCredentials($workshop->meeting_calendar_id);
+        $hasHostCredentials = !empty($hostCredentials);
 
         if (!$workshop->is_online) {
             $workshop->meeting_link = null;
@@ -997,7 +1043,7 @@ class WorkshopController extends Controller
             return;
         }
 
-        $googleMeetEnabled = $this->googleMeetIntegrationEnabled();
+        $googleMeetEnabled = $this->googleMeetIntegrationEnabled() || $hasHostCredentials;
         $autoGenerate = $googleMeetEnabled && $request->boolean('auto_generate_meeting');
 
         if ($this->shouldForceAutoMeetingLinks() && $googleMeetEnabled && $workshop->is_online) {
@@ -1022,6 +1068,12 @@ class WorkshopController extends Controller
         if ($autoGenerate) {
             $hostAttendee = $workshop->hostAttendeePayload();
 
+            if (!$hasHostCredentials) {
+                throw ValidationException::withMessages([
+                    'meeting_link' => 'يرجى ربط حساب Google Calendar الخاص بك لإنشاء رابط الاجتماع من حسابك.',
+                ]);
+            }
+
             try {
                 $meeting = $this->googleMeetService->createMeeting(
                     $workshop->title,
@@ -1032,11 +1084,26 @@ class WorkshopController extends Controller
                     null,
                     null,
                     $hostAttendee ? [$hostAttendee] : [],
-                    $hostAttendee
+                    $hostAttendee,
+                    $hostCredentials
                 );
             } catch (\Throwable $exception) {
+                Log::warning('Failed to auto-create Google Meet link.', [
+                    'workshop_id' => $workshop->id ?? null,
+                    'user_id' => Auth::id(),
+                    'error' => $exception->getMessage(),
+                ]);
+
+                $error = Str::lower($exception->getMessage() ?? '');
+                $message = 'تعذّر إنشاء اجتماع Google Meet. أضف الرابط يدويًا أو أعد المحاولة لاحقًا. ' . $exception->getMessage();
+
+                if (Str::contains($error, ['invalid_grant', 'unauthorized_client'])) {
+                    Auth::user()?->disconnectGoogleCalendar();
+                    $message = 'انتهت صلاحية ربط Google Calendar. لقد قمنا بفصل الحساب، يرجى إعادة ربطه من النموذج أدناه ثم المحاولة مرة أخرى.';
+                }
+
                 throw ValidationException::withMessages([
-                    'meeting_link' => 'تعذر توليد اجتماع Google Meet. يرجى إدخال الرابط يدوياً أو المحاولة لاحقاً.',
+                    'meeting_link' => $message,
                 ]);
             }
 
@@ -1045,7 +1112,7 @@ class WorkshopController extends Controller
             $workshop->location = $workshop->location ?: 'أونلاين عبر Google Meet';
             $workshop->meeting_code = Workshop::extractMeetingCode($workshop->meeting_link);
             $workshop->meeting_event_id = $meeting['event_id'] ?? null;
-            $workshop->meeting_calendar_id = $meeting['calendar_id'] ?? null;
+            $workshop->meeting_calendar_id = $meeting['calendar_id'] ?? ($hostCredentials['calendar_id'] ?? null);
             $workshop->meeting_conference_id = $meeting['conference_id'] ?? null;
         } elseif (!empty($inputLink)) {
             $workshop->meeting_link = $inputLink;
@@ -1070,7 +1137,8 @@ class WorkshopController extends Controller
 
     protected function enforceMeetingLinkPrivacyPolicy(Request $request): void
     {
-        $googleMeetEnabled = $this->googleMeetIntegrationEnabled();
+        $googleMeetEnabled = $this->googleMeetIntegrationEnabled()
+            || (Auth::user()?->hasGoogleCalendarCredentials() ?? false);
 
         if (!$googleMeetEnabled) {
             $request->merge([
@@ -1088,6 +1156,16 @@ class WorkshopController extends Controller
         }
     }
 
+    protected function hostCalendarContext(): array
+    {
+        $user = Auth::user();
+
+        return [
+            'connected' => $user?->hasGoogleCalendarCredentials() ?? false,
+            'email' => $user?->google_calendar_email ?? $user?->preferredGoogleEmail(),
+        ];
+    }
+
     protected function googleMeetIntegrationEnabled(): bool
     {
         return $this->googleMeetService->isEnabled();
@@ -1095,6 +1173,7 @@ class WorkshopController extends Controller
 
     protected function shouldForceAutoMeetingLinks(): bool
     {
-        return $this->googleMeetIntegrationEnabled();
+        return $this->googleMeetIntegrationEnabled()
+            || (Auth::user()?->hasGoogleCalendarCredentials() ?? false);
     }
 }

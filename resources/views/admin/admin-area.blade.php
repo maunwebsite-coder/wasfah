@@ -1,562 +1,307 @@
 @extends('layouts.app')
 
-@section('title', 'Admin area')
-
-@push('styles')
-<style>
-    .admin-section-title {
-        font-size: 1.5rem;
-        font-weight: 700;
-        color: #1f2937;
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-    }
-    .admin-section-title i {
-        color: #f97316;
-    }
-    .attention-card {
-        position: relative;
-        display: flex;
-        align-items: center;
-        gap: 1.5rem;
-        padding: 1.5rem;
-        border-radius: 16px;
-        background: linear-gradient(135deg, #fff7ed, #fffbeb);
-        border: 1px solid #fed7aa;
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-    .attention-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 14px 30px rgba(249, 115, 22, 0.18);
-    }
-    .attention-card.is-empty {
-        background: #f9fafb;
-        border-color: #e5e7eb;
-    }
-    .attention-card__icon {
-        width: 56px;
-        height: 56px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: #f97316;
-        color: #fff;
-        box-shadow: 0 10px 25px rgba(249, 115, 22, 0.35);
-        flex-shrink: 0;
-    }
-    .attention-card.is-empty .attention-card__icon {
-        background: #9ca3af;
-        box-shadow: none;
-    }
-    .attention-card__label {
-        font-weight: 600;
-        color: #1f2937;
-    }
-    .attention-card__value {
-        font-size: 1.75rem;
-        font-weight: 700;
-        color: #f97316;
-        display: block;
-    }
-    .attention-card.is-empty .attention-card__value {
-        color: #6b7280;
-    }
-    .attention-card__status {
-        font-size: 0.9rem;
-        color: #6b7280;
-        display: block;
-        margin-top: 0.35rem;
-    }
-    .attention-card__cta {
-        position: absolute;
-        inset-inline-end: 1.25rem;
-        top: 1.25rem;
-        color: #f97316;
-        transition: transform 0.2s ease;
-    }
-    .attention-card:hover .attention-card__cta {
-        transform: translateX(-4px);
-    }
-    .attention-card.is-empty .attention-card__cta {
-        color: #9ca3af;
-    }
-    .metric-card {
-        display: flex;
-        align-items: center;
-        gap: 1.25rem;
-        padding: 1.5rem;
-        border-radius: 14px;
-        background: #ffffff;
-        border: 1px solid #f3f4f6;
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-    .metric-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 12px 28px rgba(15, 23, 42, 0.12);
-        border-color: #fed7aa;
-    }
-    .metric-card__icon {
-        width: 50px;
-        height: 50px;
-        border-radius: 14px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: linear-gradient(135deg, #f97316, #fb923c);
-        color: #fff;
-        box-shadow: 0 12px 22px rgba(249, 115, 22, 0.35);
-    }
-    .metric-card__value {
-        font-size: 2rem;
-        font-weight: 700;
-        color: #0f172a;
-        line-height: 1;
-        display: block;
-    }
-    .metric-card__label {
-        font-weight: 600;
-        color: #1f2937;
-    }
-    .metric-card__hint {
-        font-size: 0.85rem;
-        color: #6b7280;
-        display: block;
-        margin-top: 0.35rem;
-    }
-    .panel {
-        background: #ffffff;
-        border-radius: 18px;
-        padding: 1.5rem;
-        border: 1px solid #f3f4f6;
-        box-shadow: 0 16px 35px rgba(15, 23, 42, 0.08);
-    }
-    .panel__header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 1rem;
-    }
-    .panel__title {
-        font-size: 1.25rem;
-        font-weight: 700;
-        color: #0f172a;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-    }
-    .panel__subtitle {
-        font-size: 0.85rem;
-        color: #6b7280;
-    }
-    .panel__list {
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-    }
-    .panel__item {
-        display: flex;
-        align-items: flex-start;
-        justify-content: space-between;
-        gap: 1rem;
-        padding-bottom: 1rem;
-        border-bottom: 1px solid #f1f5f9;
-    }
-    .panel__item:last-child {
-        border-bottom: none;
-        padding-bottom: 0;
-    }
-    .panel__item-title {
-        font-weight: 600;
-        color: #111827;
-        margin-bottom: 0.25rem;
-        display: block;
-    }
-    .panel__item-meta {
-        font-size: 0.85rem;
-        color: #6b7280;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        flex-wrap: wrap;
-    }
-    .panel__badge {
-        font-size: 0.75rem;
-        font-weight: 600;
-        padding: 0.25rem 0.65rem;
-        border-radius: 999px;
-    }
-    .panel__badge--default {
-        background: #f3f4f6;
-        color: #374151;
-    }
-    .panel__badge--pending {
-        background: rgba(234, 179, 8, 0.18);
-        color: #92400e;
-    }
-    .panel__badge--approved {
-        background: rgba(34, 197, 94, 0.15);
-        color: #166534;
-    }
-    .panel__badge--rejected {
-        background: rgba(239, 68, 68, 0.17);
-        color: #991b1b;
-    }
-    .panel__badge--draft {
-        background: rgba(148, 163, 184, 0.2);
-        color: #334155;
-    }
-    .panel__empty {
-        text-align: center;
-        color: #6b7280;
-        padding: 2rem 1rem;
-        border-radius: 12px;
-        background: #f9fafb;
-        border: 1px dashed #d1d5db;
-    }
-    .management-card {
-        background: #ffffff;
-        border-radius: 18px;
-        padding: 1.75rem;
-        border: 1px solid #f3f4f6;
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
-        display: flex;
-        flex-direction: column;
-        gap: 1.25rem;
-    }
-    .management-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 20px 35px rgba(15, 23, 42, 0.12);
-        border-color: #fed7aa;
-    }
-    .management-card__icon {
-        width: 60px;
-        height: 60px;
-        border-radius: 16px;
-        background: linear-gradient(135deg, #f97316, #f59e0b);
-        color: #fff;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.5rem;
-        box-shadow: 0 16px 32px rgba(249, 115, 22, 0.3);
-    }
-    .management-card__title {
-        font-size: 1.15rem;
-        font-weight: 700;
-        color: #0f172a;
-    }
-    .management-card__description {
-        color: #6b7280;
-        line-height: 1.6;
-        font-size: 0.95rem;
-    }
-    .management-card__links {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.75rem;
-    }
-    .management-link {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        padding: 0.55rem 1.15rem;
-        border-radius: 999px;
-        border: 1px solid #e5e7eb;
-        color: #1f2937;
-        font-size: 0.9rem;
-        font-weight: 600;
-        transition: all 0.2s ease;
-        background: #f9fafb;
-    }
-    .management-link:hover {
-        border-color: #f97316;
-        color: #f97316;
-        background: #fff7ed;
-    }
-    .quick-actions {
-        background: linear-gradient(135deg, #fff7ed, #ffe4e6);
-        border-radius: 24px;
-        padding: 2.5rem 2rem;
-        border: 1px solid rgba(249, 115, 22, 0.15);
-        box-shadow: 0 16px 45px rgba(249, 115, 22, 0.15);
-    }
-    .quick-actions__grid {
-        display: grid;
-        gap: 1.25rem;
-        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-        margin-top: 1.5rem;
-    }
-    .quick-action {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 0.65rem;
-        padding: 1.25rem;
-        background: #ffffff;
-        border-radius: 16px;
-        border: 1px solid rgba(249, 115, 22, 0.2);
-        color: #f97316;
-        font-weight: 600;
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
-        text-align: center;
-    }
-    .quick-action i {
-        font-size: 1.75rem;
-    }
-    .quick-action:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 15px 30px rgba(249, 115, 22, 0.2);
-    }
-    .back-link {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.75rem;
-        padding: 0.9rem 1.8rem;
-        border-radius: 14px;
-        background: #374151;
-        color: #ffffff;
-        font-weight: 600;
-        transition: background 0.2s ease, transform 0.2s ease;
-    }
-    .back-link:hover {
-        background: #111827;
-        transform: translateY(-2px);
-    }
-    @media (max-width: 768px) {
-        .attention-card {
-            flex-direction: column;
-            align-items: flex-start;
-            padding-inline-end: 3.25rem;
-        }
-        .attention-card__cta {
-            inset-inline-end: 1rem;
-            top: 1rem;
-        }
-        .metric-card {
-            flex-direction: column;
-            align-items: flex-start;
-        }
-        .panel__item {
-            flex-direction: column;
-            align-items: flex-start;
-        }
-    }
-</style>
-@endpush
+@section('title', 'Admin Area')
 
 @section('content')
-<div class="container mx-auto px-4 py-8 space-y-12">
-    <header class="text-center space-y-3">
-        <h1 class="text-4xl font-bold text-gray-900 flex items-center justify-center gap-3">
-            <span class="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-orange-500 to-orange-600 text-white shadow-lg">
-                <i class="fas fa-crown"></i>
-            </span>
-            Admin area
-        </h1>
-        <p class="text-gray-600 text-lg max-w-2xl mx-auto">
-            Your quick reference for everything related to managing Wasfah. Review urgent tasks, get the overview, and take action immediately.
-        </p>
-    </header>
-
-    <section class="space-y-4">
-        <div class="admin-section-title">
-            <i class="fas fa-bell"></i>
-            Needs your attention now
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            @foreach($attentionItems as $item)
-                @php
-                    $format = $item['format'] ?? 'number';
-                    $rawValue = $item['value'] ?? 0;
-                    $isEmpty = (float) $rawValue === 0.0;
-                    $destination = $item['route'] ?? null;
-                    $params = $item['route_params'] ?? [];
-                    $url = $item['url'] ?? ($destination ? route($destination, $params) : '#');
-
-                    $displayValue = $format === 'currency'
-                        ? number_format((float) $rawValue, 2) . ' AED'
-                        : number_format((int) $rawValue);
-                @endphp
-                <a href="{{ $url }}" class="attention-card {{ $isEmpty ? 'is-empty' : '' }}">
-                    <div class="attention-card__icon">
-                        <i class="fas {{ $item['icon'] }}"></i>
-                    </div>
-                    <div>
-                        <span class="attention-card__label">{{ $item['label'] }}</span>
-                        <span class="attention-card__value">{{ $displayValue }}</span>
-                        <span class="attention-card__status">
-                            {{ $isEmpty ? $item['empty_state'] : $item['cta'] }}
-                        </span>
-                    </div>
-                    <span class="attention-card__cta">
-                        <i class="fas fa-arrow-left"></i>
-                    </span>
-                </a>
-            @endforeach
-        </div>
-    </section>
-
-    <section class="space-y-4">
-        <div class="admin-section-title">
-            <i class="fas fa-chart-line"></i>
-            Quick glance
-        </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
-            @foreach($metrics as $metric)
-                @php
-                    $metricUrl = $metric['url'] ?? route($metric['route'], $metric['route_params'] ?? []);
-                @endphp
-                <a href="{{ $metricUrl }}" class="metric-card">
-                    <div class="metric-card__icon">
-                        <i class="fas {{ $metric['icon'] }}"></i>
-                    </div>
-                    <div>
-                        <span class="metric-card__value">{{ number_format($metric['value']) }}</span>
-                        <span class="metric-card__label">{{ $metric['label'] }}</span>
-                        @if(!empty($metric['hint']))
-                            <span class="metric-card__hint">{{ $metric['hint'] }}</span>
-                        @endif
-                    </div>
-                </a>
-            @endforeach
-        </div>
-    </section>
-
-    <section class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div class="panel">
-            <div class="panel__header">
-                <div>
-                    <div class="panel__title">
-                        <i class="fas fa-fire text-orange-500 ml-2"></i>
-                        Latest recipes
-                    </div>
-                    <div class="panel__subtitle">Track what was added recently and make sure it is ready for publishing.</div>
-                </div>
-                <a href="{{ route('admin.recipes.index') }}" class="text-sm font-semibold text-orange-500 hover:text-orange-600">View all</a>
-            </div>
-            <div class="panel__list">
-                @forelse($recentRecipes as $recipe)
-                    <div class="panel__item">
-                        <div>
-                            <a href="{{ route('admin.recipes.edit', $recipe) }}" class="panel__item-title">
-                                {{ \Illuminate\Support\Str::limit($recipe->title, 80) }}
-                            </a>
-                            <div class="panel__item-meta">
-                                <i class="fas fa-clock"></i>
-                                {{ $recipe->created_at?->diffForHumans() }}
-                            </div>
+<div class="min-h-screen bg-gray-50/50">
+    <!-- Header Section -->
+    <div class="bg-white border-b border-gray-200">
+        <div class="container mx-auto px-4 py-8">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                <div class="flex items-center gap-4">
+                    <div class="relative group">
+                        <div class="absolute -inset-0.5 bg-gradient-to-r from-orange-500 to-amber-500 rounded-2xl blur opacity-30 group-hover:opacity-60 transition duration-200"></div>
+                        <div class="relative flex h-16 w-16 items-center justify-center rounded-2xl bg-white border border-gray-100 shadow-sm">
+                            <i class="fas fa-crown text-2xl text-transparent bg-clip-text bg-gradient-to-br from-orange-500 to-amber-600"></i>
                         </div>
-                        @php
-                            $statusKey = $recipe->status ?? 'default';
-                            $badgeMap = [
-                                \App\Models\Recipe::STATUS_PENDING => 'panel__badge panel__badge--pending',
-                                \App\Models\Recipe::STATUS_APPROVED => 'panel__badge panel__badge--approved',
-                                \App\Models\Recipe::STATUS_REJECTED => 'panel__badge panel__badge--rejected',
-                                \App\Models\Recipe::STATUS_DRAFT => 'panel__badge panel__badge--draft',
-                            ];
-                            $badgeClass = $badgeMap[$statusKey] ?? 'panel__badge panel__badge--default';
-                        @endphp
-                        <span class="{{ $badgeClass }}">
-                            {{ $recipeStatusLabels[$statusKey] ?? 'Unspecified' }}
-                        </span>
                     </div>
-                @empty
-                    <div class="panel__empty">
-                        No recent recipes right now. Start by adding new content!
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-900 tracking-tight">Admin Area</h1>
+                        <p class="text-sm text-gray-500 mt-1">Manage your platform, recipes, and workshops.</p>
                     </div>
-                @endforelse
+                </div>
+                <div class="flex items-center gap-3">
+                    <a href="{{ route('admin.dashboard') }}" class="inline-flex items-center justify-center px-4 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-xl hover:bg-gray-50 hover:text-gray-900 transition-all shadow-sm">
+                        <i class="fas fa-arrow-left mr-2 text-gray-400"></i>
+                        Back to Dashboard
+                    </a>
+                </div>
             </div>
         </div>
-        <div class="panel">
-            <div class="panel__header">
-                <div>
-                    <div class="panel__title">
-                        <i class="fas fa-calendar-alt text-orange-500 ml-2"></i>
-                        Upcoming workshops
-                    </div>
-                    <div class="panel__subtitle">Check the schedule and ensure teams are ready for bookings.</div>
-                </div>
-                <a href="{{ route('admin.workshops.index') }}" class="text-sm font-semibold text-orange-500 hover:text-orange-600">All workshops</a>
+    </div>
+
+    <div class="container mx-auto px-4 py-8 space-y-10">
+        
+        <!-- Attention Section -->
+        <section>
+            <div class="flex items-center gap-2 mb-6">
+                <div class="h-8 w-1 bg-orange-500 rounded-full"></div>
+                <h2 class="text-lg font-bold text-gray-900">Needs Attention</h2>
             </div>
-            <div class="panel__list">
-                @forelse($upcomingWorkshops as $workshop)
-                    <div class="panel__item">
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                @foreach($attentionItems as $item)
+                    @php
+                        $format = $item['format'] ?? 'number';
+                        $rawValue = $item['value'] ?? 0;
+                        $isEmpty = (float) $rawValue === 0.0;
+                        $destination = $item['route'] ?? null;
+                        $params = $item['route_params'] ?? [];
+                        $url = $item['url'] ?? ($destination ? route($destination, $params) : '#');
+
+                        $displayValue = $format === 'currency'
+                            ? number_format((float) $rawValue, 2) . ' AED'
+                            : number_format((int) $rawValue);
+                    @endphp
+                    <a href="{{ $url }}" class="group relative overflow-hidden bg-white rounded-2xl p-6 border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 {{ $isEmpty ? 'opacity-75' : '' }}">
+                        <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                            <i class="fas {{ $item['icon'] }} text-6xl text-gray-900"></i>
+                        </div>
+                        
+                        <div class="flex items-start justify-between relative z-10">
+                            <div class="flex items-center gap-4">
+                                <div class="flex h-12 w-12 items-center justify-center rounded-xl {{ $isEmpty ? 'bg-gray-100 text-gray-400' : 'bg-orange-50 text-orange-600' }} group-hover:scale-110 transition-transform duration-300">
+                                    <i class="fas {{ $item['icon'] }} text-xl"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-medium text-gray-500">{{ $item['label'] }}</p>
+                                    <p class="text-2xl font-bold text-gray-900 mt-0.5">{{ $displayValue }}</p>
+                                </div>
+                            </div>
+                            @if(!$isEmpty)
+                                <div class="flex h-8 w-8 items-center justify-center rounded-full bg-orange-50 text-orange-600 opacity-0 group-hover:opacity-100 transform translate-x-2 group-hover:translate-x-0 transition-all duration-300">
+                                    <i class="fas fa-arrow-right text-sm"></i>
+                                </div>
+                            @endif
+                        </div>
+                        
+                        <div class="mt-4 flex items-center gap-2 text-sm">
+                            @if($isEmpty)
+                                <span class="inline-flex items-center gap-1.5 text-gray-400 bg-gray-50 px-2.5 py-1 rounded-lg">
+                                    <i class="fas fa-check-circle text-xs"></i>
+                                    {{ $item['empty_state'] }}
+                                </span>
+                            @else
+                                <span class="inline-flex items-center gap-1.5 text-orange-600 bg-orange-50 px-2.5 py-1 rounded-lg font-medium group-hover:bg-orange-100 transition-colors">
+                                    {{ $item['cta'] }}
+                                </span>
+                            @endif
+                        </div>
+                    </a>
+                @endforeach
+            </div>
+        </section>
+
+        <!-- Quick Glance Metrics -->
+        <section>
+            <div class="flex items-center gap-2 mb-6">
+                <div class="h-8 w-1 bg-teal-500 rounded-full"></div>
+                <h2 class="text-lg font-bold text-gray-900">Quick Glance</h2>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
+                @foreach($metrics as $metric)
+                    @php
+                        $metricUrl = $metric['url'] ?? route($metric['route'], $metric['route_params'] ?? []);
+                    @endphp
+                    <a href="{{ $metricUrl }}" class="group bg-white rounded-2xl p-5 border border-gray-100 shadow-sm hover:shadow-md hover:border-teal-100 transition-all duration-300">
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-teal-50 text-teal-600 group-hover:bg-teal-500 group-hover:text-white transition-colors duration-300">
+                                <i class="fas {{ $metric['icon'] }}"></i>
+                            </div>
+                            <span class="text-xs font-medium text-gray-400 bg-gray-50 px-2 py-1 rounded-md group-hover:bg-teal-50 group-hover:text-teal-600 transition-colors">
+                                View
+                            </span>
+                        </div>
                         <div>
-                            <a href="{{ route('admin.workshops.edit', $workshop) }}" class="panel__item-title">
-                                {{ \Illuminate\Support\Str::limit($workshop->title, 80) }}
-                            </a>
-                            <div class="panel__item-meta">
-                                <i class="fas fa-clock"></i>
-                                {{ optional($workshop->start_date)->translatedFormat('d F Y - h:i A') ?? '—' }}
-                                <span class="inline-flex items-center text-xs font-semibold px-2 py-0.5 rounded-full {{ $workshop->is_online ? 'bg-teal-100 text-teal-700' : 'bg-slate-100 text-slate-700' }}">
-                                    <i class="fas {{ $workshop->is_online ? 'fa-video ml-1' : 'fa-map-marker-alt ml-1' }}"></i>
-                                    {{ $workshop->is_online ? 'Online' : 'In person' }}
+                            <h3 class="text-2xl font-bold text-gray-900">{{ number_format($metric['value']) }}</h3>
+                            <p class="text-sm font-medium text-gray-600 mt-1">{{ $metric['label'] }}</p>
+                            @if(!empty($metric['hint']))
+                                <p class="text-xs text-gray-400 mt-2 line-clamp-1">{{ $metric['hint'] }}</p>
+                            @endif
+                        </div>
+                    </a>
+                @endforeach
+            </div>
+        </section>
+
+        <!-- Content Panels -->
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Recent Recipes -->
+            <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden flex flex-col">
+                <div class="p-6 border-b border-gray-50 bg-gray-50/30 flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="p-2 bg-orange-100 text-orange-600 rounded-lg">
+                            <i class="fas fa-fire"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-gray-900">Latest Recipes</h3>
+                            <p class="text-xs text-gray-500">Recently added content</p>
+                        </div>
+                    </div>
+                    <a href="{{ route('admin.recipes.index') }}" class="text-sm font-medium text-orange-600 hover:text-orange-700 hover:bg-orange-50 px-3 py-1.5 rounded-lg transition-colors">
+                        View All
+                    </a>
+                </div>
+                <div class="divide-y divide-gray-50 flex-1">
+                    @forelse($recentRecipes as $recipe)
+                        <div class="p-4 hover:bg-gray-50 transition-colors group">
+                            <div class="flex items-center justify-between gap-4">
+                                <div class="min-w-0 flex-1">
+                                    <a href="{{ route('admin.recipes.edit', $recipe) }}" class="block text-sm font-semibold text-gray-900 truncate group-hover:text-orange-600 transition-colors">
+                                        {{ $recipe->title }}
+                                    </a>
+                                    <div class="flex items-center gap-3 mt-1.5">
+                                        <span class="flex items-center text-xs text-gray-400">
+                                            <i class="far fa-clock mr-1.5"></i>
+                                            {{ $recipe->created_at?->diffForHumans() }}
+                                        </span>
+                                    </div>
+                                </div>
+                                @php
+                                    $statusKey = $recipe->status ?? 'default';
+                                    $badgeClasses = match($statusKey) {
+                                        \App\Models\Recipe::STATUS_PENDING => 'bg-amber-50 text-amber-700 border-amber-100',
+                                        \App\Models\Recipe::STATUS_APPROVED => 'bg-green-50 text-green-700 border-green-100',
+                                        \App\Models\Recipe::STATUS_REJECTED => 'bg-red-50 text-red-700 border-red-100',
+                                        \App\Models\Recipe::STATUS_DRAFT => 'bg-gray-100 text-gray-600 border-gray-200',
+                                        default => 'bg-gray-50 text-gray-600 border-gray-200',
+                                    };
+                                @endphp
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border {{ $badgeClasses }}">
+                                    {{ $recipeStatusLabels[$statusKey] ?? 'Unspecified' }}
                                 </span>
                             </div>
                         </div>
-                    </div>
-                @empty
-                    <div class="panel__empty">
-                        No workshops are coming up in the next few days. Plan a new one now.
-                    </div>
-                @endforelse
-            </div>
-        </div>
-    </section>
-
-    <section class="space-y-6">
-        <div class="admin-section-title">
-            <i class="fas fa-layer-group"></i>
-            Manage platform sections
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-            @foreach($managementSections as $section)
-                <div class="management-card">
-                    <div class="management-card__icon">
-                        <i class="fas {{ $section['icon'] }}"></i>
-                    </div>
-                    <div>
-                        <h3 class="management-card__title">{{ $section['title'] }}</h3>
-                        <p class="management-card__description">{{ $section['description'] }}</p>
-                    </div>
-                    <div class="management-card__links">
-                        @foreach($section['items'] as $item)
-                            @php
-                                $itemUrl = $item['url'] ?? route($item['route'], $item['params'] ?? []);
-                            @endphp
-                            <a href="{{ $itemUrl }}" class="management-link">
-                                <i class="fas fa-arrow-left"></i>
-                                {{ $item['label'] }}
-                            </a>
-                        @endforeach
-                    </div>
+                    @empty
+                        <div class="p-8 text-center">
+                            <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gray-50 text-gray-300 mb-3">
+                                <i class="fas fa-receipt text-xl"></i>
+                            </div>
+                            <p class="text-gray-500 text-sm">No recent recipes found.</p>
+                        </div>
+                    @endforelse
                 </div>
-            @endforeach
-        </div>
-    </section>
+            </div>
 
-    <section class="quick-actions">
-        <div class="admin-section-title justify-center">
-            <i class="fas fa-bolt"></i>
-            Quick actions
-        </div>
-        <div class="quick-actions__grid">
-            @foreach($quickActions as $action)
-                <a href="{{ route($action['route'], $action['params'] ?? []) }}" class="quick-action">
-                    <i class="fas {{ $action['icon'] }}"></i>
-                    <span>{{ $action['label'] }}</span>
-                </a>
-            @endforeach
-        </div>
-        <div class="mt-8 text-center">
-            <a href="{{ route('admin.dashboard') }}" class="back-link">
-                <i class="fas fa-arrow-right"></i>
-                Back to dashboard
-            </a>
-        </div>
-    </section>
+            <!-- Upcoming Workshops -->
+            <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden flex flex-col">
+                <div class="p-6 border-b border-gray-50 bg-gray-50/30 flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="p-2 bg-blue-100 text-blue-600 rounded-lg">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-gray-900">Upcoming Workshops</h3>
+                            <p class="text-xs text-gray-500">Scheduled sessions</p>
+                        </div>
+                    </div>
+                    <a href="{{ route('admin.workshops.index') }}" class="text-sm font-medium text-blue-600 hover:text-blue-700 hover:bg-blue-50 px-3 py-1.5 rounded-lg transition-colors">
+                        View All
+                    </a>
+                </div>
+                <div class="divide-y divide-gray-50 flex-1">
+                    @forelse($upcomingWorkshops as $workshop)
+                        <div class="p-4 hover:bg-gray-50 transition-colors group">
+                            <div class="flex items-center justify-between gap-4">
+                                <div class="min-w-0 flex-1">
+                                    <a href="{{ route('admin.workshops.edit', $workshop) }}" class="block text-sm font-semibold text-gray-900 truncate group-hover:text-blue-600 transition-colors">
+                                        {{ $workshop->title }}
+                                    </a>
+                                    <div class="flex items-center gap-3 mt-1.5">
+                                        <span class="flex items-center text-xs text-gray-500">
+                                            <i class="far fa-calendar mr-1.5"></i>
+                                            {{ optional($workshop->start_date)->translatedFormat('d M, h:i A') ?? '—' }}
+                                        </span>
+                                    </div>
+                                </div>
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border {{ $workshop->is_online ? 'bg-indigo-50 text-indigo-700 border-indigo-100' : 'bg-purple-50 text-purple-700 border-purple-100' }}">
+                                    <i class="fas {{ $workshop->is_online ? 'fa-video' : 'fa-map-marker-alt' }} mr-1.5 text-[10px]"></i>
+                                    {{ $workshop->is_online ? 'Online' : 'In Person' }}
+                                </span>
+                            </div>
+                        </div>
+                    @empty
+                        <div class="p-8 text-center">
+                            <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gray-50 text-gray-300 mb-3">
+                                <i class="fas fa-calendar-times text-xl"></i>
+                            </div>
+                            <p class="text-gray-500 text-sm">No upcoming workshops.</p>
+                        </div>
+                    @endforelse
+                </div>
+            </div>
+        </section>
+
+        <!-- Management Sections -->
+        <section>
+            <div class="flex items-center gap-2 mb-6">
+                <div class="h-8 w-1 bg-indigo-500 rounded-full"></div>
+                <h2 class="text-lg font-bold text-gray-900">Platform Management</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                @foreach($managementSections as $section)
+                    <div class="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col h-full">
+                        <div class="flex items-start gap-4 mb-5">
+                            <div class="flex-shrink-0 flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-gray-800 to-gray-900 text-white shadow-lg shadow-gray-200">
+                                <i class="fas {{ $section['icon'] }} text-lg"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-bold text-gray-900">{{ $section['title'] }}</h3>
+                                <p class="text-sm text-gray-500 leading-relaxed mt-1">{{ $section['description'] }}</p>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-auto flex flex-wrap gap-2">
+                            @foreach($section['items'] as $item)
+                                @php
+                                    $itemUrl = $item['url'] ?? route($item['route'], $item['params'] ?? []);
+                                @endphp
+                                <a href="{{ $itemUrl }}" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold text-gray-700 bg-gray-50 border border-gray-200 hover:bg-gray-100 hover:border-gray-300 hover:text-gray-900 transition-all">
+                                    {{ $item['label'] }}
+                                    <i class="fas fa-chevron-right text-[10px] text-gray-400"></i>
+                                </a>
+                            @endforeach
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </section>
+
+        <!-- Quick Actions -->
+        <section class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-800 to-slate-900 p-8 md:p-12 text-center">
+            <div class="absolute top-0 left-0 w-full h-full overflow-hidden opacity-10 pointer-events-none">
+                <div class="absolute -top-24 -left-24 w-96 h-96 rounded-full bg-blue-500 blur-3xl"></div>
+                <div class="absolute -bottom-24 -right-24 w-96 h-96 rounded-full bg-purple-500 blur-3xl"></div>
+            </div>
+
+            <div class="relative z-10">
+                <h2 class="text-2xl font-bold text-white mb-2">Quick Actions</h2>
+                <p class="text-slate-300 mb-8 max-w-xl mx-auto">Frequently used shortcuts to help you manage content faster.</p>
+                
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-8 gap-4">
+                    @foreach($quickActions as $action)
+                        <a href="{{ route($action['route'], $action['params'] ?? []) }}" class="group flex flex-col items-center gap-3 p-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 hover:scale-105 transition-all duration-200 backdrop-blur-sm">
+                            <div class="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white group-hover:bg-white group-hover:text-slate-900 transition-colors">
+                                <i class="fas {{ $action['icon'] }}"></i>
+                            </div>
+                            <span class="text-xs font-medium text-slate-200 group-hover:text-white text-center leading-tight">
+                                {{ $action['label'] }}
+                            </span>
+                        </a>
+                    @endforeach
+                </div>
+            </div>
+        </section>
+
+    </div>
 </div>
 @endsection
+
+
+
+
+
+
+

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'تعديل الوصفة - ' . $recipe->title)
+@section('title', 'تعديل الفيديو القصير - ' . $recipe->title)
 
 @push('styles')
 <style>
@@ -26,7 +26,7 @@
         left: 0;
         right: 0;
         height: 4px;
-        background: linear-gradient(90deg, #f97316, #ea580c, #dc2626);
+        background: linear-gradient(90deg, #0f4c73, #0a8070, #dc2626);
     }
     
     .form-input {
@@ -41,8 +41,8 @@
     
     .form-input:focus {
         outline: none;
-        border-color: #f97316;
-        box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.1);
+        border-color: #0f4c73;
+        box-shadow: 0 0 0 4px rgba(15, 76, 115, 0.1);
         background: white;
         transform: translateY(-1px);
     }
@@ -68,12 +68,12 @@
         left: 0;
         width: 30px;
         height: 2px;
-        background: linear-gradient(90deg, #f97316, #ea580c);
+        background: linear-gradient(90deg, #0f4c73, #0a8070);
         border-radius: 1px;
     }
     
     .btn-primary {
-        background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+        background: linear-gradient(135deg, #0f4c73 0%, #0a8070 100%);
         border: none;
         color: white;
         padding: 1rem 2rem;
@@ -84,7 +84,7 @@
         cursor: pointer;
         position: relative;
         overflow: hidden;
-        box-shadow: 0 4px 14px 0 rgba(249, 115, 22, 0.39);
+        box-shadow: 0 4px 14px 0 rgba(15, 76, 115, 0.39);
     }
     
     .btn-primary::before {
@@ -103,9 +103,9 @@
     }
     
     .btn-primary:hover {
-        background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%);
+        background: linear-gradient(135deg, #0a8070 0%, #0b344f 100%);
         transform: translateY(-2px);
-        box-shadow: 0 8px 25px 0 rgba(249, 115, 22, 0.5);
+        box-shadow: 0 8px 25px 0 rgba(15, 76, 115, 0.5);
     }
     
     .btn-primary:active {
@@ -240,7 +240,7 @@
         left: 0;
         right: 0;
         height: 3px;
-        background: linear-gradient(90deg, #f97316, #ea580c, #dc2626);
+        background: linear-gradient(90deg, #0f4c73, #0a8070, #dc2626);
     }
     
     .section-title {
@@ -254,7 +254,7 @@
     }
     
     .section-title i {
-        color: #f97316;
+        color: #0f4c73;
         font-size: 1.25rem;
     }
     
@@ -281,7 +281,7 @@
     }
     
     .progress-fill {
-        background: linear-gradient(90deg, #f97316, #ea580c);
+        background: linear-gradient(90deg, #0f4c73, #0a8070);
         height: 100%;
         border-radius: 1rem;
         transition: width 0.5s ease;
@@ -376,12 +376,12 @@
     }
     
     .image-upload-area:hover {
-        border-color: #f97316;
+        border-color: #0f4c73;
         background: #fef7ed;
     }
     
     .image-upload-area.dragover {
-        border-color: #f97316;
+        border-color: #0f4c73;
         background: #fef7ed;
         transform: scale(1.02);
     }
@@ -412,13 +412,13 @@
         bottom: 2rem;
         right: 2rem;
         z-index: 50;
-        background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+        background: linear-gradient(135deg, #0f4c73 0%, #0a8070 100%);
         color: white;
         border: none;
         border-radius: 50px;
         padding: 1rem 1.5rem;
         font-weight: 700;
-        box-shadow: 0 8px 25px 0 rgba(249, 115, 22, 0.5);
+        box-shadow: 0 8px 25px 0 rgba(15, 76, 115, 0.5);
         cursor: pointer;
         transition: all 0.3s ease;
         opacity: 0;
@@ -432,7 +432,7 @@
     
     .floating-save:hover {
         transform: translateY(-2px) scale(1.05);
-        box-shadow: 0 12px 30px 0 rgba(249, 115, 22, 0.6);
+        box-shadow: 0 12px 30px 0 rgba(15, 76, 115, 0.6);
     }
     
     @media (max-width: 768px) {
@@ -497,7 +497,7 @@
                 <div>
                     <h1 class="section-title">
                         <i class="fas fa-edit"></i>
-                        تعديل الوصفة
+                        تعديل الفيديو القصير
                     </h1>
                     <p class="text-gray-600 mt-2">تعديل: {{ $recipe->title }}</p>
                 </div>
@@ -528,26 +528,37 @@
             <div class="form-section">
                 <h2 class="section-title">
                     <i class="fas fa-info-circle"></i>
-                    المعلومات الأساسية
+                    معلومات الفيديو الأساسية
                 </h2>
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                        <label class="form-label">عنوان الوصفة</label>
+                        <label class="form-label">عنوان الفيديو</label>
                         <input type="text" name="title" class="form-input" 
                                value="{{ old('title', $recipe->title) }}" 
-                               placeholder="أدخل عنوان الوصفة">
+                               placeholder="أدخل عنوان الفيديو">
                         @error('title')
                             <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                         @enderror
                     </div>
                     
                     <div>
-                        <label class="form-label">المؤلف</label>
+                        <label class="form-label">صاحب الفيديو</label>
                         <input type="text" name="author" class="form-input" 
                                value="{{ old('author', $recipe->author) }}" 
-                               placeholder="أدخل اسم المؤلف">
+                               placeholder="أدخل اسم صاحب الفيديو">
                         @error('author')
+                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div class="md:col-span-2">
+                        <label class="form-label">رابط الفيديو القصير</label>
+                        <input type="url" name="video_url" class="form-input" 
+                               value="{{ old('video_url', $recipe->video_url) }}" 
+                               placeholder="مثال: https://www.youtube.com/shorts/xyz أو رابط Vimeo" required>
+                        <p class="text-sm text-gray-500 mt-2">يتم تحويل الروابط الشائعة (YouTube، Vimeo، Instagram) تلقائياً إلى صيغة قابلة للتضمين.</p>
+                        @error('video_url')
                             <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                         @enderror
                     </div>
@@ -612,8 +623,8 @@
                     </div>
                     
                     <div>
-                        <label class="form-label">صور الوصفة</label>
-                        <p class="text-sm text-gray-600 mb-4">يمكنك إضافة حتى 5 صور للوصفة</p>
+                        <label class="form-label">صور الغلاف (اختياري)</label>
+                        <p class="text-sm text-gray-600 mb-4">يمكنك إضافة حتى 5 صور للفيديو القصير لاستخدامها كغلاف أو صور توضيحية</p>
                         
                         <!-- الصور الحالية -->
                         @if($recipe->getAllImages())
@@ -622,7 +633,7 @@
                                 <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
                                     @foreach($recipe->getAllImages() as $index => $imageUrl)
                                         <div class="relative">
-                                            <img src="{{ $imageUrl }}" alt="صورة الوصفة {{ $index + 1 }}" 
+                                            <img src="{{ $imageUrl }}" alt="صورة الفيديو {{ $index + 1 }}" 
                                                  class="w-full h-24 object-cover rounded-lg" loading="lazy">
                                             <span class="absolute top-1 right-1 bg-gray-800 text-white text-xs px-2 py-1 rounded">
                                                 {{ $index + 1 }}
@@ -633,12 +644,12 @@
                             </div>
                         @endif
                         
-                        <!-- صور الوصفة -->
+                        <!-- صور الفيديو -->
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                             @for($i = 1; $i <= 5; $i++)
                             <div class="image-upload-container">
                                 <label class="block text-sm font-medium text-gray-700 mb-2">
-                                    صورة {{ $i }} @if($i == 1) <span class="text-red-500">*</span> @endif
+                                    صورة {{ $i }}
                                 </label>
                                 
                                 <div class="image-upload-area" onclick="document.getElementById('image_{{$i}}').click()">
@@ -703,9 +714,9 @@
                 </div>
                 
                 <div class="mt-6">
-                    <label class="form-label">وصف الوصفة</label>
+                    <label class="form-label">وصف الفيديو</label>
                     <textarea name="description" class="form-input" rows="4" 
-                              placeholder="اكتب وصفاً مختصراً وجذاباً للوصفة...">{{ old('description', $recipe->description) }}</textarea>
+                              placeholder="اكتب وصفاً مختصراً وجذاباً للفيديو القصير...">{{ old('description', $recipe->description) }}</textarea>
                     @error('description')
                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                     @enderror
@@ -776,7 +787,7 @@
                     @else
                         <div class="text-center text-gray-500 py-8">
                             <i class="fas fa-tools text-4xl text-gray-300 mb-3"></i>
-                            <p>لا توجد معدات محددة لهذه الوصفة</p>
+                            <p>لا توجد معدات محددة لهذا الفيديو</p>
                         </div>
                     @endif
                 </div>
@@ -795,8 +806,20 @@
                     </button>
                 </div>
                 
+                @php
+                    $steps = old('steps', $recipe->steps ?? []);
+                    if ($steps instanceof \Illuminate\Support\Collection) {
+                        $steps = $steps->toArray();
+                    }
+                    if (is_string($steps)) {
+                        $decodedSteps = json_decode($steps, true);
+                        $steps = is_array($decodedSteps) ? $decodedSteps : [];
+                    }
+                    $steps = is_array($steps) ? $steps : [];
+                @endphp
+
                 <div id="steps-container">
-                    @foreach($recipe->steps as $index => $step)
+                    @foreach($steps as $index => $step)
                         <div class="step-row">
                             <textarea name="steps[{{ $index }}]" class="form-input flex-1" rows="3" 
                                       placeholder="اكتب خطوة التحضير بالتفصيل...">{{ old('steps.' . $index, $step) }}</textarea>
@@ -840,7 +863,7 @@
 @push('scripts')
 <script>
 let ingredientIndex = {{ count($recipe->ingredients) }};
-let stepIndex = {{ count($recipe->steps) }};
+let stepIndex = {{ count($steps) }};
 let toolIndex = {{ $recipe->tools ? count($recipe->tools) : 0 }};
 let hasUnsavedChanges = false;
 let autoSaveInterval;
@@ -1079,7 +1102,7 @@ function removeTool(button) {
                 container.innerHTML = `
                     <div class="text-center text-gray-500 py-8">
                         <i class="fas fa-kitchen-set text-4xl text-gray-300 mb-3"></i>
-                        <p>لا توجد معدات محددة لهذه الوصفة</p>
+                        <p>لا توجد معدات محددة لهذا الفيديو</p>
                     </div>
                 `;
             }
@@ -1271,3 +1294,7 @@ function testUpdate() {
 </script>
 @endpush
 @endsection
+
+
+
+

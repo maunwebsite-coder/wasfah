@@ -1,11 +1,11 @@
-﻿@extends('layouts.app')
+@extends('layouts.app')
 
 @section('title', $recipe->title)
 
 @push('styles')
     <style>
       .serving-size-btn.bg-orange-500 {
-        background-color: #f97316 !important;
+        background-color: #0f4c73 !important;
       }
       .serving-size-btn.text-white {
         color: #fff !important;
@@ -37,26 +37,51 @@
         text-shadow: 0 1px 2px rgba(0,0,0,0.1);
         line-height: 1;
       }
+      .video-shell {
+        position: relative;
+        border-radius: 1.5rem;
+        overflow: hidden;
+        background: radial-gradient(circle at 20% 20%, rgba(15, 76, 115, 0.12), transparent 45%), #0b1c2d;
+        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.25);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+      }
+      .video-shell .video-frame {
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        border: none;
+        display: block;
+        background: #000;
+      }
+      .video-shell .video-overlay-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: #0d9488;
+        font-weight: 700;
+      }
+      .video-shell .video-overlay-link:hover {
+        color: #0f766e;
+      }
       
       /* Selected stars */
       .star-rating input:checked ~ label .star {
-        color: #eab308 !important;
+        color: #0fa289 !important;
         transform: scale(1.1);
-        text-shadow: 0 2px 4px rgba(234, 179, 8, 0.3);
+        text-shadow: 0 2px 4px rgba(15, 162, 137, 0.3);
       }
       
       /* Hover effect: highlight the hovered star and the ones after it */
       .star-rating label:hover .star {
-        color: #eab308 !important;
+        color: #0fa289 !important;
         transform: scale(1.1);
-        text-shadow: 0 2px 4px rgba(234, 179, 8, 0.3);
+        text-shadow: 0 2px 4px rgba(15, 162, 137, 0.3);
       }
       
       /* Highlight stars that follow the hovered one (RTL order) */
       .star-rating label:hover ~ label .star {
-        color: #eab308 !important;
+        color: #0fa289 !important;
         transform: scale(1.1);
-        text-shadow: 0 2px 4px rgba(234, 179, 8, 0.3);
+        text-shadow: 0 2px 4px rgba(15, 162, 137, 0.3);
       }
       
       /* Reset stars that come before the hovered one */
@@ -72,11 +97,11 @@
       
       /* Remove CSS that shaded all stars */
       
-      /* Keep selected stars gold */
+      /* Keep selected stars highlighted */
       .star-rating input:checked ~ label .star {
-        color: #eab308 !important;
+        color: #0fa289 !important;
         transform: scale(1.1);
-        text-shadow: 0 2px 4px rgba(234, 179, 8, 0.3);
+        text-shadow: 0 2px 4px rgba(15, 162, 137, 0.3);
       }
       .btn {
         display: flex;
@@ -100,11 +125,11 @@
       }
   
       .btn.save-recipe-btn.bg-orange-500 {
-        background-color: #f97316 !important; /* bg-orange-500 */
+        background-color: #0f4c73 !important; /* bg-orange-500 */
       }
   
       .btn.save-recipe-btn.bg-orange-500:hover {
-        background-color: #ea580c !important; /* hover:bg-orange-600 */
+        background-color: #0a8070 !important; /* hover:bg-orange-600 */
       }
       
       .btn.save-recipe-btn.bg-green-500 {
@@ -117,8 +142,8 @@
 
       .recipe-hero {
         position: relative;
-        background: linear-gradient(135deg, rgba(254, 243, 199, 0.85) 0%, rgba(255, 251, 235, 0.92) 45%, #ffffff 100%);
-        border: 1px solid rgba(249, 115, 22, 0.08);
+        background: linear-gradient(135deg, rgba(230, 247, 242, 0.85) 0%, rgba(234, 243, 246, 0.92) 45%, #ffffff 100%);
+        border: 1px solid rgba(15, 76, 115, 0.08);
         box-shadow: 0 25px 55px rgba(15, 23, 42, 0.07);
         overflow: hidden;
       }
@@ -128,7 +153,7 @@
         content: "";
         position: absolute;
         border-radius: 9999px;
-        background: radial-gradient(circle at center, rgba(249, 115, 22, 0.18), transparent 65%);
+        background: radial-gradient(circle at center, rgba(15, 76, 115, 0.18), transparent 65%);
         pointer-events: none;
         transition: transform 0.5s ease;
       }
@@ -161,8 +186,8 @@
         padding: 0.5rem 1.25rem;
         border-radius: 9999px;
         background: rgba(255, 255, 255, 0.85);
-        border: 1px solid rgba(249, 115, 22, 0.25);
-        color: #ea580c;
+        border: 1px solid rgba(15, 76, 115, 0.25);
+        color: #0a8070;
         font-weight: 600;
         font-size: 0.95rem;
         backdrop-filter: blur(6px);
@@ -190,8 +215,8 @@
         padding: 1rem 1.25rem;
         border-radius: 1.5rem;
         background: rgba(255, 255, 255, 0.9);
-        border: 1px solid rgba(249, 115, 22, 0.12);
-        box-shadow: 0 12px 30px rgba(249, 115, 22, 0.08);
+        border: 1px solid rgba(15, 76, 115, 0.12);
+        box-shadow: 0 12px 30px rgba(15, 76, 115, 0.08);
       }
       .hero-stat.hero-stat--compact {
         padding: 0.8rem 1rem;
@@ -205,8 +230,8 @@
         width: 3rem;
         height: 3rem;
         border-radius: 9999px;
-        background: rgba(249, 115, 22, 0.12);
-        color: #f97316;
+        background: rgba(15, 76, 115, 0.12);
+        color: #0f4c73;
         font-size: 1.25rem;
       }
 
@@ -237,7 +262,7 @@
         font-weight: 600;
       }
       .hero-stat-link {
-        color: #ea580c;
+        color: #0a8070;
         font-weight: 700;
         text-decoration: none;
         display: inline-flex;
@@ -245,7 +270,7 @@
         gap: 0.35rem;
       }
       .hero-stat-link:hover {
-        color: #c2410c;
+        color: #0b344f;
         text-decoration: underline;
       }
 
@@ -259,7 +284,7 @@
 
       .hero-panel {
         background: rgba(255, 255, 255, 0.88);
-        border: 1px solid rgba(249, 115, 22, 0.15);
+        border: 1px solid rgba(15, 76, 115, 0.15);
         border-radius: 1.5rem;
         box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
         backdrop-filter: blur(8px);
@@ -287,7 +312,7 @@
         background: #ffffff;
         border-radius: 1.5rem;
         overflow: hidden;
-        border: 1px solid rgba(249, 115, 22, 0.12);
+        border: 1px solid rgba(15, 76, 115, 0.12);
         box-shadow: 0 20px 45px rgba(15, 23, 42, 0.08);
       }
 
@@ -299,7 +324,7 @@
 
       .media-card .thumbnail.active,
       .media-card .thumbnail:hover {
-        border-color: #f97316;
+        border-color: #0f4c73;
         opacity: 1;
       }
 
@@ -313,10 +338,10 @@
 
       .section-card {
         position: relative;
-        background: linear-gradient(160deg, rgba(255, 255, 255, 0.96) 0%, rgba(255, 247, 237, 0.75) 80%, #ffffff 100%);
+        background: linear-gradient(160deg, rgba(255, 255, 255, 0.96) 0%, rgba(234, 243, 246, 0.75) 80%, #ffffff 100%);
         border-radius: 1.5rem;
         padding: 2rem;
-        border: 1px solid rgba(249, 115, 22, 0.12);
+        border: 1px solid rgba(15, 76, 115, 0.12);
         box-shadow: 0 22px 48px rgba(15, 23, 42, 0.07);
         transition: transform 0.25s ease, box-shadow 0.25s ease;
       }
@@ -337,7 +362,7 @@
       }
 
       .section-title i {
-        color: #f97316;
+        color: #0f4c73;
         font-size: 1.4rem;
       }
 
@@ -364,8 +389,8 @@
         width: 3rem;
         height: 3rem;
         border-radius: 1rem;
-        background: rgba(249, 115, 22, 0.12);
-        color: #f97316;
+        background: rgba(15, 76, 115, 0.12);
+        color: #0f4c73;
         font-size: 1.3rem;
       }
 
@@ -401,15 +426,15 @@
         padding: 0.65rem 1.25rem;
         border-radius: 9999px;
         font-weight: 600;
-        border: 1px solid rgba(249, 115, 22, 0.25);
+        border: 1px solid rgba(15, 76, 115, 0.25);
         background: rgba(255, 255, 255, 0.95);
-        color: #f97316;
+        color: #0f4c73;
         transition: all 0.2s ease;
       }
 
       .serving-size-btn:hover {
         transform: translateY(-2px);
-        box-shadow: 0 10px 24px rgba(249, 115, 22, 0.15);
+        box-shadow: 0 10px 24px rgba(15, 76, 115, 0.15);
       }
 
       .serving-size-hint {
@@ -420,7 +445,7 @@
         padding: 0.85rem 1.1rem;
         border-radius: 1rem;
         background: rgba(255, 255, 255, 0.9);
-        border: 1px dashed rgba(249, 115, 22, 0.3);
+        border: 1px dashed rgba(15, 76, 115, 0.3);
       }
 
       .ingredient-list {
@@ -453,8 +478,8 @@
         width: 2.25rem;
         height: 2.25rem;
         border-radius: 0.9rem;
-        background: rgba(249, 115, 22, 0.12);
-        color: #f97316;
+        background: rgba(15, 76, 115, 0.12);
+        color: #0f4c73;
         font-size: 1rem;
       }
 
@@ -497,12 +522,12 @@
         width: 2.5rem;
         height: 2.5rem;
         border-radius: 9999px;
-        background: linear-gradient(135deg, #f97316, #fb923c);
+        background: linear-gradient(135deg, #0f4c73, #0fb39a);
         color: #ffffff;
         font-weight: 700;
         font-size: 1.1rem;
         flex-shrink: 0;
-        box-shadow: 0 12px 24px rgba(249, 115, 22, 0.3);
+        box-shadow: 0 12px 24px rgba(15, 76, 115, 0.3);
       }
 
       .step-text {
@@ -513,8 +538,128 @@
         display: flex;
         flex-direction: column;
         gap: 1.5rem;
-        background: linear-gradient(140deg, rgba(249, 115, 22, 0.12) 0%, rgba(253, 186, 116, 0.08) 45%, rgba(255, 255, 255, 0.85) 100%);
-        border: 1px solid rgba(249, 115, 22, 0.14);
+        background: linear-gradient(140deg, rgba(15, 76, 115, 0.12) 0%, rgba(15, 162, 137, 0.08) 45%, rgba(255, 255, 255, 0.85) 100%);
+        border: 1px solid rgba(15, 76, 115, 0.14);
+      }
+
+      .origin-badges {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-top: 1rem;
+      }
+
+      .origin-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        padding: 0.45rem 0.8rem;
+        border-radius: 12px;
+        background: #f8fafc;
+        border: 1px solid rgba(15, 76, 115, 0.16);
+        font-weight: 800;
+        color: #0f4c73;
+      }
+
+      .origin-badge small {
+        color: #475569;
+        font-weight: 700;
+      }
+
+      .origin-badge.origin-creator { background: rgba(15, 179, 154, 0.12); border-color: rgba(15, 179, 154, 0.28); color: #0a8f78; }
+      .origin-badge.origin-partner { background: rgba(247, 201, 72, 0.12); border-color: rgba(247, 201, 72, 0.28); color: #c47a00; }
+      .origin-badge.origin-peah { background: rgba(15, 76, 115, 0.1); border-color: rgba(15, 76, 115, 0.28); color: #0f4c73; }
+      .origin-badge.origin-community { background: rgba(148, 163, 184, 0.14); border-color: rgba(148, 163, 184, 0.3); color: #334155; }
+
+      .workshop-cta {
+        margin: 1rem 0 2rem;
+        padding: 1.4rem 1.6rem;
+        border-radius: 1.5rem;
+        background: linear-gradient(120deg, rgba(15, 76, 115, 0.12), rgba(15, 179, 154, 0.12));
+        border: 1px solid rgba(15, 76, 115, 0.12);
+        box-shadow: 0 18px 40px rgba(15, 76, 115, 0.08);
+        display: grid;
+        grid-template-columns: 1.2fr 1fr;
+        gap: 1rem;
+        align-items: center;
+      }
+
+      .workshop-cta h3 {
+        font-size: 1.4rem;
+        font-weight: 900;
+        color: #0f4c73;
+        margin-bottom: 0.35rem;
+      }
+
+      .workshop-cta p {
+        color: #475569;
+        line-height: 1.7;
+        margin-bottom: 0.6rem;
+      }
+
+      .workshop-cta__eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        padding: 0.35rem 0.75rem;
+        border-radius: 999px;
+        background: rgba(15, 179, 154, 0.14);
+        color: #0b8c78;
+        font-weight: 800;
+        margin-bottom: 0.35rem;
+      }
+
+      .workshop-cta__actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.6rem;
+        margin-top: 0.5rem;
+      }
+
+      .workshop-primary {
+        background: linear-gradient(135deg, #0f4c73, #0fb39a);
+        color: #fff;
+        padding: 0.7rem 1rem;
+        border-radius: 12px;
+        font-weight: 800;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+      }
+
+      .workshop-secondary {
+        background: rgba(15, 76, 115, 0.06);
+        color: #0f4c73;
+        padding: 0.65rem 0.9rem;
+        border-radius: 12px;
+        font-weight: 800;
+        border: 1px solid rgba(15, 76, 115, 0.14);
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+      }
+
+      .workshop-cta__meta {
+        display: grid;
+        gap: 0.5rem;
+      }
+
+      .workshop-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        padding: 0.55rem 0.8rem;
+        border-radius: 12px;
+        background: #fff;
+        border: 1px solid rgba(15, 76, 115, 0.1);
+        color: #0f4c73;
+        font-weight: 800;
+      }
+
+      @media (max-width: 900px) {
+        .workshop-cta {
+          grid-template-columns: 1fr;
+        }
       }
 
       @media (min-width: 768px) {
@@ -532,8 +677,8 @@
         padding: 0.45rem 1.1rem;
         border-radius: 9999px;
         background: rgba(255, 255, 255, 0.9);
-        border: 1px solid rgba(249, 115, 22, 0.3);
-        color: #f97316;
+        border: 1px solid rgba(15, 76, 115, 0.3);
+        color: #0f4c73;
         font-weight: 700;
         font-size: 0.9rem;
       }
@@ -565,7 +710,7 @@
 
       .rating-card {
         background: linear-gradient(160deg, rgba(255, 255, 255, 0.96) 0%, rgba(254, 215, 170, 0.4) 100%);
-        border: 1px solid rgba(249, 115, 22, 0.15);
+        border: 1px solid rgba(15, 76, 115, 0.15);
       }
 
       .rating-card .section-title {
@@ -897,7 +1042,7 @@
         }
         
         .text-orange-500 {
-          color: #f97316 !important;
+          color: #0f4c73 !important;
         }
         
         .shadow-lg {
@@ -934,7 +1079,7 @@
         
         h1, h2, h3 {
           page-break-after: avoid;
-          color: #f97316 !important;
+          color: #0f4c73 !important;
           font-weight: bold;
         }
         
@@ -942,14 +1087,14 @@
           font-size: 2.2em;
           text-align: center;
           margin-bottom: 20px;
-          border-bottom: 3px solid #f97316;
+          border-bottom: 3px solid #0f4c73;
           padding-bottom: 15px;
         }
         
         h2 {
           font-size: 1.8em;
           margin-bottom: 15px;
-          border-bottom: 2px solid #f97316;
+          border-bottom: 2px solid #0f4c73;
           padding-bottom: 8px;
           text-align: center;
         }
@@ -990,7 +1135,7 @@
         }
         
         .print-info-item i {
-          color: #f97316;
+          color: #0f4c73;
           margin-left: 8px;
           font-size: 1.2em;
         }
@@ -1010,7 +1155,7 @@
         
         ul li:before {
           content: "•";
-          color: #f97316;
+          color: #0f4c73;
           font-weight: bold;
           position: absolute;
           right: 0;
@@ -1031,7 +1176,7 @@
           position: absolute;
           right: -25px;
           top: 10px;
-          background: #f97316;
+          background: #0f4c73;
           color: white;
           width: 22px;
           height: 22px;
@@ -1051,7 +1196,7 @@
           text-align: center;
           margin-top: 40px;
           padding-top: 20px;
-          border-top: 2px solid #f97316;
+          border-top: 2px solid #0f4c73;
           font-size: 11pt;
           color: #666;
           background: #f8f9fa;
@@ -1065,8 +1210,8 @@
       
       /* Equipment card styles */
       .tool-card {
-        background: linear-gradient(135deg, #fef3e7 0%, #fed7aa 100%);
-        border: 1px solid #fb923c;
+        background: linear-gradient(135deg, #eaf3f6 0%, #a1dfd1 100%);
+        border: 1px solid #0fb39a;
         border-radius: 12px;
         padding: 1.5rem;
         transition: all 0.3s ease;
@@ -1081,25 +1226,25 @@
         left: 0;
         right: 0;
         height: 3px;
-        background: linear-gradient(90deg, #f97316, #fb923c, #fbbf24);
+        background: linear-gradient(90deg, #0f4c73, #0fb39a, #0fa289);
       }
       
       .tool-card:hover {
         transform: translateY(-2px);
-        box-shadow: 0 10px 25px rgba(249, 115, 22, 0.15);
-        border-color: #f97316;
+        box-shadow: 0 10px 25px rgba(15, 76, 115, 0.15);
+        border-color: #0f4c73;
       }
       
       .tool-icon {
         width: 3rem;
         height: 3rem;
-        background: linear-gradient(135deg, #f97316, #fb923c);
+        background: linear-gradient(135deg, #0f4c73, #0fb39a);
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
         margin: 0 auto 1rem;
-        box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);
+        box-shadow: 0 4px 12px rgba(15, 76, 115, 0.3);
       }
       
       .tool-name {
@@ -1113,7 +1258,7 @@
       .tool-divider {
         width: 2rem;
         height: 3px;
-        background: linear-gradient(90deg, #f97316, #fb923c);
+        background: linear-gradient(90deg, #0f4c73, #0fb39a);
         border-radius: 2px;
         margin: 0 auto;
       }
@@ -1139,7 +1284,7 @@
       #tools-container .tool-card:hover {
         transform: translateY(-4px);
         box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-        border-color: #f97316;
+        border-color: #0f4c73;
       }
       
       #tools-container .tool-card .p-3,
@@ -1164,7 +1309,7 @@
       }
       
       #tools-container .tool-card .rating-stars {
-        color: #fbbf24;
+        color: #0fa289;
       }
       
       #tools-container .tool-card .empty-rating {
@@ -1247,7 +1392,7 @@
       /* Badge improvements */
       #tools-container .category-badge {
         backdrop-filter: blur(10px);
-        background: rgba(249, 115, 22, 0.9);
+        background: rgba(15, 76, 115, 0.9);
       }
       
       /* ضمان التناسق على الهواتف */
@@ -1290,7 +1435,7 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background: linear-gradient(45deg, transparent 0%, rgba(249, 115, 22, 0.1) 100%);
+        background: linear-gradient(45deg, transparent 0%, rgba(15, 76, 115, 0.1) 100%);
         opacity: 0;
         transition: opacity 0.3s ease;
       }
@@ -1310,15 +1455,15 @@
       }
       
       .related-recipe-card .category-badge {
-        background: linear-gradient(135deg, #fed7aa 0%, #fb923c 100%);
-        color: #9a3412;
+        background: linear-gradient(135deg, #a1dfd1 0%, #0fb39a 100%);
+        color: #0a344f;
         font-weight: 600;
         text-shadow: 0 1px 2px rgba(255, 255, 255, 0.3);
-        box-shadow: 0 2px 4px rgba(249, 115, 22, 0.2);
+        box-shadow: 0 2px 4px rgba(15, 76, 115, 0.2);
       }
       
       .related-recipe-card .rating-stars {
-        color: #fbbf24;
+        color: #0fa289;
         text-shadow: 0 1px 2px rgba(251, 191, 36, 0.3);
       }
       
@@ -1456,6 +1601,83 @@
             ],
         ];
     @endphp
+    @php
+        use Illuminate\Support\Str;
+
+        $skillTracks = [
+            'cooking' => [
+                'label' => 'Cooking Skills',
+                'subtitle' => 'وصفات، وجبات سريعة، وحيل المطبخ',
+                'accent' => '#0fb39a',
+            ],
+            'content' => [
+                'label' => 'Content Creation',
+                'subtitle' => 'إضاءة، مونتاج، مهارات تصوير',
+                'accent' => '#8f7ee7',
+            ],
+            'business' => [
+                'label' => 'Business Skills',
+                'subtitle' => 'تسعير، براندينج، مبيعات',
+                'accent' => '#f7c948',
+            ],
+            'crafts' => [
+                'label' => 'Crafts & DIY',
+                'subtitle' => 'مشاريع منزلية وأعمال يدوية',
+                'accent' => '#e46f4d',
+            ],
+        ];
+
+        $classifyTrack = function ($recipe) {
+            $categoryName = Str::of($recipe->category->name ?? '')->lower();
+            $map = [
+                'cooking' => ['cook', 'cooking', 'وصفات', 'مطبخ', 'recipe', 'kitchen', 'طهي', 'طبخ', 'meal', 'أكل'],
+                'content' => ['محتوى', 'تصوير', 'فيديو', 'اضاءة', 'lighting', 'editing', 'مونتاج', 'كاميرا', 'content'],
+                'business' => ['business', 'عمل', 'تسويق', 'branding', 'براند', 'سعر', 'pricing', 'بيع', 'selling'],
+                'crafts' => ['حرف', 'diy', 'منزلي', 'مشروع', 'handmade', 'craft', 'منزل', 'ديكور'],
+            ];
+
+            foreach ($map as $trackKey => $keywords) {
+                foreach ($keywords as $keyword) {
+                    if ($keyword !== '' && $categoryName->contains(Str::of($keyword)->lower())) {
+                        return $trackKey;
+                    }
+                }
+            }
+
+            return 'cooking';
+        };
+
+        $resolveSource = function ($recipe) {
+            $chef = $recipe->chef;
+
+            if ($chef && $chef->isAdmin()) {
+                return 'peah';
+            }
+
+            if ($chef && $chef->isReferralPartner()) {
+                return 'partner';
+            }
+
+            if ($chef && $chef->isChef()) {
+                return 'creator';
+            }
+
+            return 'community';
+        };
+
+        $sourceLabels = [
+            'creator' => ['label' => 'Creator', 'hint' => 'محتوى مدربين'],
+            'partner' => ['label' => 'Partner', 'hint' => 'محتوى الشركاء'],
+            'peah' => ['label' => 'Peah Official', 'hint' => 'حساب رسمي'],
+            'community' => ['label' => 'Community Post', 'hint' => 'من مجتمع Wasfah'],
+        ];
+
+        $recipeTrackKey = $classifyTrack($recipe);
+        $recipeTrack = $skillTracks[$recipeTrackKey] ?? $skillTracks['cooking'];
+        $sourceType = $resolveSource($recipe);
+        $sourceLabel = $sourceLabels[$sourceType];
+        $primaryWorkshop = $recipe->workshops->first();
+    @endphp
 
     <main class="container mx-auto px-4 py-8">
       <!-- Recipe hero -->
@@ -1479,6 +1701,22 @@
             <p class="text-gray-700 text-base md:text-lg leading-relaxed mt-4 max-w-3xl">
               {{ $recipe->description }}
             </p>
+            <div class="origin-badges">
+              <span class="origin-badge origin-{{ $sourceType }}">
+                <i class="fas fa-user-astronaut"></i>
+                {{ $sourceLabel['label'] }}
+                @if($sourceType === 'partner' && $recipe->chef?->referral_commission_rate)
+                  <small>{{ number_format($recipe->chef->referral_commission_rate, 0) }}% share</small>
+                @else
+                  <small>{{ $sourceLabel['hint'] }}</small>
+                @endif
+              </span>
+              <span class="origin-badge" style="background: {{ $recipeTrack['accent'] }}1c; border-color: {{ $recipeTrack['accent'] }}50;">
+                <i class="fas fa-layer-group"></i>
+                {{ $recipeTrack['label'] }}
+                <small>{{ $recipeTrack['subtitle'] }}</small>
+              </span>
+            </div>
             @if($recipe->is_registration_closed)
               <div class="bg-yellow-100 border border-yellow-300 text-yellow-800 px-4 py-3 rounded-2xl mt-6 no-print flex items-start gap-3">
                 <i class="fas fa-clock mt-1 ltr:mr-2 rtl:ml-2"></i>
@@ -1622,21 +1860,105 @@
       </section>
       <!-- End recipe hero -->
 
+      <section class="workshop-cta no-print" aria-label="ورشة مشابهة">
+        <div>
+          <span class="workshop-cta__eyebrow">
+            <i class="fas fa-bolt"></i>
+            سجّل في ورشة مشابهة
+          </span>
+          <h3>حوّل الزيارة إلى حجز: جرّب ورشة بنفس الروح</h3>
+          <p>
+            محتوى <strong>{{ $recipeTrack['label'] }}</strong> يقدم تجربة عملية مع مدربين موثوقين. اربط الوصفة بورشة مباشرة لزيادة التحويلات والمبيعات المرتبطة بالمهارات.
+          </p>
+          <div class="workshop-cta__actions">
+            @if($primaryWorkshop)
+              <a href="{{ route('workshop.show', $primaryWorkshop) }}" class="workshop-primary">
+                <i class="fas fa-fire"></i>
+                سجّل في ورشة مشابهة
+              </a>
+              <a href="{{ route('workshops') }}" class="workshop-secondary">
+                <i class="fas fa-grid-2"></i>
+                استعرض كل الورش
+              </a>
+            @else
+              <a href="{{ route('workshops') }}" class="workshop-primary">
+                <i class="fas fa-fire"></i>
+                استكشف الورش المرتبطة
+              </a>
+              <a href="{{ route('workshops') }}" class="workshop-secondary">
+                <i class="fas fa-bullseye-pointer"></i>
+                جرّب ورش أخرى
+              </a>
+            @endif
+          </div>
+        </div>
+        <div class="workshop-cta__meta">
+          <span class="workshop-chip">
+            <i class="fas fa-stopwatch"></i>
+            {{ $recipe->prep_time ? __('recipes.cards.prep_time', ['minutes' => $recipe->prep_time]) : 'وقت مرن' }}
+          </span>
+          <span class="workshop-chip">
+            <i class="fas fa-chart-line"></i>
+            {{ $recipe->difficulty ? ucfirst($recipe->difficulty) : 'مستوى مرن' }}
+          </span>
+          <span class="workshop-chip">
+            <i class="fas fa-layer-group"></i>
+            {{ $recipeTrack['label'] }}
+          </span>
+        </div>
+      </section>
+
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
         <!-- Media Container for Images or Video -->
         <div class="media-card">
-            @if($recipe->getAllImages() && count($recipe->getAllImages()) > 0)
+            @php
+                $images = $recipe->getAllImages();
+                $hasImages = $images && count($images) > 0;
+                $videoEmbedUrl = $recipe->video_url ? \App\Support\VideoEmbed::embedUrl($recipe->video_url) : null;
+                $inlineVideo = \App\Support\VideoEmbed::inlinePlayable($recipe->video_url);
+            @endphp
+
+            @if($recipe->video_url)
+                <div class="video-shell">
+                    @if($videoEmbedUrl)
+                        <iframe class="video-frame" src="{{ $videoEmbedUrl }}" title="{{ $recipe->title }}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    @elseif($inlineVideo)
+                        <video class="video-frame" controls playsinline poster="{{ $hasImages ? $images[0] : '' }}">
+                            <source src="{{ $recipe->video_url }}">
+                            متصفحك لا يدعم تشغيل الفيديو.
+                        </video>
+                    @else
+                        <div class="aspect-video flex items-center justify-center text-center text-gray-100 p-6">
+                            <div>
+                                <p class="font-semibold mb-2">تعذر عرض الفيديو داخل الصفحة</p>
+                                <a href="{{ $recipe->video_url }}" target="_blank" rel="noopener" class="video-overlay-link">
+                                    <i class="fas fa-external-link-alt ml-1"></i>
+                                    فتح الفيديو في تبويب جديد
+                                </a>
+                            </div>
+                        </div>
+                    @endif
+                </div>
+
+                @if($hasImages)
+                    <div class="thumbnail-strip flex space-x-2 rtl:space-x-reverse p-4 bg-gray-50 overflow-x-auto mt-3">
+                        @foreach($images as $index => $imageUrl)
+                            <img class="w-16 h-16 object-cover rounded-xl border-2" src="{{ $imageUrl }}" alt="{{ __('recipe.misc.gallery_image_alt', ['number' => $index + 1]) }}" onerror="this.src='{{ \App\Support\BrandAssets::logoAsset('webp') }}';" loading="lazy">
+                        @endforeach
+                    </div>
+                @endif
+            @elseif($hasImages)
                 <!-- Image Gallery -->
                 <div class="relative">
                     <!-- Main Image Display -->
                     <div class="main-image-wrapper relative overflow-hidden">
                         <img id="main-recipe-image" class="w-full h-full object-cover transition-opacity duration-300" 
-                             src="{{ $recipe->getAllImages()[0] }}" alt="{{ __('recipe.misc.image_alt') }}"
+                             src="{{ $images[0] }}" alt="{{ __('recipe.misc.image_alt') }}"
                             onerror="this.src='{{ \App\Support\BrandAssets::logoAsset('webp') }}'; this.alt='{{ __('recipe.misc.placeholder_image_alt') }}';" loading="lazy">
                         
                         <!-- Navigation Arrows -->
-                        @if(count($recipe->getAllImages()) > 1)
+                        @if(count($images) > 1)
                             <button onclick="previousImage()" class="absolute left-4 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-70 transition-all">
                                 <i class="fas fa-chevron-left"></i>
                             </button>
@@ -1646,17 +1968,17 @@
                         @endif
                         
                         <!-- Image Counter -->
-                        @if(count($recipe->getAllImages()) > 1)
+                        @if(count($images) > 1)
                             <div class="absolute bottom-4 right-4 bg-black bg-opacity-50 text-white px-3 py-1 rounded-full text-sm">
-                                <span id="image-counter">1</span> / {{ count($recipe->getAllImages()) }}
+                                <span id="image-counter">1</span> / {{ count($images) }}
                             </div>
                         @endif
                     </div>
                     
                     <!-- Thumbnail Strip -->
-                    @if(count($recipe->getAllImages()) > 1)
+                    @if(count($images) > 1)
                         <div class="thumbnail-strip flex space-x-2 rtl:space-x-reverse p-4 bg-gray-50 overflow-x-auto">
-                            @foreach($recipe->getAllImages() as $index => $imageUrl)
+                            @foreach($images as $index => $imageUrl)
                                 <img onclick="showImage({{ $index }})" 
                                      class="w-16 h-16 object-cover rounded-xl cursor-pointer border-2 transition-all thumbnail {{ $index === 0 ? 'active' : '' }}" 
                                      src="{{ $imageUrl }}" 
@@ -1666,15 +1988,6 @@
                         </div>
                     @endif
                 </div>
-            @elseif($recipe->video_url)
-                <iframe
-                    class="w-full aspect-video"
-                    src="{{ $recipe->video_url }}"
-                    title="YouTube video player"
-                    frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowfullscreen
-                ></iframe>
             @else
                 <div class="w-full h-64 bg-gray-200 flex items-center justify-center">
                     <i class="fas fa-image text-4xl text-gray-400"></i>
@@ -1927,6 +2240,10 @@
             <i class="fas fa-star"></i>
             <span>{{ __('recipe.sections.rating') }}</span>
           </h2>
+          <p class="text-gray-600 text-center max-w-2xl mx-auto -mt-2 mb-2">
+            شارك تقييمك وتعليق قصير لدعم بقية المتعلمين. للتعليقات الأطول استخدم
+            <a href="{{ route('contact') }}" class="text-emerald-600 font-semibold underline">نموذج التعليقات</a>.
+          </p>
           <div class="flex flex-col items-center text-center gap-4">
             <div class="star-rating">
               <input type="radio" id="star5" name="rating" value="5" {{ $recipe->user_rating == 5 ? 'checked' : '' }} /><label for="star5" title="{{ trans_choice('recipe.rating.star_title', 5, ['count' => 5]) }}">
@@ -2693,7 +3010,7 @@
                         
                         // Add a subtle highlight effect to the rating section
                         ratingSection.style.transition = 'box-shadow 0.3s ease';
-                        ratingSection.style.boxShadow = '0 0 20px rgba(249, 115, 22, 0.3)';
+                        ratingSection.style.boxShadow = '0 0 20px rgba(15, 76, 115, 0.3)';
                         
                         // Remove highlight after 2 seconds
                         setTimeout(() => {
@@ -2809,5 +3126,13 @@
         </script>
     @endpush
 @endsection
+
+
+
+
+
+
+
+
 
 

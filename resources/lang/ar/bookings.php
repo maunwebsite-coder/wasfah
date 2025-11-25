@@ -85,6 +85,10 @@ return [
         ],
     ],
 
+    'notices' => [
+        'registration_closure' => 'سيتم إغلاق التسجيل تلقائياً قبل بداية الورشة بمدة :minutes دقيقة وفقاً لتوقيت المضيف.',
+    ],
+
     'status' => [
         'pending' => 'قيد المراجعة',
         'confirmed' => 'مؤكد',

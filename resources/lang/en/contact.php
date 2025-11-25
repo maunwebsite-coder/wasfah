@@ -2,13 +2,13 @@
 
 return [
     'meta' => [
-        'title' => 'Contact us – Wasfah',
+        'title' => 'Contact us – Peahskill',
     ],
 
     'hero' => [
         'badge' => 'Corporate partnerships',
         'title' => 'We are happy to hear from you',
-        'description' => 'The Wasfah team supports everything related to recipes, workshops, and brand collaborations. Share your message and we will reply within one business day.',
+        'description' => 'The Peahskill team supports everything related to guides, live experiences, tools, and brand collaborations. Share your message and we will reply within one business day.',
         'chips' => [
             'Workshops & training',
             'Collaboration requests',
@@ -26,7 +26,7 @@ return [
         'description' => 'Fill in the following details so your message reaches the right team. We normally reply within one business day.',
         'badge' => 'We review the inbox twice a day',
         'response_notice' => 'We usually reply within one business day.',
-        'success' => 'Your message has been logged and the Wasfah team will get back to you shortly.',
+        'success' => 'Your message has been logged and the Peahskill team will get back to you shortly.',
         'submit' => 'Send message',
         'fields' => [
             'first_name' => [
@@ -56,8 +56,8 @@ return [
         'subjects' => [
             'general' => 'General inquiry',
             'partnership' => 'Partnership or collaboration',
-            'recipe' => 'Recipe feedback or issue',
-            'workshop' => 'Workshop question',
+            'recipe' => 'Guide feedback or issue',
+            'workshop' => 'Experience or session question',
             'technical' => 'Technical issue',
             'suggestion' => 'Suggestion',
             'other' => 'Other',
@@ -76,8 +76,8 @@ return [
 
     'guidance_cards' => [
         [
-            'title' => 'Workshops & training',
-            'description' => 'Private workshop requests go straight to our training coordinator.',
+            'title' => 'Experiences & training',
+            'description' => 'Private session requests go straight to our training coordinator.',
         ],
         [
             'title' => 'Collaboration requests',
@@ -97,8 +97,8 @@ return [
                 'answer' => 'We check the inbox twice per day and share an initial response within one business day.',
             ],
             [
-                'question' => 'Can I request a private workshop or collaboration?',
-                'answer' => 'Absolutely. Describe the collaboration or workshop you have in mind and we will coordinate with the relevant team before replying with details.',
+                'question' => 'Can I request a private experience or collaboration?',
+                'answer' => 'Absolutely. Describe the collaboration or session you have in mind and we will coordinate with the relevant team before replying with details.',
             ],
             [
                 'question' => 'What should I do if I face a technical problem?',
@@ -109,7 +109,7 @@ return [
 
     'contact_info' => [
         'title' => 'Contact information',
-        'description' => 'Pick the channel that suits you best and the Wasfah team will follow up carefully.',
+        'description' => 'Pick the channel that suits you best and the Peahskill team will follow up carefully.',
         'items' => [
             [
                 'title' => 'Address',
@@ -132,7 +132,7 @@ return [
 
     'social' => [
         'title' => 'Follow us',
-        'description' => 'Get the latest recipes, workshop alerts, and behind-the-scenes footage on Wasfah social channels.',
+        'description' => 'Get the latest guides, experience alerts, and behind-the-scenes footage on Peahskill social channels.',
         'channels' => [
             [
                 'title' => 'Instagram',
@@ -148,23 +148,23 @@ return [
     ],
 
     'promo' => [
-        'title' => 'Wasfah motto',
-        'description' => 'The Wasfah platform for premium desserts walks with you every step of the way.',
+        'title' => 'Peahskill motto',
+        'description' => 'The Peahskill platform for experts and teams walks with you every step of the way.',
         'discover' => 'Discover',
         'links' => [
-            'All recipes',
-            'Workshops',
-            'Dessert tips',
+            'All guides',
+            'Experiences',
+            'Pro tips',
             'Quick guides',
-            'Chef tools',
+            'Tools',
             'Corporate partnerships',
-            'Recipe search',
+            'Guide search',
             'Contact us',
         ],
         'footnotes' => [
             'Support replies within a business day when the form is used.',
-            '© 2025 Wasfah. All rights reserved. Wasfah is part of Wasfah Jordan.',
-            'We obsess over the details of every single recipe.',
+            '© 2025 Peahskill. All rights reserved.',
+            'We obsess over the details of every single guide.',
         ],
     ],
 ];

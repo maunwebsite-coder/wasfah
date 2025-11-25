@@ -1,9 +1,11 @@
 @extends('layouts.app')
 
-@section('title', 'صفحة روابط Wasfah الخاصة بي')
+@section('title', 'صفحة روابط ' . config('app.name', 'Peahskill') . ' الخاصة بي')
 
 @section('content')
 @php
+    $brandName = config('app.name', 'Peahskill');
+    $brandLinksLabel = $brandName . ' Links';
     $totalItemsCount = $items->count();
     $activeItemsCount = $items->where('is_active', true)->count();
     $inactiveItemsCount = $totalItemsCount - $activeItemsCount;
@@ -12,7 +14,7 @@
     $bioValue = old('bio', $page->bio) ?? '';
     $ctaLabelValue = old('cta_label', $page->cta_label) ?? '';
     $ctaUrlValue = old('cta_url', $page->cta_url) ?: '#';
-    $accentColorValue = old('accent_color', $page->accent_color ?? $accentColor ?? '#f97316') ?: '#f97316';
+    $accentColorValue = old('accent_color', $page->accent_color ?? $accentColor ?? '#0f4c73') ?: '#0f4c73';
     $lastUpdated = $page->updated_at?->locale('ar')->diffForHumans() ?? 'الآن';
     $heroPlaceholder = \App\Support\BrandAssets::logoAsset('webp');
     $heroPreviewDefault = $heroImageUrl ?: $heroPlaceholder;
@@ -36,7 +38,7 @@
     <div class="container mx-auto px-4">
         <div class="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <div>
-                <p class="text-sm uppercase tracking-wider text-orange-500 font-semibold mb-2">روابط Wasfah</p>
+                <p class="text-sm uppercase tracking-wider text-orange-500 font-semibold mb-2">روابط {{ $brandName }}</p>
                 <h1 class="text-3xl font-bold text-gray-900">إدارة صفحة الروابط الخاصة بك</h1>
                 <p class="text-gray-600 mt-1">خصص صفحتك الموحدة وشاركها مع جمهورك عبر المنصات الاجتماعية.</p>
             </div>
@@ -131,7 +133,7 @@
                                 <label for="accent_color" class="text-sm font-medium text-gray-700">لون التمييز</label>
                                 <div class="flex items-center gap-3">
                                     <input type="color" id="accent_color_picker" value="{{ $accentColorValue }}" class="h-12 w-14 rounded-xl border border-gray-200" data-preview-target="accent_color">
-                                    <input type="text" id="accent_color" name="accent_color" value="{{ old('accent_color', $page->accent_color) }}" class="flex-1 rounded-xl border border-gray-200 px-4 py-3 text-sm focus:border-orange-400 focus:ring focus:ring-orange-100" placeholder="#f97316" data-preview-target="accent_color">
+                                    <input type="text" id="accent_color" name="accent_color" value="{{ old('accent_color', $page->accent_color) }}" class="flex-1 rounded-xl border border-gray-200 px-4 py-3 text-sm focus:border-orange-400 focus:ring focus:ring-orange-100" placeholder="#0f4c73" data-preview-target="accent_color">
                                 </div>
                                 <p class="text-xs text-gray-500">يمكنك لصق كود اللون (Hex) أو اختياره من لوحة الألوان.</p>
                             </div>
@@ -149,7 +151,7 @@
                             <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                                 <div>
                                     <p class="text-sm font-semibold text-gray-900">إبراز الورشة القادمة</p>
-                                    <p class="text-xs text-gray-500 mt-1">فعّل الخيار لإظهار بطاقة الورشة القادمة تلقائياً في صفحة Wasfah Links الخاصة بك.</p>
+                                    <p class="text-xs text-gray-500 mt-1">فعّل الخيار لإظهار بطاقة الورشة القادمة تلقائياً في صفحة {{ $brandLinksLabel }} الخاصة بك.</p>
                                 </div>
                                 <span class="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold {{ $hasUpcomingWorkshop ? 'bg-emerald-50 text-emerald-700' : 'bg-gray-100 text-gray-500' }}">
                                     <span class="h-2 w-2 rounded-full {{ $hasUpcomingWorkshop ? 'bg-emerald-500' : 'bg-gray-400' }}"></span>
@@ -403,7 +405,7 @@
 
             <div class="order-1 space-y-8 lg:order-2 lg:sticky lg:top-8">
                 <div id="chef-links-preview" class="rounded-3xl border border-orange-100 bg-white shadow-sm overflow-hidden" style="--accent-color: {{ $accentColorValue }};" data-default-color="{{ $accentColorValue }}">
-                    <div class="relative h-36" style="background: linear-gradient(135deg, var(--accent-color), rgba(249, 115, 22, 0.3));">
+                    <div class="relative h-36" style="background: linear-gradient(135deg, var(--accent-color), rgba(15, 76, 115, 0.3));">
                         <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(circle at 30% 20%, rgba(255,255,255,0.7), transparent 60%), radial-gradient(circle at 70% 80%, rgba(255,255,255,0.5), transparent 60%);"></div>
                         <div class="relative flex h-full flex-col items-center justify-center gap-3 px-6 text-center text-white">
                             <div class="h-20 w-20 overflow-hidden rounded-2xl border border-white/50 shadow" style="background-color: rgba(255,255,255,0.15);">
@@ -726,7 +728,7 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        const fallback = previewRoot.getAttribute('data-default-color') || '#f97316';
+        const fallback = previewRoot.getAttribute('data-default-color') || '#0f4c73';
         const hex = normalizeHex(value) || fallback;
 
         previewRoot.style.setProperty('--accent-color', hex);
@@ -948,7 +950,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const colorPicker = document.getElementById('accent_color_picker');
     const colorInput = document.getElementById('accent_color');
-    const initialAccent = colorInput?.value || colorPicker?.value || (previewRoot ? previewRoot.getAttribute('data-default-color') : '#f97316');
+    const initialAccent = colorInput?.value || colorPicker?.value || (previewRoot ? previewRoot.getAttribute('data-default-color') : '#0f4c73');
     applyAccentColor(initialAccent);
 
     if (colorPicker && colorInput) {
@@ -1019,4 +1021,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 </script>
 @endpush
+
+
+
 

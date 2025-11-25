@@ -22,947 +22,628 @@
 
 @push('styles')
 <style>
+    :root {
+        --primary-color: #0f4c73;
+        --primary-dark: #0b344f;
+        --accent-color: #f59e0b;
+        --text-main: #1e293b;
+        --text-muted: #64748b;
+        --bg-soft: #f8fafc;
+        --card-bg: #ffffff;
+        --radius-lg: 1.5rem;
+        --radius-md: 1rem;
+        --shadow-soft: 0 10px 40px -10px rgba(0,0,0,0.05);
+        --shadow-hover: 0 20px 40px -10px rgba(0,0,0,0.1);
+    }
+
     .workshop-details-wrapper {
-        font-family: 'Cairo', 'Tajawal', 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-        color: #0f172a;
+        font-family: 'Plus Jakarta Sans', 'Cairo', sans-serif;
+        color: var(--text-main);
+        background-color: var(--bg-soft);
     }
 
-    html[dir="ltr"] .workshop-details-wrapper .text-right {
-        text-align: left;
-    }
-
-    html[dir="ltr"] .workshop-details-wrapper .justify-end {
-        justify-content: flex-start;
+    /* Modern Hero Section */
+    .workshop-hero-container {
+        padding: 2rem 1rem 0;
+        max-width: 1400px;
+        margin: 0 auto;
     }
 
     .workshop-hero {
         position: relative;
-        isolation: isolate;
-        background: linear-gradient(120deg, #ff7a18, #f97316 55%, #c2410c);
+        border-radius: var(--radius-lg);
+        overflow: hidden;
+        background: var(--primary-dark);
         color: white;
-        border-radius: 1.5rem;
-        margin: 2rem auto 0 auto;
-        max-width: 1200px;
-        overflow: hidden;
-        box-shadow: 0 25px 50px -12px rgba(234, 88, 12, 0.45);
-    }
-
-    .workshop-hero::after {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background: radial-gradient(circle at top right, rgba(255, 237, 213, 0.5), transparent 55%);
-        opacity: 0.75;
-        pointer-events: none;
-    }
-
-    .workshop-hero .grid > * {
-        position: relative;
-        z-index: 1;
-    }
-    
-    .workshop-hero-details {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-        gap: 1rem;
-    }
-
-    .hero-detail-card {
-        position: relative;
+        box-shadow: var(--shadow-soft);
+        min-height: 500px;
         display: flex;
-        align-items: flex-start;
-        gap: 1rem;
-        padding: 1.25rem;
-        border-radius: 1.25rem;
-        background: linear-gradient(135deg, rgba(255, 247, 237, 0.98), rgba(255, 210, 165, 0.6));
-        border: 1px solid rgba(255, 171, 94, 0.7);
-        box-shadow: 0 20px 45px -18px rgba(234, 88, 12, 0.35);
-        backdrop-filter: blur(16px);
-        transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-        color: #0f172a;
-        overflow: hidden;
     }
 
-    .hero-detail-card::after {
-        content: '';
+    .workshop-hero-bg {
         position: absolute;
         inset: 0;
-        border-radius: inherit;
-        background: linear-gradient(120deg, rgba(255, 255, 255, 0.6), transparent 55%);
-        pointer-events: none;
         z-index: 0;
     }
 
-    .hero-detail-card:hover {
-        transform: translateY(-4px);
-        border-color: rgba(249, 115, 22, 0.85);
-        box-shadow: 0 30px 60px -24px rgba(249, 115, 22, 0.45);
-    }
-
-    .hero-detail-card > * {
-        position: relative;
-        z-index: 1;
-    }
-
-    .hero-detail-icon {
-        width: 3.25rem;
-        height: 3.25rem;
-        border-radius: 1rem;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.3rem;
-        color: #fff;
-        box-shadow: 0 12px 25px -10px rgba(124, 45, 18, 0.45);
-        flex-shrink: 0;
-        position: relative;
-        overflow: hidden;
-    }
-
-    .hero-detail-icon::after {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background: radial-gradient(circle at top, rgba(255, 255, 255, 0.45), transparent 55%);
-        opacity: 0.7;
-        pointer-events: none;
-    }
-
-    .hero-detail-icon--date {
-        background: linear-gradient(135deg, #ffe0b2, #f97316);
-    }
-
-    .hero-detail-icon--time {
-        background: linear-gradient(135deg, #ffd8aa, #fb923c);
-    }
-
-    .hero-detail-icon--instructor {
-        background: linear-gradient(135deg, #ffb86c, #ea580c);
-    }
-
-    .hero-detail-icon--online {
-        background: linear-gradient(135deg, #ff9248, #d97706);
-    }
-
-    .hero-detail-icon--location {
-        background: linear-gradient(135deg, #fb923c, #b45309);
-    }
-
-    .hero-detail-content {
-        display: flex;
-        flex-direction: column;
-        gap: 0.35rem;
-    }
-
-    .hero-detail-value {
-        display: block;
-        font-size: 1.05rem;
-        font-weight: 600;
-        color: #0f172a;
-        letter-spacing: 0.01em;
-        line-height: 1.4;
-    }
-
-    .hero-detail-extra {
-        display: block;
-        font-size: 0.8rem;
-        color: #9a3412;
-        line-height: 1.5;
-    }
-
-    .workshop-hero-meta-label {
-        display: block;
-        font-size: 0.72rem;
-        text-transform: uppercase;
-        letter-spacing: 0.2em;
-        color: #9a3412;
-        margin-bottom: 0.2rem;
-        font-weight: 700;
-    }
-
-    /* Add margin to prevent edge sticking */
-    .workshop-hero-container {
-        padding: 0 1rem;
-    }
-    
-    /* Mobile Responsive Improvements */
-    @media (max-width: 768px) {
-        .workshop-hero-container {
-            padding: 0 1.5rem;
-        }
-        
-        .workshop-hero {
-            margin: 1rem auto 0 auto;
-            border-radius: 1rem;
-        }
-        
-        .workshop-hero-content {
-            padding: 1.5rem;
-        }
-        
-        .workshop-hero-title {
-            font-size: 1.75rem;
-            line-height: 1.3;
-        }
-        
-        .workshop-hero-description {
-            font-size: 1rem;
-            line-height: 1.5;
-        }
-        
-        .workshop-hero-details {
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 0.85rem;
-        }
-
-        .hero-detail-card {
-            padding: 1rem;
-        }
-
-        .hero-detail-icon {
-            width: 3rem;
-            height: 3rem;
-            font-size: 1.15rem;
-        }
-
-        .hero-detail-value {
-            font-size: 1rem;
-        }
-
-        .hero-detail-extra {
-            font-size: 0.75rem;
-        }
-        
-        .workshop-image {
-            height: 250px;
-            object-fit: cover;
-            object-position: center;
-        }
-        
-        .content-card {
-            padding: 1.5rem;
-            margin-bottom: 1rem;
-        }
-        
-        .sidebar-card {
-            padding: 1.5rem;
-            margin-bottom: 1rem;
-        }
-        
-        .booking-section {
-            position: static !important;
-            top: auto !important;
-        }
-        
-        .info-item {
-            padding: 0.5rem 0;
-        }
-        
-        .info-icon {
-            width: 2rem;
-            height: 2rem;
-            font-size: 1rem;
-        }
-        
-        /* Additional mobile improvements */
-        .workshop-details-section {
-            padding: 2rem 0;
-        }
-        
-        .workshop-grid {
-            grid-template-columns: 1fr;
-            gap: 1.5rem;
-        }
-        
-        .workshop-main-content {
-            order: 1;
-        }
-        
-        .workshop-sidebar {
-            order: 2;
-        }
-        
-        .workshop-content-title {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-        }
-        
-        .workshop-content-text {
-            font-size: 0.95rem;
-            line-height: 1.6;
-        }
-        
-        .booking-button {
-            width: 100%;
-            padding: 1rem;
-            font-size: 1rem;
-        }
-        
-        .instructor-card {
-            margin-bottom: 1rem;
-        }
-        
-        .instructor-avatar {
-            width: 4rem;
-            height: 4rem;
-        }
-        
-        .instructor-name {
-            font-size: 1.1rem;
-        }
-        
-        .instructor-bio {
-            font-size: 0.9rem;
-        }
-        
-        .related-workshops-section {
-            padding: 2rem 0;
-        }
-        
-        .related-workshops-title {
-            font-size: 1.75rem;
-            margin-bottom: 1.5rem;
-        }
-        
-        .related-workshops-grid {
-            grid-template-columns: 1fr;
-            gap: 1rem;
-        }
-        
-        .related-workshop-card {
-            margin-bottom: 1rem;
-        }
-        
-        .related-workshop-image {
-            height: 180px;
-        }
-        
-        .related-workshop-content {
-            padding: 1rem;
-        }
-        
-        .related-workshop-title {
-            font-size: 1rem;
-            margin-bottom: 0.5rem;
-        }
-        
-        .related-workshop-instructor {
-            font-size: 0.9rem;
-        }
-        
-        .related-workshop-price {
-            font-size: 1.1rem;
-        }
-        
-        .related-workshop-button {
-            padding: 0.5rem 1rem;
-            font-size: 0.9rem;
-        }
-    }
-    
-    @media (max-width: 480px) {
-        .workshop-hero-container {
-            padding: 0 1rem;
-        }
-        
-        .workshop-hero {
-            margin: 0.75rem auto 0 auto;
-            border-radius: 0.75rem;
-        }
-        
-        .workshop-hero-content {
-            padding: 1rem;
-        }
-        
-        .workshop-hero-title {
-            font-size: 1.5rem;
-        }
-        
-        .workshop-hero-description {
-            font-size: 0.9rem;
-        }
-        
-        .workshop-hero-details {
-            grid-template-columns: 1fr;
-            gap: 0.75rem;
-        }
-        
-        .hero-detail-card {
-            padding: 0.9rem 1rem;
-            gap: 0.75rem;
-        }
-
-        .hero-detail-icon {
-            width: 2.65rem;
-            height: 2.65rem;
-            font-size: 1rem;
-        }
-
-        .hero-detail-value {
-            font-size: 0.98rem;
-        }
-
-        .hero-detail-extra {
-            font-size: 0.72rem;
-        }
-
-        .workshop-hero-meta-label {
-            font-size: 0.62rem;
-            letter-spacing: 0.16em;
-        }
-        
-        .workshop-image {
-            height: 220px;
-            object-fit: cover;
-            object-position: center;
-        }
-        
-        .content-card {
-            padding: 1rem;
-        }
-        
-        .sidebar-card {
-            padding: 1rem;
-        }
-        
-        .workshop-details-section {
-            padding: 1.5rem 0;
-        }
-        
-        .workshop-content-title {
-            font-size: 1.25rem;
-        }
-        
-        .workshop-content-text {
-            font-size: 0.9rem;
-        }
-        
-        .booking-button {
-            padding: 0.875rem;
-            font-size: 0.95rem;
-        }
-        
-        .instructor-avatar {
-            width: 3.5rem;
-            height: 3.5rem;
-        }
-        
-        .instructor-name {
-            font-size: 1rem;
-        }
-        
-        .instructor-bio {
-            font-size: 0.85rem;
-        }
-        
-        .related-workshops-title {
-            font-size: 1.5rem;
-        }
-        
-        .related-workshop-image {
-            height: 160px;
-        }
-        
-        .related-workshop-content {
-            padding: 0.875rem;
-        }
-        
-        .related-workshop-title {
-            font-size: 0.95rem;
-        }
-        
-        .related-workshop-instructor {
-            font-size: 0.85rem;
-        }
-        
-        .related-workshop-price {
-            font-size: 1rem;
-        }
-        
-        .related-workshop-button {
-            padding: 0.4rem 0.8rem;
-            font-size: 0.85rem;
-        }
-    }
-    
-    .workshop-image {
-        transition: all 0.3s ease;
-        border-radius: 0;
-        box-shadow: none;
-        border: none;
+    .workshop-hero-bg img {
         width: 100%;
         height: 100%;
         object-fit: cover;
-        object-position: center;
+        opacity: 0.4;
+        filter: blur(10px);
+        transform: scale(1.1);
     }
-    
-    .workshop-image:hover {
-        transform: none;
-        box-shadow: none;
-        border-color: transparent;
-    }
-    
-    /* Mobile Image Improvements */
-    @media (max-width: 768px) {
-        .workshop-image {
-            min-height: 250px;
-            max-height: 300px;
-            object-fit: cover;
-            object-position: center;
-            width: 100%;
-        }
-        
-        .workshop-hero .relative {
-            height: 250px !important;
-        }
-    }
-    
-    @media (max-width: 480px) {
-        .workshop-image {
-            min-height: 220px;
-            max-height: 280px;
-            object-fit: cover;
-            object-position: center;
-            width: 100%;
-        }
-        
-        .workshop-hero .relative {
-            height: 220px !important;
-        }
-    }
-    
-    /* Ensure images maintain aspect ratio */
-    .workshop-image {
-        aspect-ratio: 16/9;
-    }
-    
-    @media (max-width: 768px) {
-        .workshop-image {
-            aspect-ratio: 4/3;
-        }
-    }
-    
-    .instructor-card {
-        transition: all 0.3s ease;
-        border: 1px solid #e5e7eb;
-    }
-    
-    .instructor-card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-        border-color: #f97316;
-    }
-    
-    .related-workshop {
-        transition: all 0.3s ease;
-        border: 1px solid #e5e7eb;
-    }
-    
-    .related-workshop:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
-        border-color: #f97316;
-    }
-    
-    .booking-btn {
-        transition: all 0.3s ease;
-        background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
-        border: none;
-        position: relative;
-        overflow: hidden;
-    }
-    
-    .booking-btn::before {
+
+    .workshop-hero-bg::after {
         content: '';
         position: absolute;
-        top: 0;
-        left: -100%;
+        inset: 0;
+        background: linear-gradient(to right, rgba(11, 52, 79, 0.95) 30%, rgba(11, 52, 79, 0.7) 100%);
+    }
+
+    .workshop-hero-content {
+        position: relative;
+        z-index: 10;
+        padding: 4rem;
         width: 100%;
-        height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-        transition: left 0.5s;
+        max-width: 800px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
     }
-    
-    .booking-btn:hover::before {
-        left: 100%;
+
+    .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 999px;
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: #e2e8f0;
+        margin-bottom: 1.5rem;
+        width: fit-content;
     }
-    
-    .booking-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 15px 30px rgba(37, 211, 102, 0.4);
-        background: linear-gradient(135deg, #128C7E 0%, #075E54 100%);
+
+    .workshop-title {
+        font-size: clamp(2.5rem, 5vw, 3.5rem);
+        font-weight: 800;
+        line-height: 1.1;
+        margin-bottom: 1.5rem;
+        background: linear-gradient(to right, #ffffff, #e2e8f0);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
     }
-    
-    .booking-btn:active {
-        transform: translateY(0);
-        box-shadow: 0 5px 15px rgba(37, 211, 102, 0.3);
+
+    .workshop-excerpt {
+        font-size: 1.125rem;
+        line-height: 1.7;
+        color: #cbd5e1;
+        margin-bottom: 2.5rem;
+        max-width: 600px;
     }
-    
-    .prose ul > li::before {
-        background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+
+    .hero-stats {
+        display: flex;
+        gap: 2rem;
+        margin-bottom: 3rem;
+        flex-wrap: wrap;
     }
-    
-    
-    .content-card {
-        background: white;
-        border-radius: 1.5rem;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-        border: 1px solid #f3f4f6;
-        transition: all 0.3s ease;
-    }
-    
-    .content-card:hover {
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-        transform: translateY(-2px);
-    }
-    
-    .sidebar-card {
-        background: white;
-        border-radius: 1.5rem;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-        border: 1px solid #f3f4f6;
-        transition: all 0.3s ease;
-    }
-    
-    .sidebar-card:hover {
-        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
-    }
-    
-    .info-item {
+
+    .hero-stat-item {
         display: flex;
         align-items: center;
-        padding: 0.75rem 0;
-        border-bottom: 1px solid #f3f4f6;
-        transition: all 0.3s ease;
+        gap: 0.75rem;
     }
-    
-    .info-item:hover {
-        background: #f8fafc;
-        padding-right: 1rem;
-        border-radius: 0.5rem;
+
+    .hero-stat-icon {
+        width: 3rem;
+        height: 3rem;
+        border-radius: 1rem;
+        background: rgba(255, 255, 255, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.25rem;
+        color: var(--accent-color);
     }
-    
-    .info-item:last-child {
-        border-bottom: none;
+
+    .hero-stat-text {
+        display: flex;
+        flex-direction: column;
     }
-    
-    .info-icon {
+
+    .hero-stat-label {
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: #94a3b8;
+    }
+
+    .hero-stat-value {
+        font-weight: 700;
+        font-size: 1rem;
+        color: white;
+    }
+
+    /* Main Content Layout */
+    .content-wrapper {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 3rem 1rem;
+        display: grid;
+        grid-template-columns: 1fr 400px;
+        gap: 3rem;
+    }
+
+    /* Cards */
+    .content-card {
+        background: white;
+        border-radius: var(--radius-md);
+        padding: 2.5rem;
+        margin-bottom: 2rem;
+        box-shadow: var(--shadow-soft);
+        border: 1px solid #f1f5f9;
+    }
+
+    .section-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--text-main);
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    .section-icon {
+        color: var(--primary-color);
+        background: #e0f2fe;
         width: 2.5rem;
         height: 2.5rem;
         border-radius: 0.75rem;
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-inline-end: 1rem;
-        background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
-        color: white;
         font-size: 1.1rem;
-        box-shadow: 0 4px 15px rgba(249, 115, 22, 0.3);
+    }
+
+    .prose {
+        color: var(--text-muted);
+        line-height: 1.8;
+        font-size: 1.05rem;
+    }
+
+    /* Booking Sidebar */
+    .booking-sidebar {
+        position: sticky;
+        top: 2rem;
     }
 
     .booking-card {
-        padding: 0;
+        background: white;
+        border-radius: var(--radius-lg);
         overflow: hidden;
-        border: 1px solid rgba(249, 115, 22, 0.15);
-        border-radius: 1.75rem;
-        box-shadow: 0 25px 45px rgba(15, 23, 42, 0.08);
-        background: #fff;
-        width: 100%;
-        max-width: 520px;
-        margin-inline: auto;
+        box-shadow: 0 20px 50px -10px rgba(15, 76, 115, 0.15);
+        border: 1px solid rgba(15, 76, 115, 0.1);
     }
 
-    .booking-card-header {
-        background: radial-gradient(circle at top right, rgba(254, 215, 170, 0.85), rgba(249, 115, 22, 0.95));
-        padding: clamp(1.5rem, 2.8vw, 2.25rem);
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: clamp(1rem, 2.5vw, 1.5rem);
-        color: #fff;
-        flex-wrap: wrap;
+    .booking-header {
+        background: var(--primary-color);
+        padding: 2rem;
+        color: white;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
     }
 
-    .booking-card-eyebrow {
-        font-size: clamp(0.7rem, 1.2vw, 0.85rem);
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-        color: rgba(255, 255, 255, 0.85);
-        margin-bottom: 0.5rem;
-    }
-
-    .booking-card-title {
-        font-size: clamp(1.25rem, 2vw, 1.75rem);
-        font-weight: 700;
-        margin: 0;
-    }
-
-    .booking-card-subtitle {
-        margin-top: 0.5rem;
-        font-size: clamp(0.85rem, 1.5vw, 0.95rem);
-        color: rgba(255, 255, 255, 0.85);
-    }
-
-    .booking-status-pill {
-        border: 1px solid rgba(255, 255, 255, 0.35);
-        border-radius: 999px;
-        padding: 0.35rem 1.25rem;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        font-weight: 600;
-        font-size: clamp(0.75rem, 1.4vw, 0.95rem);
-        white-space: nowrap;
-    }
-
-    .booking-card-highlight {
-        padding: clamp(1.25rem, 2.6vw, 2rem) clamp(1.25rem, 2.6vw, 2.25rem) clamp(1rem, 2vw, 1.5rem);
-        background: linear-gradient(120deg, rgba(254, 249, 195, 0.8), rgba(255, 247, 237, 0.65));
-    }
-
-    .booking-price-label {
-        font-size: clamp(0.75rem, 1.3vw, 0.9rem);
-        color: #92400e;
+    .booking-header::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(circle at top right, rgba(255,255,255,0.1), transparent);
     }
 
     .booking-price {
-        font-size: clamp(1.8rem, 3vw, 2.4rem);
+        font-size: 2.5rem;
         font-weight: 800;
-        color: #ea580c;
-        margin: 0.35rem 0;
+        margin-bottom: 0.5rem;
+        position: relative;
     }
 
-    .booking-price-hint {
-        font-size: clamp(0.75rem, 1.3vw, 0.85rem);
-        color: #78350f;
+    .booking-body {
+        padding: 2rem;
     }
 
-    .booking-highlight-meta {
-        margin-top: 1.5rem;
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-        gap: clamp(0.75rem, 2vw, 1rem);
-    }
-
-    .booking-meta-label {
-        font-size: clamp(0.7rem, 1.1vw, 0.8rem);
-        color: #92400e;
-        letter-spacing: 0.05em;
-    }
-
-    .booking-meta-value {
-        font-size: clamp(1rem, 1.8vw, 1.15rem);
-        font-weight: 700;
-        color: #0f172a;
-        margin-top: 0.35rem;
-    }
-
-    .booking-card-body {
-        padding: clamp(1.25rem, 2.6vw, 2rem) clamp(1.25rem, 2.6vw, 2.25rem) 0;
-    }
-
-    .booking-methods-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-        gap: 1.25rem;
-    }
-
-    .booking-info-card {
-        border: 1px solid #f1f5f9;
-        border-radius: 1.25rem;
-        padding: clamp(0.75rem, 2vw, 1rem);
-        background: #fff;
-        display: flex;
-        align-items: center;
-        gap: clamp(0.75rem, 1.8vw, 0.85rem);
-        transition: border-color 0.3s ease, box-shadow 0.3s ease;
-        text-align: right;
-    }
-
-    .booking-info-card:hover {
-        border-color: rgba(249, 115, 22, 0.4);
-        box-shadow: 0 15px 25px rgba(15, 23, 42, 0.08);
-    }
-
-    .booking-info-icon {
-        width: clamp(2.5rem, 3vw, 3rem);
-        height: clamp(2.5rem, 3vw, 3rem);
-        border-radius: 0.9rem;
-        background: linear-gradient(135deg, #fed7aa, #fb923c);
-        color: #9a3412;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: clamp(1rem, 1.6vw, 1.2rem);
-        box-shadow: 0 10px 20px rgba(249, 115, 22, 0.25);
-        margin-left: 0.75rem;
-    }
-
-    .booking-info-label {
-        font-size: clamp(0.75rem, 1.2vw, 0.85rem);
-        color: #64748b;
-        margin-bottom: 0.15rem;
-    }
-
-    .booking-info-value {
-        font-size: clamp(0.95rem, 1.6vw, 1.05rem);
-        font-weight: 700;
-        color: #0f172a;
-    }
-
-    .booking-card-actions {
-        padding: clamp(1.25rem, 2.6vw, 2rem) clamp(1.25rem, 2.6vw, 2.25rem) clamp(1.75rem, 3vw, 2.5rem);
-        border-top: 1px solid #f1f5f9;
-        background: #fff;
-    }
-
-    .booking-action-hint {
-        margin-top: 0.75rem;
-        font-size: clamp(0.8rem, 1.3vw, 0.9rem);
-        color: #6b7280;
-        text-align: center;
-        line-height: 1.55;
-    }
-
-    .floating-booking-bar {
-        position: fixed;
-        left: 50%;
-        bottom: var(--floating-booking-desktop-offset, 1rem);
-        transform: translate(-50%, 0);
-        width: min(620px, calc(100% - 2.5rem));
-        z-index: 60;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        padding: 0.4rem 0.9rem;
-        border-radius: 1.25rem;
-        background: #fff;
-        box-shadow: 0 30px 65px rgba(15, 23, 42, 0.25);
-        border: 1px solid rgba(15, 23, 42, 0.08);
-        margin-bottom: env(safe-area-inset-bottom, 0);
-        transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease, bottom 0.3s ease;
-    }
-
-    .floating-booking-bar.is-hidden {
-        opacity: 0;
-        visibility: hidden;
-        pointer-events: none;
-        transform: translate(-50%, 1.5rem);
-    }
-
-    .floating-booking-price {
-        flex: 1;
+    .booking-features {
         display: flex;
         flex-direction: column;
-        gap: 0;
-        min-width: 0;
+        gap: 1rem;
+        margin-bottom: 2rem;
     }
 
-    .floating-booking-price-label {
-        font-size: 0.72rem;
-        font-weight: 600;
-        letter-spacing: 0.05em;
-        text-transform: uppercase;
-        color: #a16207;
+    .booking-feature {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem;
+        background: #f8fafc;
+        border-radius: 1rem;
+        transition: transform 0.2s;
     }
 
-    .floating-booking-price-value {
-        font-size: 1.05rem;
-        font-weight: 800;
-        color: #0f172a;
-        line-height: 1.1;
+    .booking-feature:hover {
+        transform: translateX(-5px);
+        background: #f1f5f9;
     }
 
-    .floating-booking-meta {
-        font-size: 0.78rem;
-        color: #475569;
-        font-weight: 600;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-    .floating-booking-btn {
-        display: inline-flex;
+    .feature-icon {
+        width: 2.5rem;
+        height: 2.5rem;
+        border-radius: 0.75rem;
+        background: white;
+        display: flex;
         align-items: center;
         justify-content: center;
-        gap: 0.5rem;
-        padding: 0.5rem 1rem;
-        border-radius: 999px;
-        background: linear-gradient(135deg, #fb923c, #ea580c);
-        color: #fff;
+        color: var(--primary-color);
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+
+    .booking-btn {
+        width: 100%;
+        padding: 1.25rem;
+        border-radius: 1rem;
         font-weight: 700;
-        font-size: 0.85rem;
-        text-decoration: none;
-        min-width: 120px;
-        line-height: 1;
-        box-shadow: 0 18px 35px rgba(249, 115, 22, 0.35);
+        font-size: 1.1rem;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
     }
 
-    .floating-booking-btn:focus-visible {
-        outline: 3px solid rgba(249, 115, 22, 0.35);
-        outline-offset: 3px;
+    .btn-primary {
+        background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+        color: white;
+        box-shadow: 0 10px 20px -5px rgba(15, 76, 115, 0.3);
     }
 
-    html[dir="rtl"] .floating-booking-bar {
-        flex-direction: row-reverse;
-        text-align: right;
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 15px 30px -5px rgba(15, 76, 115, 0.4);
     }
 
-    html[dir="rtl"] .floating-booking-btn i {
-        transform: rotate(180deg);
+    /* RTL Support */
+    html[dir="rtl"] .workshop-hero-bg::after {
+        background: linear-gradient(to left, rgba(11, 52, 79, 0.95) 30%, rgba(11, 52, 79, 0.7) 100%);
     }
 
-    html[dir="rtl"] .floating-booking-price {
-        align-items: flex-end;
+    html[dir="rtl"] .booking-feature:hover {
+        transform: translateX(5px);
     }
 
+    /* Responsive */
     @media (max-width: 1024px) {
-        .floating-booking-bar {
-            display: flex;
+        .content-wrapper {
+            grid-template-columns: 1fr;
         }
-
-        .floating-booking-meta {
-            font-size: 0.8rem;
-        }
-
-        .workshop-details-wrapper {
-            padding-bottom: 6.25rem;
+        
+        .booking-sidebar {
+            position: static;
         }
     }
 
     @media (max-width: 768px) {
-        .booking-card-header,
-        .booking-card-highlight,
-        .booking-card-body,
-        .booking-card-actions {
-            padding: 1.5rem;
+        .workshop-hero-content {
+            padding: 2rem;
         }
-
-        .booking-card-header {
-            flex-direction: column;
-            align-items: flex-start;
+        
+        .workshop-title {
+            font-size: 2rem;
         }
-
-        .booking-card-title {
-            font-size: 1.5rem;
-        }
-
-        .booking-highlight-meta {
-            grid-template-columns: 1fr;
-        }
-
-        .floating-booking-bar {
-            bottom: calc(var(--floating-booking-mobile-offset, 4.5rem) + env(safe-area-inset-bottom, 0));
-            padding: 0.75rem 1.25rem;
-        }
-
-        .floating-booking-btn {
-            padding: 0.7rem 1.35rem;
-            min-width: 145px;
+        
+        .hero-stats {
+            gap: 1rem;
         }
     }
     
+    /* Recipe Cards */
+    .recipe-card {
+        background: white;
+        border-radius: 1.25rem;
+        overflow: hidden;
+        border: 1px solid #f1f5f9;
+        transition: all 0.3s ease;
+    }
+    
+    .recipe-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-hover);
+    }
+    
+    .recipe-image-wrapper {
+        position: relative;
+        padding-top: 65%;
+        overflow: hidden;
+    }
+    
+    .recipe-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+    
+    .recipe-card:hover .recipe-image {
+        transform: scale(1.05);
+    }
+    
+    .recipe-content {
+        padding: 1.5rem;
+    }
+    
+    .recipe-title {
+        font-size: 1.1rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        color: var(--text-main);
+    }
+    
+    .recipe-meta {
+        display: flex;
+        gap: 1rem;
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        margin-top: 1rem;
+    }
+
+    /* Floating Bar */
+    .floating-booking-bar {
+        position: fixed;
+        inset-inline-start: 50%;
+        bottom: calc(1.1rem + var(--floating-booking-mobile-offset, 0px));
+        transform: translate3d(-50%, 0, 0);
+        background: rgba(255, 255, 255, 0.96);
+        padding: 0.9rem 1.5rem;
+        border-radius: 999px;
+        box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        z-index: 50;
+        border: 1px solid rgba(0,0,0,0.05);
+        width: 90%;
+        max-width: 520px;
+        transition:
+            transform 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+            opacity 0.3s ease,
+            box-shadow 0.3s ease;
+        will-change: transform, opacity;
+        backdrop-filter: blur(12px);
+    }
+
+    .floating-booking-bar.is-hidden {
+        transform: translate3d(-50%, 130%, 0);
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    .floating-booking-bar .floating-content {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        animation: floating-bar-fade-up 0.45s cubic-bezier(0.4, 0, 0.2, 1) both;
+    }
+
+    .floating-booking-bar .floating-info {
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
+        color: #0f172a;
+    }
+
+    .floating-booking-bar .floating-price {
+        font-weight: 800;
+        font-size: 1.15rem;
+    }
+
+    .floating-booking-bar .floating-meta {
+        font-size: 0.9rem;
+        color: #475569;
+    }
+
+    .floating-booking-bar .floating-btn {
+        min-width: 140px;
+        padding: 0.75rem 1.3rem;
+        border-radius: 999px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        background: linear-gradient(135deg, #0f4c73, #0d8b76);
+        color: #fff;
+        box-shadow: 0 14px 32px rgba(15, 76, 115, 0.28);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .floating-booking-bar .floating-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 18px 40px rgba(15, 76, 115, 0.32);
+    }
+
+    .floating-booking-bar .floating-btn i {
+        font-size: 0.95rem;
+    }
+
+    @keyframes floating-bar-fade-up {
+        0% {
+            opacity: 0;
+            transform: translate3d(0, 26%, 0);
+        }
+        70% {
+            opacity: 1;
+            transform: translate3d(0, -4%, 0);
+        }
+        100% {
+            opacity: 1;
+            transform: translate3d(0, 0, 0);
+        }
+    }
+
+    @media (max-width: 768px) {
+        .floating-booking-bar {
+            width: calc(100% - 2rem);
+            padding: 0.9rem 1.25rem;
+        }
+    }
+    
+    @media (min-width: 1024px) {
+        .floating-booking-bar {
+            display: none;
+        }
+    }
+
+    /* Additional details + related styling */
+    .additional-details-card {
+        position: relative;
+        overflow: hidden;
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 16px 32px rgba(15, 23, 42, 0.08);
+    }
+
+    .additional-details-card::before,
+    .additional-details-card::after {
+        content: none;
+    }
+
+    .additional-details-header {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .additional-details-icon {
+        width: 3rem;
+        height: 3rem;
+        border-radius: 1rem;
+        background: linear-gradient(140deg, var(--primary-color), #0d8b76);
+        color: #ffffff;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 14px 30px rgba(15, 76, 115, 0.28);
+    }
+
+    .additional-details-title {
+        font-weight: 800;
+        color: var(--primary-dark);
+        margin: 0;
+        line-height: 1.2;
+    }
+
+    .additional-details-sub {
+        color: var(--text-muted);
+        font-size: 0.95rem;
+        margin: 0.15rem 0 0;
+    }
+
+    .additional-details-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+        gap: 0.85rem;
+    }
+
+    .additional-detail {
+        display: flex;
+        gap: 0.75rem;
+        align-items: center;
+        padding: 0.9rem 1rem;
+        background: rgba(255, 255, 255, 0.92);
+        border-radius: 1rem;
+        border: 1px solid rgba(15, 76, 115, 0.1);
+        box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
+        backdrop-filter: blur(8px);
+    }
+
+    .additional-detail-icon {
+        width: 2.5rem;
+        height: 2.5rem;
+        border-radius: 0.85rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(145deg, var(--primary-color), #0d8b76);
+        color: #fff;
+        box-shadow: 0 12px 22px rgba(15, 76, 115, 0.24);
+    }
+
+    .additional-detail-label {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        margin-bottom: 0.25rem;
+    }
+
+    .additional-detail-value {
+        font-weight: 700;
+        color: var(--primary-dark);
+        margin: 0;
+    }
+
+    .related-workshops-section {
+        background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+        padding-block: 1rem 3rem;
+    }
+
+    .related-workshop-card {
+        border-radius: 1.25rem;
+        overflow: hidden;
+        border: 1px solid rgba(15, 76, 115, 0.08);
+        box-shadow: 0 16px 32px rgba(15, 23, 42, 0.08);
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
+        background: #ffffff;
+    }
+
+    .related-workshop-card a {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+
+    .related-workshop-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 24px 52px rgba(15, 76, 115, 0.16);
+    }
+
+    .related-workshop-card .p-6 {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        gap: 0.9rem;
+        background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    }
+
+    .related-price {
+        display: flex;
+        align-items: baseline;
+        gap: 0.35rem;
+        color: #0b344f;
+    }
+
+    .related-cta {
+        color: #c2410c;
+        font-weight: 700;
+    }
 </style>
 @endpush
 
@@ -1005,6 +686,13 @@
         : $notSpecifiedLabel;
     $legalTermsUrl = config('legal.terms_url') ?: route('legal.terms');
     $whatsappTermsLabel = __('workshops.whatsapp.terms_fallback', ['url' => $legalTermsUrl]);
+    $whatsappNumberDigits = preg_replace('/\D+/', '', data_get($whatsappBookingConfig ?? [], 'number', ''));
+    $whatsappQuickMessage = app()->isLocale('ar')
+        ? "مرحباً، أود حجز ورشة {$workshop->title} بتاريخ {$whatsappDateLabel} بقيمة {$whatsappPriceLabel}."
+        : "Hello, I'd like to book the workshop \"{$workshop->title}\" on {$whatsappDateLabel} (price {$whatsappPriceLabel}).";
+    $whatsappQuickLink = $whatsappNumberDigits
+        ? 'https://wa.me/'.$whatsappNumberDigits.'?text='.rawurlencode($whatsappQuickMessage)
+        : null;
     $isWorkshopFull = $workshop->max_participants && $workshop->bookings_count >= $workshop->max_participants;
     $userBookedViaWhatsapp = (bool) ($userBooking?->is_whatsapp_booking ?? false);
     $whatsappPendingApproval = $userBookedViaWhatsapp && ($userBooking?->status !== 'confirmed');
@@ -1071,588 +759,61 @@
     <!-- Workshop Hero Section -->
     <section class="workshop-hero-container">
         <div class="workshop-hero">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-0">
-                <!-- Workshop Info -->
-                <div class="p-8 lg:p-12 text-white flex flex-col justify-center workshop-hero-content">
-                    <div class="mb-8 space-y-4">
-                        <span class="bg-white/20 text-white text-sm font-semibold px-4 py-2 rounded-full inline-flex items-center gap-2">
-                            @if($workshop->is_featured)
-                                <i class="fas fa-star text-yellow-300"></i>
-                                {{ __('workshops.details.hero.featured_badge') }}
-                            @else
-                                {{ __('workshops.details.hero.default_badge') }}
-                            @endif
-                        </span>
-                        <h1 class="text-3xl lg:text-4xl font-bold leading-tight workshop-hero-title">
-                            {{ $workshop->title }}
-                        </h1>
-                        @if(! empty($workshop->description))
-                            <p class="text-lg text-amber-100 leading-relaxed workshop-hero-description">
-                                {{ $workshop->description }}
-                            </p>
-                        @endif
-                    </div>
-
-                    <!-- Compact Hero Details -->
-                    <div class="mb-8 workshop-hero-details">
-                        <div class="hero-detail-card">
-                            <div class="hero-detail-icon hero-detail-icon--date">
-                                <i class="fas fa-calendar-day"></i>
-                            </div>
-                            <div class="hero-detail-content">
-                                <span class="workshop-hero-meta-label">{{ __('workshops.details.hero.date_label') }}</span>
-                                <span class="hero-detail-value">{{ $workshopDateLabel }}</span>
-                            </div>
-                        </div>
-                        <div class="hero-detail-card">
-                            <div class="hero-detail-icon hero-detail-icon--time">
-                                <i class="fas fa-clock"></i>
-                            </div>
-                            <div class="hero-detail-content">
-                                <span class="workshop-hero-meta-label">{{ __('workshops.details.booking_card.hours_label') }}</span>
-                                <span class="hero-detail-value">{{ $workshopStartTimeLabel }} - {{ $workshopEndTimeLabel }}</span>
-                                @if($hostTimezoneDisplay)
-                                    <span class="hero-detail-extra">{{ $hostTimezoneDisplay }}</span>
-                                @endif
-                                @if($workshopStartIso)
-                                    <span
-                                        class="hero-detail-extra"
-                                        data-local-time
-                                        data-source-time="{{ $workshopStartIso }}"
-                                        data-label="{{ __('workshops.details.timezones.viewer_label') }}"
-                                        data-template="{{ __('workshops.details.timezones.viewer_timezone_template') }}"
-                                        data-fallback-timezone="{{ __('workshops.details.timezones.viewer_timezone_fallback') }}"
-                                        data-placeholder="{{ __('workshops.details.timezones.viewer_placeholder') }}"
-                                        data-locale="{{ app()->getLocale() }}"
-                                        data-format="datetime-full"
-                                    >{{ __('workshops.details.timezones.viewer_placeholder') }}</span>
-                                @endif
-                            </div>
-                        </div>
-                        <div class="hero-detail-card">
-                            <div class="hero-detail-icon hero-detail-icon--instructor">
-                                <i class="fas fa-chalkboard-teacher"></i>
-                            </div>
-                            <div class="hero-detail-content">
-                                <span class="workshop-hero-meta-label">{{ __('workshops.details.hero.instructor_label') }}</span>
-                                <span class="hero-detail-value">{{ $workshop->instructor ?? $notSpecifiedLabel }}</span>
-                            </div>
-                        </div>
-                        <div class="hero-detail-card">
-                            <div class="hero-detail-icon {{ $workshop->is_online ? 'hero-detail-icon--online' : 'hero-detail-icon--location' }}">
-                                <i class="fas {{ $workshop->is_online ? 'fa-video' : 'fa-map-marker-alt' }}"></i>
-                            </div>
-                            <div class="hero-detail-content">
-                                <span class="workshop-hero-meta-label">{{ __('workshops.details.hero.format_label') }}</span>
-                                <span class="hero-detail-value">{{ $workshop->is_online ? __('workshops.labels.online_workshop') : ($workshop->location ?? __('workshops.labels.offline_workshop')) }}</span>
-                                @if(!$workshop->is_online && $workshop->address)
-                                    <span class="hero-detail-extra">{{ $workshop->address }}</span>
-                                @endif
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 pt-2">
-                        <div class="text-3xl lg:text-4xl font-bold text-white">
-                            {{ $workshop->formatted_price }}
-                        </div>
-                        <a href="#booking-methods"
-                           class="inline-flex items-center justify-center gap-3 px-8 py-3 rounded-full bg-white/15 hover:bg-white/25 text-white font-semibold text-lg transition sm:w-auto"
-                           data-scroll-target="#booking-methods"
-                           data-scroll-fallback="#workshop-booking">
-                            <span>{{ __('workshops.details.booking_card.title') }}</span>
-                            <i class="fas {{ $arrowIcon }} text-sm"></i>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Workshop Image -->
-                <div class="relative h-64 lg:h-auto overflow-hidden">
-                    <img src="{{ $workshop->image ? asset('storage/' . $workshop->image) : 'https://placehold.co/800x600/f87171/FFFFFF?text=' . urlencode(__('workshops.labels.featured_placeholder_text')) }}" 
-                         alt="{{ $workshop->title }}" 
-                         class="workshop-image w-full h-full object-cover"
-                        onerror="this.src='{{ \App\Support\BrandAssets::logoAsset('webp') }}'; this.alt='{{ __('workshops.labels.fallback_image_alt') }}';"
-                         loading="lazy">
-                    <div class="absolute inset-0 bg-gradient-to-l from-transparent to-amber-500/20"></div>
-                    @if($workshop->is_fully_booked)
-                        <div class="absolute inset-0 bg-black/50 flex items-center justify-center">
-                            <span class="text-white text-2xl font-bold bg-red-500 px-6 py-3 rounded-full">
-                                {{ __('workshops.details.booking_status.full') }}
-                            </span>
-                        </div>
-                    @endif
-                </div>
+            <div class="workshop-hero-bg">
+                <img src="{{ $workshop->image ? asset('storage/' . $workshop->image) : 'https://placehold.co/800x600/f87171/FFFFFF?text=' . urlencode(__('workshops.labels.featured_placeholder_text')) }}" 
+                     alt="{{ $workshop->title }}"
+                     onerror="this.src='{{ \App\Support\BrandAssets::logoAsset('webp') }}';">
             </div>
-        </div>
-    </section>
+            
+            <div class="workshop-hero-content">
+                @if($workshop->is_featured)
+                    <div class="hero-badge">
+                        <i class="fas fa-star text-yellow-400"></i>
+                        <span>{{ __('workshops.details.hero.featured_badge') }}</span>
+                    </div>
+                @endif
 
-    <!-- Workshop Details -->
-    <section class="py-16 workshop-details-section">
-        <div class="container mx-auto px-4">
-            <div class="max-w-6xl mx-auto">
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 workshop-grid">
-                    <!-- Main Content -->
-                    <div class="lg:col-span-2 space-y-8 workshop-main-content">
-                        <!-- About Workshop -->
-                        <div class="content-card p-8 sm:p-10">
-                            <h2 class="text-3xl font-bold text-gray-900 mb-8 text-right flex items-center workshop-content-title">
-                                <div class="info-icon">
-                                    <i class="fas fa-info-circle"></i>
-                                </div>
-                                {{ __('workshops.details.sections.about') }}
-                            </h2>
-                            <div class="prose prose-lg max-w-none text-gray-700 text-right leading-relaxed workshop-content-text">
-                                {!! $workshop->content !!}
-                            </div>
+                <h1 class="workshop-title">
+                    {{ $workshop->title }}
+                </h1>
+
+                @if(! empty($workshop->description))
+                    <p class="workshop-excerpt">
+                        {{ $workshop->description }}
+                    </p>
+                @endif
+
+                <div class="hero-stats">
+                    <!-- Date -->
+                    <div class="hero-stat-item">
+                        <div class="hero-stat-icon">
+                            <i class="fas fa-calendar-day"></i>
                         </div>
-
-                        @if($workshop->what_you_will_learn)
-                            <div class="content-card p-8 sm:p-10">
-                                <h2 class="text-3xl font-bold text-gray-900 mb-8 text-right flex items-center workshop-content-title">
-                                    <div class="info-icon">
-                                        <i class="fas fa-graduation-cap"></i>
-                                    </div>
-                                    {{ __('workshops.details.sections.learn') }}
-                                </h2>
-                                <div class="prose prose-lg max-w-none text-gray-700 text-right leading-relaxed workshop-content-text">
-                                    {!! $workshop->what_you_will_learn !!}
-                                </div>
-                            </div>
-                        @endif
-
-                        @if($workshop->requirements)
-                            <div class="content-card p-8 sm:p-10">
-                                <h2 class="text-3xl font-bold text-gray-900 mb-8 text-right flex items-center workshop-content-title">
-                                    <div class="info-icon">
-                                        <i class="fas fa-list-check"></i>
-                                    </div>
-                                    {{ __('workshops.details.sections.requirements') }}
-                                </h2>
-                                <div class="prose prose-lg max-w-none text-gray-700 text-right leading-relaxed workshop-content-text">
-                                    {!! $workshop->requirements !!}
-                                </div>
-                            </div>
-                        @endif
-
-                        @if($workshop->materials_needed)
-                            <div class="content-card p-8 sm:p-10">
-                                <h2 class="text-3xl font-bold text-gray-900 mb-8 text-right flex items-center workshop-content-title">
-                                    <div class="info-icon">
-                                        <i class="fas fa-tools"></i>
-                                    </div>
-                                    {{ __('workshops.details.sections.materials') }}
-                                </h2>
-                                <div class="prose prose-lg max-w-none text-gray-700 text-right leading-relaxed workshop-content-text">
-                                    {!! $workshop->materials_needed !!}
-                                </div>
-                            </div>
-                        @endif
-
-                        @if($workshop->recipes && $workshop->recipes->count() > 0)
-                            <div class="content-card p-8 sm:p-10">
-                                <h2 class="text-3xl font-bold text-gray-900 mb-8 text-right flex items-center workshop-content-title">
-                                    <div class="info-icon">
-                                        <i class="fas fa-utensils"></i>
-                                    </div>
-                                    {{ __('workshops.details.sections.recipes') }}
-                                </h2>
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    @foreach($workshop->recipes as $recipe)
-                                        @php
-                                            $recipeMinutes = (int) ($recipe->prep_time ?? 0) + (int) ($recipe->cook_time ?? 0);
-                                        @endphp
-                                        <div class="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-                                            <a href="{{ route('recipe.show', $recipe->slug) }}" class="block group">
-                                                <div class="relative overflow-hidden">
-                                                    <img src="{{ $recipe->image_url ?: 'https://placehold.co/400x300/f87171/FFFFFF?text=' . urlencode(__('workshops.details.recipes.placeholder')) }}" 
-                                                         alt="{{ $recipe->title }}" 
-                                                         class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
-                                                        onerror="this.src='{{ \App\Support\BrandAssets::logoAsset('webp') }}'; this.alt='{{ __('workshops.labels.fallback_image_alt') }}';" loading="lazy">
-                                                    <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                                                    <div class="absolute bottom-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                                                        <div class="bg-white/90 backdrop-blur-sm rounded-full p-2">
-                                                            <i class="fas fa-arrow-left text-orange-500"></i>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="p-6">
-                                                    <h3 class="text-xl font-bold text-gray-900 mb-3 group-hover:text-orange-600 transition-colors line-clamp-2">
-                                                        {{ $recipe->title }}
-                                                    </h3>
-                                                    <p class="text-gray-600 text-sm mb-4 line-clamp-2">
-                                                        {{ Str::limit($recipe->description, 100) }}
-                                                    </p>
-                                                    <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
-                                                        <div class="flex items-center">
-                                                            <i class="fas fa-clock text-orange-500 ml-1"></i>
-                                                            <span>{{ __('workshops.details.recipes.minutes', ['count' => $recipeMinutes]) }}</span>
-                                                        </div>
-                                                        <div class="flex items-center">
-                                                            <i class="fas fa-users text-orange-500 ml-1"></i>
-                                                            <span>
-                                                                {{ $recipe->servings
-                                                                    ? __('workshops.details.recipes.servings', ['count' => (int) $recipe->servings])
-                                                                    : $notSpecifiedLabel }}
-                                                            </span>
-                                                        </div>
-                                                        <div class="flex items-center">
-                                                            <i class="fas fa-signal text-orange-500 ml-1"></i>
-                                                            <span>{{ $difficultyLabels[$recipe->difficulty] ?? $difficultyLabels['medium'] }}</span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="flex items-center justify-between">
-                                                        <div class="flex items-center text-orange-500">
-                                                            <i class="fas fa-user text-sm ml-1"></i>
-                                                            <span class="text-sm font-medium">{{ $recipe->author }}</span>
-                                                        </div>
-                                                        <span class="text-orange-500 font-semibold">
-                                                            <i class="fas {{ $arrowIcon }} text-xs {{ $isRtl ? 'mr-1' : 'ml-1' }}"></i>
-                                                            {{ __('workshops.details.recipes.view') }}
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                        </div>
-                                    @endforeach
-                                </div>
-                            </div>
-                        @endif
+                        <div class="hero-stat-text">
+                            <span class="hero-stat-label">{{ __('workshops.details.hero.date_label') }}</span>
+                            <span class="hero-stat-value">{{ $workshopDateLabel }}</span>
+                        </div>
                     </div>
 
-                    <!-- Sidebar -->
-                    <div class="space-y-8 workshop-sidebar">
-                        <div class="sidebar-card p-8" id="workshop-summary">
-                            <h3 class="text-2xl font-bold text-gray-900 mb-6 text-right flex items-center">
-                                <div class="info-icon">
-                                    <i class="fas fa-clipboard-list"></i>
-                                </div>
-                                {{ __('workshops.details.booking_card.summary.title') }}
-                            </h3>
-
-                            <div class="space-y-4">
-                                <div class="info-item">
-                                    <div class="info-icon">
-                                        <i class="fas fa-calendar-day"></i>
-                                    </div>
-                                    <div class="flex-1">
-                                        <p class="text-sm text-gray-500">{{ __('workshops.details.booking_card.summary.date') }}</p>
-                                        <p class="font-semibold text-gray-900">{{ $workshopDateLabel }}</p>
-                                    </div>
-                                </div>
-                                <div class="info-item">
-                                    <div class="info-icon">
-                                        <i class="fas fa-clock"></i>
-                                    </div>
-                                    <div class="flex-1">
-                                        <p class="text-sm text-gray-500">{{ __('workshops.details.booking_card.summary.start_time') }}</p>
-                                        <p class="font-semibold text-gray-900">{{ $workshopStartTimeLabel }} - {{ $workshopEndTimeLabel }}</p>
-                                    </div>
-                                </div>
-                                <div class="info-item">
-                                    <div class="info-icon">
-                                        <i class="fas fa-map-marker-alt"></i>
-                                    </div>
-                                    <div class="flex-1">
-                                        <p class="text-sm text-gray-500">{{ __('workshops.details.booking_card.summary.location') }}</p>
-                                        <p class="font-semibold text-gray-900">{{ $workshopLocationLabel }}</p>
-                                    </div>
-                                </div>
-                                <div class="info-item">
-                                    <div class="info-icon">
-                                        <i class="fas fa-chalkboard-teacher"></i>
-                                    </div>
-                                    <div class="flex-1">
-                                        <p class="text-sm text-gray-500">{{ __('workshops.details.booking_card.summary.instructor') }}</p>
-                                        <p class="font-semibold text-gray-900">{{ $workshop->instructor ?? $notSpecifiedLabel }}</p>
-                                    </div>
-                                </div>
-                                <div class="info-item">
-                                    <div class="info-icon">
-                                        <i class="fas fa-money-bill-wave"></i>
-                                    </div>
-                                    <div class="flex-1">
-                                        <p class="text-sm text-gray-500">{{ __('workshops.details.booking_card.summary.cost') }}</p>
-                                        <p class="font-semibold text-gray-900">{{ $workshop->formatted_price }}</p>
-                                    </div>
-                                </div>
-                            </div>
+                    <!-- Time -->
+                    <div class="hero-stat-item">
+                        <div class="hero-stat-icon">
+                            <i class="fas fa-clock"></i>
                         </div>
-
-                        <div id="workshop-booking" class="sidebar-card booking-section booking-card">
-                            <div class="booking-card-header text-right w-full">
-                                <div class="w-full">
-                                    <p class="booking-card-eyebrow">{{ __('workshops.details.booking_card.eyebrow') }}</p>
-                                    <h3 class="booking-card-title flex items-center gap-3 justify-end">
-                                        <i class="fas fa-calendar-check text-white text-xl"></i>
-                                        <span>{{ __('workshops.details.booking_card.title') }}</span>
-                                    </h3>
-                                    <p class="booking-card-subtitle">{{ __('workshops.details.booking_card.subtitle') }}</p>
-                                </div>
-                                <span class="booking-status-pill shrink-0 {{ $bookingStatusPill['classes'] }}">
-                                    <i class="fas fa-circle text-xs"></i>
-                                    {{ $bookingStatusPill['label'] }}
-                                </span>
-                            </div>
-                            <div class="booking-card-highlight text-right">
-                                <div>
-                                    <span class="booking-price-label">{{ __('workshops.details.booking_card.price_label') }}</span>
-                                    <p class="booking-price">{{ $workshop->formatted_price }}</p>
-                                    <p class="booking-price-hint">{{ __('workshops.details.booking_card.price_hint') }}</p>
-                                </div>
-                                <div class="booking-highlight-meta text-right">
-                                    <div>
-                                        <span class="booking-meta-label">{{ __('workshops.details.booking_card.deadline_label') }}</span>
-                                        <p class="booking-meta-value">{{ $workshopDeadlineLabel }}</p>
-                                    </div>
-                                    <div>
-                                        <span class="booking-meta-label">{{ __('workshops.details.hero.duration_label') }}</span>
-                                        <p class="booking-meta-value">{{ $workshop->formatted_duration ?: $notSpecifiedLabel }}</p>
-                                    </div>
-                                    @if($showAdminMetrics)
-                                        <div>
-                                            <span class="booking-meta-label">{{ __('workshops.details.booking_card.confirmed_label') }}</span>
-                                            <p class="booking-meta-value">{{ $workshop->bookings_count }}/{{ $workshop->max_participants ?? '—' }}</p>
-                                        </div>
-                                    @endif
-                                </div>
-                            </div>
-                            <div class="booking-card-body text-right">
-                                <div class="booking-info-card text-right">
-                                    <div class="booking-info-icon">
-                                        <i class="fas fa-door-open"></i>
-                                    </div>
-                                    <div>
-                                        <p class="booking-info-label">{{ __('workshops.details.booking_card.join_label') }}</p>
-                                        <p class="booking-info-value">{{ $workshop->is_online ? __('workshops.labels.online_workshop') : __('workshops.labels.offline_workshop') }}</p>
-                                        <p class="text-xs text-gray-500 mt-1">
-                                            {{ $workshop->is_online ? __('workshops.details.booking_card.join_hint_online') : __('workshops.details.booking_card.join_hint_offline') }}
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="booking-card-actions" id="booking-methods">
-                                <div id="booking-primary-action">
-                                @if($workshop->is_completed)
-                                    <button class="w-full bg-gray-300 text-gray-500 font-bold py-4 px-6 rounded-xl cursor-not-allowed text-lg booking-button">
-                                        <i class="fas fa-check-circle mr-2 rtl:ml-2"></i>
-                                        {{ __('workshops.details.booking_card.cta_completed') }}
-                                    </button>
-                                @elseif($userBooking)
-                                    @if($userBooking->status === 'confirmed')
-                                        @if($workshop->is_online && $workshop->meeting_link && $userBooking->public_code)
-                                            <a href="{{ $userBooking->secure_join_url }}" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 px-6 rounded-xl text-lg booking-button flex items-center justify-center gap-2">
-                                                <i class="fas fa-video mr-2 rtl:ml-2"></i>
-                                                <span>{{ __('workshops.details.booking_card.cta_join') }}</span>
-                                            </a>
-                                            <p class="booking-action-hint">
-                                                {{ __('workshops.details.booking_card.join_room_hint') }}
-                                            </p>
-                                        @else
-                                            <button class="w-full bg-green-500 text-white font-bold py-4 px-6 rounded-xl cursor-not-allowed text-lg booking-button" disabled>
-                                                <i class="fas fa-check mr-2 rtl:ml-2 booking-button-icon"></i>
-                                                <span class="booking-button-label">{{ __('workshops.details.booking_card.cta_confirmed') }}</span>
-                                            </button>
-                                            <p class="booking-action-hint">
-                                                {{ __('workshops.details.booking_card.confirmation_hint') }}
-                                            </p>
-                                        @endif
-                                    @else
-                                        <button class="w-full bg-yellow-400 text-yellow-900 font-bold py-4 px-6 rounded-xl cursor-not-allowed text-lg booking-button" disabled>
-                                            <i class="fas fa-hourglass-half mr-2 rtl:ml-2 booking-button-icon"></i>
-                                            <span class="booking-button-label">{{ __('workshops.details.booking_card.cta_pending') }}</span>
-                                        </button>
-                                        <p class="booking-action-hint">
-                                            {{ __('workshops.details.booking_card.pending_hint') }}
-                                        </p>
-                                    @endif
-                                @elseif($workshop->is_fully_booked)
-                                    <button class="w-full bg-gray-300 text-gray-500 font-bold py-4 px-6 rounded-xl cursor-not-allowed text-lg booking-button">
-                                        <i class="fas fa-times-circle mr-2 rtl:ml-2"></i>
-                                        {{ __('workshops.details.booking_card.cta_full') }}
-                                    </button>
-                                @elseif(! $workshop->is_registration_open)
-                                    <button class="w-full bg-yellow-400 text-yellow-800 font-bold py-4 px-6 rounded-xl cursor-not-allowed text-lg booking-button">
-                                        <i class="fas fa-clock mr-2 rtl:ml-2"></i>
-                                        {{ __('workshops.details.booking_card.cta_closed') }}
-                                    </button>
-                                @else
-                                    @guest
-                                        <button class="w-full bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-4 px-6 rounded-xl text-lg booking-button transition-all duration-300 transform hover:scale-105"
-                                                onclick="showLoginRequiredModal({{ $workshop->id }})">
-                                            <i class="fas fa-sign-in-alt mr-2 rtl:ml-2"></i>
-                                            {{ __('workshops.details.booking_card.login_required') }}
-                                        </button>
-                                        <p class="booking-action-hint">
-                                            {{ __('workshops.details.booking_card.login_hint') }}
-                                        </p>
-                                    @else
-                                        @if(! $onlinePaymentsEnabled)
-                                            <div class="bg-yellow-50 border border-yellow-100 rounded-2xl p-5 text-right">
-                                                <p class="text-yellow-900 font-semibold mb-1">{{ __('workshops.details.booking_card.payments_disabled_title') }}</p>
-                                                <p class="text-sm text-yellow-800">{{ __('workshops.details.booking_card.payments_disabled_hint') }}</p>
-                                            </div>
-                                        @else
-                                            <div class="space-y-6 text-right">
-                                                <div class="booking-methods-grid" id="booking-methods-grid">
-                                                    @if($stripeEnabled && ! $userBookedViaWhatsapp)
-                                                    <div class="rounded-2xl border border-indigo-100 bg-white p-6 shadow-sm space-y-5" id="stripe-checkout-card">
-                                                        <div class="flex items-center justify-between mb-2">
-                                                            <div>
-                                                                <p class="text-sm text-gray-500">{{ __('workshops.stripe.label') }}</p>
-                                                                <p class="text-lg font-bold text-gray-900">{{ __('workshops.stripe.title') }}</p>
-                                                            </div>
-                                                            <div class="text-indigo-500">
-                                                                <i class="fas fa-credit-card text-2xl"></i>
-                                                            </div>
-                                                        </div>
-                                                        <p class="text-sm text-gray-500">
-                                                            {{ __('workshops.stripe.description') }}
-                                                        </p>
-                                                        <div class="space-y-4">
-                                                            <div id="stripe-wallet-section" class="hidden rounded-xl border border-indigo-100 bg-indigo-50/60 p-4 space-y-3">
-                                                                <div class="flex items-center justify-between text-sm text-indigo-900 font-semibold">
-                                                                    <span>{{ __('workshops.stripe.wallet_label') }}</span>
-                                                                    <span class="text-xs font-normal text-indigo-500">{{ __('workshops.stripe.wallet_hint') }}</span>
-                                                                </div>
-                                                                <div id="stripe-wallet-button" class="min-h-[48px] flex items-center justify-center"></div>
-                                                                <p id="stripe-wallet-hint" class="hidden text-xs text-gray-500 text-center">
-                                                                    {{ __('workshops.stripe.wallet_hint') }}
-                                                                </p>
-                                                                <p id="stripe-wallet-unavailable" class="hidden text-xs text-amber-600 text-center">
-                                                                    {{ __('workshops.stripe.wallet_unavailable') }}
-                                                                </p>
-                                                            </div>
-                                                            <div class="rounded-xl border border-gray-200 bg-white p-4 shadow-inner">
-                                                                <div id="stripe-payment-element" class="min-h-[140px]"></div>
-                                                            </div>
-                                                            <p id="stripe-card-errors" class="hidden text-sm text-red-600 text-center" role="alert"></p>
-                                                            <p id="stripe-success-message" class="hidden text-sm text-green-600 text-center" role="status"></p>
-                                                            <button type="button"
-                                                                    id="stripe-submit-button"
-                                                                    class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3.5 px-4 rounded-xl booking-button flex items-center justify-center gap-2 transition disabled:opacity-50 disabled:cursor-not-allowed">
-                                                                <span id="stripe-submit-label">{{ __('workshops.stripe.pay_button') }}</span>
-                                                                <span id="stripe-submit-spinner" class="hidden items-center justify-center gap-2 text-sm">
-                                                                    <i class="fas fa-spinner fa-spin ml-1"></i>
-                                                                    {{ __('workshops.stripe.processing') }}
-                                                                </span>
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                    @if($whatsappButtonAvailable)
-                                                        <div class="rounded-2xl border border-green-100 bg-white p-6 shadow-sm space-y-4">
-                                                            <div class="js-whatsapp-pending-alert {{ $whatsappPendingApproval ? '' : 'hidden' }} rounded-2xl border border-amber-200 bg-amber-50/60 p-3 text-right flex items-start gap-3" data-workshop-id="{{ $workshop->id }}">
-                                                                <span class="w-10 h-10 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center">
-                                                                    <i class="fas fa-hourglass-half"></i>
-                                                                </span>
-                                                                <div class="flex-1">
-                                                                    <p class="text-sm font-semibold text-amber-800">{{ __('workshops.whatsapp.pending_badge') }}</p>
-                                                                    <p class="text-xs text-amber-700 mt-1">{{ __('workshops.whatsapp.pending_helper') }}</p>
-                                                                </div>
-                                                            </div>
-                                                            <p class="text-sm font-semibold text-gray-900 text-right flex items-center justify-end gap-2">
-                                                                <span class="js-whatsapp-section-label"
-                                                                      data-default-label="{{ __('workshops.whatsapp.button') }}"
-                                                                      data-followup-label="{{ __('workshops.whatsapp.followup_title') }}">
-                                                                    {{ $userBookedViaWhatsapp ? __('workshops.whatsapp.followup_title') : __('workshops.whatsapp.button') }}
-                                                            </span>
-                                                            <i class="fab fa-whatsapp text-green-500 text-lg"></i>
-                                                        </p>
-                                                            <div class="js-whatsapp-booking-section {{ $userBookedViaWhatsapp ? 'hidden' : '' }}" data-workshop-id="{{ $workshop->id }}">
-                                                                <button type="button"
-                                                                        class="w-full bg-white border border-green-200 text-green-700 font-bold py-3.5 px-4 rounded-xl booking-button flex items-center justify-center gap-2 js-whatsapp-booking"
-                                                                        data-workshop-id="{{ $workshop->id }}"
-                                                                        data-title="{{ e($workshop->title) }}"
-                                                                        data-price="{{ $whatsappPriceLabel }}"
-                                                                        data-date="{{ $whatsappDateLabel }}"
-                                                                        data-instructor="{{ $whatsappInstructorLabel }}"
-                                                                        data-location="{{ $whatsappLocationLabel }}"
-                                                                        data-deadline="{{ $whatsappDeadlineLabel }}"
-                                                                        data-topics="{{ e($whatsappTopicsLabel) }}"
-                                                                        data-requirements="{{ e($whatsappRequirementsLabel) }}"
-                                                                        data-duration="{{ e($whatsappDurationLabel) }}"
-                                                                        data-terms="{{ e($whatsappTermsLabel) }}">
-                                                                    <i class="fab fa-whatsapp text-xl booking-button-icon"></i>
-                                                                    <span class="booking-button-label">{{ __('workshops.whatsapp.button') }}</span>
-                                                                </button>
-                                                                <p class="text-xs text-gray-500 text-center">{{ __('workshops.whatsapp.helper') }}</p>
-                                                                <p class="text-xs text-amber-600 text-center">{{ __('workshops.whatsapp.note') }}</p>
-                                                            </div>
-                                                            <div class="js-whatsapp-inquiry-section {{ $userBookedViaWhatsapp ? '' : 'hidden' }} space-y-2" data-workshop-id="{{ $workshop->id }}">
-                                                                <button type="button"
-                                                                        class="w-full bg-emerald-50 border border-emerald-200 text-emerald-700 font-bold py-3.5 px-4 rounded-xl booking-button flex items-center justify-center gap-2 js-whatsapp-inquiry-button"
-                                                                        data-workshop-id="{{ $workshop->id }}"
-                                                                        data-workshop-title="{{ e($workshop->title) }}"
-                                                                        data-booking-code="{{ optional($userBooking)->public_code ?? '' }}">
-                                                                    <i class="fas fa-comments text-xl booking-button-icon"></i>
-                                                                    <span class="booking-button-label">{{ __('workshops.whatsapp.inquiry_button') }}</span>
-                                                                </button>
-                                                                <p class="text-xs text-gray-500 text-center">{{ __('workshops.whatsapp.inquiry_helper') }}</p>
-                                                            </div>
-                                                        </div>
-                                                    @endif
-                                                    @endif
-                                                </div>
-                                            </div>
-                                        @endif
-                                    @endguest
-                                @endif
-                                </div>
-                                @livewire('bookings.whatsapp-booking-verification', [
-                                    'workshopId' => $workshop->id,
-                                    'initialHasWhatsappBooking' => $userBookedViaWhatsapp,
-                                    'initialBookingId' => optional($userBooking)->id,
-                                    'stripeElementId' => 'stripe-checkout-card',
-                                ], key('whatsapp-verification-'.$workshop->id))
-                            </div>
+                        <div class="hero-stat-text">
+                            <span class="hero-stat-label">{{ __('workshops.details.booking_card.hours_label') }}</span>
+                            <span class="hero-stat-value">{{ $workshopStartTimeLabel }} - {{ $workshopEndTimeLabel }}</span>
                         </div>
-                        <div class="sidebar-card p-8" id="additional-details">
-                            <h3 class="text-2xl font-bold text-gray-900 mb-6 text-right flex items-center">
-                                <div class="info-icon">
-                                    <i class="fas fa-info-circle"></i>
-                                </div>
-                                {{ __('workshops.details.sidebar.title') }}
-                            </h3>
-                            
-                            <div class="space-y-4">
-                                <div class="info-item">
-                                    <div class="info-icon">
-                                        <i class="fas fa-tag"></i>
-                                    </div>
-                                    <div class="flex-1">
-                                        <p class="text-sm text-gray-500">{{ __('workshops.details.sidebar.category') }}</p>
-                                        <p class="font-semibold text-gray-900">{{ $workshop->category ?? $notSpecifiedLabel }}</p>
-                                    </div>
-                                </div>
-                                <div class="info-item">
-                                    <div class="info-icon">
-                                        <i class="fas fa-signal"></i>
-                                    </div>
-                                    <div class="flex-1">
-                                        <p class="text-sm text-gray-500">{{ __('workshops.details.sidebar.level') }}</p>
-                                        <p class="font-semibold text-gray-900">{{ $levelLabels[$workshop->level] ?? $levelLabels['beginner'] }}</p>
-                                    </div>
-                                </div>
-                                <div class="info-item">
-                                    <div class="info-icon">
-                                        <i class="fas fa-eye"></i>
-                                    </div>
-                                    <div class="flex-1">
-                                        <p class="text-sm text-gray-500">{{ __('workshops.details.sidebar.views') }}</p>
-                                        <p class="font-semibold text-gray-900">{{ $workshop->views_count }}</p>
-                                    </div>
-                                </div>
-                                @if($workshop->address)
-                                    <div class="info-item">
-                                        <div class="info-icon">
-                                            <i class="fas fa-map-marker-alt"></i>
-                                        </div>
-                                        <div class="flex-1">
-                                            <p class="text-sm text-gray-500">{{ __('workshops.details.sidebar.address') }}</p>
-                                            <p class="font-semibold text-gray-900">{{ $workshop->address }}</p>
-                                        </div>
-                                    </div>
-                                @endif
-                            </div>
+                    </div>
+
+                    <!-- Instructor -->
+                    <div class="hero-stat-item">
+                        <div class="hero-stat-icon">
+                            <i class="fas fa-chalkboard-teacher"></i>
+                        </div>
+                        <div class="hero-stat-text">
+                            <span class="hero-stat-label">{{ __('workshops.details.hero.instructor_label') }}</span>
+                            <span class="hero-stat-value">{{ $workshop->instructor ?? $notSpecifiedLabel }}</span>
                         </div>
                     </div>
                 </div>
@@ -1660,65 +821,412 @@
         </div>
     </section>
 
-    @if($relatedWorkshops->count() > 0)
-        <section class="py-20 related-workshops-section" style="background-color: #f3f4f6;">
-            <div class="container mx-auto px-4">
-                <div class="max-w-6xl mx-auto">
-                    <div class="text-center mb-16">
-                        <h2 class="text-4xl font-bold text-gray-900 mb-4 related-workshops-title">{{ __('workshops.details.related.title') }}</h2>
-                        <div class="w-24 h-1 bg-gradient-to-r from-orange-500 to-orange-600 mx-auto rounded-full"></div>
+    <!-- Workshop Details -->
+    <div class="content-wrapper">
+        <!-- Main Content -->
+        <div class="space-y-8">
+            <!-- About Workshop -->
+            <div class="content-card">
+                <h2 class="section-title">
+                    <div class="section-icon">
+                        <i class="fas fa-info-circle"></i>
                     </div>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 related-workshops-grid">
-                        @foreach($relatedWorkshops as $related)
-                             @php 
-                                $isFull = $related->bookings_count >= $related->max_participants; 
+                    {{ __('workshops.details.sections.about') }}
+                </h2>
+                <div class="prose">
+                    {!! $workshop->content !!}
+                </div>
+            </div>
+
+            @if($workshop->what_you_will_learn)
+                <div class="content-card">
+                    <h2 class="section-title">
+                        <div class="section-icon">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        {{ __('workshops.details.sections.learn') }}
+                    </h2>
+                    <div class="prose">
+                        {!! $workshop->what_you_will_learn !!}
+                    </div>
+                </div>
+            @endif
+
+            @if($workshop->requirements)
+                <div class="content-card">
+                    <h2 class="section-title">
+                        <div class="section-icon">
+                            <i class="fas fa-list-check"></i>
+                        </div>
+                        {{ __('workshops.details.sections.requirements') }}
+                    </h2>
+                    <div class="prose">
+                        {!! $workshop->requirements !!}
+                    </div>
+                </div>
+            @endif
+
+            @if($workshop->materials_needed)
+                <div class="content-card">
+                    <h2 class="section-title">
+                        <div class="section-icon">
+                            <i class="fas fa-tools"></i>
+                        </div>
+                        {{ __('workshops.details.sections.materials') }}
+                    </h2>
+                    <div class="prose">
+                        {!! $workshop->materials_needed !!}
+                    </div>
+                </div>
+            @endif
+
+            @if($workshop->recipes && $workshop->recipes->count() > 0)
+                <div class="content-card">
+                    <h2 class="section-title">
+                        <div class="section-icon">
+                            <i class="fas fa-utensils"></i>
+                        </div>
+                        {{ __('workshops.details.sections.recipes') }}
+                    </h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        @foreach($workshop->recipes as $recipe)
+                            @php
+                                $recipeMinutes = (int) ($recipe->prep_time ?? 0) + (int) ($recipe->cook_time ?? 0);
                             @endphp
-                            <div class="related-workshop bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden flex flex-col {{ $isFull ? 'opacity-70' : '' }} related-workshop-card">
-                                <a href="{{ route('workshop.show', $related->slug) }}" class="block group">
-                                    <div class="relative overflow-hidden">
-                                        <img src="{{ $related->image ? asset('storage/' . $related->image) : 'https://placehold.co/600x400/f87171/FFFFFF?text=' . urlencode(__('workshops.labels.card_placeholder_text')) }}" 
-                                             alt="{{ $related->title }}" 
-                                             class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300 related-workshop-image"
-                                            onerror="this.src='{{ \App\Support\BrandAssets::logoAsset('webp') }}'; this.alt='{{ __('workshops.labels.fallback_image_alt') }}';" loading="lazy">
-                                        <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                                        @if($isFull)
-                                            <span class="absolute top-3 left-3 bg-red-500 text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg">{{ __('workshops.details.related.badge_full') }}</span>
-                                        @elseif($related->is_online)
-                                            <span class="absolute top-3 left-3 bg-orange-500 text-white px-3 py-1 rounded-full text-xs font-semibold shadow-lg">{{ __('workshops.labels.online_short') }}</span>
-                                        @else
-                                            <span class="absolute top-3 left-3 bg-orange-600 text-white px-3 py-1 rounded-full text-xs font-semibold shadow-lg">{{ __('workshops.labels.onsite_short') }}</span>
-                                        @endif
-                                        <div class="absolute bottom-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                                            <div class="bg-white/90 backdrop-blur-sm rounded-full p-2">
-                                                <i class="fas {{ $arrowIcon }} text-orange-500"></i>
+                            <div class="recipe-card">
+                                <a href="{{ route('recipe.show', $recipe->slug) }}" class="block group">
+                                    <div class="recipe-image-wrapper">
+                                        <img src="{{ $recipe->image_url ?: 'https://placehold.co/400x300/f87171/FFFFFF?text=' . urlencode(__('workshops.details.recipes.placeholder')) }}" 
+                                             alt="{{ $recipe->title }}" 
+                                             class="recipe-image"
+                                            onerror="this.src='{{ \App\Support\BrandAssets::logoAsset('webp') }}';">
+                                    </div>
+                                    <div class="recipe-content">
+                                        <h3 class="recipe-title group-hover:text-amber-600 transition-colors">
+                                            {{ $recipe->title }}
+                                        </h3>
+                                        <p class="text-sm text-gray-500 line-clamp-2">
+                                            {{ Str::limit($recipe->description, 100) }}
+                                        </p>
+                                        <div class="recipe-meta">
+                                            <div class="flex items-center gap-1">
+                                                <i class="fas fa-clock text-amber-500"></i>
+                                                <span>{{ __('workshops.details.recipes.minutes', ['count' => $recipeMinutes]) }}</span>
+                                            </div>
+                                            <div class="flex items-center gap-1">
+                                                <i class="fas fa-signal text-amber-500"></i>
+                                                <span>{{ $difficultyLabels[$recipe->difficulty] ?? $difficultyLabels['medium'] }}</span>
                                             </div>
                                         </div>
                                     </div>
                                 </a>
-                                <div class="p-6 flex flex-col flex-grow related-workshop-content">
-                                    <h3 class="text-lg font-bold text-gray-900 mb-3 hover:text-orange-600 transition-colors line-clamp-2 related-workshop-title">
-                                        <a href="{{ route('workshop.show', $related->slug) }}">{{ $related->title }}</a>
-                                    </h3>
-                                    <div class="flex items-center text-sm text-gray-500 mb-4">
-                                        <div class="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center mr-3">
-                                            <i class="fas fa-user text-orange-500 text-xs"></i>
-                                        </div>
-                                        <span class="related-workshop-instructor">{{ $related->instructor }}</span>
-                                    </div>
-                                    <div class="mt-auto pt-4 border-t border-gray-100 flex items-center justify-between">
-                                        <div class="text-xl font-bold text-orange-500 related-workshop-price">
-                                            {{ $related->price }} <span class="text-sm font-medium text-gray-500">{{ $related->currency }}</span>
-                                        </div>
-                                        <a href="{{ route('workshop.show', $related->slug) }}" 
-                                           class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg font-semibold text-sm transition-colors duration-300 related-workshop-button">
-                                            {{ __('workshops.details.related.details') }} <i class="fas {{ $arrowIcon }} {{ $isRtl ? 'ml-1' : 'mr-1' }}"></i>
-                                        </a>
-                                    </div>
-                                </div>
                             </div>
                         @endforeach
                     </div>
+                </div>
+            @endif
+        </div>
+
+        <!-- Sidebar -->
+        <div class="booking-sidebar">
+            <div id="workshop-booking" class="booking-card">
+                <div class="booking-header">
+                    <div class="flex justify-between items-start mb-4">
+                        <span class="booking-status-pill {{ $bookingStatusPill['classes'] }}">
+                            <i class="fas fa-circle text-[0.6rem]"></i>
+                            {{ $bookingStatusPill['label'] }}
+                        </span>
+                    </div>
+                    
+                    <div class="booking-price">
+                        {{ $workshop->formatted_price }}
+                    </div>
+                    <p class="text-white/80 text-sm">{{ __('workshops.details.booking_card.price_hint') }}</p>
+                </div>
+
+                <div class="booking-body">
+                    <div class="booking-features">
+                        <div class="booking-feature">
+                            <div class="feature-icon">
+                                <i class="fas fa-calendar-day"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs text-gray-500 uppercase tracking-wider font-semibold">{{ __('workshops.details.booking_card.summary.date') }}</p>
+                                <p class="font-bold text-gray-900">{{ $workshopDateLabel }}</p>
+                            </div>
+                        </div>
+
+                        <div class="booking-feature">
+                            <div class="feature-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs text-gray-500 uppercase tracking-wider font-semibold">{{ __('workshops.details.booking_card.summary.start_time') }}</p>
+                                <p class="font-bold text-gray-900">{{ $workshopStartTimeLabel }}</p>
+                            </div>
+                        </div>
+
+                        <div class="booking-feature">
+                            <div class="feature-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs text-gray-500 uppercase tracking-wider font-semibold">{{ __('workshops.details.booking_card.summary.location') }}</p>
+                                <p class="font-bold text-gray-900">{{ $workshopLocationLabel }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="booking-actions" id="booking-methods">
+                        <div id="booking-primary-action">
+                        @if($workshop->is_completed)
+                            <button class="booking-btn bg-gray-100 text-gray-400 cursor-not-allowed">
+                                <i class="fas fa-check-circle"></i>
+                                {{ __('workshops.details.booking_card.cta_completed') }}
+                            </button>
+                        @elseif($userBooking)
+                            @if($userBooking->status === 'confirmed')
+                                @if($workshop->is_online && $workshop->meeting_link && $userBooking->public_code)
+                                    <a href="{{ $userBooking->secure_join_url }}" class="booking-btn btn-primary">
+                                        <i class="fas fa-video"></i>
+                                        <span>{{ __('workshops.details.booking_card.cta_join') }}</span>
+                                    </a>
+                                    <p class="booking-action-hint">
+                                        {{ __('workshops.details.booking_card.join_room_hint') }}
+                                    </p>
+                                @else
+                                    <button class="booking-btn bg-emerald-50 text-emerald-600 border border-emerald-100 cursor-not-allowed" disabled>
+                                        <i class="fas fa-check"></i>
+                                        <span>{{ __('workshops.details.booking_card.cta_confirmed') }}</span>
+                                    </button>
+                                    <p class="booking-action-hint">
+                                        {{ __('workshops.details.booking_card.confirmation_hint') }}
+                                    </p>
+                                @endif
+                            @else
+                                <button class="booking-btn bg-amber-50 text-amber-600 border border-amber-100 cursor-not-allowed" disabled>
+                                    <i class="fas fa-hourglass-half"></i>
+                                    <span>{{ __('workshops.details.booking_card.cta_pending') }}</span>
+                                </button>
+                                <p class="booking-action-hint">
+                                    {{ __('workshops.details.booking_card.pending_hint') }}
+                                </p>
+                            @endif
+                        @elseif($workshop->is_fully_booked)
+                            <button class="booking-btn bg-gray-100 text-gray-400 cursor-not-allowed">
+                                <i class="fas fa-times-circle"></i>
+                                {{ __('workshops.details.booking_card.cta_full') }}
+                            </button>
+                        @elseif(! $workshop->is_registration_open)
+                            <button class="booking-btn bg-amber-50 text-amber-600 cursor-not-allowed">
+                                <i class="fas fa-clock"></i>
+                                {{ __('workshops.details.booking_card.cta_closed') }}
+                            </button>
+                        @else
+                            @guest
+                                <button class="booking-btn btn-primary" onclick="showLoginRequiredModal({{ $workshop->id }})">
+                                    <i class="fas fa-sign-in-alt"></i>
+                                    {{ __('workshops.details.booking_card.login_required') }}
+                                </button>
+                                <p class="booking-action-hint">
+                                    {{ __('workshops.details.booking_card.login_hint') }}
+                                </p>
+                            @else
+                                @if(! $onlinePaymentsEnabled)
+                                    <div class="bg-amber-50 border border-amber-100 rounded-xl p-4 text-center">
+                                        <p class="text-amber-800 font-semibold">{{ __('workshops.details.booking_card.payments_disabled_title') }}</p>
+                                    </div>
+                                @else
+                                    <div class="space-y-4">
+                                        <div id="booking-methods-grid">
+                                            @if($stripeEnabled && ! $userBookedViaWhatsapp)
+                                            <div class="space-y-4" id="stripe-checkout-card">
+                                                <div id="stripe-wallet-section" class="hidden space-y-3">
+                                                    <div id="stripe-wallet-button" class="min-h-[48px]"></div>
+                                                    <p id="stripe-wallet-hint" class="hidden text-xs text-gray-500 text-center">
+                                                        {{ __('workshops.stripe.wallet_hint') }}
+                                                    </p>
+                                                </div>
+                                                
+                                                <div class="rounded-xl border border-gray-200 bg-gray-50 p-4">
+                                                    <div id="stripe-payment-element" class="min-h-[140px]"></div>
+                                                </div>
+                                                
+                                                <p id="stripe-card-errors" class="hidden text-sm text-red-600 text-center" role="alert"></p>
+                                                <p id="stripe-success-message" class="hidden text-sm text-green-600 text-center" role="status"></p>
+                                                
+                                                <button type="button"
+                                                        id="stripe-submit-button"
+                                                        class="booking-btn btn-primary disabled:opacity-50 disabled:cursor-not-allowed">
+                                                    <span id="stripe-submit-label">{{ __('workshops.stripe.pay_button') }}</span>
+                                                    <span id="stripe-submit-spinner" class="hidden items-center justify-center gap-2 text-sm">
+                                                        <i class="fas fa-spinner fa-spin"></i>
+                                                        {{ __('workshops.stripe.processing') }}
+                                                    </span>
+                                                </button>
+                                            </div>
+                                            @endif
+
+                                            @if($whatsappButtonAvailable)
+                                                <div class="mt-4 pt-4 border-t border-gray-100">
+                                                    <div class="js-whatsapp-pending-alert {{ $whatsappPendingApproval ? '' : 'hidden' }} mb-4 rounded-xl bg-amber-50 p-3 flex items-start gap-3" data-workshop-id="{{ $workshop->id }}">
+                                                        <i class="fas fa-hourglass-half text-amber-500 mt-1"></i>
+                                                        <div class="text-sm text-amber-800">
+                                                            <p class="font-semibold">{{ __('workshops.whatsapp.pending_badge') }}</p>
+                                                            <p>{{ __('workshops.whatsapp.pending_helper') }}</p>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="js-whatsapp-booking-section {{ $userBookedViaWhatsapp ? 'hidden' : '' }}" data-workshop-id="{{ $workshop->id }}">
+                                                        <a href="{{ $whatsappQuickLink ?? '#' }}"
+                                                           target="_blank"
+                                                           class="booking-btn bg-green-50 text-green-600 hover:bg-green-100 border border-green-200 js-whatsapp-booking"
+                                                           data-workshop-id="{{ $workshop->id }}"
+                                                           data-title="{{ e($workshop->title) }}"
+                                                           data-price="{{ $whatsappPriceLabel }}"
+                                                           data-date="{{ $whatsappDateLabel }}"
+                                                           data-instructor="{{ $whatsappInstructorLabel }}"
+                                                           data-location="{{ $whatsappLocationLabel }}"
+                                                           data-deadline="{{ $whatsappDeadlineLabel }}"
+                                                           data-topics="{{ e($whatsappTopicsLabel) }}"
+                                                           data-requirements="{{ e($whatsappRequirementsLabel) }}"
+                                                           data-duration="{{ e($whatsappDurationLabel) }}"
+                                                           data-terms="{{ e($whatsappTermsLabel) }}">
+                                                            <i class="fab fa-whatsapp text-xl"></i>
+                                                            <span>{{ __('workshops.whatsapp.button') }}</span>
+                                                        </a>
+                                                    </div>
+                                                    
+                                                    <div class="js-whatsapp-inquiry-section {{ $userBookedViaWhatsapp ? '' : 'hidden' }} mt-2" data-workshop-id="{{ $workshop->id }}">
+                                                        <button type="button"
+                                                                class="w-full text-sm text-gray-500 hover:text-gray-700 font-medium py-2 flex items-center justify-center gap-2 js-whatsapp-inquiry-button"
+                                                                data-workshop-id="{{ $workshop->id }}"
+                                                                data-workshop-title="{{ e($workshop->title) }}"
+                                                                data-booking-code="{{ optional($userBooking)->public_code ?? '' }}">
+                                                            <i class="fas fa-comments"></i>
+                                                            <span>{{ __('workshops.whatsapp.inquiry_button') }}</span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            @endif
+                                        </div>
+                                    </div>
+                                @endif
+                            @endguest
+                        @endif
+                        </div>
+                        @livewire('bookings.whatsapp-booking-verification', [
+                            'workshopId' => $workshop->id,
+                            'initialHasWhatsappBooking' => $userBookedViaWhatsapp,
+                            'initialBookingId' => optional($userBooking)->id,
+                            'stripeElementId' => 'stripe-checkout-card',
+                        ], key('whatsapp-verification-'.$workshop->id))
+                    </div>
+                </div>
+            </div>
+
+            <!-- Additional Details Card -->
+            <div class="content-card additional-details-card mt-6">
+                <div class="additional-details-header">
+                    <div class="additional-details-icon">
+                        <i class="fas fa-info"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs font-semibold uppercase tracking-[0.08em] text-amber-600 mb-1">
+                            {{ __('workshops.details.sidebar.title') }}
+                        </p>
+                        <p class="additional-details-title">{{ $workshop->title }}</p>
+                        <p class="additional-details-sub">{{ $workshop->location ?? $workshopLocationLabel }}</p>
+                    </div>
+                </div>
+                <div class="additional-details-grid">
+                    <div class="additional-detail">
+                        <div class="additional-detail-icon">
+                            <i class="fas fa-tag"></i>
+                        </div>
+                        <div>
+                            <p class="additional-detail-label">{{ __('workshops.details.sidebar.category') }}</p>
+                            <p class="additional-detail-value">{{ $workshop->category ?? $notSpecifiedLabel }}</p>
+                        </div>
+                    </div>
+                    <div class="additional-detail">
+                        <div class="additional-detail-icon">
+                            <i class="fas fa-layer-group"></i>
+                        </div>
+                        <div>
+                            <p class="additional-detail-label">{{ __('workshops.details.sidebar.level') }}</p>
+                            <p class="additional-detail-value">{{ $levelLabels[$workshop->level] ?? $levelLabels['beginner'] }}</p>
+                        </div>
+                    </div>
+                    <div class="additional-detail">
+                        <div class="additional-detail-icon">
+                            <i class="fas fa-eye"></i>
+                        </div>
+                        <div>
+                            <p class="additional-detail-label">{{ __('workshops.details.sidebar.views') }}</p>
+                            <p class="additional-detail-value">{{ $workshop->views_count }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if($relatedWorkshops->count() > 0)
+        <section class="related-workshops-section">
+            <div class="content-wrapper">
+                <div class="text-center mb-12">
+                    <h2 class="section-title justify-center text-3xl mb-4">{{ __('workshops.details.related.title') }}</h2>
+                    <div class="w-24 h-1 bg-gradient-to-r from-amber-500 to-orange-600 mx-auto rounded-full"></div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    @foreach($relatedWorkshops as $related)
+                         @php 
+                            $isFull = $related->bookings_count >= $related->max_participants; 
+                        @endphp
+                        <div class="related-workshop-card group {{ $isFull ? 'opacity-75' : '' }}">
+                            <a href="{{ route('workshop.show', $related->slug) }}" class="block">
+                                <div class="relative overflow-hidden">
+                                    <img src="{{ $related->image ? asset('storage/' . $related->image) : 'https://placehold.co/600x400/f87171/FFFFFF?text=' . urlencode(__('workshops.labels.card_placeholder_text')) }}" 
+                                         alt="{{ $related->title }}" 
+                                         class="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-500"
+                                        onerror="this.src='{{ \App\Support\BrandAssets::logoAsset('webp') }}';">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity"></div>
+                                    
+                                    @if($isFull)
+                                        <span class="absolute top-4 left-4 bg-red-500 text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg">{{ __('workshops.details.related.badge_full') }}</span>
+                                    @elseif($related->is_online)
+                                        <span class="absolute top-4 left-4 bg-amber-500 text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg">{{ __('workshops.labels.online_short') }}</span>
+                                    @else
+                                        <span class="absolute top-4 left-4 bg-orange-600 text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg">{{ __('workshops.labels.onsite_short') }}</span>
+                                    @endif
+                                </div>
+                                
+                                <div class="p-6">
+                                    <h3 class="text-xl font-bold text-gray-900 mb-3 group-hover:text-amber-600 transition-colors line-clamp-2">
+                                        {{ $related->title }}
+                                    </h3>
+                                    
+                                    <div class="flex items-center text-sm text-gray-500 mb-4">
+                                        <i class="fas fa-chalkboard-teacher text-amber-500 ml-2"></i>
+                                        <span>{{ $related->instructor }}</span>
+                                    </div>
+                                    
+                                    <div class="flex items-center justify-between pt-4 border-t border-gray-100">
+                                        <div class="related-price">
+                                            <span class="text-xl font-bold">{{ $related->price }}</span>
+                                            <span class="text-xs font-normal text-gray-500">{{ $related->currency }}</span>
+                                        </div>
+                                        <span class="related-cta text-sm group-hover:translate-x-[-4px] transition-transform flex items-center gap-1">
+                                            {{ __('workshops.details.related.details') }}
+                                            <i class="fas {{ $arrowIcon }}"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    @endforeach
                 </div>
             </div>
         </section>
@@ -1726,28 +1234,26 @@
 </div>
 
 @if($showFloatingBookingButton)
-    <div class="floating-booking-bar" role="region" aria-label="{{ __('workshops.details.booking_card.title') }}">
-        <div class="floating-booking-price">
-            <span class="floating-booking-price-label">{{ __('workshops.details.booking_card.price_label') }}</span>
-            <span class="floating-booking-price-value">{{ $workshop->formatted_price }}</span>
-            <span class="floating-booking-meta">
-                @if($workshop->max_participants)
-                    {{ $workshop->bookings_count }}/{{ $workshop->max_participants }} {{ __('workshops.labels.participants') }}
-                @else
-                    {{ $workshopDateLabel }} · {{ $workshopStartTimeLabel }}
-                @endif
-            </span>
+    <div class="floating-booking-bar">
+        <div class="floating-content">
+            <div class="floating-info">
+                <span class="floating-price">{{ $workshop->formatted_price }}</span>
+                <span class="floating-meta">
+                    @if($workshop->max_participants)
+                        {{ $workshop->bookings_count }}/{{ $workshop->max_participants }} {{ __('workshops.labels.participants') }}
+                    @else
+                        {{ $workshopDateLabel }}
+                    @endif
+                </span>
+            </div>
+            <a href="#stripe-checkout-card" 
+               class="floating-btn"
+               data-scroll-target="#stripe-checkout-card"
+               data-scroll-fallback="#workshop-booking">
+                <span>{{ __('workshops.cards.button_book') }}</span>
+                <i class="fas {{ $arrowIcon }}"></i>
+            </a>
         </div>
-        <a
-            href="#stripe-checkout-card"
-            class="floating-booking-btn"
-            aria-label="{{ __('workshops.cards.button_book') }}"
-            data-scroll-target="#stripe-checkout-card"
-            data-scroll-fallback="#workshop-booking"
-        >
-            <span>{{ __('workshops.cards.button_book') }}</span>
-            <i class="fas {{ $arrowIcon }}" aria-hidden="true"></i>
-        </a>
     </div>
 @endif
 @endsection
@@ -1899,6 +1405,36 @@ function updateBookingPrimaryAction(joinUrl) {
     return true;
 }
 
+let bookingRefreshFallbackBound = false;
+
+function registerBookingRefreshFallback() {
+    if (bookingRefreshFallbackBound) {
+        return;
+    }
+
+    const reloadIfPending = () => {
+        if (window.__bookingRefreshPending__) {
+            window.__bookingRefreshPending__ = false;
+
+            if (window.__bookingStatusRefreshTimer__) {
+                clearTimeout(window.__bookingStatusRefreshTimer__);
+            }
+
+            window.location.reload();
+        }
+    };
+
+    document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') {
+            reloadIfPending();
+        }
+    });
+
+    window.addEventListener('focus', reloadIfPending);
+
+    bookingRefreshFallbackBound = true;
+}
+
 function scheduleBookingStatusRefresh(delay = 2500) {
     const refreshDelay = Number.isFinite(delay) ? delay : Number(delay);
     const finalDelay = Number.isFinite(refreshDelay) && refreshDelay >= 0 ? refreshDelay : 2500;
@@ -1907,7 +1443,11 @@ function scheduleBookingStatusRefresh(delay = 2500) {
         clearTimeout(window.__bookingStatusRefreshTimer__);
     }
 
+    window.__bookingRefreshPending__ = true;
+    registerBookingRefreshFallback();
+
     window.__bookingStatusRefreshTimer__ = window.setTimeout(() => {
+        window.__bookingRefreshPending__ = false;
         window.location.reload();
     }, finalDelay);
 }
@@ -1935,9 +1475,7 @@ function handlePaymentSuccess(payload) {
         showCustomAlert(alertMessage, 'success');
         const actionUpdated = updateBookingPrimaryAction(joinLink);
 
-        if (!actionUpdated) {
-            scheduleBookingStatusRefresh();
-        }
+        scheduleBookingStatusRefresh(actionUpdated ? 2000 : undefined);
 
         return;
     }
@@ -1951,7 +1489,7 @@ function handlePaymentSuccess(payload) {
             window.location.href = redirectTarget;
         }, 1200);
     } else {
-        setTimeout(() => window.location.reload(), 1500);
+        scheduleBookingStatusRefresh(1500);
     }
 }
 
@@ -2788,5 +2326,13 @@ if (document.readyState === 'loading') {
         </script>
     @endpush
 @endif
+
+
+
+
+
+
+
+
 
 

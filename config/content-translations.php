@@ -15,7 +15,7 @@ return [
 
     'locales' => [
         'en' => [
-            'موقع وصفه - دليلك لعالم الحلويات' => 'Wasfah - Your dessert companion',
+            'Peahskill - دليلك لعالم الحلويات' => 'Peahskill - Your dessert companion',
             'قسم المحتوى الرئيسي' => 'Primary content section',
             'القسم الرئيسي' => 'Main section',
             'قسم أحدث الوصفات' => 'Latest recipes section',

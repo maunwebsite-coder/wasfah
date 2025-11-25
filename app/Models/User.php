@@ -22,6 +22,8 @@ class User extends Authenticatable
 
     protected static bool $googleEmailColumnChecked = false;
     protected static bool $googleEmailColumnExists = false;
+    protected static bool $googleCalendarColumnChecked = false;
+    protected static bool $googleCalendarColumnExists = false;
 
     /**
      * The attributes that are mass assignable.
@@ -32,6 +34,12 @@ class User extends Authenticatable
         'name',
         'email',
         'google_email',
+        'google_calendar_email',
+        'google_calendar_id',
+        'google_calendar_access_token',
+        'google_calendar_refresh_token',
+        'google_calendar_token_expires_at',
+        'google_calendar_scopes',
         'password',
         'phone',
         'timezone',
@@ -77,6 +85,8 @@ class User extends Authenticatable
         'password',
         'remember_token',
         'provider_token',
+        'google_calendar_access_token',
+        'google_calendar_refresh_token',
     ];
 
     /**
@@ -101,6 +111,7 @@ class User extends Authenticatable
             'referral_commission_rate' => 'decimal:2',
             'referral_skip_platform_fee' => 'boolean',
             'policies_accepted_at' => 'datetime',
+            'google_calendar_token_expires_at' => 'datetime',
         ];
     }
 
@@ -125,6 +136,26 @@ class User extends Authenticatable
     }
 
     /**
+     * Determine whether the users table has the google_calendar_email column.
+     */
+    public static function hasGoogleCalendarColumn(): bool
+    {
+        if (! static::$googleCalendarColumnChecked) {
+            try {
+                $model = new static();
+                static::$googleCalendarColumnExists = Schema::connection($model->getConnectionName())
+                    ->hasColumn($model->getTable(), 'google_calendar_email');
+            } catch (\Throwable $exception) {
+                static::$googleCalendarColumnExists = false;
+            }
+
+            static::$googleCalendarColumnChecked = true;
+        }
+
+        return static::$googleCalendarColumnExists;
+    }
+
+    /**
      * Columns needed when eager loading a chef for hosting flows.
      *
      * @return array<int, string>
@@ -132,6 +163,10 @@ class User extends Authenticatable
     public static function columnsForHostContext(): array
     {
         $columns = ['id', 'name', 'email'];
+
+        if (static::hasGoogleCalendarColumn()) {
+            $columns[] = 'google_calendar_email';
+        }
 
         if (static::hasGoogleEmailColumn()) {
             $columns[] = 'google_email';
@@ -229,12 +264,11 @@ class User extends Authenticatable
     public function hasCompletedChefProfile(): bool
     {
         $hasPhone = filled($this->phone) && filled($this->phone_country_code) && filled($this->country_code);
-        $hasSocialPresence = filled($this->instagram_url) || filled($this->youtube_url);
 
         $hasGoogleEmail = filled($this->google_email)
             && filter_var($this->google_email, FILTER_VALIDATE_EMAIL);
 
-        return $hasPhone && $hasSocialPresence && $hasGoogleEmail;
+        return $hasPhone && $hasGoogleEmail;
     }
 
     /**
@@ -242,7 +276,9 @@ class User extends Authenticatable
      */
     public function preferredGoogleEmail(): ?string
     {
-        $email = $this->google_email ?: $this->email;
+        $email = $this->google_calendar_email
+            ?: $this->google_email
+            ?: $this->email;
 
         if (!is_string($email)) {
             return null;
@@ -251,6 +287,66 @@ class User extends Authenticatable
         $normalized = strtolower(trim($email));
 
         return filter_var($normalized, FILTER_VALIDATE_EMAIL) ? $normalized : null;
+    }
+
+    /**
+     * Determine if the user has connected a Google Calendar account with a refresh token.
+     */
+    public function hasGoogleCalendarCredentials(): bool
+    {
+        return !empty($this->google_calendar_refresh_token)
+            && (bool) ($this->google_calendar_email ?? $this->google_calendar_id ?? $this->google_email ?? $this->email);
+    }
+
+    /**
+     * Build a credentials array for using the Google Meet service on behalf of this user.
+     */
+    public function googleMeetCredentials(?string $calendarId = null): ?array
+    {
+        if (! $this->hasGoogleCalendarCredentials()) {
+            return null;
+        }
+
+        $resolvedCalendarId = $calendarId
+            ?: $this->google_calendar_id
+            ?: $this->google_calendar_email
+            ?: $this->preferredGoogleEmail();
+
+        $organizerEmail = $this->google_calendar_email
+            ?: $this->google_email
+            ?: $this->email;
+
+        if (!$resolvedCalendarId || !$organizerEmail) {
+            return null;
+        }
+
+        // Use the same client ID/Secret that Socialite uses for the user flow
+        $clientId = config('services.google.client_id') ?? config('services.google_meet.client_id');
+        $clientSecret = config('services.google.client_secret') ?? config('services.google_meet.client_secret');
+
+        return [
+            'client_id' => $clientId,
+            'client_secret' => $clientSecret,
+            'refresh_token' => $this->google_calendar_refresh_token,
+            'calendar_id' => $resolvedCalendarId,
+            'organizer_email' => $organizerEmail,
+            'timezone' => $this->timezone ?: config('services.google_meet.timezone'),
+            'default_duration' => config('services.google_meet.default_duration'),
+        ];
+    }
+
+    /**
+     * Disconnect Google Calendar by clearing stored credentials.
+     */
+    public function disconnectGoogleCalendar(): void
+    {
+        $this->forceFill([
+            'google_calendar_access_token' => null,
+            'google_calendar_refresh_token' => null,
+            'google_calendar_token_expires_at' => null,
+            'google_calendar_id' => null,
+            'google_calendar_email' => null,
+        ])->save();
     }
 
     /**
@@ -311,7 +407,7 @@ class User extends Authenticatable
     }
 
     /**
-     * صفحة روابط Wasfah الخاصة بالشيف.
+     * صفحة روابط Peahskill الخاصة بالشيف.
      */
     public function linkPage()
     {
@@ -329,18 +425,20 @@ class User extends Authenticatable
             return $existing;
         }
 
+        $brandName = config('app.name', 'Peahskill');
+
         $page = $this->linkPage()->create([
-            'headline' => 'روابط Wasfah الخاصة بـ ' . ($this->name ?? 'الشيف'),
+            'headline' => 'روابط ' . $brandName . ' الخاصة بـ ' . ($this->name ?? 'الشيف'),
             'subheadline' => 'كل الروابط الهامة في مكان واحد.',
             'bio' => null,
             'cta_label' => 'تصفح وصفاتي',
             'cta_url' => route('chefs.show', ['chef' => $this->id]),
-            'accent_color' => '#f97316',
+            'accent_color' => '#0f4c73',
         ]);
 
         $defaultLinks = collect([
             [
-                'title' => 'صفحتي على Wasfah',
+                'title' => 'صفحتي على ' . $brandName,
                 'subtitle' => 'اكتشف كل وصفاتي المنشورة',
                 'url' => route('chefs.show', ['chef' => $this->id]),
                 'icon' => 'fas fa-utensils',
@@ -554,3 +652,4 @@ class User extends Authenticatable
         return $this->unreadNotifications()->count();
     }
 }
+

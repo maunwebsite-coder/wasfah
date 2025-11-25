@@ -3,29 +3,29 @@
 return [
     'terms' => [
         'meta' => [
-            'title' => 'Terms of Service – Wasfah',
+            'title' => 'Terms of Service – Peahskill',
         ],
         'hero' => [
             'eyebrow' => 'Terms of Service',
-            'title' => 'Terms of Service – Wasfah',
-            'description' => 'By using wasfah.ae and its applications you agree to the following conditions that govern our relationship with you.',
+            'title' => 'Terms of Service – Peahskill',
+            'description' => 'By using Peahskill and its applications you agree to the following conditions that govern our relationship with you.',
         ],
         'sections' => [
             [
                 'title' => '1. Accounts and registration',
-                'body' => 'Information you share with us must be accurate and complete. Wasfah may refuse or suspend any account that violates policies or provides misleading data.',
+                'body' => 'Information you share with us must be accurate and complete. Peahskill may refuse or suspend any account that violates policies or provides misleading data.',
             ],
             [
                 'title' => '2. Content and intellectual property',
-                'body' => 'Recipe, photo, and workshop rights remain protected under applicable laws. Uploading content grants us a non-exclusive license to display it within the platform.',
+                'body' => 'Content rights (including guides, media, and experiences) remain protected under applicable laws. Uploading content grants us a non-exclusive license to display it within the platform.',
             ],
             [
                 'title' => '3. Payments and bookings',
-                'body' => 'Purchasing workshops or tools is subject to our payment and refund policies. Cancellation fees may apply if you withdraw after the specified deadline.',
+                'body' => 'Purchasing experiences or tools is subject to our payment and refund policies. Cancellation fees may apply if you withdraw after the specified deadline.',
             ],
             [
                 'title' => '4. Acceptable use',
-                'body' => 'Any abusive, misleading, or infringing use of Wasfah services is prohibited. We reserve the right to suspend accounts that violate these rules.',
+                'body' => 'Any abusive, misleading, or infringing use of Peahskill services is prohibited. We reserve the right to suspend accounts that violate these rules.',
             ],
             [
                 'title' => '5. Liability and updates',
@@ -35,18 +35,18 @@ return [
         'footnote' => [
             'updated_label' => 'Last updated',
             'contact_label' => 'Legal inquiries',
-            'contact_email' => 'legal@wasfah.ae',
+            'contact_email' => 'legal@peahskill.com',
         ],
     ],
 
     'privacy' => [
         'meta' => [
-            'title' => 'Privacy Policy – Wasfah',
+            'title' => 'Privacy Policy – Peahskill',
         ],
         'hero' => [
             'eyebrow' => 'Privacy Policy',
-            'title' => 'Privacy Policy – Wasfah',
-            'description' => 'We protect your personal data and outline below how it is collected, used, and stored when you interact with wasfah.ae.',
+            'title' => 'Privacy Policy – Peahskill',
+            'description' => 'We protect your personal data and outline below how it is collected, used, and stored when you interact with Peahskill.',
         ],
         'sections' => [
             [
@@ -55,7 +55,7 @@ return [
             ],
             [
                 'title' => '2. How we use it',
-                'body' => 'We use your data to manage accounts, process payments, send notifications, and improve recipe and workshop content.',
+                'body' => 'We use your data to manage accounts, process payments, send notifications, and improve guides, tools, and experiences.',
             ],
             [
                 'title' => '3. Data sharing',
@@ -72,6 +72,6 @@ return [
         ],
         'updated_label' => 'Last updated',
         'contact_label' => 'Privacy requests',
-        'contact_email' => 'privacy@wasfah.ae',
+        'contact_email' => 'privacy@peahskill.com',
     ],
 ];

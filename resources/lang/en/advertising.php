@@ -2,24 +2,24 @@
 
 return [
     'meta' => [
-        'title' => 'Advertise with Wasfah',
+        'title' => 'Advertise with Peahskill',
     ],
 
     'hero' => [
         'title' => 'Advertise with us',
-        'subtitle' => 'Promote your product or service on Wasfah and reach thousands of dessert lovers across the region.',
+        'subtitle' => 'Promote your product or service on Peahskill and reach thousands of engaged learners and teams across the region.',
     ],
 
     'why' => [
-        'title' => 'Why advertise on Wasfah?',
+        'title' => 'Why advertise on Peahskill?',
         'items' => [
             [
                 'title' => 'Targeted audience',
-                'description' => 'Over 10,000 active users who are passionate about desserts and baking.',
+                'description' => 'Over 10,000 active members learning across industries (tech, culinary, marketing, design, operations).',
             ],
             [
                 'title' => 'High engagement',
-                'description' => 'Engagement rates up to 15% from a community that acts on food inspiration.',
+                'description' => 'Engagement rates up to 15% from a community that acts on hands-on content.',
             ],
             [
                 'title' => 'Full coverage',

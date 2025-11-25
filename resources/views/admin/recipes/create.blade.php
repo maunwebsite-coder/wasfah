@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'إضافة وصفة جديدة - موقع وصفة')
+@section('title', 'إضافة فيديو قصير جديد - موقع وصفة')
 
 @push('styles')
 <style>
@@ -26,7 +26,7 @@
         left: 0;
         right: 0;
         height: 4px;
-        background: linear-gradient(90deg, #f97316, #ea580c, #dc2626);
+        background: linear-gradient(90deg, #0f4c73, #0a8070, #dc2626);
     }
     
     .form-input {
@@ -41,8 +41,8 @@
     
     .form-input:focus {
         outline: none;
-        border-color: #f97316;
-        box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.1);
+        border-color: #0f4c73;
+        box-shadow: 0 0 0 4px rgba(15, 76, 115, 0.1);
         background: white;
         transform: translateY(-1px);
     }
@@ -68,12 +68,12 @@
         left: 0;
         width: 30px;
         height: 2px;
-        background: linear-gradient(90deg, #f97316, #ea580c);
+        background: linear-gradient(90deg, #0f4c73, #0a8070);
         border-radius: 1px;
     }
     
     .btn-primary {
-        background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+        background: linear-gradient(135deg, #0f4c73 0%, #0a8070 100%);
         border: none;
         color: white;
         padding: 1rem 2rem;
@@ -84,7 +84,7 @@
         cursor: pointer;
         position: relative;
         overflow: hidden;
-        box-shadow: 0 4px 14px 0 rgba(249, 115, 22, 0.39);
+        box-shadow: 0 4px 14px 0 rgba(15, 76, 115, 0.39);
     }
     
     .btn-primary::before {
@@ -103,9 +103,9 @@
     }
     
     .btn-primary:hover {
-        background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%);
+        background: linear-gradient(135deg, #0a8070 0%, #0b344f 100%);
         transform: translateY(-2px);
-        box-shadow: 0 8px 25px 0 rgba(249, 115, 22, 0.5);
+        box-shadow: 0 8px 25px 0 rgba(15, 76, 115, 0.5);
     }
     
     .btn-primary:active {
@@ -240,7 +240,7 @@
         left: 0;
         right: 0;
         height: 3px;
-        background: linear-gradient(90deg, #f97316, #ea580c, #dc2626);
+        background: linear-gradient(90deg, #0f4c73, #0a8070, #dc2626);
     }
     
     .section-title {
@@ -254,7 +254,7 @@
     }
     
     .section-title i {
-        color: #f97316;
+        color: #0f4c73;
         font-size: 1.25rem;
     }
     
@@ -281,7 +281,7 @@
     }
     
     .progress-fill {
-        background: linear-gradient(90deg, #f97316, #ea580c);
+        background: linear-gradient(90deg, #0f4c73, #0a8070);
         height: 100%;
         border-radius: 1rem;
         transition: width 0.5s ease;
@@ -376,12 +376,12 @@
     }
     
     .image-upload-area:hover {
-        border-color: #f97316;
+        border-color: #0f4c73;
         background: #fef7ed;
     }
     
     .image-upload-area.dragover {
-        border-color: #f97316;
+        border-color: #0f4c73;
         background: #fef7ed;
         transform: scale(1.02);
     }
@@ -412,13 +412,13 @@
         bottom: 2rem;
         right: 2rem;
         z-index: 50;
-        background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+        background: linear-gradient(135deg, #0f4c73 0%, #0a8070 100%);
         color: white;
         border: none;
         border-radius: 50px;
         padding: 1rem 1.5rem;
         font-weight: 700;
-        box-shadow: 0 8px 25px 0 rgba(249, 115, 22, 0.5);
+        box-shadow: 0 8px 25px 0 rgba(15, 76, 115, 0.5);
         cursor: pointer;
         transition: all 0.3s ease;
         opacity: 0;
@@ -432,7 +432,7 @@
     
     .floating-save:hover {
         transform: translateY(-2px) scale(1.05);
-        box-shadow: 0 12px 30px 0 rgba(249, 115, 22, 0.6);
+        box-shadow: 0 12px 30px 0 rgba(15, 76, 115, 0.6);
     }
     
     @media (max-width: 768px) {
@@ -473,9 +473,9 @@
                 <div>
                     <h1 class="section-title">
                         <i class="fas fa-plus-circle"></i>
-                        إضافة وصفة جديدة
+                        إضافة فيديو قصير جديد
                     </h1>
-                    <p class="text-gray-600 mt-2">أضف وصفة جديدة إلى الموقع</p>
+                    <p class="text-gray-600 mt-2">أضف فيديو قصير جديد إلى مكتبة المحتوى</p>
                 </div>
                 <a href="{{ route('admin.recipes.index') }}" class="btn-secondary">
                     <i class="fas fa-arrow-right ml-2"></i>
@@ -497,42 +497,79 @@
             <div class="form-section">
                 <h2 class="section-title">
                     <i class="fas fa-info-circle"></i>
-                    المعلومات الأساسية
+                    معلومات الفيديو الأساسية
                 </h2>
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                        <label class="form-label">عنوان الوصفة</label>
+                        <label class="form-label">عنوان الفيديو</label>
                         <input type="text" name="title" class="form-input" 
                                value="{{ old('title') }}" 
-                               placeholder="أدخل عنوان الوصفة">
+                               placeholder="أدخل عنوان الفيديو القصير">
                         @error('title')
                             <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                         @enderror
                     </div>
                     
                     <div>
-                        <label class="form-label">المؤلف</label>
+                        <label class="form-label">صاحب الفيديو</label>
                         <input type="text" name="author" class="form-input" 
                                value="{{ old('author') }}" 
-                               placeholder="أدخل اسم المؤلف">
+                               placeholder="أدخل اسم صاحب الفيديو">
                         @error('author')
+                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+                    
+                    <div class="md:col-span-2">
+                        <label class="form-label">رابط الفيديو القصير</label>
+                        <div class="flex flex-col gap-2">
+                            <input type="url" name="video_url" class="form-input" 
+                                   value="{{ old('video_url') }}" 
+                                   placeholder="مثال: https://www.youtube.com/shorts/xyz أو رابط Vimeo" required>
+                            <div class="flex items-center gap-2">
+                                <button type="button" id="fetch-video-meta" class="btn-secondary inline-flex items-center gap-2">
+                                    <i class="fas fa-magic"></i>
+                                    استخراج المعلومات
+                                </button>
+                                <p class="text-sm text-gray-500">سيتم جلب العنوان/الصورة تلقائياً لرابط يوتيوب.</p>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-500 mt-2">ندعم روابط YouTube shorts وVimeo وInstagram Reels وغيرها، وسنحوّلها تلقائياً إلى صيغة يمكن تشغيلها.</p>
+                        <div id="video-meta-preview" class="hidden mt-3 p-4 border border-gray-200 rounded-xl bg-gray-50 flex items-center gap-4">
+                            <div class="w-24 h-16 rounded-lg overflow-hidden bg-gray-200 relative flex-shrink-0">
+                                <img id="video-thumbnail" class="w-full h-full object-cover hidden" alt="صورة الفيديو">
+                                <div id="video-thumb-fallback" class="w-full h-full grid place-items-center text-[11px] text-gray-500">لا توجد صورة</div>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <p id="video-title-preview" class="text-sm font-bold text-gray-800 truncate"></p>
+                                <p id="video-author-preview" class="text-xs text-gray-500 truncate"></p>
+                            </div>
+                            <span id="video-meta-status" class="text-xs text-gray-500"></span>
+                        </div>
+                        @error('video_url')
                             <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                         @enderror
                     </div>
                     
                     <div>
                         <label class="form-label">الفئة</label>
-                        <select name="category_id" class="form-input">
-                            <option value="">اختر الفئة</option>
+                        <input type="text"
+                               name="category_name"
+                               list="category-options"
+                               class="form-input"
+                               value="{{ old('category_name') }}"
+                               placeholder="اكتب فئة جديدة أو اختر من القائمة">
+                        <datalist id="category-options">
                             @foreach($categories as $category)
-                                <option value="{{ $category->category_id }}" 
-                                        {{ old('category_id') == $category->category_id ? 'selected' : '' }}>
-                                    {{ $category->name }}
-                                </option>
+                                <option value="{{ $category->name }}"></option>
                             @endforeach
-                        </select>
+                        </datalist>
+                        <p class="text-sm text-gray-500 mt-2">اكتب الفئة يدويًا، وسنضيفها تلقائياً إن لم تكن موجودة.</p>
                         @error('category_id')
+                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                        @enderror
+                        @error('category_name')
                             <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                         @enderror
                     </div>
@@ -581,15 +618,15 @@
                     </div>
                     
                     <div>
-                        <label class="form-label">صور الوصفة</label>
-                        <p class="text-sm text-gray-600 mb-4">يمكنك إضافة حتى 5 صور للوصفة</p>
+                        <label class="form-label">صور الغلاف (اختياري)</label>
+                        <p class="text-sm text-gray-600 mb-4">يمكنك إضافة حتى 5 صور للفيديو القصير لاستخدامها كغلاف أو صور توضيحية</p>
                         
-                        <!-- صور الوصفة -->
+                        <!-- صور الفيديو -->
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                             @for($i = 1; $i <= 5; $i++)
                             <div class="image-upload-container">
                                 <label class="block text-sm font-medium text-gray-700 mb-2">
-                                    صورة {{ $i }} @if($i == 1) <span class="text-red-500">*</span> @endif
+                                    صورة {{ $i }}
                                 </label>
                                 
                                 <div class="image-upload-area" onclick="document.getElementById('image_{{$i}}').click()">
@@ -654,9 +691,9 @@
                 </div>
                 
                 <div class="mt-6">
-                    <label class="form-label">وصف الوصفة</label>
+                    <label class="form-label">وصف الفيديو</label>
                     <textarea name="description" class="form-input" rows="4" 
-                              placeholder="اكتب وصفاً مختصراً وجذاباً للوصفة...">{{ old('description') }}</textarea>
+                              placeholder="اكتب وصفاً مختصراً وجذاباً للفيديو القصير...">{{ old('description') }}</textarea>
                     @error('description')
                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                     @enderror
@@ -705,7 +742,7 @@
                 <div id="tools-container">
                     <div class="text-center text-gray-500 py-8">
                         <i class="fas fa-tools text-4xl text-gray-300 mb-3"></i>
-                        <p>لا توجد معدات محددة لهذه الوصفة</p>
+                        <p>لا توجد معدات محددة لهذا الفيديو</p>
                     </div>
                 </div>
             </div>
@@ -738,7 +775,7 @@
             <div class="flex space-x-4 rtl:space-x-reverse">
                 <button type="submit" class="btn-primary">
                     <i class="fas fa-save ml-2"></i>
-                    حفظ الوصفة
+                    حفظ الفيديو
                 </button>
                 <a href="{{ route('admin.recipes.index') }}" class="btn-secondary">
                     <i class="fas fa-times ml-2"></i>
@@ -762,6 +799,7 @@ let stepIndex = 1;
 let toolIndex = 0;
 let hasUnsavedChanges = false;
 let autoSaveInterval;
+let lastVideoMeta = null;
 
 // Initialize form
 document.addEventListener('DOMContentLoaded', function() {
@@ -770,6 +808,7 @@ document.addEventListener('DOMContentLoaded', function() {
     setupAutoSave();
     setupFloatingSave();
     setupFormValidation();
+    setupYouTubeAutoFill();
 });
 
 // Initialize form functionality
@@ -879,6 +918,120 @@ function showNotification(message, type = 'info') {
     setTimeout(() => {
         notification.remove();
     }, 3000);
+}
+
+// -----------------------
+// YouTube metadata helper
+// -----------------------
+const videoUrlInput = document.querySelector('input[name="video_url"]');
+const titleInput = document.querySelector('input[name="title"]');
+const authorInput = document.querySelector('input[name="author"]');
+const descriptionInput = document.querySelector('textarea[name="description"]');
+const fetchVideoMetaBtn = document.getElementById('fetch-video-meta');
+const categoryNameInput = document.querySelector('input[name="category_name"]');
+const metaPreviewBox = document.getElementById('video-meta-preview');
+const metaThumb = document.getElementById('video-thumbnail');
+const metaThumbFallback = document.getElementById('video-thumb-fallback');
+const metaTitleEl = document.getElementById('video-title-preview');
+const metaAuthorEl = document.getElementById('video-author-preview');
+const metaStatusEl = document.getElementById('video-meta-status');
+const videoMetaCache = new Map();
+
+function extractYouTubeId(url) {
+    try {
+        const parsed = new URL(url.trim());
+        const host = parsed.hostname.replace(/^www\./, '');
+        if (!host.includes('youtube.com') && !host.includes('youtu.be')) return '';
+        if (parsed.searchParams.get('v')) {
+            return parsed.searchParams.get('v');
+        }
+        const parts = parsed.pathname.split('/').filter(Boolean);
+        if (parts[0] === 'embed' || parts[0] === 'shorts') {
+            return parts[1] || '';
+        }
+        if (host === 'youtu.be') {
+            return parts[0] || '';
+        }
+        return '';
+    } catch (e) {
+        return '';
+    }
+}
+
+function buildYouTubeWatchUrl(url) {
+    const id = extractYouTubeId(url);
+    return id ? `https://www.youtube.com/watch?v=${id}` : url;
+}
+
+async function fetchYouTubeMeta(rawUrl) {
+    const targetUrl = buildYouTubeWatchUrl(rawUrl);
+    if (videoMetaCache.has(targetUrl)) return videoMetaCache.get(targetUrl);
+    const endpoint = `https://www.youtube.com/oembed?format=json&url=${encodeURIComponent(targetUrl)}`;
+    const response = await fetch(endpoint);
+    if (!response.ok) throw new Error('YouTube oEmbed failed');
+    const data = await response.json();
+    const meta = {
+        title: data?.title || '',
+        author: data?.author_name || '',
+        thumbnail: data?.thumbnail_url || ''
+    };
+    videoMetaCache.set(targetUrl, meta);
+    return meta;
+}
+
+function renderVideoMetaPreview(meta, statusText = '') {
+    if (!metaPreviewBox) return;
+    metaPreviewBox.classList.remove('hidden');
+    metaTitleEl.textContent = meta?.title || '';
+    metaAuthorEl.textContent = meta?.author || '';
+    metaStatusEl.textContent = statusText || '';
+
+    if (meta?.thumbnail) {
+        metaThumb.src = meta.thumbnail;
+        metaThumb.classList.remove('hidden');
+        metaThumbFallback.classList.add('hidden');
+    } else {
+        metaThumb.classList.add('hidden');
+        metaThumbFallback.classList.remove('hidden');
+    }
+}
+
+async function fetchAndApplyVideoMeta() {
+    const rawUrl = videoUrlInput?.value.trim();
+    if (!rawUrl || (!rawUrl.includes('youtu.be') && !rawUrl.includes('youtube.com'))) return;
+    renderVideoMetaPreview({}, 'جاري جلب بيانات الفيديو...');
+    try {
+        const meta = await fetchYouTubeMeta(rawUrl);
+        lastVideoMeta = meta;
+        if (meta.title && titleInput) {
+            titleInput.value = meta.title;
+            markAsChanged();
+        }
+        if (meta.author && authorInput && !authorInput.value.trim()) {
+            authorInput.value = meta.author;
+            markAsChanged();
+        }
+        if (meta.author && categoryNameInput && !categoryNameInput.value.trim()) {
+            categoryNameInput.value = meta.author;
+            markAsChanged();
+        }
+        if (meta.title && descriptionInput && !descriptionInput.value.trim()) {
+            descriptionInput.value = `فيديو يوتيوب: ${meta.title}`;
+            markAsChanged();
+        }
+        renderVideoMetaPreview(meta, 'تم تعبئة العنوان من يوتيوب');
+    } catch (e) {
+        renderVideoMetaPreview({}, 'تعذر جلب بيانات يوتيوب');
+    }
+}
+
+function setupYouTubeAutoFill() {
+    if (!videoUrlInput) return;
+    videoUrlInput.addEventListener('change', fetchAndApplyVideoMeta);
+    videoUrlInput.addEventListener('blur', fetchAndApplyVideoMeta);
+    if (fetchVideoMetaBtn) {
+        fetchVideoMetaBtn.addEventListener('click', fetchAndApplyVideoMeta);
+    }
 }
 
 // Add Ingredient
@@ -1004,7 +1157,7 @@ function removeTool(button) {
                 container.innerHTML = `
                     <div class="text-center text-gray-500 py-8">
                         <i class="fas fa-kitchen-set text-4xl text-gray-300 mb-3"></i>
-                        <p>لا توجد معدات محددة لهذه الوصفة</p>
+                        <p>لا توجد معدات محددة لهذا الفيديو</p>
                     </div>
                 `;
             }
@@ -1111,3 +1264,7 @@ setupDragAndDrop();
 </script>
 @endpush
 @endsection
+
+
+
+

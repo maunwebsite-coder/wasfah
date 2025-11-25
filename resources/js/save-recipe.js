@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @file save-recipe.js
  * @description ملف مشترك لإدارة جميع أزرار حفظ الوصفة في الموقع
  */
@@ -416,7 +416,7 @@ function updateRecipePageSaveCountImmediate(isSaved) {
         console.log(`IMMEDIATE Updated save count: ${currentCount} -> ${newCount} (saved: ${isSaved})`);
         
         // إضافة تأثير بصري للتأكيد
-        saveCountElement.style.color = '#f97316';
+        saveCountElement.style.color = '#0f4c73';
         saveCountElement.style.fontWeight = 'bold';
         
         setTimeout(() => {
@@ -497,7 +497,7 @@ function updateRecipePageSaveCount(isSaved) {
         }, 200);
         
         // إضافة تأثير لوني للتأكيد
-        saveCountElement.style.color = '#f97316';
+        saveCountElement.style.color = '#0f4c73';
         saveCountElement.style.fontWeight = 'bold';
         setTimeout(() => {
             saveCountElement.style.color = '';
@@ -533,4 +533,5 @@ window.SaveRecipe = {
     updateRecipePageSaveCount,
     testSaveCountUpdate
 };
+
 

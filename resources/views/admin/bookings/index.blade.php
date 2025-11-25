@@ -1110,7 +1110,7 @@
                                             ?? $partnerShare->currency
                                             ?? $adminShare->currency
                                             ?? ($booking->payment_currency ?? $defaultCurrency);
-                                        $invoice = optional($booking->invoice);
+                                        $invoice = $booking->invoice;
                                         $invoiceStatusMeta = [
                                             'draft' => ['label' => 'فاتورة مسودة', 'class' => 'bg-slate-100 text-slate-700'],
                                             'issued' => ['label' => 'فاتورة صادرة', 'class' => 'bg-amber-100 text-amber-700'],
@@ -2037,6 +2037,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 @endsection
+
 
 
 

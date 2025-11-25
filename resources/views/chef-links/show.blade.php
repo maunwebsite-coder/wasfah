@@ -30,7 +30,7 @@
         :root {
             --accent: {{ $accentColor }};
             --accent-soft: {{ $accentColor }}1a;
-            --solid-bg: #fff7ed;
+            --solid-bg: #eaf3f6;
             --text-main: #1f2937;
             --text-muted: #6b7280;
             --card-bg: rgba(255, 255, 255, 0.96);
@@ -49,7 +49,7 @@
             justify-content: center;
             align-items: center;
             padding: 32px 16px 48px;
-            background: linear-gradient(180deg, rgba(255, 247, 237, 0.9) 0%, #ffffff 55%, #ffffff 100%);
+            background: linear-gradient(180deg, rgba(234, 243, 246, 0.9) 0%, #ffffff 55%, #ffffff 100%);
             color: var(--text-main);
         }
 
@@ -68,7 +68,7 @@
             content: '';
             position: absolute;
             inset: 0;
-            background: radial-gradient(110% 130% at 50% -10%, rgba(249, 115, 22, 0.16) 0%, transparent 65%);
+            background: radial-gradient(110% 130% at 50% -10%, rgba(15, 76, 115, 0.16) 0%, transparent 65%);
             pointer-events: none;
         }
 
@@ -86,8 +86,8 @@
             object-fit: cover;
             display: block;
             margin: 0 auto 16px;
-            box-shadow: 0 20px 45px rgba(249, 115, 22, 0.18);
-            border: 4px solid rgba(249, 115, 22, 0.15);
+            box-shadow: 0 20px 45px rgba(15, 76, 115, 0.18);
+            border: 4px solid rgba(15, 76, 115, 0.15);
             background: #fff;
         }
 
@@ -130,13 +130,13 @@
             font-weight: 600;
             font-size: 0.98rem;
             text-decoration: none;
-            box-shadow: 0 18px 40px rgba(249, 115, 22, 0.25);
+            box-shadow: 0 18px 40px rgba(15, 76, 115, 0.25);
             transition: transform 0.25s ease, box-shadow 0.25s ease;
         }
 
         .cta-button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 22px 50px rgba(249, 115, 22, 0.3);
+            box-shadow: 0 22px 50px rgba(15, 76, 115, 0.3);
         }
 
         .links-stack {
@@ -153,7 +153,7 @@
             gap: 18px;
             padding: 18px 22px;
             border-radius: 26px;
-            border: 1px solid rgba(249, 115, 22, 0.1);
+            border: 1px solid rgba(15, 76, 115, 0.1);
             background: rgba(255, 255, 255, 0.97);
             color: inherit;
             text-decoration: none;
@@ -169,14 +169,14 @@
             inset-inline-end: -10%;
             width: 220px;
             height: 220px;
-            background: radial-gradient(circle, rgba(249, 115, 22, 0.08), transparent 65%);
+            background: radial-gradient(circle, rgba(15, 76, 115, 0.08), transparent 65%);
             opacity: 0;
             transition: opacity 0.2s ease;
         }
 
         .link-card:hover {
             transform: translateY(-4px);
-            box-shadow: 0 18px 32px rgba(249, 115, 22, 0.12);
+            box-shadow: 0 18px 32px rgba(15, 76, 115, 0.12);
         }
 
         .link-card:hover::after {
@@ -185,8 +185,8 @@
 
         .link-card--upcoming {
             position: relative;
-            border: 1px solid rgba(249, 115, 22, 0.25);
-            background: linear-gradient(135deg, rgba(249, 115, 22, 0.08), rgba(255, 255, 255, 0.96));
+            border: 1px solid rgba(15, 76, 115, 0.25);
+            background: linear-gradient(135deg, rgba(15, 76, 115, 0.08), rgba(255, 255, 255, 0.96));
             overflow: hidden;
         }
 
@@ -247,8 +247,8 @@
 
         .link-card--upcoming {
             position: relative;
-            border: 1px solid rgba(249, 115, 22, 0.25);
-            background: linear-gradient(135deg, rgba(249, 115, 22, 0.08), rgba(255, 255, 255, 0.96));
+            border: 1px solid rgba(15, 76, 115, 0.25);
+            background: linear-gradient(135deg, rgba(15, 76, 115, 0.08), rgba(255, 255, 255, 0.96));
             overflow: hidden;
         }
 
@@ -260,12 +260,12 @@
             width: 180px;
             height: 180px;
             border-radius: 50%;
-            background: rgba(249, 115, 22, 0.08);
+            background: rgba(15, 76, 115, 0.08);
             z-index: 0;
         }
 
         .link-card--upcoming .link-icon {
-            background: rgba(249, 115, 22, 0.2);
+            background: rgba(15, 76, 115, 0.2);
             color: var(--accent);
         }
 
@@ -275,7 +275,7 @@
             gap: 6px;
             padding: 4px 10px;
             border-radius: 999px;
-            background: rgba(249, 115, 22, 0.12);
+            background: rgba(15, 76, 115, 0.12);
             color: var(--accent);
             font-size: 0.75rem;
             font-weight: 700;
@@ -304,14 +304,14 @@
             width: 48px;
             height: 48px;
             border-radius: 16px;
-            background: linear-gradient(135deg, rgba(249, 115, 22, 0.12), rgba(249, 115, 22, 0.25));
+            background: linear-gradient(135deg, rgba(15, 76, 115, 0.12), rgba(15, 76, 115, 0.25));
             color: var(--accent);
             display: inline-flex;
             align-items: center;
             justify-content: center;
             font-size: 1.2rem;
             flex-shrink: 0;
-            box-shadow: 0 14px 24px rgba(249, 115, 22, 0.12);
+            box-shadow: 0 14px 24px rgba(15, 76, 115, 0.12);
         }
 
         .link-text {
@@ -334,7 +334,7 @@
             width: 38px;
             height: 38px;
             border-radius: 50%;
-            background: rgba(249, 115, 22, 0.14);
+            background: rgba(15, 76, 115, 0.14);
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -377,7 +377,7 @@
             align-items: center;
             gap: 10px;
             text-decoration: none;
-            box-shadow: 0 18px 40px rgba(249, 115, 22, 0.25);
+            box-shadow: 0 18px 40px rgba(15, 76, 115, 0.25);
         }
 
         .manage-bar:hover {
@@ -466,7 +466,7 @@
                     </span>
                 </a>
             @empty
-                <div class="link-card" style="justify-content: center; background: rgba(249, 115, 22, 0.06); border-style: dashed;">
+                <div class="link-card" style="justify-content: center; background: rgba(15, 76, 115, 0.06); border-style: dashed;">
                     <span class="link-text" style="text-align: center;">
                         <span class="link-title">{{ __('chef_links.empty.title') }}</span>
                         <span class="link-subtitle">{{ __('chef_links.empty.subtitle') }}</span>
@@ -490,5 +490,10 @@
     @endauth
 </body>
 </html>
+
+
+
+
+
 
 

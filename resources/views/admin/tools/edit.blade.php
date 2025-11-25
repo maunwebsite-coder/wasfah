@@ -553,3 +553,4 @@ function showPriceConversion(usdPrice, aedPrice) {
 @endpush
 @endsection
 
+

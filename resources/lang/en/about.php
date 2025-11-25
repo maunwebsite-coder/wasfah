@@ -2,39 +2,39 @@
 
 return [
     'meta' => [
-        'title' => 'About Wasfah – Dessert platform',
+        'title' => 'About Peahskill – Multi-industry platform',
     ],
 
     'hero' => [
-        'title' => 'About Wasfah',
-        'subtitle' => 'A platform dedicated to desserts and cooking, delivering standout recipes and immersive workshops.',
+        'title' => 'About Peahskill',
+        'subtitle' => 'A platform connecting experts and teams across industries to publish guides, host live sessions, and share the tools they trust.',
     ],
 
     'mission' => [
         'title' => 'Our vision',
-        'description' => 'We aim to become the leading dessert and cooking platform in the region by offering premium recipes and curated workshops that help enthusiasts elevate their skills.',
+        'description' => 'We aim to be the region’s go-to hub for skills and applied learning—helping anyone learn, launch, and grow in any industry.',
         'highlight' => [
-            'title' => 'Our passion for cooking',
-            'description' => 'We believe cooking is both an art and an act of love.',
+            'title' => 'Cross-industry learning',
+            'description' => 'We believe knowledge travels better when it is practical, shareable, and open to every craft.',
         ],
         'stats_card' => [
-            'title' => '25+ recipes',
-            'description' => 'Diverse recipes inspired by kitchens around the world.',
+            'title' => '150+ guides',
+            'description' => 'Playbooks, SOPs, and templates you can apply immediately.',
         ],
     ],
 
     'features' => [
         [
-            'title' => 'Diverse recipes',
-            'description' => 'A complete collection ranging from classic desserts to modern creations.',
+            'title' => 'Guides & templates',
+            'description' => 'From recipes and briefs to product playbooks and SOPs across industries.',
         ],
         [
-            'title' => 'Interactive workshops',
-            'description' => 'Hands-on workshops led by top chefs to master advanced techniques.',
+            'title' => 'Interactive experiences',
+            'description' => 'Live and recorded sessions led by vetted experts with immediate application.',
         ],
         [
             'title' => 'Engaged community',
-            'description' => 'Join dessert lovers, share experiences, and exchange your favorite tips.',
+            'description' => 'Join learners, operators, and creators to swap experiments and get feedback fast.',
         ],
     ],
 
@@ -43,11 +43,11 @@ return [
         'sections' => [
             [
                 'title' => 'The beginning',
-                'description' => 'Wasfah started as a simple idea from passionate cooks who wanted to share their love for desserts. Years of experience shaped today’s platform experience.',
+                'description' => 'Peahskill began as a culinary community and expanded to serve any craft, maker, or industry.',
             ],
             [
                 'title' => 'The evolution',
-                'description' => 'We grew from a recipes site into a holistic platform covering workshops, reviews, and a vibrant community, and we keep adding features to enhance every visit.',
+                'description' => 'We grew into an all-in-one platform for guides, live experiences, tools, and partner workflows—and we keep shipping features that help you move faster.',
             ],
         ],
     ],
@@ -55,10 +55,10 @@ return [
     'stats' => [
         'title' => 'Our numbers',
         'items' => [
-            ['value' => '25+', 'label' => 'Recipes'],
-            ['value' => '5+', 'label' => 'Workshops'],
-            ['value' => '100+', 'label' => 'Users'],
-            ['value' => '8+', 'label' => 'Chefs'],
+            ['value' => '150+', 'label' => 'Guides & templates'],
+            ['value' => '30+', 'label' => 'Live sessions'],
+            ['value' => '12K+', 'label' => 'Members'],
+            ['value' => '80+', 'label' => 'Experts & creators'],
         ],
     ],
 
@@ -67,15 +67,15 @@ return [
         'members' => [
             [
                 'title' => 'Product & engineering',
-                'description' => 'Creative developers continually improving the platform.',
+                'description' => 'Product thinkers and developers building the rails that power creators and teams.',
             ],
             [
-                'title' => 'Chefs',
-                'description' => 'Expert chefs who generously share their signature experience.',
+                'title' => 'Experts & creators',
+                'description' => 'Certified trainers, consultants, chefs, and makers sharing their craft.',
             ],
             [
-                'title' => 'Support team',
-                'description' => 'Friendly support that is always ready to help.',
+                'title' => 'Success & support',
+                'description' => 'A bilingual team ready to help with bookings, tools, and setup.',
             ],
         ],
     ],

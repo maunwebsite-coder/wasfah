@@ -10,7 +10,7 @@
     $chefLinkLabels = $navCopy['chef_links'] ?? [];
     $primaryLinks = [
         ['route' => 'home', 'icon' => 'fas fa-house', 'label' => $navCopy['links']['home']],
-        ['route' => 'recipes', 'icon' => 'fas fa-utensils', 'label' => $navCopy['links']['recipes']],
+        ['route' => 'recipes', 'icon' => 'fas fa-play', 'label' => $navCopy['links']['recipes']],
         ['route' => 'workshops', 'icon' => 'fas fa-graduation-cap', 'label' => $navCopy['links']['workshops']],
         ['route' => 'tools', 'icon' => 'fas fa-kitchen-set', 'label' => $navCopy['links']['tools']],
     ];
@@ -549,3 +549,4 @@
         </div>
     @endif
 </header>
+

@@ -15,8 +15,8 @@ class OnboardingController extends Controller
      * @var array<string, array{name: string, dial_code: string}>
      */
     private const COUNTRIES = [
-        'SA' => ['name' => 'المملكة العربية السعودية', 'dial_code' => '+966'],
         'AE' => ['name' => 'الإمارات العربية المتحدة', 'dial_code' => '+971'],
+        'SA' => ['name' => 'المملكة العربية السعودية', 'dial_code' => '+966'],
         'KW' => ['name' => 'الكويت', 'dial_code' => '+965'],
         'QA' => ['name' => 'قطر', 'dial_code' => '+974'],
         'BH' => ['name' => 'البحرين', 'dial_code' => '+973'],
@@ -81,17 +81,14 @@ class OnboardingController extends Controller
             'country_code' => ['required', Rule::in($countryCodes)],
             'phone' => ['required', 'string', 'max:30'],
             'google_email' => ['required', 'email', 'max:255'],
-            'instagram_url' => ['nullable', 'url', 'max:255', 'required_without:youtube_url'],
-            'youtube_url' => ['nullable', 'url', 'max:255', 'required_without:instagram_url'],
-            'chef_specialty_area' => ['required', 'in:food'],
-            'chef_specialty_description' => ['required', 'string', 'min:20', 'max:2000'],
+            'instagram_url' => ['nullable', 'url', 'max:255'],
+            'youtube_url' => ['nullable', 'url', 'max:255'],
+            'chef_specialty_area' => ['nullable', 'in:food'],
+            'chef_specialty_description' => ['nullable', 'string', 'max:2000'],
         ], [
             'country_code.required' => 'يرجى اختيار الدولة.',
             'country_code.in' => 'الدولة المختارة غير مدعومة حالياً.',
-            'instagram_url.required_without' => 'يرجى إدخال حساب إنستغرام أو قناة يوتيوب واحدة على الأقل.',
-            'youtube_url.required_without' => 'يرجى إدخال حساب إنستغرام أو قناة يوتيوب واحدة على الأقل.',
             'chef_specialty_area.in' => 'يجب أن يكون تخصصك الرئيسي في مجال الطعام والطبخ للانضمام كـ شيف.',
-            'chef_specialty_description.min' => 'يرجى تقديم وصف مفصل عن خبرتك في مجال الطبخ (20 حرفاً على الأقل).',
             'google_email.required' => 'يرجى إدخال بريد Google الذي ستستخدمه لاستضافة الورش.',
             'google_email.email' => 'صيغة بريد Google غير صحيحة.',
         ]);
@@ -125,10 +122,10 @@ class OnboardingController extends Controller
 
         $user->save();
 
-        $redirectTo = $this->redirectPath($user);
+        $finalRedirect = $this->redirectPath($user);
 
-        return redirect($redirectTo)
-            ->with('success', 'تهانينا! تم اعتمادك فوراً كشيف ويمكنك البدء في مشاركة وصفاتك وورشاتك الآن.');
+        return redirect()->route('chef.google.calendar.connect', ['redirect' => $finalRedirect])
+            ->with('success', 'تهانينا! تم اعتمادك فوراً كشيف. يرجى ربط تقويم Google لإكمال الإعداد.');
     }
 
     private function requiresOnboarding(User $user): bool

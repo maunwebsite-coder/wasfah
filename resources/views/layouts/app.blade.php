@@ -30,13 +30,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta name="application-name" content="Wasfah">
-    <meta name="theme-color" content="#f97316">
+    <meta name="application-name" content="Peahskill">
+    <meta name="theme-color" content="#0f4c73">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="manifest" href="{{ asset('manifest.webmanifest') }}">
     <link rel="apple-touch-icon" href="{{ asset('icons/icon-192x192.png') }}">
-    <title>@yield('title', 'Wasfah Platform')</title>
+    <link rel="icon" type="image/png" href="{{ asset($brandLogoBase . '.png') }}">
+    <link rel="shortcut icon" href="{{ asset($brandLogoBase . '.png') }}">
+    <title>@yield('title', 'Peahskill Platform')</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="dns-prefetch" href="//fonts.googleapis.com">
@@ -46,10 +48,10 @@
     <noscript>
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Tajawal:wght@400;700&display=swap">
     </noscript>
-    <link rel="preload" as="style" href="https://unpkg.com/swiper/swiper-bundle.min.css" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" media="print" onload="this.media='all'">
+    <link rel="preload" as="style" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" media="print" onload="this.media='all'">
     <noscript>
-        <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css">
     </noscript>
     <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" media="print" onload="this.media='all'">
@@ -58,7 +60,7 @@
     </noscript>
     <link rel="preload" as="image" href="{{ $brandLogoUrl }}" fetchpriority="high" type="image/webp">
     @stack('preloads')
-    <script src="https://unpkg.com/swiper/swiper-bundle.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js" defer></script>
 
     @include('layouts.partials.critical-css')
 
@@ -108,8 +110,13 @@
     <!-- Header -->
     @php
         $showNavbarSearch = !($hideNavbarSearch ?? false);
+        $hideNavbar = (bool) ($hideNavbar ?? false);
+        $lockMobileTabBar = (bool) ($lockMobileTabBar ?? false);
+        $hideBreadcrumbs = (bool) ($hideBreadcrumbs ?? false);
     @endphp
-    @include('partials.navbar', ['showNavbarSearch' => $showNavbarSearch])
+    @unless($hideNavbar)
+        @include('partials.navbar', ['showNavbarSearch' => $showNavbarSearch])
+    @endunless
 
     <!-- Main Navigation Bar -->
     <!-- <nav class="bg-white border-t border-gray-200 shadow-sm ">
@@ -117,7 +124,7 @@
             <ul class="flex justify-center space-x-8 rtl:space-x-reverse text-gray-700 font-semibold">
                 <li><a href="{{ route('home') }}" class="hover:text-orange-500 transition-colors">Home</a></li>
                 <li><a href="#" class="hover:text-orange-500 transition-colors">Workshops</a></li>
-                <li><a href="#" class="hover:text-orange-500 transition-colors">Chef tools</a></li>
+                <li><a href="#" class="hover:text-orange-500 transition-colors">Tools</a></li>
                 <li><a href="#" class="hover:text-orange-500 transition-colors">Dessert recipes</a></li>
             </ul>
         </div>
@@ -126,11 +133,13 @@
 
     <!-- Page Content -->
     <main>
-        @include('components.breadcrumbs')
+        @unless($hideBreadcrumbs)
+            @include('components.breadcrumbs')
+        @endunless
         @yield('content')
     </main>
 
-    @include('partials.mobile-tab-bar')
+    @include('partials.mobile-tab-bar', ['lockVisibility' => $lockMobileTabBar])
 
     <!-- Load Cart Count Script -->
     <script>
@@ -184,7 +193,9 @@
     </script>
 
     <!-- Footer -->
-    @include('layouts.partials.footer')
+    @unless(isset($hideFooter) && $hideFooter)
+        @include('layouts.partials.footer')
+    @endunless
 
     @include('components.confirmation-modal')
     
@@ -1356,5 +1367,7 @@
     </script>
 </body>
 </html>
+
+
 
 

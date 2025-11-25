@@ -1187,8 +1187,8 @@ if (periodCanvas && periodStatsData.length) {
                 type: 'line',
                 label: 'الإيرادات ({{ $defaultCurrency }})',
                 data: periodRevenue,
-                borderColor: 'rgb(249, 115, 22)',
-                backgroundColor: 'rgba(249, 115, 22, 0.15)',
+                borderColor: 'rgb(15, 76, 115)',
+                backgroundColor: 'rgba(15, 76, 115, 0.15)',
                 tension: 0.35,
                 fill: true,
                 yAxisID: 'y1',
@@ -1290,3 +1290,5 @@ setInterval(function() {
 }, 300000);
 </script>
 @endsection
+
+

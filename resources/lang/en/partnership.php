@@ -1,12 +1,12 @@
 <?php
 
 return [
-    'title' => 'Wasfah Partner - Partnership Program',
+    'title' => 'Peahskill Partner - Partnership Program',
     'hero' => [
-        'badge' => 'The leading culinary partnership network',
-        'title' => 'Wasfah Partner',
-        'subtitle' => 'A sustainable revenue stream from authentic culinary content',
-        'description' => 'Wasfah unites chefs, brands, and interactive content in one place. Through the Wasfah Partner Program you get stunning personal pages, live analytics dashboards, and smart marketing tools that reflect your earnings instantly.',
+        'badge' => 'The leading multi-industry partnership network',
+        'title' => 'Peahskill Partner',
+        'subtitle' => 'A sustainable revenue stream from authentic expert content',
+        'description' => 'Peahskill unites experts, brands, and interactive content in one place. Through the Peahskill Partner Program you get stunning personal pages, live analytics dashboards, and smart marketing tools that reflect your earnings instantly.',
         'chips' => [
             'Automated payouts',
             'Trackable smart links',
@@ -28,53 +28,53 @@ return [
         ],
         [
             'icon' => 'fas fa-users',
-            'value' => '+1 chef',
-            'label' => 'Every chef you onboard unlocks new revenue for you',
+            'value' => '+1 expert',
+            'label' => 'Every expert you onboard unlocks new revenue for you',
         ],
     ],
     'intro' => [
-        'badge' => 'Why partners choose Wasfah?',
+        'badge' => 'Why partners choose Peahskill?',
         'heading' => 'Three pillars that grow your revenue',
-        'description' => 'A full tech stack, engaging content, and a support team that guides you every step to increase revenue from every workshop or recipe.',
+        'description' => 'A full tech stack, engaging content, and a support team that guides you every step to increase revenue from every experience or guide.',
     ],
     'pillars' => [
         [
             'icon' => 'fas fa-coins',
             'title' => '1. Partner link & commissions',
-            'description' => 'Each partner gets a unique Wasfah link to share with chefs or across their marketing channels. Any chef who signs up through that link is attributed to you automatically.',
+            'description' => 'Each partner gets a unique Peahskill link to share with experts or across their marketing channels. Any expert who signs up through that link is attributed to you automatically.',
             'tags' => ['Real-time tracking', 'Automated payouts'],
             'items' => [
-                'Commission starts at 5% and goes up to 15% based on workshop or campaign type.',
+                'Commission starts at 5% and goes up to 15% based on experience or campaign type.',
                 'Instant dashboard showing earnings and upcoming participant numbers.',
                 'Ability to connect ad campaigns to your link for real-time performance tracking.',
             ],
         ],
         [
             'icon' => 'fas fa-link',
-            'title' => '2. Wasfa Links page for each chef',
-            'description' => 'Every chef owns a Wasfa Links page; a dynamic Link-in-Bio style page that showcases recipes, upcoming workshops, and their contact links.',
+            'title' => '2. Peahskill Links page for each expert',
+            'description' => 'Every expert owns a Peahskill Links page; a dynamic Link-in-Bio style page that showcases guides, upcoming experiences, and their contact links.',
             'tags' => ['Flexible design', 'Prominent CTA'],
             'items' => [
                 'Fully customizable layout (links, images, order, buttons).',
-                'Highlight the next workshop with a clear “Book your seat” button.',
+                'Highlight the next experience with a clear “Book your seat” button.',
                 'Track visits and clicks for every link.',
-                'Create multiple pages for one chef or different branches.',
+                'Create multiple pages for one expert or different branches.',
             ],
         ],
         [
             'icon' => 'fas fa-utensils',
-            'title' => '3. What chefs do inside Wasfah',
-            'description' => 'We offer chefs a professional dashboard to manage everything about their content so Wasfah becomes their main platform to amplify presence and sales.',
-            'tags' => ['Active community', 'Live workshops'],
+            'title' => '3. What experts do inside Peahskill',
+            'description' => 'We offer experts a professional dashboard to manage everything about their content so Peahskill becomes their main platform to amplify presence and sales.',
+            'tags' => ['Active community', 'Live experiences'],
             'items' => [
-                'Publish recipes with media and interact with the Wasfah community.',
-                'Save favorite recipes in a private library and share via Instagram or WhatsApp.',
-                'Publish workshops, monitor attendees, and track bookings instantly.',
+                'Publish guides with media and interact with the Peahskill community.',
+                'Save favorite guides in a private library and share via Instagram or WhatsApp.',
+                'Publish experiences, monitor attendees, and track bookings instantly.',
             ],
         ],
     ],
     'cta' => [
-        'heading' => 'Ready to become a Wasfah partner?',
+        'heading' => 'Ready to become a Peahskill partner?',
         'description' => 'Start today with simple, clear steps. The partnerships team will guide you along the way. Once you complete the form you will receive everything you need within three business days.',
         'steps' => [
             [
@@ -87,10 +87,10 @@ return [
             ],
             [
                 'title' => 'Start sharing links',
-                'description' => 'Share your links with chefs and your audience, then track earnings directly from the dashboard.',
+                'description' => 'Share your links with experts and your audience, then track earnings directly from the dashboard.',
             ],
         ],
-        'button' => 'Join the Wasfah network now',
+        'button' => 'Join the Peahskill network now',
     ],
     'guidance' => [
         'heading' => 'Tell us how we can help',
@@ -133,12 +133,12 @@ return [
         ],
         'reminder' => 'We typically respond within one business day.',
         'submit' => 'Send message',
-        'cta_heading' => 'Join today and become part of the Wasfah network',
-        'cta_description' => 'Wasfah brings chefs and interactive culinary content together. Start today, amplify your presence, and track your earnings transparently.',
+        'cta_heading' => 'Join today and become part of the Peahskill network',
+        'cta_description' => 'Peahskill brings experts and interactive content together. Start today, amplify your presence, and track your earnings transparently.',
     ],
     'footer_cta' => [
         'heading' => 'Submit your partnership request',
-        'description' => 'Review the program benefits and start monetizing with the Wasfah network.',
+        'description' => 'Review the program benefits and start monetizing with the Peahskill network.',
         'primary' => 'Submit the request',
         'secondary' => 'View the program benefits',
     ],

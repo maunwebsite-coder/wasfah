@@ -139,12 +139,12 @@ class Recipe extends Model
                 return $this->attributes['image_url'];
             }
             // إذا كان الرابط محلي، أضف storage path
-            return \Storage::disk('public')->url($this->attributes['image_url']);
+            return static::publicUrl($this->attributes['image_url']);
         }
 
         // إذا كان هناك ملف صورة محفوظ محلياً
         if (isset($this->attributes['image']) && $this->attributes['image']) {
-            return \Storage::disk('public')->url($this->attributes['image']);
+            return static::publicUrl($this->attributes['image']);
         }
 
         return null;
@@ -159,7 +159,7 @@ class Recipe extends Model
 
         // إضافة الصورة الرئيسية
         if ($this->image) {
-            $images[] = \Storage::disk('public')->url($this->image);
+            $images[] = static::publicUrl($this->image);
         }
 
         // إضافة الصور الإضافية
@@ -184,7 +184,7 @@ class Recipe extends Model
 
         $imageField = "image_{$imageNumber}";
         if (isset($this->attributes[$imageField]) && $this->attributes[$imageField]) {
-            return \Storage::disk('public')->url($this->attributes[$imageField]);
+            return static::publicUrl($this->attributes[$imageField]);
         }
 
         return null;
@@ -248,6 +248,10 @@ class Recipe extends Model
             if (static::visibilityColumnExists() && empty($recipe->visibility)) {
                 $recipe->visibility = self::VISIBILITY_PUBLIC;
             }
+
+            if (empty($recipe->author)) {
+                $recipe->author = $recipe->chef->name ?? 'Community Member';
+            }
         });
 
         static::updating(function ($recipe) {
@@ -291,6 +295,14 @@ class Recipe extends Model
         }
 
         return $query->where('status', self::STATUS_PENDING);
+    }
+
+    /**
+     * Scope to filter recipes using RecipeFilter.
+     */
+    public function scopeFilter($query, \App\Filters\RecipeFilter $filters)
+    {
+        return $filters->apply($query);
     }
 
     /**
@@ -425,6 +437,16 @@ class Recipe extends Model
     {
         static::$descriptionFullTextChecked = true;
         static::$descriptionFullTextExists = false;
+    }
+
+    /**
+     * Build a relative URL for public disk assets to avoid APP_URL mismatches.
+     */
+    protected static function publicUrl(string $path): string
+    {
+        $trimmed = ltrim($path, '/');
+
+        return '/storage/' . $trimmed;
     }
 
     /**

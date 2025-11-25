@@ -42,6 +42,8 @@
             @include('chef.workshops.form', [
                 'workshop' => $formWorkshop,
                 'forceAutoMeetingLinks' => $forceAutoMeetingLinks ?? false,
+                'hostCalendarConnected' => $hostCalendarConnected ?? false,
+                'hostCalendarEmail' => $hostCalendarEmail ?? null,
             ])
 
             <div class="sticky bottom-4 z-10 flex flex-wrap items-center justify-between gap-3 rounded-3xl border border-slate-100 bg-white/90 px-5 py-4 shadow-lg backdrop-blur">
@@ -58,3 +60,4 @@
     </div>
 </div>
 @endsection
+

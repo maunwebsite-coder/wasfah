@@ -12,21 +12,21 @@
 @push('styles')
 <style>
 :root {
-    --auth-bg: #fff6ef;
+    --auth-bg: #eaf3f6;
     --auth-card: #ffffff;
-    --auth-primary: #f97316;
-    --auth-primary-dark: #ea580c;
-    --auth-primary-soft: #ffedd5;
-    --auth-accent: #fb923c;
+    --auth-primary: #0f4c73;
+    --auth-primary-dark: #0b705f;
+    --auth-primary-soft: #e6f7f2;
+    --auth-accent: #0fa289;
     --auth-text: #1f2937;
     --auth-muted: #6b7280;
-    --auth-border: rgba(249, 115, 22, 0.14);
+    --auth-border: rgba(15, 76, 115, 0.14);
 }
 
 .auth-shell {
     min-height: 100vh;
-    background: radial-gradient(circle at top right, rgba(249, 115, 22, 0.16), transparent 55%),
-        radial-gradient(circle at bottom left, rgba(251, 146, 60, 0.15), transparent 45%),
+    background: radial-gradient(circle at top right, rgba(15, 76, 115, 0.18), transparent 55%),
+        radial-gradient(circle at bottom left, rgba(12, 139, 118, 0.16), transparent 45%),
         var(--auth-bg);
     padding: clamp(1.5rem, 4vw, 4rem);
     display: flex;
@@ -51,7 +51,7 @@
     display: flex;
     flex-direction: column;
     gap: 1.75rem;
-    border: 1px solid rgba(249, 115, 22, 0.15);
+    border: 1px solid rgba(15, 76, 115, 0.15);
 }
 
 .auth-brand {
@@ -70,7 +70,7 @@
     height: 92px;
     border-radius: 999px;
     background: #fff;
-    box-shadow: inset 0 0 0 1px rgba(249, 115, 22, 0.15), 0 15px 30px rgba(249, 115, 22, 0.15);
+    box-shadow: inset 0 0 0 1px rgba(15, 76, 115, 0.15), 0 15px 30px rgba(15, 76, 115, 0.15);
     flex-shrink: 0;
 }
 
@@ -117,10 +117,10 @@
 }
 
 .info-card {
-    background: linear-gradient(135deg, #fffaf4, #ffe8d5);
+    background: linear-gradient(135deg, #eaf3f6, #e6f7f2);
     border-radius: 22px;
     padding: 1.75rem;
-    border: 1px solid rgba(249, 115, 22, 0.2);
+    border: 1px solid rgba(15, 76, 115, 0.2);
     display: grid;
     gap: 1rem;
 }
@@ -162,7 +162,7 @@
 
 .google-btn {
     border-radius: 18px;
-    border: 1px solid rgba(249, 115, 22, 0.18);
+    border: 1px solid rgba(15, 76, 115, 0.18);
     padding: 0.95rem 1.2rem;
     font-weight: 700;
     font-size: 1rem;
@@ -171,15 +171,15 @@
     justify-content: center;
     gap: 0.7rem;
     cursor: pointer;
-    background: linear-gradient(135deg, #ffffff, #fff8f1);
+    background: linear-gradient(135deg, #ffffff, #eaf3f6);
     color: var(--auth-text);
-    box-shadow: 0 22px 45px rgba(249, 115, 22, 0.15);
+    box-shadow: 0 22px 45px rgba(15, 76, 115, 0.15);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .google-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 30px 55px rgba(249, 115, 22, 0.25);
+    box-shadow: 0 30px 55px rgba(15, 76, 115, 0.25);
 }
 
 .google-btn img {
@@ -197,7 +197,7 @@
     font-size: 0.8rem;
     padding: 0.35rem 0.8rem;
     border-radius: 999px;
-    background: rgba(249, 115, 22, 0.12);
+    background: rgba(15, 76, 115, 0.12);
     color: var(--auth-primary-dark);
     font-weight: 600;
 }
@@ -216,7 +216,7 @@
     content: "";
     flex: 1;
     height: 1px;
-    background: rgba(249, 115, 22, 0.15);
+    background: rgba(15, 76, 115, 0.15);
 }
 
 .auth-form {
@@ -250,7 +250,7 @@
 .input-control:focus {
     outline: none;
     border-color: var(--auth-primary);
-    box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.2);
+    box-shadow: 0 0 0 3px rgba(15, 76, 115, 0.2);
 }
 
 .field-hint {
@@ -312,8 +312,8 @@
 }
 
 .intent-pill {
-    border: 1px solid rgba(249, 115, 22, 0.25);
-    background: #fff1e5;
+    border: 1px solid rgba(15, 76, 115, 0.25);
+    background: #eaf3f6;
     padding: 0.45rem 1.2rem;
     border-radius: 999px;
     font-weight: 600;
@@ -325,14 +325,14 @@
 .intent-pill.is-active {
     background: #fff;
     color: var(--auth-primary-dark);
-    box-shadow: 0 12px 20px rgba(249, 115, 22, 0.18);
-    border-color: rgba(249, 115, 22, 0.45);
+    box-shadow: 0 12px 20px rgba(15, 76, 115, 0.18);
+    border-color: rgba(15, 76, 115, 0.45);
 }
 
 .intent-pill[data-role="chef"].is-active {
-    background: #fff7eb;
-    border-color: rgba(234, 88, 12, 0.8);
-    color: #ea580c;
+    background: #eaf3f6;
+    border-color: rgba(15, 162, 137, 0.35);
+    color: #0b705f;
 }
 
 .inline-alerts {
@@ -367,9 +367,9 @@
 }
 
 .inline-alert--warning {
-    background: #fff7ed;
-    border-color: #fed7aa;
-    color: #9a3412;
+    background: #eaf3f6;
+    border-color: #a1dfd1;
+    color: #0a344f;
 }
 
 .inline-alert--info {
@@ -379,24 +379,24 @@
 }
 
 [data-intent-state="chef"] .google-btn {
-    background: linear-gradient(135deg, #fef3c7, #fcd34d);
-    color: #b45309;
+    background: linear-gradient(135deg, #c8ede3, #a1dfd1);
+    color: #0a344f;
 }
 
 [data-intent-state="chef"] .google-btn img {
-    filter: drop-shadow(0 2px 4px rgba(180, 83, 9, 0.2));
+    filter: drop-shadow(0 2px 4px rgba(10, 52, 79, 0.18));
 }
 
 [data-intent-state="chef"] .divider {
-    color: #b45309;
+    color: #0a344f;
 }
 
 [data-intent-state="chef"] .field-hint {
-    color: #b45309;
+    color: #0a344f;
 }
 
 [data-intent-state="chef"] .ghost-link {
-    color: #b45309;
+    color: #0a344f;
 }
 
 @media (max-width: 640px) {
@@ -625,4 +625,8 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 </script>
 @endpush
+
+
+
+
 

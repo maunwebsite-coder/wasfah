@@ -10,19 +10,19 @@
         align-items: center;
         justify-content: center;
         padding: 2.5rem 1.5rem;
-        background: linear-gradient(135deg, #fef3c7 0%, #fde68a 30%, #fbbf24 100%);
+        background: linear-gradient(135deg, #c8ede3 0%, #c8ede3 30%, #0fa289 100%);
     }
     .verify-card {
         width: 100%;
         max-width: 540px;
         background: white;
         border-radius: 1.75rem;
-        box-shadow: 0 30px 60px rgba(249, 115, 22, 0.2);
-        border: 1px solid rgba(249, 115, 22, 0.12);
+        box-shadow: 0 30px 60px rgba(15, 76, 115, 0.2);
+        border: 1px solid rgba(15, 76, 115, 0.12);
         overflow: hidden;
     }
     .verify-header {
-        background: linear-gradient(135deg, #f97316, #fb923c);
+        background: linear-gradient(135deg, #0f4c73, #0fb39a);
         color: white;
         padding: 2.5rem 2rem;
         text-align: center;
@@ -37,14 +37,14 @@
         font-weight: 700;
         padding: 1rem 1.25rem;
         border-radius: 1rem;
-        border: 2px solid #f97316;
-        background: #fff7ed;
-        color: #ea580c;
-        caret-color: #ea580c;
+        border: 2px solid #0f4c73;
+        background: #eaf3f6;
+        color: #0a8070;
+        caret-color: #0a8070;
     }
     .code-input:focus {
         outline: none;
-        box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.25);
+        box-shadow: 0 0 0 4px rgba(15, 76, 115, 0.25);
     }
     .submit-btn {
         width: 100%;
@@ -64,7 +64,7 @@
     .resend-btn {
         background: none;
         border: none;
-        color: #ea580c;
+        color: #0a8070;
         font-weight: 700;
         text-decoration: underline;
         cursor: pointer;
@@ -156,3 +156,10 @@
     </div>
 </div>
 @endsection
+
+
+
+
+
+
+

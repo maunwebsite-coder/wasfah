@@ -2,19 +2,19 @@
 
 return [
     'meta' => [
-        'title' => 'Professional Chef Tools - Wasfah',
+        'title' => 'Peahskill Tools & Resources',
     ],
     'hero' => [
-        'title' => 'Professional Chef Tools',
-        'subtitle' => 'Discover the dessert tools the Wasfah team relies on, complete with trusted purchase links that fit home kitchens and small projects.',
+        'title' => 'Tools & resources picked by Peahskill',
+        'subtitle' => 'Essentials and upgrades our experts trust for kitchens, studios, and small projects—curated with reliable purchase links.',
         'cta' => [
-            'browse' => 'Browse tools now',
-            'saved' => 'Your saved tools',
+            'browse' => 'Browse tools',
+            'saved' => 'Saved items',
         ],
     ],
     'saved' => [
-        'banner_cta' => 'View saved tools',
-        'banner_hint' => 'Save the tools you love to revisit them anytime.',
+        'banner_cta' => 'View saved items',
+        'banner_hint' => 'Save what you like and revisit anytime.',
     ],
     'categories' => [
         'all' => 'All categories',
@@ -34,24 +34,24 @@ return [
         ],
     ],
     'why' => [
-        'title' => 'Why do we highlight the recommended chef tools?',
-        'description' => 'We collaborate with Amazon as affiliates and carefully pick the top-rated dessert tools so you can find the right products without hassle.',
+        'title' => 'Why we curate these tools',
+        'description' => 'We partner with trusted vendors to spotlight well-reviewed tools so you can shop faster with confidence.',
         'features' => [
             'reviews' => [
                 'title' => 'Trusted recommendations',
-                'description' => 'We read through Amazon ratings and reviews to highlight the highest quality products.',
+                'description' => 'We scan ratings and real reviews to surface the standouts.',
             ],
             'info' => [
-                'title' => 'Clear information',
-                'description' => 'We summarize the key specs so you can decide with confidence in less time.',
+                'title' => 'Clear specs',
+                'description' => 'Key details at a glance to make faster, confident picks.',
             ],
             'updates' => [
-                'title' => 'Constant updates',
-                'description' => 'We refresh the list regularly based on availability and the best offers.',
+                'title' => 'Kept fresh',
+                'description' => 'Regularly refreshed based on availability and the best offers.',
             ],
             'amazon' => [
-                'title' => 'Direct Amazon checkout',
-                'description' => 'Orders are completed on Amazon. We do not handle sales or shipping ourselves.',
+                'title' => 'Direct checkout',
+                'description' => 'Finish your order with the vendor; we never handle payment or shipping.',
             ],
         ],
     ],
@@ -63,4 +63,3 @@ return [
         'remove_detailed_error' => 'Something went wrong while removing the product from saved items',
     ],
 ];
-

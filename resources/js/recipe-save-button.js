@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @file recipe-save-button.js
  * @description نظام موحد لإدارة زر حفظ الوصفة في صفحة الوصفة الفردية
  * @version 2.0
@@ -105,7 +105,7 @@ class RecipeSaveButton {
         this.saveCountElement.textContent = `${newCount} شخص حفظوا هذه الوصفة`;
         
         // تأثير بصري للتأكيد
-        this.saveCountElement.style.color = '#f97316';
+        this.saveCountElement.style.color = '#0f4c73';
         this.saveCountElement.style.fontWeight = 'bold';
         this.saveCountElement.style.transform = 'scale(1.05)';
         this.saveCountElement.style.transition = 'all 0.3s ease';
@@ -340,3 +340,4 @@ if (document.readyState === 'loading') {
 
 // تصدير للاستخدام العام إذا لزم الأمر
 window.RecipeSaveButton = RecipeSaveButton;
+

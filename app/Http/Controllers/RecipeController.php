@@ -7,86 +7,74 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Illuminate\Http\JsonResponse;
+use App\Support\VideoEmbed;
 
 class RecipeController extends Controller
 {
     /**
      * Display a listing of recipes.
      */
-    public function index(Request $request): View
+    public function index(Request $request, \App\Filters\RecipeFilter $filters): View
     {
+        $seed = $request->integer('seed');
+        $randomSeed = $seed ?: random_int(1, 999999);
+
+        // Build base query
         $query = Recipe::approved()
             ->public()
-            ->with(['category', 'interactions'])
+            ->whereNotNull('video_url')
+            ->whereRaw("TRIM(video_url) <> ''")
+            ->with(['category', 'interactions', 'chef'])
             ->withCount(['interactions as saved_count' => function ($query) {
                 $query->where('is_saved', true);
             }])
             ->withCount(['interactions as made_count' => function ($query) {
                 $query->where('is_made', true);
             }])
+            ->withCount('interactions')
             ->withAvg('interactions', 'rating');
 
-        // Apply search filter
-        if ($request->filled('search')) {
-            $searchTerm = $request->get('search');
-            $query->where(function ($q) use ($searchTerm) {
-                $q->where('title', 'like', "%{$searchTerm}%")
-                  ->orWhere('description', 'like', "%{$searchTerm}%")
-                  ->orWhere('author', 'like', "%{$searchTerm}%");
+        // Apply filters
+        $query->filter($filters);
+
+        // Prepare pagination params
+        $appendQuery = $request->except('page');
+        $sortBy = $request->get('sort', 'random_latest');
+        $isRandomSort = in_array($sortBy, ['random', 'random_latest'], true);
+
+        if ($isRandomSort) {
+            $appendQuery['seed'] = $randomSeed;
+        } else {
+            unset($appendQuery['seed']);
+        }
+
+        $recipes = $query
+            ->paginate(12)
+            ->appends($appendQuery);
+
+        if (auth()->check()) {
+            $user = auth()->user();
+            $userInteractions = $user->interactions()
+                ->whereIn('recipe_id', $recipes->pluck('recipe_id'))
+                ->get()
+                ->keyBy('recipe_id');
+
+            $recipes->getCollection()->transform(function ($recipe) use ($userInteractions) {
+                $interaction = $userInteractions->get($recipe->recipe_id);
+                $recipe->is_saved = (bool) optional($interaction)->is_saved;
+                $recipe->is_made = (bool) optional($interaction)->is_made;
+                $recipe->user_rating = optional($interaction)->rating;
+                return $recipe;
+            });
+        } else {
+            $recipes->getCollection()->transform(function ($recipe) {
+                $recipe->is_saved = false;
+                $recipe->is_made = false;
+                $recipe->user_rating = null;
+                return $recipe;
             });
         }
 
-        // Apply category filter
-        if ($request->filled('category')) {
-            $query->whereHas('category', function ($q) use ($request) {
-                $q->where('category_id', $request->get('category'));
-            });
-        }
-
-        // Apply difficulty filter
-        if ($request->filled('difficulty')) {
-            $query->where('difficulty', $request->get('difficulty'));
-        }
-
-        // Apply prep time filter
-        if ($request->filled('prep_time')) {
-            $prepTime = $request->get('prep_time');
-            switch ($prepTime) {
-                case 'quick':
-                    $query->where('prep_time', '<=', 30);
-                    break;
-                case 'medium':
-                    $query->whereBetween('prep_time', [31, 60]);
-                    break;
-                case 'long':
-                    $query->where('prep_time', '>', 60);
-                    break;
-            }
-        }
-
-        // Apply sorting
-        $sortBy = $request->get('sort', 'created_at');
-        $sortDirection = $request->get('direction', 'desc');
-        
-        switch ($sortBy) {
-            case 'title':
-                $query->orderBy('title', $sortDirection);
-                break;
-            case 'prep_time':
-                $query->orderBy('prep_time', $sortDirection);
-                break;
-            case 'rating':
-                $query->orderBy('interactions_avg_rating', $sortDirection);
-                break;
-            case 'saved':
-                $query->orderBy('saved_count', $sortDirection);
-                break;
-            default:
-                $query->orderBy('created_at', $sortDirection);
-        }
-
-        $recipes = $query->paginate(12)->withQueryString();
-        
         // Get categories for filter dropdown
         $categories = Category::orderBy('name')->get();
 
@@ -101,7 +89,7 @@ class RecipeController extends Controller
         try {
             $recipes = Recipe::approved()
                 ->public()
-                ->with(['category', 'interactions'])
+                ->with(['category', 'interactions', 'chef'])
                 ->withCount(['interactions as saved_count' => function ($query) {
                     $query->where('is_saved', true);
                 }])
@@ -141,11 +129,17 @@ class RecipeController extends Controller
         try {
             $canViewPrivate = auth()->check() && (auth()->user()->isAdmin() || auth()->id() === $recipe->user_id);
 
+            // Restrict special recipe page to admins only
+            if ($recipe->slug === 'new-video-1' && !(auth()->check() && auth()->user()->isAdmin())) {
+                return redirect()->route('home');
+            }
+
             if ((!$recipe->isApproved() || $recipe->isPrivate()) && !$canViewPrivate) {
                 abort(404);
             }
 
             $recipe->load(['category', 'interactions', 'ingredients', 'chef']);
+            $recipe->loadMissing(['workshops.chef']);
             
             // Load counts and averages
             $recipe->loadCount(['interactions as saved_count' => function ($query) {
@@ -339,6 +333,84 @@ class RecipeController extends Controller
         } catch (\Exception $e) {
             \Log::error('Recipe show API error: ' . $e->getMessage());
             return response()->json(['error' => 'Failed to fetch recipe: ' . $e->getMessage()], 500);
+        }
+    }
+    /**
+     * Store a quick post (recipe) from the feed composer.
+     */
+    public function storeQuickPost(Request $request): JsonResponse
+    {
+        if (!auth()->user()?->isAdmin()) {
+            return response()->json(['message' => 'غير مصرح لك بالنشر'], 403);
+        }
+
+        try {
+            $type = $request->input('type');
+
+            $rules = [
+                'type' => 'required|in:article,photo,video',
+                'title' => 'nullable|string|max:255',
+                'description' => 'nullable|string',
+                'image' => 'nullable|image|max:10240', // 10MB max
+                'video_url' => 'nullable|url',
+            ];
+
+            if ($type === 'article') {
+                $rules['description'] = 'required|string';
+            } elseif ($type === 'photo') {
+                $rules['image'] = 'required|image|max:10240';
+            } elseif ($type === 'video') {
+                $rules['video_url'] = 'required|url';
+                $rules['description'] = 'required|string';
+            }
+
+            $validated = $request->validate($rules);
+
+            $recipe = new Recipe();
+            $recipe->user_id = auth()->id();
+            $recipe->status = Recipe::STATUS_APPROVED; // Auto-approve for now, or use PENDING based on policy
+            $recipe->visibility = Recipe::VISIBILITY_PUBLIC;
+            
+            // Set title based on type if not provided
+            if (empty($validated['title'])) {
+                $recipe->title = match($validated['type']) {
+                    'photo' => 'New Photo',
+                    'video' => 'New Video',
+                    default => 'New Post',
+                };
+            } else {
+                $recipe->title = $validated['title'];
+            }
+
+            $recipe->description = $validated['description'] ?? '';
+            $recipe->author = auth()->user()?->name ?? 'Community Member';
+            $recipe->video_url = VideoEmbed::normalize($validated['video_url'] ?? null);
+            
+            // Handle image upload
+            if ($request->hasFile('image')) {
+                $path = $request->file('image')->store('recipes', 'public');
+                $recipe->image = $path;
+            }
+
+            // Set default category (e.g., "General" or "Community")
+            // You might want to make this dynamic or set a specific ID
+            $recipe->category_id = Category::first()?->id ?? null; 
+
+            $recipe->save();
+
+            return response()->json([
+                'message' => 'Post created successfully',
+                'redirect' => route('recipes')
+            ]);
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'message' => 'تحقق من البيانات المدخلة',
+                'errors' => $e->errors()
+            ], 422);
+        } catch (\Exception $e) {
+            \Log::error('Quick post error: ' . $e->getMessage());
+            return response()->json(['message' => 'Failed to create post'], 500);
         }
     }
 }

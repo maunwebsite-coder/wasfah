@@ -192,11 +192,65 @@ class HeroSlide extends Model
             return null;
         }
 
+        $path = trim($path);
+
         if (Str::startsWith($path, ['http://', 'https://', '//'])) {
+            $localPath = $this->normalizeLocalAssetPath($path);
+
+            if ($localPath !== null) {
+                return $this->resolveLocalAssetUrl($localPath);
+            }
+
             return $path;
         }
 
-        return Storage::disk('public')->url($path);
+        return $this->resolveLocalAssetUrl($path);
+    }
+
+    /**
+     * Convert legacy local URLs (localhost/127.0.0.1) to a path we can serve from the current host.
+     */
+    protected function normalizeLocalAssetPath(string $url): ?string
+    {
+        $parts = parse_url($url);
+
+        if (!$parts) {
+            return null;
+        }
+
+        $host = $parts['host'] ?? '';
+        $localHosts = ['127.0.0.1', 'localhost', '::1'];
+
+        if (!in_array($host, $localHosts, true)) {
+            return null;
+        }
+
+        $path = $parts['path'] ?? '';
+
+        return $path ? ltrim($path, '/') : null;
+    }
+
+    /**
+     * Resolve a relative storage/public path to a usable URL, returning null when the asset is missing.
+     */
+    protected function resolveLocalAssetUrl(string $path): ?string
+    {
+        $normalized = ltrim($path, '/');
+
+        $storagePath = Str::replaceFirst('storage/', '', $normalized);
+        $storageFullPath = storage_path('app/public/' . $storagePath);
+
+        if (file_exists($storageFullPath)) {
+            return Storage::disk('public')->url($storagePath);
+        }
+
+        $publicFullPath = public_path($normalized);
+
+        if (file_exists($publicFullPath)) {
+            return asset($normalized);
+        }
+
+        return null;
     }
 
     /**

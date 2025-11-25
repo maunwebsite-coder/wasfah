@@ -64,7 +64,7 @@ class NotificationCopy
             $message .= " Location: {$location}.";
         }
 
-        $message .= ' Need to make changes? Use the booking page to reach the Wasfah support team.';
+        $message .= ' Need to make changes? Use the booking page to reach the ' . static::brandName() . ' support team.';
 
         return [$title, $message];
     }
@@ -112,9 +112,10 @@ class NotificationCopy
      */
     public static function welcome(User $user): array
     {
+        $brand = static::brandName();
         $firstName = trim(explode(' ', $user->name ?? '')[0] ?? '');
-        $title = $firstName !== '' ? "Welcome to Wasfah, {$firstName}" : 'Welcome to Wasfah';
-        $message = 'We are happy you are here. Save your favorite recipes, manage bookings, and receive live reminders in one clean dashboard. Start by updating your profile so we can personalize your feed.';
+        $title = $firstName !== '' ? "Welcome to {$brand}, {$firstName}" : "Welcome to {$brand}";
+        $message = 'We are happy you are here. Save your favorite recipes, manage bookings, and receive live reminders in one clean ' . $brand . ' dashboard. Start by updating your profile so we can personalize your feed.';
 
         return [$title, $message];
     }
@@ -163,5 +164,10 @@ class NotificationCopy
         }
 
         return null;
+    }
+
+    protected static function brandName(): string
+    {
+        return config('app.name', 'Peahskill');
     }
 }

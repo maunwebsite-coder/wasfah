@@ -8,18 +8,23 @@
 
 @push('styles')
 <style>
+    :root {
+        --tool-cream: var(--brand-cream, #eaf3f6);
+        --tool-gold-rgb: var(--brand-gold-rgb, 15, 162, 137);
+        --tool-teal-rgb: var(--brand-teal-rgb, 15, 162, 137);
+    }
     .tool-detail-hero {
         position: relative;
         overflow: hidden;
         background:
-            radial-gradient(120% 120% at 80% 0%, rgba(251, 191, 36, 0.18) 0%, rgba(255, 247, 237, 0) 65%),
-            linear-gradient(135deg, #fff7ed 0%, #ffffff 45%, #f1f5f9 100%);
+            radial-gradient(120% 120% at 80% 0%, rgba(var(--tool-gold-rgb), 0.18) 0%, rgba(246, 242, 228, 0) 65%),
+            linear-gradient(135deg, var(--tool-cream) 0%, #ffffff 45%, #e6f7f2 100%);
     }
     .tool-detail-hero::before {
         content: '';
         position: absolute;
         inset: 0;
-        background: radial-gradient(90% 85% at 15% 10%, rgba(14, 165, 233, 0.12), transparent 55%);
+        background: radial-gradient(90% 85% at 15% 10%, rgba(var(--tool-teal-rgb), 0.14), transparent 55%);
         pointer-events: none;
     }
     .tool-detail-card {
@@ -35,7 +40,7 @@
         content: '';
         position: absolute;
         inset: 0;
-        background: linear-gradient(180deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 247, 237, 0.6) 100%);
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.85) 0%, rgba(246, 242, 228, 0.7) 100%);
         opacity: 0.8;
         pointer-events: none;
     }
@@ -165,8 +170,8 @@
         gap: 0.6rem;
         padding: 0.5rem 1.1rem;
         border-radius: 999px;
-        background: rgba(59, 130, 246, 0.12);
-        color: #1d4ed8;
+        background: rgba(var(--tool-teal-rgb), 0.12);
+        color: #0f4c73;
         font-weight: 600;
         font-size: 0.9rem;
     }
@@ -177,16 +182,16 @@
     }
     .tool-overview-card {
         border-radius: 1.5rem;
-        background: linear-gradient(160deg, rgba(255, 247, 237, 0.85) 0%, #ffffff 100%);
-        border: 1px solid rgba(251, 191, 36, 0.25);
+        background: linear-gradient(160deg, rgba(246, 242, 228, 0.9) 0%, #ffffff 100%);
+        border: 1px solid rgba(var(--tool-gold-rgb), 0.25);
         padding: 1rem 1.25rem;
         display: flex;
         flex-direction: column;
         gap: 0.4rem;
-        box-shadow: 0 18px 34px rgba(249, 115, 22, 0.14);
+        box-shadow: 0 18px 34px rgba(15, 76, 115, 0.14);
     }
     .tool-overview-card i {
-        color: #f97316;
+        color: #0f4c73;
         font-size: 1.1rem;
     }
     .tool-overview-label {
@@ -211,10 +216,10 @@
     }
     .tool-price-card {
         border-radius: 1.75rem;
-        border: 1px solid rgba(249, 115, 22, 0.28);
-        background: linear-gradient(135deg, rgba(252, 211, 77, 0.22) 0%, rgba(255, 247, 237, 0.92) 100%);
+        border: 1px solid rgba(15, 76, 115, 0.28);
+        background: linear-gradient(135deg, rgba(var(--tool-gold-rgb), 0.2) 0%, rgba(246, 242, 228, 0.92) 100%);
         padding: 1.5rem;
-        box-shadow: 0 26px 40px rgba(249, 115, 22, 0.18);
+        box-shadow: 0 26px 40px rgba(15, 76, 115, 0.18);
     }
     .tool-price-note {
         font-size: 0.8rem;
@@ -231,8 +236,8 @@
         transition: background 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
     }
     .detail-feature-item:hover {
-        background: rgba(251, 191, 36, 0.16);
-        border-color: rgba(251, 191, 36, 0.35);
+        background: rgba(var(--tool-gold-rgb), 0.16);
+        border-color: rgba(var(--tool-gold-rgb), 0.35);
         transform: translateY(-2px);
     }
     .detail-feature-item i {
@@ -251,7 +256,7 @@
         min-height: 56px;
     }
     .tool-related-section {
-        background: linear-gradient(160deg, #ffffff 0%, #fff7ed 100%);
+        background: linear-gradient(160deg, #ffffff 0%, var(--tool-cream) 100%);
         border-radius: 2rem;
         padding: 2.5rem;
         box-shadow: 0 26px 44px rgba(15, 23, 42, 0.12);
@@ -306,7 +311,7 @@
         transition: transform 0.3s ease, background 0.3s ease;
     }
     .gallery-lightbox__close:hover {
-        background: rgba(248, 113, 113, 0.95);
+        background: rgba(var(--tool-teal-rgb), 0.95);
         transform: scale(1.05);
     }
     .line-clamp-2 {
@@ -379,7 +384,7 @@
             font-size: 0.8rem;
         }
         .tool-detail-hero {
-            background: linear-gradient(180deg, #fff7ed 0%, #ffffff 60%, #f8fafc 100%);
+            background: linear-gradient(180deg, var(--tool-cream) 0%, #ffffff 60%, #e6f7f2 100%);
         }
         .tool-detail-card {
             border-radius: 1.25rem;
@@ -476,7 +481,7 @@
                                 <span class="text-base font-semibold text-slate-700">{{ number_format($tool->rating ?? 0, 1) }}</span>
                             </div>
                             <span class="text-slate-400">|</span>
-                            <span class="text-slate-500">Trusted by {{ number_format($reviewsCount) }} professional chefs</span>
+                            <span class="text-slate-500">Trusted by {{ number_format($reviewsCount) }} home cooks and bakers</span>
                         </div>
                     </div>
 
@@ -505,7 +510,7 @@
                             <span class="tool-overview-label">Category</span>
                             <span class="tool-overview-value">
                                 <i class="fas fa-utensils"></i>
-                                {{ $tool->category ?? 'Professional kitchen tools' }}
+                                {{ $tool->category ?? 'Recommended kitchen tools' }}
                             </span>
                             <span class="text-xs text-slate-400">Part of the curated Wasfah tools collection</span>
                         </div>
@@ -520,7 +525,7 @@
                     <div class="tool-price-card">
                         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                             <div>
-                                <p class="text-sm text-slate-500">Great for chefs who need</p>
+                                <p class="text-sm text-slate-500">Great for any kitchen that needs</p>
                                 <p class="text-xl sm:text-2xl font-bold text-orange-500 mt-1">
                                     {{ $tool->category ?? 'cutting-edge kitchen solutions' }}
                                 </p>
@@ -555,7 +560,7 @@
                     <div class="tool-cta-group">
                         @if($tool->amazon_url)
                             <a href="{{ $tool->amazon_url }}" target="_blank" rel="noopener"
-                               class="w-full inline-flex items-center justify-center gap-2 px-6 py-3 text-sm font-semibold text-white bg-[#FF9900] hover:bg-[#e68a00] transition-colors shadow-md rounded-xl">
+                               class="w-full inline-flex items-center justify-center gap-2 px-6 py-3 text-sm font-semibold text-white bg-[#0f4c73] hover:bg-[#0a8070] transition-colors shadow-md rounded-xl">
                                 <i class="fab fa-amazon text-lg"></i>
                                 <span>Continue on Amazon</span>
                                 <i class="fas fa-external-link-alt text-xs"></i>
@@ -974,4 +979,8 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 </script>
 @endpush
+
+
+
+
 

@@ -8,4 +8,63 @@
 @theme {
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
+
+    /* Remap Tailwind color tokens to the peacock-inspired palette */
+    --color-orange-50: #eaf3f6;
+    --color-orange-100: #d4e6ef;
+    --color-orange-200: #acc7dd;
+    --color-orange-300: #80a7c6;
+    --color-orange-400: #4b7fa5;
+    --color-orange-500: #0f4c73;
+    --color-orange-600: #0c3f61;
+    --color-orange-700: #0a344f;
+    --color-orange-800: #082b40;
+    --color-orange-900: #062130;
+
+    --color-amber-50: #e6f7f2;
+    --color-amber-100: #c8ede3;
+    --color-amber-200: #a1dfd1;
+    --color-amber-300: #73ceb9;
+    --color-amber-400: #45bda4;
+    --color-amber-500: #0fa289;
+    --color-amber-600: #0d8b76;
+    --color-amber-700: #0b705f;
+    --color-amber-800: #095a4c;
+    --color-amber-900: #064138;
+
+    --color-rose-50: #e6f7f2;
+    --color-rose-100: #c5eee2;
+    --color-rose-200: #94e0cf;
+    --color-rose-300: #5fcfba;
+    --color-rose-400: #2fbfa8;
+    --color-rose-500: #0fa289;
+    --color-rose-600: #0d8b76;
+    --color-rose-700: #0b705f;
+    --color-rose-800: #095a4c;
+    --color-rose-900: #064138;
+}
+
+@layer base {
+    :root {
+        --brand-navy: #0f4c73;
+        --brand-navy-600: #0c3f61;
+        --brand-navy-700: #0a344f;
+        --brand-navy-800: #082b40;
+        --brand-ink: #0a2f46;
+        --brand-muted: #4f6b82;
+
+        --brand-teal: #0fa289;
+        --brand-teal-600: #0d8b76;
+        --brand-teal-700: #0b705f;
+
+        --brand-gold: #0fa289;
+        --brand-gold-soft: #c8ede3;
+        --brand-gold-tint: #a1dfd1;
+
+        --brand-cream: #eaf3f6;
+
+        --brand-navy-rgb: 15, 76, 115;
+        --brand-teal-rgb: 15, 162, 137;
+        --brand-gold-rgb: 15, 162, 137;
+    }
 }

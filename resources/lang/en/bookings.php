@@ -85,6 +85,10 @@ return [
         ],
     ],
 
+    'notices' => [
+        'registration_closure' => 'Registration closes automatically :minutes minutes before the workshop starts based on the host time.',
+    ],
+
     'status' => [
         'pending' => 'Pending review',
         'confirmed' => 'Confirmed',

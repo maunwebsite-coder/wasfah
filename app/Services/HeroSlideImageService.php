@@ -149,7 +149,7 @@ class HeroSlideImageService
             'image/gif' => function_exists('imagecreatefromgif') ? @imagecreatefromgif($path) : null,
             'image/webp' => function_exists('imagecreatefromwebp') ? @imagecreatefromwebp($path) : null,
             'image/bmp', 'image/x-ms-bmp' => function_exists('imagecreatefrombmp') ? @imagecreatefrombmp($path) : null,
-            default => @imagecreatefromstring(file_get_contents($path)),
+            default => function_exists('imagecreatefromstring') ? @imagecreatefromstring(file_get_contents($path)) : null,
         };
     }
 

@@ -51,7 +51,16 @@ class UserInteractionController extends Controller
             $data
         );
     
-        return response()->json($interaction, 201);
+        return response()->json([
+            'success' => true,
+            'message' => $interaction->is_saved
+                ? __('home.alerts.save_success')
+                : __('home.alerts.save_removed'),
+            'is_saved' => (bool) $interaction->is_saved,
+            'is_made' => (bool) $interaction->is_made,
+            'rating' => $interaction->rating,
+            'interaction' => $interaction,
+        ], 200);
     }
 
     /**

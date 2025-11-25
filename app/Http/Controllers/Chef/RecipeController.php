@@ -8,6 +8,7 @@ use App\Models\Recipe;
 use App\Models\Workshop;
 use App\Models\Tool;
 use App\Support\ImageUploadConstraints;
+use App\Support\VideoEmbed;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -78,6 +79,8 @@ class RecipeController extends Controller
      */
     public function create()
     {
+        $this->ensureAdminOnly();
+
         $categories = Category::orderBy('name')->get();
         $tools = Tool::where('is_active', true)->orderBy('name')->get();
 
@@ -89,6 +92,8 @@ class RecipeController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+        $this->ensureAdminOnly();
+
         $data = $this->validateRecipe($request);
 
         $status = $request->input('submit_action') === 'submit'
@@ -337,6 +342,14 @@ class RecipeController extends Controller
     }
 
     /**
+     * Restrict recipe creation to administrators only.
+     */
+    private function ensureAdminOnly(): void
+    {
+        abort_if(!Auth::user()?->isAdmin(), 403, 'هذه الصفحة مخصصة للمسؤولين فقط.');
+    }
+
+    /**
      * Normalize steps array.
      */
     private function normalizeSteps(array $steps): array
@@ -465,59 +478,6 @@ class RecipeController extends Controller
      */
     private function normalizeVideoUrl(?string $url): ?string
     {
-        if (!$url) {
-            return null;
-        }
-
-        $normalized = trim($url);
-
-        if ($normalized === '') {
-            return null;
-        }
-
-        $host = strtolower(parse_url($normalized, PHP_URL_HOST) ?? '');
-
-        if ($host === '') {
-            return $normalized;
-        }
-
-        $allowedHosts = ['youtube.com', 'www.youtube.com', 'm.youtube.com', 'youtu.be'];
-
-        if (!in_array($host, $allowedHosts, true)) {
-            return $normalized;
-        }
-
-        $videoId = null;
-
-        if ($host === 'youtu.be') {
-            $path = trim(parse_url($normalized, PHP_URL_PATH) ?? '', '/');
-            if ($path !== '') {
-                $videoId = $path;
-            }
-        } else {
-            $path = parse_url($normalized, PHP_URL_PATH) ?? '';
-
-            if (preg_match('#/(embed|shorts)/([a-zA-Z0-9_-]{6,})#', $path, $matches)) {
-                $videoId = $matches[2];
-            }
-
-            if (!$videoId) {
-                $query = parse_url($normalized, PHP_URL_QUERY) ?? '';
-                parse_str($query, $params);
-
-                foreach (['v', 'vi'] as $key) {
-                    if (!empty($params[$key]) && is_string($params[$key])) {
-                        $videoId = $params[$key];
-                        break;
-                    }
-                }
-            }
-        }
-
-        if (!$videoId || preg_match('/^[a-zA-Z0-9_-]{6,}$/', $videoId) !== 1) {
-            return $normalized;
-        }
-
-        return sprintf('https://www.youtube.com/embed/%s', $videoId);
+        return VideoEmbed::normalize($url);
     }
 }

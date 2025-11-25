@@ -8,14 +8,14 @@
         background: white;
         border-radius: 1.5rem;
         box-shadow: 0 20px 45px rgba(15, 23, 42, 0.12);
-        border: 1px solid rgba(249, 115, 22, 0.08);
+        border: 1px solid rgba(15, 76, 115, 0.08);
     }
     .onboarding-card[dir="rtl"] {
         direction: rtl;
         text-align: right;
     }
     .onboarding-header {
-        background: linear-gradient(135deg, #f97316 0%, #fb923c 40%, #fcd34d 100%);
+        background: linear-gradient(135deg, #0f4c73 0%, #0fb39a 40%, #a1dfd1 100%);
         color: white;
         border-radius: 1.5rem 1.5rem 0 0;
         padding: 2.5rem 2rem;
@@ -48,7 +48,7 @@
         padding: 0.4rem 0.9rem;
         border-radius: 9999px;
         background: rgba(255, 255, 255, 0.18);
-        color: #fffaf0;
+        color: #eaf3f6;
         font-size: 0.85rem;
         font-weight: 600;
     }
@@ -63,64 +63,9 @@
         font-weight: 600;
         font-size: 0.85rem;
     }
-    .info-card {
-        background: rgba(249, 115, 22, 0.08);
-        border: 1px solid rgba(249, 115, 22, 0.2);
-        border-radius: 1rem;
-        padding: 1.25rem;
-        color: #7c2d12;
-    }
-    .benefit-card {
-        background: #fff7ed;
-        border: 1px solid rgba(249, 115, 22, 0.25);
-        border-radius: 1rem;
-        padding: 1.25rem;
-        box-shadow: 0 8px 18px rgba(249, 115, 22, 0.12);
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-    }
-    .benefit-icon {
-        width: 3rem;
-        height: 3rem;
-        border-radius: 9999px;
-        background: white;
-        color: #ea580c;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.25rem;
-        box-shadow: 0 10px 20px rgba(249, 115, 22, 0.2);
-    }
-    .progress-steps {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-        gap: 1rem;
-    }
-    .progress-step {
-        background: white;
-        border: 1px solid #ffe4d1;
-        border-radius: 1rem;
-        padding: 1rem 1.25rem;
-        box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
-    }
-    .progress-step__icon {
-        width: 2.5rem;
-        height: 2.5rem;
-        border-radius: 9999px;
-        background: #fed7aa;
-        color: #9a3412;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: 700;
-        margin-bottom: 0.75rem;
-        box-shadow: 0 8px 15px rgba(249, 115, 22, 0.2);
-    }
     .helper-checklist {
-        background: #fffaf4;
-        border: 1px solid #ffe4d1;
+        background: #eaf3f6;
+        border: 1px solid #c8ede3;
         border-radius: 1rem;
         padding: 1.25rem 1.5rem;
     }
@@ -135,7 +80,7 @@
         width: 1.5rem;
         height: 1.5rem;
         border-radius: 9999px;
-        background: #f97316;
+        background: #0f4c73;
         color: white;
         display: inline-flex;
         align-items: center;
@@ -148,7 +93,7 @@
     }
     .form-section {
         padding-top: 1.5rem;
-        border-top: 1px dashed #ffe0c2;
+        border-top: 1px dashed #c8ede3;
         margin-top: 1.5rem;
     }
     .form-section:first-of-type {
@@ -195,11 +140,11 @@
     }
     .input-control:focus {
         outline: none;
-        border-color: #fb923c;
+        border-color: #0fb39a;
         box-shadow: 0 0 0 3px rgba(251, 146, 60, 0.25);
     }
     .submit-btn {
-        background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+        background: linear-gradient(135deg, #0f4c73 0%, #0a8070 100%);
         color: white;
         padding: 0.95rem 1.5rem;
         border-radius: 0.85rem;
@@ -210,11 +155,108 @@
     }
     .submit-btn:hover {
         transform: translateY(-2px);
-        box-shadow: 0 18px 35px rgba(249, 115, 22, 0.35);
+        box-shadow: 0 18px 35px rgba(15, 76, 115, 0.35);
     }
     .submit-btn:focus {
         outline: none;
-        box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.28);
+        box-shadow: 0 0 0 4px rgba(15, 76, 115, 0.28);
+    }
+    .stepper {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+    .step-pill {
+        display: flex;
+        gap: 0.75rem;
+        align-items: flex-start;
+        padding: 1rem 1.1rem;
+        border-radius: 1rem;
+        border: 1px solid #c8ede3;
+        background: #f8fafc;
+        box-shadow: 0 10px 24px rgba(15, 76, 115, 0.08);
+        transition: all 0.2s ease;
+    }
+    .step-pill.is-active {
+        background: #0f4c73;
+        border-color: #0f4c73;
+        color: #eaf3f6;
+        box-shadow: 0 18px 36px rgba(15, 76, 115, 0.3);
+    }
+    .step-pill__index {
+        width: 2.25rem;
+        height: 2.25rem;
+        border-radius: 9999px;
+        background: #a1dfd1;
+        color: #0a344f;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 800;
+        box-shadow: inset 0 0 0 3px rgba(255, 255, 255, 0.4);
+    }
+    .step-pill.is-active .step-pill__index {
+        background: white;
+        color: #0f4c73;
+        box-shadow: inset 0 0 0 0;
+    }
+    .step-pill__body p {
+        margin: 0;
+    }
+    .step-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        background: #ecfeff;
+        border: 1px solid #bae6fd;
+        color: #0ea5e9;
+        padding: 0.45rem 0.8rem;
+        border-radius: 9999px;
+        font-weight: 700;
+        font-size: 0.9rem;
+    }
+    .step-panel {
+        display: none;
+        animation: fadeIn 0.25s ease;
+    }
+    .step-panel.is-active {
+        display: block;
+    }
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(8px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .step-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        justify-content: space-between;
+        margin-top: 1rem;
+    }
+    .ghost-btn {
+        border: 1px dashed #0f4c73;
+        color: #0f4c73;
+        background: #f8fafc;
+        padding: 0.85rem 1rem;
+        border-radius: 0.85rem;
+        font-weight: 700;
+    }
+    .secondary-btn {
+        border: 1px solid #e5e7eb;
+        background: white;
+        color: #0f172a;
+        padding: 0.85rem 1rem;
+        border-radius: 0.85rem;
+        font-weight: 700;
+        transition: all 0.2s ease;
+    }
+    .secondary-btn:hover {
+        border-color: #0f4c73;
+        color: #0f4c73;
+    }
+    .step-actions .submit-btn {
+        min-width: 200px;
     }
 </style>
 @endpush
@@ -243,10 +285,27 @@
     }
     $steps = (array) trans('onboarding.steps');
     $checklistItems = (array) trans('onboarding.checklist.items');
+    $specialtyOptions = (array) trans('onboarding.sections.bio.specialty_options');
+    $stepKeys = ['contact', 'social', 'bio'];
+    $stepFieldMap = [
+        'contact' => ['country_code', 'phone', 'google_email'],
+        'social' => ['instagram_url', 'youtube_url'],
+        'bio' => ['chef_specialty_area', 'chef_specialty_description'],
+    ];
+    $initialStepKey = 'contact';
+    foreach ($stepKeys as $key) {
+        foreach ($stepFieldMap[$key] ?? [] as $field) {
+            if ($errors->has($field)) {
+                $initialStepKey = $key;
+                break 2;
+            }
+        }
+    }
+    $totalSteps = count($stepKeys);
 @endphp
 <div class="min-h-screen bg-gradient-to-br from-orange-50 via-white to-orange-100 py-10">
     <div class="container mx-auto px-4 max-w-5xl">
-        <div class="onboarding-card" dir="{{ $isRtl ? 'rtl' : 'ltr' }}">
+        <div class="onboarding-card" dir="{{ $isRtl ? 'rtl' : 'ltr' }}" data-initial-step="{{ $initialStepKey }}">
             <div class="onboarding-header">
                 <h1 class="text-3xl font-bold mb-3">{{ __('onboarding.header.title') }}</h1>
                 <p class="text-base md:text-lg text-orange-50/90 max-w-2xl leading-relaxed">
@@ -283,12 +342,15 @@
                     </div>
                 </div>
 
-                <div class="progress-steps mb-8">
-                    @foreach($steps as $index => $step)
-                        <div class="progress-step" @if($isRtl) dir="rtl" @endif>
-                            <div class="progress-step__icon">{{ $index + 1 }}</div>
-                            <p class="text-sm text-gray-700 font-semibold mb-1">{{ $step['title'] ?? '' }}</p>
-                            <p class="text-xs text-gray-500">{{ $step['body'] ?? '' }}</p>
+                <div class="stepper" data-stepper>
+                    @foreach($stepKeys as $index => $key)
+                        @php $step = $steps[$index] ?? []; @endphp
+                        <div class="step-pill {{ $key === $initialStepKey ? 'is-active' : '' }}" data-step-pill="{{ $key }}">
+                            <div class="step-pill__index">{{ $index + 1 }}</div>
+                            <div class="step-pill__body">
+                                <p class="font-semibold text-sm">{{ $step['title'] ?? '' }}</p>
+                                <p class="text-xs opacity-80">{{ $step['body'] ?? '' }}</p>
+                            </div>
                         </div>
                     @endforeach
                 </div>
@@ -305,148 +367,199 @@
                     </ul>
                 </div>
 
-                <form method="POST" action="{{ route('onboarding.store') }}" class="space-y-6">
+                <form method="POST" action="{{ route('onboarding.store') }}" class="space-y-8" id="onboarding-form">
                     @csrf
-                    <div class="form-section">
-                        <h3 class="form-section-title">{{ __('onboarding.sections.contact.title') }}</h3>
-                        <p class="form-section-hint">{{ __('onboarding.sections.contact.hint') }}</p>
-                        <div class="grid gap-6 md:grid-cols-2">
-                            <div>
-                                <label class="input-label">{{ __('onboarding.sections.contact.country_label') }}</label>
-                                <select name="country_code" id="country-code" class="input-control">
-                                    <option value="">{{ __('onboarding.sections.contact.country_placeholder') }}</option>
-                                    @foreach($availableCountries as $code => $country)
-                                        <option value="{{ $code }}"
-                                                data-dial-code="{{ $country['dial_code'] }}"
-                                                {{ $code === $selectedCountryCode ? 'selected' : '' }}>
-                                            {{ $country['name'] }} ({{ $country['dial_code'] }})
-                                        </option>
-                                    @endforeach
-                                </select>
-                                @error('country_code')
-                                    <p class="mt-2 text-sm text-red-500">{{ $message }}</p>
-                                @enderror
+                    <section class="step-panel {{ $initialStepKey === 'contact' ? 'is-active' : '' }}" data-step-panel="contact">
+                        <div class="flex items-center justify-between gap-3 mb-3">
+                            <div class="step-status">
+                                <i class="fas fa-arrow-right"></i>
+                                {{ __('onboarding.navigation.step_status', ['current' => 1, 'total' => $totalSteps]) }}
                             </div>
-                            <div>
-                                <label class="input-label">{{ __('onboarding.sections.contact.phone_label') }}</label>
-                                <div class="flex items-center gap-3">
-                                    <span class="phone-prefix" id="dial-code-display">{{ $currentDialCode }}</span>
-                                    <div class="flex-1">
-                                        <input type="text"
-                                               name="phone"
-                                               value="{{ $phoneInputValue }}"
-                                               class="input-control"
-                                               placeholder="{{ __('onboarding.sections.contact.phone_placeholder') }}">
+                            <p class="text-sm text-orange-800 font-semibold">{{ $steps[0]['title'] ?? '' }}</p>
+                        </div>
+                        <div class="form-section">
+                            <h3 class="form-section-title">{{ __('onboarding.sections.contact.title') }}</h3>
+                            <p class="form-section-hint">{{ __('onboarding.sections.contact.hint') }}</p>
+                            <div class="grid gap-6 md:grid-cols-2">
+                                <div>
+                                    <label class="input-label">{{ __('onboarding.sections.contact.country_label') }}</label>
+                                    <select name="country_code" id="country-code" class="input-control">
+                                        <option value="">{{ __('onboarding.sections.contact.country_placeholder') }}</option>
+                                        @foreach($availableCountries as $code => $country)
+                                            <option value="{{ $code }}"
+                                                    data-dial-code="{{ $country['dial_code'] }}"
+                                                    {{ $code === $selectedCountryCode ? 'selected' : '' }}>
+                                                {{ $country['name'] }} ({{ $country['dial_code'] }})
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    @error('country_code')
+                                        <p class="mt-2 text-sm text-red-500">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                                <div>
+                                    <label class="input-label">{{ __('onboarding.sections.contact.phone_label') }}</label>
+                                    <div class="flex items-center gap-3">
+                                        <span class="phone-prefix" id="dial-code-display">{{ $currentDialCode }}</span>
+                                        <div class="flex-1">
+                                            <input type="text"
+                                                   name="phone"
+                                                   value="{{ $phoneInputValue }}"
+                                                   class="input-control"
+                                                   placeholder="{{ __('onboarding.sections.contact.phone_placeholder') }}">
+                                        </div>
+                                    </div>
+                                    <input type="hidden" name="phone_country_code" id="phone_country_code" value="{{ $currentDialCode }}">
+                                    <p class="mt-2 text-xs text-gray-500">{{ __('onboarding.sections.contact.phone_note') }}</p>
+                                    @error('phone')
+                                        <p class="mt-2 text-sm text-red-500">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="input-label">{{ __('onboarding.sections.contact.google_email_label') }}</label>
+                            <input type="email"
+                                   name="google_email"
+                                   value="{{ old('google_email', $user->google_email) }}"
+                                   class="input-control"
+                                   placeholder="name@gmail.com">
+                            <p class="mt-2 text-xs text-gray-500">
+                                {{ __('onboarding.sections.contact.google_email_hint') }}
+                            </p>
+                            @error('google_email')
+                                <p class="mt-2 text-sm text-red-500">{{ $message }}</p>
+                            @enderror
+                        </div>
+                        <div class="step-actions">
+                            <span></span>
+                            <button type="button" class="submit-btn" data-next-step="social">
+                                {{ __('onboarding.navigation.next') }}
+                            </button>
+                        </div>
+                    </section>
+
+                    <section class="step-panel {{ $initialStepKey === 'social' ? 'is-active' : '' }}" data-step-panel="social">
+                        <div class="flex items-center justify-between gap-3 mb-3">
+                            <div class="step-status">
+                                <i class="fas fa-arrow-right"></i>
+                                {{ __('onboarding.navigation.step_status', ['current' => 2, 'total' => $totalSteps]) }}
+                            </div>
+                            <p class="text-sm text-orange-800 font-semibold">{{ $steps[1]['title'] ?? '' }}</p>
+                        </div>
+                        <div class="form-section">
+                            <h3 class="form-section-title">{{ __('onboarding.sections.social.title') }}</h3>
+                            <p class="form-section-hint">{{ __('onboarding.sections.social.hint') }}</p>
+                            <div class="grid gap-6 md:grid-cols-2">
+                                <div>
+                                    <label class="input-label">{{ __('onboarding.sections.social.instagram_label') }}</label>
+                                    <input type="url"
+                                           name="instagram_url"
+                                           value="{{ old('instagram_url', $user->instagram_url) }}"
+                                           class="input-control"
+                                           placeholder="https://www.instagram.com/username">
+                                    @error('instagram_url')
+                                        <p class="mt-2 text-sm text-red-500">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                                <div>
+                                    <label class="input-label">{{ __('onboarding.sections.social.youtube_label') }}</label>
+                                    <input type="url"
+                                           name="youtube_url"
+                                           value="{{ old('youtube_url', $user->youtube_url) }}"
+                                           class="input-control"
+                                           placeholder="https://www.youtube.com/channel/...">
+                                    @error('youtube_url')
+                                        <p class="mt-2 text-sm text-red-500">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                                @php
+                                    $instagramOldValue = old('instagram_url', $user->instagram_url);
+                                    $youtubeOldValue = old('youtube_url', $user->youtube_url);
+                                    $showSocialRequiredError = ($errors->has('instagram_url') || $errors->has('youtube_url')) && empty($instagramOldValue) && empty($youtubeOldValue);
+                                @endphp
+                                @if($showSocialRequiredError)
+                                    <div class="md:col-span-2">
+                                        <p class="mt-1 text-sm text-red-500">
+                                            {{ __('onboarding.sections.social.required_error') }}
+                                        </p>
+                                    </div>
+                                @endif
+                                <div class="md:col-span-2">
+                                    <div class="bg-orange-50 border border-orange-100 rounded-lg px-4 py-3 text-sm text-orange-700">
+                                        {{ __('onboarding.sections.social.public_notice') }}
                                     </div>
                                 </div>
-                                <input type="hidden" name="phone_country_code" id="phone_country_code" value="{{ $currentDialCode }}">
-                                <p class="mt-2 text-xs text-gray-500">{{ __('onboarding.sections.contact.phone_note') }}</p>
-                                @error('phone')
-                                    <p class="mt-2 text-sm text-red-500">{{ $message }}</p>
-                                @enderror
                             </div>
                         </div>
-                    </div>
-                    <div class="md:col-span-2">
-                        <label class="input-label">{{ __('onboarding.sections.contact.google_email_label') }}</label>
-                        <input type="email"
-                               name="google_email"
-                               value="{{ old('google_email', $user->google_email) }}"
-                               class="input-control"
-                               placeholder="name@gmail.com">
-                        <p class="mt-2 text-xs text-gray-500">
-                            {{ __('onboarding.sections.contact.google_email_hint') }}
-                        </p>
-                        @error('google_email')
-                            <p class="mt-2 text-sm text-red-500">{{ $message }}</p>
-                        @enderror
-                    </div>
+                        <div class="step-actions">
+                            <button type="button" class="secondary-btn" data-prev-step="contact">
+                                {{ __('onboarding.navigation.back') }}
+                            </button>
+                            <button type="button" class="submit-btn" data-next-step="bio">
+                                {{ __('onboarding.navigation.next') }}
+                            </button>
+                        </div>
+                    </section>
 
-                    <div class="form-section">
-                        <h3 class="form-section-title">{{ __('onboarding.sections.social.title') }}</h3>
-                        <p class="form-section-hint">{{ __('onboarding.sections.social.hint') }}</p>
-                        <div class="grid gap-6 md:grid-cols-2">
-                            <div>
-                                <label class="input-label">{{ __('onboarding.sections.social.instagram_label') }}</label>
-                                <input type="url"
-                                       name="instagram_url"
-                                       value="{{ old('instagram_url', $user->instagram_url) }}"
-                                       class="input-control"
-                                       placeholder="https://www.instagram.com/username">
-                                @error('instagram_url')
-                                    <p class="mt-2 text-sm text-red-500">{{ $message }}</p>
-                                @enderror
+                    <section class="step-panel {{ $initialStepKey === 'bio' ? 'is-active' : '' }}" data-step-panel="bio">
+                        <div class="flex items-center justify-between gap-3 mb-3">
+                            <div class="step-status">
+                                <i class="fas fa-arrow-right"></i>
+                                {{ __('onboarding.navigation.step_status', ['current' => 3, 'total' => $totalSteps]) }}
                             </div>
-                            <div>
-                                <label class="input-label">{{ __('onboarding.sections.social.youtube_label') }}</label>
-                                <input type="url"
-                                       name="youtube_url"
-                                       value="{{ old('youtube_url', $user->youtube_url) }}"
-                                       class="input-control"
-                                       placeholder="https://www.youtube.com/channel/...">
-                                @error('youtube_url')
-                                    <p class="mt-2 text-sm text-red-500">{{ $message }}</p>
-                                @enderror
-                            </div>
-                            @php
-                                $instagramOldValue = old('instagram_url', $user->instagram_url);
-                                $youtubeOldValue = old('youtube_url', $user->youtube_url);
-                                $showSocialRequiredError = ($errors->has('instagram_url') || $errors->has('youtube_url')) && empty($instagramOldValue) && empty($youtubeOldValue);
-                            @endphp
-                            @if($showSocialRequiredError)
-                                <div class="md:col-span-2">
-                                    <p class="mt-1 text-sm text-red-500">
-                                        {{ __('onboarding.sections.social.required_error') }}
-                                    </p>
+                            <p class="text-sm text-orange-800 font-semibold">{{ $steps[2]['title'] ?? '' }}</p>
+                        </div>
+                        <div class="form-section">
+                            <h3 class="form-section-title">{{ __('onboarding.sections.bio.title') }}</h3>
+                            <p class="form-section-hint">{{ __('onboarding.sections.bio.hint') }}</p>
+                            <div class="grid gap-6 md:grid-cols-2">
+                                <div>
+                                    <label class="input-label">{{ __('onboarding.sections.bio.specialty_label') }}</label>
+                                    <select name="chef_specialty_area" class="input-control">
+                                        <option value="">{{ __('onboarding.sections.bio.specialty_placeholder') }}</option>
+                                        @foreach($specialtyOptions as $value => $label)
+                                            <option value="{{ $value }}" {{ old('chef_specialty_area', $user->chef_specialty_area) === $value ? 'selected' : '' }}>
+                                                {{ $label }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    @error('chef_specialty_area')
+                                        <p class="mt-2 text-sm text-red-500">{{ $message }}</p>
+                                    @enderror
                                 </div>
-                            @endif
-                            <div class="md:col-span-2">
-                                <div class="bg-orange-50 border border-orange-100 rounded-lg px-4 py-3 text-sm text-orange-700">
-                                    {{ __('onboarding.sections.social.public_notice') }}
+                                <div class="md:col-span-2 md:col-start-1">
+                                    <label class="input-label">{{ __('onboarding.sections.bio.description_label') }}</label>
+                                    <textarea name="chef_specialty_description"
+                                              rows="5"
+                                              class="input-control"
+                                              placeholder="{{ __('onboarding.sections.bio.description_placeholder') }}">{{ old('chef_specialty_description', $user->chef_specialty_description) }}</textarea>
+                                    @error('chef_specialty_description')
+                                        <p class="mt-2 text-sm text-red-500">{{ $message }}</p>
+                                    @enderror
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="form-section">
-                        <h3 class="form-section-title">{{ __('onboarding.sections.bio.title') }}</h3>
-                        <p class="form-section-hint">{{ __('onboarding.sections.bio.hint') }}</p>
-                        <div class="grid gap-6 md:grid-cols-2">
-                            <div>
-                                <label class="input-label">{{ __('onboarding.sections.bio.specialty_label') }}</label>
-                                <select name="chef_specialty_area" class="input-control">
-                                    <option value="">{{ __('onboarding.sections.bio.specialty_placeholder') }}</option>
-                                    <option value="food" {{ old('chef_specialty_area', $user->chef_specialty_area) === 'food' ? 'selected' : '' }}>
-                                        {{ __('onboarding.sections.bio.specialty_food') }}
-                                    </option>
-                                </select>
-                                @error('chef_specialty_area')
-                                    <p class="mt-2 text-sm text-red-500">{{ $message }}</p>
-                                @enderror
-                            </div>
-                            <div class="md:col-span-2 md:col-start-1">
-                                <label class="input-label">{{ __('onboarding.sections.bio.description_label') }}</label>
-                                <textarea name="chef_specialty_description"
-                                          rows="5"
-                                          class="input-control"
-                                          placeholder="{{ __('onboarding.sections.bio.description_placeholder') }}">{{ old('chef_specialty_description', $user->chef_specialty_description) }}</textarea>
-                                @error('chef_specialty_description')
-                                    <p class="mt-2 text-sm text-red-500">{{ $message }}</p>
-                                @enderror
+                        <div class="rounded-xl border border-blue-100 bg-blue-50 px-4 py-3 text-sm text-blue-700">
+                            {{ __('onboarding.alerts.post_submit') }}
+                        </div>
+
+                        <div class="step-actions">
+                            <button type="button" class="secondary-btn" data-prev-step="social">
+                                {{ __('onboarding.navigation.back') }}
+                            </button>
+                            <div class="flex items-center gap-3">
+                                <button type="submit" class="ghost-btn" name="skip_bio" value="1" formnovalidate>
+                                    {{ __('onboarding.navigation.skip_bio') }}
+                                </button>
+                                <button type="submit" class="submit-btn">
+                                    {{ __('onboarding.submit.cta') }}
+                                </button>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="rounded-xl border border-blue-100 bg-blue-50 px-4 py-3 text-sm text-blue-700">
-                        {{ __('onboarding.alerts.post_submit') }}
-                    </div>
-
-                    <div class="text-center pt-4">
-                        <button type="submit" class="submit-btn">
-                            {{ __('onboarding.submit.cta') }}
-                        </button>
-                        <p class="text-xs text-gray-500 mt-2">{{ __('onboarding.submit.time_notice') }}</p>
-                    </div>
+                        <p class="text-xs text-gray-500 mt-2 text-center">{{ __('onboarding.submit.time_notice') }}</p>
+                    </section>
                 </form>
             </div>
         </div>
@@ -481,6 +594,42 @@
         if (countrySelect) {
             countrySelect.addEventListener('change', updateDialCode);
             updateDialCode();
+        }
+
+        const wizardContainer = document.querySelector('.onboarding-card');
+        const panels = Array.from(document.querySelectorAll('[data-step-panel]'));
+        const pills = Array.from(document.querySelectorAll('[data-step-pill]'));
+
+        const activateStep = (targetStep) => {
+            panels.forEach(panel => {
+                panel.classList.toggle('is-active', panel.dataset.stepPanel === targetStep);
+            });
+            pills.forEach(pill => {
+                pill.classList.toggle('is-active', pill.dataset.stepPill === targetStep);
+            });
+        };
+
+        if (wizardContainer && panels.length) {
+            const initialStep = wizardContainer.getAttribute('data-initial-step') || panels[0].dataset.stepPanel;
+            activateStep(initialStep);
+
+            document.querySelectorAll('[data-next-step]').forEach(button => {
+                button.addEventListener('click', () => {
+                    const nextStep = button.getAttribute('data-next-step');
+                    if (nextStep) {
+                        activateStep(nextStep);
+                    }
+                });
+            });
+
+            document.querySelectorAll('[data-prev-step]').forEach(button => {
+                button.addEventListener('click', () => {
+                    const prevStep = button.getAttribute('data-prev-step');
+                    if (prevStep) {
+                        activateStep(prevStep);
+                    }
+                });
+            });
         }
     });
 </script>

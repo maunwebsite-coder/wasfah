@@ -166,24 +166,24 @@
                     </div>
                 </article>
                 
-                <!-- قسم أحدث الوصفات -->
+                <!-- قسم أحدث الورشات -->
                 <aside class="hero-latest-card">
                     <div class="hero-latest-header">
-                        <h2>{{ __('home.latest_recipes.title') }}</h2>
-                        <a href="{{ route('recipes') }}" class="hero-latest-link">
-                            {{ __('home.latest_recipes.cta') }}
+                        <h2>{{ __('home.latest_workshops.title') }}</h2>
+                        <a href="{{ route('workshops') }}" class="hero-latest-link">
+                            {{ __('home.latest_workshops.cta') }}
                             <i class="fas fa-arrow-left text-xs"></i>
                         </a>
                     </div>
                     <ul class="hero-latest-list">
-                        @forelse($latestRecipes as $recipe)
-                            <x-latest-recipe-item :recipe="$recipe" />
+                        @forelse($latestWorkshops as $workshop)
+                            <x-latest-workshop-item :workshop="$workshop" />
                         @empty
                             <li class="hero-latest-empty">
                                 <div class="hero-latest-empty-icon">
-                                    <i class="fas fa-utensils"></i>
+                                    <i class="fas fa-chalkboard-teacher"></i>
                                 </div>
-                                <p>{{ __('home.latest_recipes.empty_title') }}</p>
+                                <p>{{ __('home.latest_workshops.empty_title') }}</p>
                             </li>
                         @endforelse
                     </ul>
@@ -435,105 +435,58 @@
         </div>
     </section>
 
-    <!-- قسم الوصفات المميزة -->
-    <section class="container mx-auto px-4 py-6">
-        <div class="text-center mb-6">
-            <h2 class="text-3xl font-bold text-gray-800">{{ __('home.featured_recipes.title') }}</h2>
-            <p class="text-gray-600 mt-2">{{ __('home.featured_recipes.subtitle') }}</p>
+    <!-- قسم فيديوهات الخلاصة -->
+    <section class="container mx-auto px-4 py-12">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 px-2 sm:px-4 lg:px-6 mb-4">
+            <div>
+                <h2 class="text-2xl font-bold text-gray-900">{{ __('home.featured_recipes.title') ?? 'الفيديوهات' }}</h2>
+                <p class="text-sm text-gray-500 mt-1">{{ __('home.featured_recipes.subtitle') }}</p>
+            </div>
         </div>
-        
-        @if($featuredRecipes->count() > 0)
-            <!-- Swiper Container -->
-            <div class="swiper featured-recipes-swiper">
-                <div class="swiper-wrapper py-4">
-                    @foreach($featuredRecipes as $recipe)
-                        <div class="swiper-slide">
-                            <x-featured-recipe-card :recipe="$recipe" />
-                        </div>
-                    @endforeach
-                </div>
-            </div>
-        @else
-            <!-- Empty State -->
-            <div class="text-center py-20 bg-white rounded-2xl shadow-lg">
-                <div class="w-24 h-24 bg-gradient-to-br from-amber-100 to-orange-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <i class="fas fa-utensils text-4xl text-amber-500"></i>
-                </div>
-                <h3 class="text-2xl font-bold text-gray-700 mb-3">{{ __('home.featured_recipes.empty_title') }}</h3>
-                <p class="text-gray-500 text-lg max-w-md mx-auto mb-6">{{ __('home.featured_recipes.empty_description') }}</p>
-                <a href="{{ route('recipes') }}" class="bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white font-bold py-3 px-6 rounded-xl transition-all duration-300">
-                    {{ __('home.featured_recipes.empty_cta') }}
-                </a>
-            </div>
-        @endif
-    </section>
-
-    <!-- قسم لماذا تختار موقع وصفة؟ -->
-    @php
-        $whyChooseItems = [
-            [
-                'icon' => 'fas fa-crown',
-                'title' => __('home.why.items.variety.title'),
-                'description' => __('home.why.items.variety.description'),
-                'card_gradient' => 'from-amber-50 via-white to-orange-50',
-                'card_border' => 'border-amber-200/70',
-                'icon_gradient' => 'from-amber-400 to-orange-500',
-            ],
-            [
-                'icon' => 'fas fa-gem',
-                'title' => __('home.why.items.techniques.title'),
-                'description' => __('home.why.items.techniques.description'),
-                'card_gradient' => 'from-amber-50 via-white to-orange-50',
-                'card_border' => 'border-amber-200/70',
-                'icon_gradient' => 'from-amber-400 to-orange-500',
-            ],
-            [
-                'icon' => 'fas fa-award',
-                'title' => __('home.why.items.ingredients.title'),
-                'description' => __('home.why.items.ingredients.description'),
-                'card_gradient' => 'from-amber-50 via-white to-orange-50',
-                'card_border' => 'border-amber-200/70',
-                'icon_gradient' => 'from-amber-400 to-orange-500',
-            ],
-            [
-                'icon' => 'fas fa-graduation-cap',
-                'title' => __('home.why.items.workshops.title'),
-                'description' => __('home.why.items.workshops.description'),
-                'card_gradient' => 'from-amber-50 via-white to-orange-50',
-                'card_border' => 'border-amber-200/70',
-                'icon_gradient' => 'from-amber-400 to-orange-500',
-            ],
-        ];
-    @endphp
-    <section class="pt-4 pb-4 md:pt-6 md:pb-8 bg-gradient-to-br from-amber-50 to-orange-50">
-        <div class="container mx-auto px-3 md:px-6 text-center">
-            <h2 class="text-xl md:text-2xl font-bold text-gray-800 mb-1 md:mb-3">{{ __('home.why.title') }}</h2>
-            <p class="text-gray-600 text-sm md:text-base mb-0 md:mb-2 max-w-2xl mx-auto">{{ __('home.why.description') }}</p>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6 max-w-4xl mx-auto mt-4 md:mt-6">
-                @foreach($whyChooseItems as $item)
-                    @php
-                        $cardGradient = $item['card_gradient'] ?? 'from-amber-50 via-white to-orange-50';
-                        $cardBorder = $item['card_border'] ?? 'border-amber-200/60';
-                        $iconGradient = $item['icon_gradient'] ?? 'from-amber-400 to-orange-500';
-                    @endphp
-                    <div class="relative flex w-full items-center justify-center mx-auto max-w-[160px] md:max-w-none transition-transform duration-300 hover:-translate-y-1" style="aspect-ratio: 1 / 1;">
-                        <div class="absolute inset-0 rounded-3xl bg-gradient-to-br {{ $cardGradient }}"></div>
-                        <div class="absolute inset-[1px] rounded-3xl border {{ $cardBorder }} opacity-70"></div>
-                        <div class="absolute inset-0 rounded-3xl bg-white/60 backdrop-blur-[2px]"></div>
-                        <div class="relative flex flex-col items-center justify-center gap-2 px-4 md:px-6 py-4 md:py-6 text-center">
-                            <div class="flex items-center justify-center h-14 w-14 md:h-16 md:w-16 rounded-2xl md:rounded-3xl bg-gradient-to-br {{ $iconGradient }} text-white shadow-lg ring-4 ring-white/70">
-                                <i class="{{ $item['icon'] }} text-2xl md:text-3xl"></i>
-                            </div>
-                            <h3 class="text-sm md:text-lg font-bold text-gray-800">{{ $item['title'] }}</h3>
-                            <p class="text-xs md:text-sm text-gray-600 leading-relaxed">{{ $item['description'] }}</p>
-                        </div>
+        <div class="relative overflow-hidden rounded-3xl bg-transparent text-gray-900 feed-videos-shell">
+            @if($feedVideos->count() > 0)
+                <div class="feed-videos-meta">
+                    <div class="feed-videos-chip">
+                        <i class="fas fa-clapperboard text-xs"></i>
+                        <span>{{ app()->getLocale() === 'ar' ? 'ريلز' : 'Reels' }}</span>
                     </div>
-                @endforeach
-            </div>
+                </div>
+                <div class="feed-videos-nav" hidden>
+                    <button type="button" class="feed-videos-prev" aria-label="{{ __('pagination.previous') }}" hidden>
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button type="button" class="feed-videos-next" aria-label="{{ __('pagination.next') }}" hidden>
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+                <div class="feed-videos-fade feed-videos-fade-left" aria-hidden="true"></div>
+                <div class="feed-videos-fade feed-videos-fade-right" aria-hidden="true"></div>
+                <div class="swiper feed-videos-swiper px-2 sm:px-4 lg:px-6 py-8">
+                    <div class="swiper-wrapper">
+                        @foreach($feedVideos as $video)
+                            <div class="swiper-slide">
+                                <x-feed-video-card :video="$video" />
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+                <div class="feed-videos-pagination pb-4 px-2 sm:px-4 lg:px-6" aria-hidden="true" hidden></div>
+            @else
+                <div class="px-6 lg:px-10 py-12 text-center space-y-4">
+                    <div class="w-16 h-16 mx-auto rounded-full bg-white/10 border border-white/10 flex items-center justify-center shadow-lg">
+                        <i class="fas fa-play text-xl text-amber-300"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold">{{ __('home.featured_recipes.empty_title') }}</h3>
+                    <p class="text-white/70 max-w-2xl mx-auto">{{ __('home.featured_recipes.empty_description') }}</p>
+                    <a href="{{ route('recipes') }}" class="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-white text-slate-900 font-semibold hover:shadow-lg transition-shadow">
+                        <span>{{ __('home.featured_recipes.empty_cta') }}</span>
+                        <i class="fas fa-arrow-left text-sm"></i>
+                    </a>
+                </div>
+            @endif
         </div>
     </section>
 
-    
     <!-- قسم الورشات المحسن -->
     <section class="py-12 bg-gradient-to-br from-gray-50 to-white">
         <div class="container mx-auto px-4">
@@ -700,6 +653,8 @@ const homeTranslations = {
 };
 
 const initHomePageInteractions = () => {
+    const isRtl = document.documentElement.dir === 'rtl';
+
     // Initialize hero swiper
     const heroSliderEl = document.querySelector('.hero-slider');
     if (heroSliderEl) {
@@ -716,16 +671,73 @@ const initHomePageInteractions = () => {
         });
     }
 
-    // Initialize Swiper for recipe cards
-    const featuredSwiperEl = document.querySelector('.featured-recipes-swiper');
-    if (featuredSwiperEl) {
-        new Swiper(featuredSwiperEl, {
+    // Initialize Swiper for feed videos
+    const feedVideosSwiperEl = document.querySelector('.feed-videos-swiper');
+    if (feedVideosSwiperEl) {
+        const feedSlides = feedVideosSwiperEl.querySelectorAll('.swiper-slide').length;
+        const feedNav = document.querySelector('.feed-videos-nav');
+        const feedPagination = document.querySelector('.feed-videos-pagination');
+        const showControls = feedSlides > 1;
+
+        if (feedNav) {
+            feedNav.hidden = !showControls;
+            feedNav.setAttribute('aria-hidden', showControls ? 'false' : 'true');
+            feedNav.querySelectorAll('button').forEach((button) => {
+                button.hidden = !showControls;
+                button.disabled = !showControls;
+                button.tabIndex = showControls ? 0 : -1;
+                button.setAttribute('aria-hidden', showControls ? 'false' : 'true');
+            });
+        }
+
+        if (feedPagination) {
+            feedPagination.hidden = !showControls;
+            feedPagination.setAttribute('aria-hidden', showControls ? 'false' : 'true');
+        }
+
+        const feedSwiper = new Swiper(feedVideosSwiperEl, {
+            effect: 'slide',
             slidesPerView: 'auto',
-            spaceBetween: 16,
+            spaceBetween: 20,
             grabCursor: true,
-            navigation: { 
-                nextEl: '#nextBtn', 
-                prevEl: '#prevBtn' 
+            centeredSlides: false,
+            watchOverflow: true,
+            allowTouchMove: true,
+            simulateTouch: true,
+            touchEventsTarget: 'container',
+            touchRatio: 1.1,
+            touchStartPreventDefault: true,
+            passiveListeners: false,
+            preventClicks: true,
+            preventClicksPropagation: true,
+            resistanceRatio: 0.65,
+            threshold: 3,
+            loop: false,
+            freeMode: {
+                enabled: true,
+                momentum: true,
+                momentumVelocityRatio: 0.65,
+                momentumBounce: false,
+            },
+            autoplay: false,
+            speed: 750,
+            navigation: {
+                nextEl: '.feed-videos-next',
+                prevEl: '.feed-videos-prev',
+            },
+            pagination: feedPagination ? {
+                el: feedPagination,
+                clickable: true,
+                bulletClass: 'feed-videos-bullet',
+                bulletActiveClass: 'feed-videos-bullet-active',
+            } : undefined,
+            on: {
+                touchMove() {
+                    this.allowClick = false;
+                },
+                touchEnd() {
+                    this.allowClick = true;
+                },
             },
         });
     }
@@ -1023,5 +1035,6 @@ window.closeCustomAlert = closeCustomAlert;
 })();
 </script>
 @endpush
+
 
 

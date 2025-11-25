@@ -10,6 +10,7 @@ use App\Models\Tool;
 use App\Services\ImageCompressionService;
 use App\Services\SimpleImageCompressionService;
 use App\Support\ImageUploadConstraints;
+use App\Support\VideoEmbed;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -115,7 +116,9 @@ class RecipeController extends Controller
             $status = 'all';
         }
 
-        $query = Recipe::with(['category', 'ingredients', 'chef']);
+        $query = Recipe::with(['category', 'ingredients', 'chef'])
+            ->whereNotNull('video_url')
+            ->whereRaw("TRIM(video_url) <> ''");
 
         if ($status !== 'all') {
             $query->where('status', $status);
@@ -141,15 +144,21 @@ class RecipeController extends Controller
             ->paginate(10)
             ->withQueryString();
 
+        $videoBaseQuery = Recipe::query()
+            ->whereNotNull('video_url')
+            ->whereRaw("TRIM(video_url) <> ''");
+
         $statusCounts = [
-            'pending' => Recipe::where('status', Recipe::STATUS_PENDING)->count(),
-            'draft' => Recipe::where('status', Recipe::STATUS_DRAFT)->count(),
-            'approved' => Recipe::where('status', Recipe::STATUS_APPROVED)->count(),
-            'rejected' => Recipe::where('status', Recipe::STATUS_REJECTED)->count(),
+            'pending' => (clone $videoBaseQuery)->where('status', Recipe::STATUS_PENDING)->count(),
+            'draft' => (clone $videoBaseQuery)->where('status', Recipe::STATUS_DRAFT)->count(),
+            'approved' => (clone $videoBaseQuery)->where('status', Recipe::STATUS_APPROVED)->count(),
+            'rejected' => (clone $videoBaseQuery)->where('status', Recipe::STATUS_REJECTED)->count(),
         ];
-        $statusCounts['all'] = array_sum($statusCounts);
+        $statusCounts['all'] = (clone $videoBaseQuery)->count();
 
         $approvalPendingCount = Recipe::query()
+            ->whereNotNull('video_url')
+            ->whereRaw("TRIM(video_url) <> ''")
             ->where(function ($query) {
                 $query->whereNull('status')
                       ->orWhere('status', '!=', Recipe::STATUS_APPROVED);
@@ -184,6 +193,7 @@ class RecipeController extends Controller
                 'cook_time' => 'nullable|integer|min:0',
                 'servings' => 'nullable|integer|min:0',
                 'difficulty' => 'nullable|in:easy,medium,hard',
+                'video_url' => 'required|url',
                 'image_url' => 'nullable|url',
                 'image' => $imageRule,
                 'image_2' => $imageRule,
@@ -191,6 +201,7 @@ class RecipeController extends Controller
                 'image_4' => $imageRule,
                 'image_5' => $imageRule,
                 'category_id' => 'nullable|exists:categories,category_id',
+                'category_name' => 'nullable|string|max:255',
                 'steps' => 'nullable|array',
                 'steps.*' => 'nullable|string',
                 'ingredients' => 'nullable|array',
@@ -232,21 +243,39 @@ class RecipeController extends Controller
             $imagePaths[$field] = $imagePath;
         }
 
+        $title = $request->title ?: 'فيديو قصير جديد';
+
+        $resolvedCategoryId = $request->category_id;
+        $typedCategory = trim((string) $request->category_name);
+        if (!$resolvedCategoryId && $typedCategory !== '') {
+            $existingCategory = Category::whereRaw('LOWER(name) = ?', [mb_strtolower($typedCategory)])->first();
+            if ($existingCategory) {
+                $resolvedCategoryId = $existingCategory->category_id;
+            } else {
+                $newCategory = Category::create([
+                    'name' => $typedCategory,
+                    'is_active' => true,
+                ]);
+                $resolvedCategoryId = $newCategory->category_id;
+            }
+        }
+
         $recipe = Recipe::create([
-            'title' => $request->title,
+            'title' => $title,
             'description' => $request->description,
             'author' => $request->author,
             'prep_time' => $request->prep_time,
             'cook_time' => $request->cook_time,
             'servings' => $request->servings,
             'difficulty' => $request->difficulty,
+            'video_url' => $request->video_url ? VideoEmbed::normalize($request->video_url) : null,
             'image_url' => $request->image_url ? $this->cleanImageUrl($request->image_url) : null,
             'image' => $imagePaths['image'],
             'image_2' => $imagePaths['image_2'],
             'image_3' => $imagePaths['image_3'],
             'image_4' => $imagePaths['image_4'],
             'image_5' => $imagePaths['image_5'],
-            'category_id' => $request->category_id,
+            'category_id' => $resolvedCategoryId,
             'steps' => $request->steps,
             'tools' => $request->tools ?? [],
             'status' => Recipe::STATUS_APPROVED,
@@ -387,6 +416,7 @@ class RecipeController extends Controller
                     'cook_time' => 'nullable|integer|min:0',
                     'servings' => 'nullable|integer|min:0',
                     'difficulty' => 'nullable|in:easy,medium,hard',
+                    'video_url' => 'required|url',
                     'image_url' => 'nullable|url',
                     'image' => $imageRule,
                     'image_2' => $imageRule,
@@ -454,6 +484,7 @@ class RecipeController extends Controller
             'cook_time' => $request->cook_time,
             'servings' => $request->servings,
             'difficulty' => $request->difficulty,
+            'video_url' => $request->video_url ? VideoEmbed::normalize($request->video_url) : null,
             'image_url' => $request->image_url ? $this->cleanImageUrl($request->image_url) : null,
             'image' => $imagePaths['image'],
             'image_2' => $imagePaths['image_2'],

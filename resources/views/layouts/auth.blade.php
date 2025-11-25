@@ -44,7 +44,7 @@
     <style>
     body {
         font-family: 'Tajawal', 'Cairo', sans-serif;
-        background: radial-gradient(circle at top right, rgba(249, 115, 22, 0.18), transparent 50%),
+        background: radial-gradient(circle at top right, rgba(15, 76, 115, 0.18), transparent 50%),
             radial-gradient(circle at bottom left, rgba(251, 146, 60, 0.15), transparent 40%),
             #fdeee2;
     }
@@ -88,3 +88,5 @@
     @stack('scripts')
 </body>
 </html>
+
+

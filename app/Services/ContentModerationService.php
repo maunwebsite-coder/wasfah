@@ -42,6 +42,10 @@ class ContentModerationService
             return false;
         }
 
+        if (!extension_loaded('gd') || !function_exists('imagecreatefromstring')) {
+            return false;
+        }
+
         $path = $file->getRealPath();
 
         if (!$path || !is_readable($path)) {

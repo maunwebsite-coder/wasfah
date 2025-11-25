@@ -1,11 +1,11 @@
 <?php
 
 return [
-    'title' => 'Wasfah | Sign in or create an account',
-    'logo_alt' => 'Wasfah logo',
+    'title' => 'Peahskill | Sign in or create an account',
+    'logo_alt' => 'Peahskill logo',
     'brand' => [
-        'eyebrow' => 'Wasfah Platform',
-        'headline' => 'Sign in to keep your bookings and saved recipes synced.',
+        'eyebrow' => 'Peahskill Platform',
+        'headline' => 'Sign in to keep your bookings and saved items synced.',
         'subcopy' => 'Full Arabic support with one-tap Google authentication.',
     ],
     'alerts' => [
@@ -13,11 +13,11 @@ return [
     ],
     'intro' => [
         'default' => 'Our best experience is Google sign-in. Pick your account type and continue in one tap.',
-        'chef' => 'Joining as a chef unlocks extra tools to showcase workshops and verify your profile after signing in.',
+        'chef' => 'Joining as an expert unlocks extra tools to launch experiences and verify your profile after signing in.',
     ],
     'intent' => [
-        'customer' => 'Customer account',
-        'chef' => 'Chef account',
+        'customer' => 'Member account',
+        'chef' => 'Expert account',
     ],
     'google' => [
         'cta' => 'Continue with Google (sign in / sign up)',
@@ -32,7 +32,7 @@ return [
     'form' => [
         'email' => [
             'label' => 'Email address',
-            'hint' => 'Use the email associated with your Wasfah account.',
+            'hint' => 'Use the email associated with your Peahskill account.',
         ],
         'password' => [
             'label' => 'Password',
@@ -49,17 +49,17 @@ return [
         'credentials' => 'These credentials do not match our records. Check your email or password.',
     ],
     'flash' => [
-        'workshop_success' => 'Signed in successfully! You can now complete the workshop booking.',
-        'login_success' => 'Signed in successfully! Welcome back to Wasfah 👋',
+        'workshop_success' => 'Signed in successfully! You can now complete the experience booking.',
+        'login_success' => 'Signed in successfully! Welcome back to Peahskill 👋',
     ],
     'policy_consent' => [
         'title' => 'Confirm your details',
         'eyebrow' => 'Your name',
         'headline' => 'Let us know what we should call you',
-        'description' => 'We\'ll use this name on your Wasfah dashboard, in emails, and whenever you interact with our chefs.',
+        'description' => 'We\'ll use this name on your Peahskill dashboard, in emails, and whenever you interact with experts and teams.',
         'name_label' => 'Full name',
         'name_placeholder' => 'Type your full name here',
-        'terms_statement' => 'I agree to Wasfah\'s Terms of Service and Privacy Policy.',
+        'terms_statement' => 'I agree to Peahskill\'s Terms of Service and Privacy Policy.',
         'terms_hint' => 'Open each policy link below in its own page before continuing.',
         'terms_link' => 'Terms of Service',
         'privacy_link' => 'Privacy Policy',

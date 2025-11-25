@@ -1,16 +1,64 @@
 ﻿<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <link rel="preload" as="style" href="https://wasfah.ae/build/assets/app-BPWzf21J.css" /><link rel="modulepreload" as="script" href="https://wasfah.ae/build/assets/app-DeIeCXgO.js" /><link rel="modulepreload" as="script" href="https://wasfah.ae/build/assets/header-Dt_uZCzA.js" /><link rel="stylesheet" href="https://wasfah.ae/build/assets/app-BPWzf21J.css" data-navigate-track="reload" /><script type="module" src="https://wasfah.ae/build/assets/app-DeIeCXgO.js" data-navigate-track="reload"></script>    <meta charset="UTF-8">
+    <link rel="preload" as="style" href="https://peahskill.com/build/assets/app-BPWzf21J.css" /><link rel="modulepreload" as="script" href="https://peahskill.com/build/assets/app-DeIeCXgO.js" /><link rel="modulepreload" as="script" href="https://peahskill.com/build/assets/header-Dt_uZCzA.js" /><link rel="stylesheet" href="https://peahskill.com/build/assets/app-BPWzf21J.css" data-navigate-track="reload" /><script type="module" src="https://peahskill.com/build/assets/app-DeIeCXgO.js" data-navigate-track="reload"></script>    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="csrf-token" content="FQTDzULAjLeEoQQZpND8X0zLCQWowQnBJTYqnEpb">
     <meta name="application-name" content="وصفة">
-    <meta name="theme-color" content="#f97316">
+    <meta name="theme-color" content="#0f4c73">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="manifest" href="https://wasfah.ae/manifest.webmanifest">
-    <link rel="apple-touch-icon" href="https://wasfah.ae/icons/icon-192x192.png">
+    <link rel="manifest" href="https://peahskill.com/manifest.webmanifest">
+    <link rel="apple-touch-icon" href="https://peahskill.com/icons/icon-192x192.png">
     <title>عن وصفة - موقع وصفة</title>
+    <script>
+        tailwind = {
+            config: {
+                theme: {
+                    extend: {
+                        colors: {
+                            orange: {
+                                50: '#eef3f7',
+                                100: '#dae6ef',
+                                200: '#b5cfe0',
+                                300: '#8ab6ce',
+                                400: '#5d97b5',
+                                500: '#0f4c73',
+                                600: '#0d3f62',
+                                700: '#0b344f',
+                                800: '#092a3e',
+                                900: '#072633',
+                            },
+                            amber: {
+                                50: '#fff8e6',
+                                100: '#fff1cc',
+                                200: '#ffe3a3',
+                                300: '#ffd36b',
+                                400: '#f4c84c',
+                                500: '#d9ad2f',
+                                600: '#b88f1f',
+                                700: '#927014',
+                                800: '#70540f',
+                                900: '#59420d',
+                            },
+                            rose: {
+                                50: '#e9f8f5',
+                                100: '#c8efe6',
+                                200: '#95e1d3',
+                                300: '#60d2be',
+                                400: '#31c3ad',
+                                500: '#0fb39a',
+                                600: '#0d9d86',
+                                700: '#0a8070',
+                                800: '#08695b',
+                                900: '#065046',
+                            },
+                        },
+                    },
+                },
+            },
+        };
+    </script>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Swiper.js for slider -->
@@ -32,7 +80,7 @@
 
     body {
         font-family: 'Tajawal', sans-serif;
-        background-color: #f8f8f8;
+        background-color: #f7f5ef;
     }
     
     /* Mobile Responsive Improvements */
@@ -57,7 +105,7 @@
         }
         
         .mobile-menu-btn:hover {
-            background-color: #fef3c7;
+            background-color: #fff1cc;
             transform: scale(1.05);
         }
         
@@ -70,7 +118,7 @@
             position: absolute;
             top: -8px;
             right: -8px;
-            background-color: #f97316;
+            background-color: #0f4c73;
             color: white;
             font-size: 0.75rem;
             font-weight: bold;
@@ -166,7 +214,7 @@
             left: 0;
             width: 0;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(249, 115, 22, 0.1), transparent);
+            background: linear-gradient(90deg, transparent, rgba(15, 76, 115, 0.1), transparent);
             transition: width 0.3s ease;
         }
         
@@ -175,9 +223,9 @@
         }
         
         .mobile-menu-item:hover {
-            background-color: #fef3c7;
+            background-color: #fff1cc;
             transform: translateX(-2px);
-            box-shadow: 0 2px 8px rgba(249, 115, 22, 0.2);
+            box-shadow: 0 2px 8px rgba(15, 76, 115, 0.2);
         }
         
         .mobile-menu-item:active {
@@ -279,49 +327,49 @@
         
         /* تحسينات للقائمة الجانبية في الهاتف المحمول */
         .mobile-menu .space-y-2 > *:nth-child(odd) {
-            background-color: rgba(249, 115, 22, 0.02);
+            background-color: rgba(15, 76, 115, 0.02);
         }
         
         .mobile-menu .space-y-2 > *:nth-child(even) {
-            background-color: rgba(249, 115, 22, 0.01);
+            background-color: rgba(15, 76, 115, 0.01);
         }
         
         .mobile-menu .space-y-2 > *:hover {
-            background-color: #fef3c7 !important;
+            background-color: #fff1cc !important;
         }
         
         /* تحسينات للقائمة الجانبية في الهاتف المحمول */
         .mobile-menu .space-y-2 > *:active {
-            background-color: #fed7aa !important;
+            background-color: #ffe3a3 !important;
         }
         
         /* تحسينات للقائمة الجانبية في الهاتف المحمول */
         .mobile-menu .space-y-2 > *:focus {
-            outline: 2px solid #f97316;
+            outline: 2px solid #0f4c73;
             outline-offset: 2px;
         }
         
         /* تحسينات للقائمة الجانبية في الهاتف المحمول */
         .mobile-menu .space-y-2 > *:focus-visible {
-            outline: 2px solid #f97316;
+            outline: 2px solid #0f4c73;
             outline-offset: 2px;
         }
         
         /* تحسينات للقائمة الجانبية في الهاتف المحمول */
         .mobile-menu .space-y-2 > *:focus-within {
-            outline: 2px solid #f97316;
+            outline: 2px solid #0f4c73;
             outline-offset: 2px;
         }
         
         /* تحسينات للقائمة الجانبية في الهاتف المحمول */
         .mobile-menu .space-y-2 > *:target {
-            outline: 2px solid #f97316;
+            outline: 2px solid #0f4c73;
             outline-offset: 2px;
         }
         
         /* تحسينات للقائمة الجانبية في الهاتف المحمول */
         .mobile-menu .space-y-2 > *:target-within {
-            outline: 2px solid #f97316;
+            outline: 2px solid #0f4c73;
             outline-offset: 2px;
         }
         
@@ -695,11 +743,11 @@
         position: fixed;
         bottom: 20px;
         right: 20px;
-        background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+        background: linear-gradient(135deg, #0f4c73 0%, #0a8070 100%);
         color: white;
         padding: 16px 24px;
         border-radius: 12px;
-        box-shadow: 0 10px 25px rgba(249, 115, 22, 0.3);
+        box-shadow: 0 10px 25px rgba(15, 76, 115, 0.3);
         z-index: 9999;
         transform: translateX(400px);
         transition: transform 0.3s ease-in-out;
@@ -877,7 +925,7 @@
     }
     
     .card-front .save-recipe-btn.bg-orange-500\/80 {
-        background-color: rgba(249, 115, 22, 0.8) !important;
+        background-color: rgba(15, 76, 115, 0.8) !important;
     }
     
     .card-front .save-recipe-btn.bg-orange-500\/80:hover {
@@ -944,7 +992,7 @@
         window.toggleUserMenu = toggleUserMenu;
     </script>
     
-        <link rel="stylesheet" href="https://wasfah.ae/css/search-enhancements.css">
+        <link rel="stylesheet" href="https://peahskill.com/css/search-enhancements.css">
 </head>
 <body class="bg-gray-100 font-sans" data-user-id="">
 
@@ -954,28 +1002,28 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between gap-4 py-3 md:py-4 header-container">
             <div class="flex items-center gap-4 min-w-0">
-                <a href="https://wasfah.ae" class="flex items-center gap-3 text-slate-800">
-                    <img src="https://wasfah.ae/image/logo.webp" alt="Logo" class="h-12 w-auto inline header-logo" loading="eager" fetchpriority="high">
+                <a href="https://peahskill.com" class="flex items-center gap-3 text-slate-800">
+                    <img src="https://peahskill.com/image/logo.webp" alt="Logo" class="h-12 w-auto inline header-logo" loading="eager" fetchpriority="high">
                     <span class="hidden md:inline text-xl font-bold tracking-tight"></span>
                 </a>
 
                 <nav class="hidden lg:flex items-center gap-1 text-sm font-medium text-slate-600" aria-label="التصفح الرئيسي">
-                                                                    <a href="https://wasfah.ae"
+                                                                    <a href="https://peahskill.com"
                            class="flex items-center gap-2 px-4 py-2 rounded-full transition-all duration-200 hover:text-orange-600 hover:bg-orange-50 border border-transparent">
                             <i class="fas fa-house text-base"></i>
                             <span>الرئيسية</span>
                         </a>
-                                                                    <a href="https://wasfah.ae/recipes"
+                                                                    <a href="https://peahskill.com/recipes"
                            class="flex items-center gap-2 px-4 py-2 rounded-full transition-all duration-200 hover:text-orange-600 hover:bg-orange-50 border border-transparent">
                             <i class="fas fa-utensils text-base"></i>
                             <span>الوصفات</span>
                         </a>
-                                                                    <a href="https://wasfah.ae/workshops"
+                                                                    <a href="https://peahskill.com/workshops"
                            class="flex items-center gap-2 px-4 py-2 rounded-full transition-all duration-200 hover:text-orange-600 hover:bg-orange-50 border border-transparent">
                             <i class="fas fa-graduation-cap text-base"></i>
                             <span>ورشات العمل</span>
                         </a>
-                                                                    <a href="https://wasfah.ae/tools"
+                                                                    <a href="https://peahskill.com/tools"
                            class="flex items-center gap-2 px-4 py-2 rounded-full transition-all duration-200 hover:text-orange-600 hover:bg-orange-50 border border-transparent">
                             <i class="fas fa-kitchen-set text-base"></i>
                             <span>أدوات الشيف</span>
@@ -991,7 +1039,7 @@
                     <span class="sr-only">فتح البحث</span>
                 </button>
 
-                <a href="https://wasfah.ae/saved" class="relative flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition-all duration-200 hover:border-orange-300 hover:text-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-200">
+                <a href="https://peahskill.com/saved" class="relative flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition-all duration-200 hover:border-orange-300 hover:text-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-200">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13l2.5 5m6-5v6a2 2 0 01-2 2H9a2 2 0 01-2-2v-6m8 0V9a2 2 0 00-2-2H9a2 2 0 00-2 2v4.01"/>
                     </svg>
@@ -1030,15 +1078,15 @@
                 </div>
 
                 <nav class="flex items-center gap-2 text-sm font-medium text-slate-600" aria-label="روابط الحساب">
-                    <a href="https://wasfah.ae/saved" class="relative flex items-center gap-2 rounded-full border border-transparent bg-white px-3 py-2 text-slate-500 shadow-sm transition-all duration-200 hover:border-orange-200 hover:bg-orange-50 hover:text-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-200">
+                    <a href="https://peahskill.com/saved" class="relative flex items-center gap-2 rounded-full border border-transparent bg-white px-3 py-2 text-slate-500 shadow-sm transition-all duration-200 hover:border-orange-200 hover:bg-orange-50 hover:text-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-200">
                         <i class="fas fa-bookmark text-base"></i>
                         <span class="hidden xl:inline">الأدوات المحفوظة</span>
                         <span id="saved-count" class="absolute -top-1 -right-1 bg-orange-500 text-white text-[10px] font-bold rounded-full h-5 w-5 flex items-center justify-center hidden min-w-[20px]">0</span>
                     </a>
 
                     
-                                            <a href="https://wasfah.ae/login" class="rounded-full border border-transparent bg-orange-500 px-4 py-2 text-white shadow-sm transition-all duration-200 hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-200">تسجيل الدخول</a>
-                        <a href="https://wasfah.ae/register" class="rounded-full border border-orange-200 px-4 py-2 text-orange-600 transition-all	duration-200 hover:border-orange-300 hover:bg-orange-50 focus:outline-none focus:ring-2 focus:ring-orange-200">إنشاء حساب</a>
+                                            <a href="https://peahskill.com/login" class="rounded-full border border-transparent bg-orange-500 px-4 py-2 text-white shadow-sm transition-all duration-200 hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-200">تسجيل الدخول</a>
+                        <a href="https://peahskill.com/register" class="rounded-full border border-orange-200 px-4 py-2 text-orange-600 transition-all	duration-200 hover:border-orange-300 hover:bg-orange-50 focus:outline-none focus:ring-2 focus:ring-orange-200">إنشاء حساب</a>
                                     </nav>
             </div>
         </div>
@@ -1046,32 +1094,32 @@
 
     <div id="mobileMenu" class="mobile-menu hidden border-t border-orange-100 bg-white/95 shadow-lg backdrop-blur md:hidden" style="display: none;">
         <nav class="flex flex-col gap-2 p-4 text-slate-700">
-            <a href="https://wasfah.ae" class="flex items-center gap-3 rounded-xl bg-orange-50/60 p-3 font-semibold text-orange-600 transition hover:bg-orange-100">
+            <a href="https://peahskill.com" class="flex items-center gap-3 rounded-xl bg-orange-50/60 p-3 font-semibold text-orange-600 transition hover:bg-orange-100">
                 <i class="fas fa-house text-orange-500"></i>
                 <span>الرئيسية</span>
             </a>
-            <a href="https://wasfah.ae/recipes" class="flex items-center gap-3 rounded-xl p-3 transition hover:bg-orange-50">
+            <a href="https://peahskill.com/recipes" class="flex items-center gap-3 rounded-xl p-3 transition hover:bg-orange-50">
                 <i class="fas fa-utensils text-orange-500"></i>
                 <span>الوصفات</span>
             </a>
-            <a href="https://wasfah.ae/tools" class="flex items-center gap-3 rounded-xl p-3 transition hover:bg-orange-50">
+            <a href="https://peahskill.com/tools" class="flex items-center gap-3 rounded-xl p-3 transition hover:bg-orange-50">
                 <i class="fas fa-kitchen-set text-orange-500"></i>
                 <span>أدوات الشيف</span>
             </a>
-            <a href="https://wasfah.ae/workshops" class="flex items-center gap-3 rounded-xl p-3 transition hover:bg-orange-50">
+            <a href="https://peahskill.com/workshops" class="flex items-center gap-3 rounded-xl p-3 transition hover:bg-orange-50">
                 <i class="fas fa-graduation-cap text-orange-500"></i>
                 <span>ورشات العمل</span>
             </a>
-            <a href="https://wasfah.ae/saved" class="relative flex items-center gap-3 rounded-xl p-3 transition hover:bg-orange-50">
+            <a href="https://peahskill.com/saved" class="relative flex items-center gap-3 rounded-xl p-3 transition hover:bg-orange-50">
                 <i class="fas fa-bookmark text-orange-500"></i>
                 <span>الأدوات المحفوظة</span>
                 <span id="saved-count-mobile" class="absolute left-3 top-3 bg-orange-500 text-white text-[10px] font-bold rounded-full h-5 w-5 flex items-center justify-center hidden min-w-[20px]">0</span>
             </a>
-                                        <a href="https://wasfah.ae/login" class="flex items-center gap-3 rounded-xl bg-orange-500 p-3 font-semibold text-white transition hover:bg-orange-600">
+                                        <a href="https://peahskill.com/login" class="flex items-center gap-3 rounded-xl bg-orange-500 p-3 font-semibold text-white transition hover:bg-orange-600">
                     <i class="fas fa-right-to-bracket"></i>
                     <span>تسجيل الدخول</span>
                 </a>
-                <a href="https://wasfah.ae/register" class="flex items-center gap-3 rounded-xl border border-orange-200 p-3 font-semibold text-orange-600 transition hover:border-orange-300 hover:bg-orange-50">
+                <a href="https://peahskill.com/register" class="flex items-center gap-3 rounded-xl border border-orange-200 p-3 font-semibold text-orange-600 transition hover:border-orange-300 hover:bg-orange-50">
                     <i class="fas fa-user-plus"></i>
                     <span>إنشاء حساب</span>
                 </a>
@@ -1110,7 +1158,7 @@
     <!-- <nav class="bg-white border-t border-gray-200 shadow-sm ">
         <div class="container mx-auto px-4 py-3">
             <ul class="flex justify-center space-x-8 rtl:space-x-reverse text-gray-700 font-semibold">
-                <li><a href="https://wasfah.ae" class="hover:text-orange-500 transition-colors">الرئيسية</a></li>
+                <li><a href="https://peahskill.com" class="hover:text-orange-500 transition-colors">الرئيسية</a></li>
                 <li><a href="#" class="hover:text-orange-500 transition-colors">ورشات</a></li>
                 <li><a href="#" class="hover:text-orange-500 transition-colors">ادوات الشيف</a></li>
                 <li><a href="#" class="hover:text-orange-500 transition-colors">أصناف الحلويات</a></li>
@@ -1125,7 +1173,7 @@
         <div class="container mx-auto px-4 py-3">
             <ol class="flex flex-wrap items-center text-sm text-gray-500">
                                                         <li class="flex items-center" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
-                                                    <a href="https://wasfah.ae" class="hover:text-orange-500 transition-colors" itemprop="item">
+                                                    <a href="https://peahskill.com" class="hover:text-orange-500 transition-colors" itemprop="item">
                                 <span itemprop="name">الرئيسية</span>
                             </a>
                                                 <meta itemprop="position" content="1">
@@ -1136,7 +1184,7 @@
                                                     <span class="text-gray-700 font-medium" itemprop="name">
                                 عن وصفة
                             </span>
-                            <meta itemprop="item" content="https://wasfah.ae/about">
+                            <meta itemprop="item" content="https://peahskill.com/about">
                                                 <meta itemprop="position" content="2">
 
                                             </li>
@@ -1370,7 +1418,7 @@
             <div class="space-y-4 text-center sm:text-right lg:col-span-3">
                 <h3 class="text-sm font-semibold text-orange-500 tracking-wider uppercase">شعار وصفة</h3>
                 <div class="flex items-center justify-center sm:justify-end space-x-3 rtl:space-x-reverse">
-                    <img src="https://wasfah.ae/image/logo.webp" alt="شعار وصفة" class="h-12 w-auto" loading="eager" fetchpriority="high">
+                    <img src="https://peahskill.com/image/logo.webp" alt="شعار وصفة" class="h-12 w-auto" loading="eager" fetchpriority="high">
                 </div>
                 <p class="text-gray-600 leading-relaxed">
                     منصّة وصفة للحلويات الفاخرة والراقية، نرافقك في كل خطوة لتقديم أطيب الحلويات.
@@ -1382,13 +1430,13 @@
                 <h3 class="text-sm font-semibold text-orange-500 tracking-wider uppercase">اكتشف</h3>
                 <ul class="space-y-2 text-gray-600">
                     <li>
-                        <a href="https://wasfah.ae/recipes" class="hover:text-orange-500 transition-colors">جميع الوصفات</a>
+                        <a href="https://peahskill.com/recipes" class="hover:text-orange-500 transition-colors">جميع الوصفات</a>
                     </li>
                     <li>
-                        <a href="https://wasfah.ae/workshops" class="hover:text-orange-500 transition-colors">ورشات العمل</a>
+                        <a href="https://peahskill.com/workshops" class="hover:text-orange-500 transition-colors">ورشات العمل</a>
                     </li>
                     <li>
-                        <a href="https://wasfah.ae/baking-tips" class="hover:text-orange-500 transition-colors">نصائح الحلويات</a>
+                        <a href="https://peahskill.com/baking-tips" class="hover:text-orange-500 transition-colors">نصائح الحلويات</a>
                     </li>
                 </ul>
             </div>
@@ -1398,13 +1446,13 @@
                 <h3 class="text-sm font-semibold text-orange-500 tracking-wider uppercase">الدليل السريع</h3>
                 <ul class="space-y-2 text-gray-600">
                     <li>
-                        <a href="https://wasfah.ae/tools" class="hover:text-orange-500 transition-colors">أدوات الشيف</a>
+                        <a href="https://peahskill.com/tools" class="hover:text-orange-500 transition-colors">أدوات الشيف</a>
                     </li>
                     <li>
-                        <a href="https://wasfah.ae/search" class="hover:text-orange-500 transition-colors">البحث عن وصفة</a>
+                        <a href="https://peahskill.com/search" class="hover:text-orange-500 transition-colors">البحث عن وصفة</a>
                     </li>
                     <li>
-                        <a href="https://wasfah.ae/about" class="hover:text-orange-500 transition-colors">من نحن</a>
+                        <a href="https://peahskill.com/about" class="hover:text-orange-500 transition-colors">من نحن</a>
                     </li>
                 </ul>
             </div>
@@ -1418,7 +1466,7 @@
                         <span><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="087f697b6e69603131486f65696164266b6765">[email&#160;protected]</a></span>
                     </div>
                     <div class="pt-2">
-                        <a href="https://wasfah.ae/contact" class="inline-block hover:text-orange-500 transition-colors">اتصل بنا</a>
+                        <a href="https://peahskill.com/contact" class="inline-block hover:text-orange-500 transition-colors">اتصل بنا</a>
                     </div>
                 </div>
             </div>
@@ -1461,7 +1509,7 @@
     </div>
 </div>
 
-    <link rel="modulepreload" as="script" href="https://wasfah.ae/build/assets/header-Dt_uZCzA.js" /><link rel="modulepreload" as="script" href="https://wasfah.ae/build/assets/mobile-menu-DrOodOOd.js" /><link rel="modulepreload" as="script" href="https://wasfah.ae/build/assets/save-recipe-8zA1jhpf.js" /><link rel="modulepreload" as="script" href="https://wasfah.ae/build/assets/script-DTC4w_UL.js" /><link rel="modulepreload" as="script" href="https://wasfah.ae/build/assets/search-CvpFTx27.js" /><link rel="modulepreload" as="script" href="https://wasfah.ae/build/assets/recipe-CJW6wbrr.js" /><link rel="modulepreload" as="script" href="https://wasfah.ae/build/assets/recipe-save-button-Cd1yJfGj.js" /><link rel="modulepreload" as="script" href="https://wasfah.ae/build/assets/notification-manager--HZ6oqF1.js" /><link rel="modulepreload" as="script" href="https://wasfah.ae/build/assets/confirmation-modal-Jq-B1J7c.js" /><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script type="module" src="https://wasfah.ae/build/assets/header-Dt_uZCzA.js" data-navigate-track="reload"></script><script type="module" src="https://wasfah.ae/build/assets/mobile-menu-DrOodOOd.js" data-navigate-track="reload"></script><script type="module" src="https://wasfah.ae/build/assets/save-recipe-8zA1jhpf.js" data-navigate-track="reload"></script><script type="module" src="https://wasfah.ae/build/assets/script-DTC4w_UL.js" data-navigate-track="reload"></script><script type="module" src="https://wasfah.ae/build/assets/search-CvpFTx27.js" data-navigate-track="reload"></script><script type="module" src="https://wasfah.ae/build/assets/recipe-CJW6wbrr.js" data-navigate-track="reload"></script><script type="module" src="https://wasfah.ae/build/assets/recipe-save-button-Cd1yJfGj.js" data-navigate-track="reload"></script><script type="module" src="https://wasfah.ae/build/assets/notification-manager--HZ6oqF1.js" data-navigate-track="reload"></script><script type="module" src="https://wasfah.ae/build/assets/confirmation-modal-Jq-B1J7c.js" data-navigate-track="reload"></script>    
+    <link rel="modulepreload" as="script" href="https://peahskill.com/build/assets/header-Dt_uZCzA.js" /><link rel="modulepreload" as="script" href="https://peahskill.com/build/assets/mobile-menu-DrOodOOd.js" /><link rel="modulepreload" as="script" href="https://peahskill.com/build/assets/save-recipe-8zA1jhpf.js" /><link rel="modulepreload" as="script" href="https://peahskill.com/build/assets/script-DTC4w_UL.js" /><link rel="modulepreload" as="script" href="https://peahskill.com/build/assets/search-CvpFTx27.js" /><link rel="modulepreload" as="script" href="https://peahskill.com/build/assets/recipe-CJW6wbrr.js" /><link rel="modulepreload" as="script" href="https://peahskill.com/build/assets/recipe-save-button-Cd1yJfGj.js" /><link rel="modulepreload" as="script" href="https://peahskill.com/build/assets/notification-manager--HZ6oqF1.js" /><link rel="modulepreload" as="script" href="https://peahskill.com/build/assets/confirmation-modal-Jq-B1J7c.js" /><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script type="module" src="https://peahskill.com/build/assets/header-Dt_uZCzA.js" data-navigate-track="reload"></script><script type="module" src="https://peahskill.com/build/assets/mobile-menu-DrOodOOd.js" data-navigate-track="reload"></script><script type="module" src="https://peahskill.com/build/assets/save-recipe-8zA1jhpf.js" data-navigate-track="reload"></script><script type="module" src="https://peahskill.com/build/assets/script-DTC4w_UL.js" data-navigate-track="reload"></script><script type="module" src="https://peahskill.com/build/assets/search-CvpFTx27.js" data-navigate-track="reload"></script><script type="module" src="https://peahskill.com/build/assets/recipe-CJW6wbrr.js" data-navigate-track="reload"></script><script type="module" src="https://peahskill.com/build/assets/recipe-save-button-Cd1yJfGj.js" data-navigate-track="reload"></script><script type="module" src="https://peahskill.com/build/assets/notification-manager--HZ6oqF1.js" data-navigate-track="reload"></script><script type="module" src="https://peahskill.com/build/assets/confirmation-modal-Jq-B1J7c.js" data-navigate-track="reload"></script>    
     <!-- Notification System JavaScript -->
     <script>
         // Notification dropdown functions
@@ -2080,7 +2128,7 @@
             position: absolute;
             top: -8px;
             right: -8px;
-            background-color: #f97316;
+            background-color: #0f4c73;
             color: white;
             font-size: 0.75rem;
             font-weight: bold;
@@ -2393,6 +2441,10 @@
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"version":"2024.11.0","token":"30a6e8d48f30453c921bd583f0e05319","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
 </html>
+
+
+
+
 
 
 

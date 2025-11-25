@@ -2,15 +2,15 @@
 
 return [
     'misc' => [
-        'author_fallback' => 'Wasfah team',
-        'image_alt' => 'Recipe photo',
+        'author_fallback' => 'Peahskill team',
+        'image_alt' => 'Guide cover image',
         'gallery_image_alt' => 'Image :number',
         'placeholder_image_alt' => 'Placeholder image',
     ],
 
     'hero' => [
-        'badge' => 'Wasfah signature recipe',
-        'registration_closed' => 'The booking window for this recipe has ended.',
+        'badge' => 'Peahskill signature guide',
+        'registration_closed' => 'The booking window for this experience has ended.',
         'stats' => [
             'rating' => [
                 'label' => 'Overall rating',
@@ -19,26 +19,26 @@ return [
             ],
             'saved' => [
                 'label' => 'Members who saved it',
-                'value' => '{0} No one saved this recipe yet|{1} :count member saved this recipe|[2,*] :count members saved this recipe',
+                'value' => '{0} No one saved this guide yet|{1} :count member saved this guide|[2,*] :count members saved this guide',
             ],
             'time' => [
                 'total' => 'Total time',
-                'servings' => 'Servings',
+                'servings' => 'Capacity / output',
                 'details' => [
-                    'prep_and_cook' => 'Prep :prep • Cook :cook',
+                    'prep_and_cook' => 'Prep :prep • Execute :cook',
                     'prep_only' => 'Prep :minutes',
-                    'cook_only' => 'Cook :minutes',
+                    'cook_only' => 'Execute :minutes',
                 ],
             ],
             'servings' => [
-                'value' => '{1} Serves :count person|[2,*] Serves :count people',
+                'value' => '{1} Delivers :count unit|[2,*] Delivers :count units',
             ],
             'published_by' => 'Published by',
             'updated_at' => 'Last updated :date',
         ],
         'byline' => [
-            'chef' => 'Chef :name',
-            'team' => 'Wasfah culinary team',
+            'chef' => 'Expert :name',
+            'team' => 'Peahskill team',
         ],
         'actions' => [
             'save' => 'Save',
@@ -54,33 +54,33 @@ return [
 
     'sections' => [
         'info' => 'Key information',
-        'ingredients' => 'Ingredients',
-        'tools' => 'Equipment used',
-        'instructions' => 'Preparation steps',
-        'community' => 'Community reactions',
-        'share' => 'Share this recipe',
-        'rating' => 'Rate this recipe',
-        'related' => 'Similar recipes from the same category',
+        'ingredients' => 'What you need',
+        'tools' => 'Tools & resources',
+        'instructions' => 'Execution steps',
+        'community' => 'Community pulse',
+        'share' => 'Share this guide',
+        'rating' => 'Rate this guide',
+        'related' => 'Similar guides from the same category',
     ],
 
     'info' => [
         'prep' => 'Prep time',
-        'cook' => 'Cook time',
-        'servings' => 'Serves',
+        'cook' => 'Execution time',
+        'servings' => 'Output',
     ],
 
     'ingredients' => [
-        'title' => 'Ingredients',
-        'original_yield' => 'The original recipe (1x) yields :count servings',
-        'tooltip' => 'This recipe was developed with its original yield. Ingredient quantities scale automatically, but timings and steps stay the same. Not every recipe scales perfectly.',
+        'title' => 'What you need',
+        'original_yield' => 'The original guide (1x) yields :count units',
+        'tooltip' => 'This guide was designed with its original output. Quantities scale automatically, but timings and steps stay the same. Not every guide scales perfectly.',
         'quantity_as_needed' => 'As needed',
     ],
 
     'tools' => [
-        'title' => 'Equipment used',
+        'title' => 'Tools & resources',
         'price_label' => 'AED :price',
         'price_unknown' => 'Not provided',
-        'empty' => 'No equipment was specified for this recipe.',
+        'empty' => 'No tools were specified for this guide.',
         'actions' => [
             'save' => 'Save for later',
             'saving' => 'Saving...',
@@ -98,23 +98,23 @@ return [
     ],
 
     'instructions' => [
-        'title' => 'Preparation steps',
+        'title' => 'Execution steps',
     ],
 
     'community' => [
-        'title' => 'Community reactions',
-        'question' => 'Have you tried this recipe?',
-        'count' => '{0} Be the first to try this recipe! 🚀|{1} :count member tried this recipe!|[2,*] :count members tried this recipe!',
+        'title' => 'Community pulse',
+        'question' => 'Did you try this guide?',
+        'count' => '{0} Be the first to try this guide! 🚀|{1} :count member tried this guide!|[2,*] :count members tried this guide!',
         'button' => [
-            'default' => 'I made it!',
-            'active' => 'Made it',
+            'default' => 'I tried it',
+            'active' => 'Tried',
         ],
     ],
 
     'share' => [
-        'section_title' => 'Share this recipe',
+        'section_title' => 'Share this guide',
         'modal' => [
-            'title' => 'Share this recipe',
+            'title' => 'Share this guide',
             'options_title' => 'Choose how you want to share:',
             'copy_link' => 'Copy link',
             'whatsapp' => 'WhatsApp',

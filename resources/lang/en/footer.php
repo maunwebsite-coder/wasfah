@@ -2,23 +2,23 @@
 
 return [
     'brand' => [
-        'logo_alt' => 'Wasfah logo',
-        'description' => 'Wasfah is your premium desserts companion, guiding you through every step toward show-stopping sweets.',
+        'logo_alt' => 'Peahskill logo',
+        'description' => 'Peahskill is your multi-industry skills companion, guiding you through every step from learning to execution.',
     ],
     'sections' => [
         'explore' => [
             'title' => 'Explore',
             'links' => [
-                'recipes' => 'All recipes',
-                'workshops' => 'Workshops',
-                'baking_tips' => 'Dessert tips',
+                'recipes' => 'All guides',
+                'workshops' => 'Experiences',
+                'baking_tips' => 'Pro tips',
             ],
         ],
         'guide' => [
             'title' => 'Quick guide',
             'links' => [
-                'tools' => 'Chef tools',
-                'search' => 'Recipe search',
+                'tools' => 'Tools & resources',
+                'search' => 'Guide search',
                 'about' => 'About us',
                 'partnership' => 'Corporate partnerships',
             ],
@@ -30,16 +30,16 @@ return [
         ],
     ],
     'bottom' => [
-        'copyright' => '© :year Wasfah. All rights reserved.',
+        'copyright' => '© :year Peahskill. All rights reserved.',
         'links' => [
-            'recipes' => 'Recipes',
-            'workshops' => 'Workshops',
-            'tools' => 'Chef tools',
-            'about' => 'About Wasfah',
+            'recipes' => 'Guides',
+            'workshops' => 'Experiences',
+            'tools' => 'Tools',
+            'about' => 'About Peahskill',
             'contact' => 'Contact us',
             'legal' => 'Privacy & terms',
         ],
-        'line_one' => 'Wasfah is part of Wasfah Jordan.',
-        'line_two' => 'We obsess over the details of every recipe.',
+        'line_one' => 'Peahskill brings experts, brands, and teams together.',
+        'line_two' => 'We obsess over the details of every guide and experience.',
     ],
 ];

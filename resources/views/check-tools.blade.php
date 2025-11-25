@@ -19,7 +19,7 @@
         margin: 10px 0;
     }
     .check-error {
-        background: #ffebee;
+        background: #eaf3f6;
         border: 1px solid #f44336;
         padding: 15px;
         border-radius: 5px;
@@ -27,7 +27,7 @@
     }
     .check-warning {
         background: #fff3e0;
-        border: 1px solid #ff9800;
+        border: 1px solid #0fa289;
         padding: 15px;
         border-radius: 5px;
         margin: 10px 0;
@@ -369,3 +369,7 @@
     });
 </script>
 @endpush
+
+
+
+

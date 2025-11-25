@@ -2,6 +2,7 @@
     $authUser = Auth::user();
     $tabBarLabels = trans('navbar.tab_bar');
     $isChef = $authUser?->isChef();
+    $lockVisibility = (bool) ($lockVisibility ?? false);
 
     $tabItems = [
         [
@@ -10,6 +11,13 @@
             'icon' => 'fa-solid fa-house-chimney',
             'label' => data_get($tabBarLabels, 'home', __('navbar.links.home')),
             'active' => request()->routeIs('home', 'home.*'),
+        ],
+        [
+            'key' => 'recipes',
+            'href' => route('recipes'),
+            'icon' => 'fa-solid fa-play',
+            'label' => data_get($tabBarLabels, 'recipes', __('navbar.links.recipes')),
+            'active' => request()->routeIs('recipes', 'recipe.*'),
         ],
         [
             'key' => 'bookings',
@@ -47,7 +55,13 @@
     $loaderHint = data_get($tabBarLabels, 'loading_hint', 'Hang tight for a moment.');
 @endphp
 
-<nav class="mobile-tab-bar md:hidden" data-mobile-tab-bar aria-label="{{ data_get($tabBarLabels, 'sr_label', __('navbar.mobile_nav_label')) }}" aria-busy="false">
+<nav
+    class="mobile-tab-bar md:hidden {{ $lockVisibility ? 'mobile-tab-bar--locked' : '' }}"
+    data-mobile-tab-bar
+    data-lock-visibility="{{ $lockVisibility ? 'true' : 'false' }}"
+    aria-label="{{ data_get($tabBarLabels, 'sr_label', __('navbar.mobile_nav_label')) }}"
+    aria-busy="false"
+>
     <div class="mobile-tab-bar__loading-line" role="status" aria-live="polite">
         <span class="sr-only">{{ $loaderLabel }} — {{ $loaderHint }}</span>
     </div>
@@ -81,6 +95,13 @@
                         return;
                     }
                     window.__mobileTabBarScrollVisibilityInit = true;
+
+                    const locked = nav.dataset.lockVisibility === 'true';
+                    if (locked) {
+                        nav.classList.remove('mobile-tab-bar--hidden');
+                        nav.setAttribute('aria-busy', 'false');
+                        return;
+                    }
 
                     const mediaQuery = window.matchMedia('(max-width: 768px)');
                     const getScrollY = () =>
@@ -154,3 +175,4 @@
         </script>
     @endpush
 @endonce
+

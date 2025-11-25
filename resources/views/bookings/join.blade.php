@@ -5,7 +5,7 @@
 @push('styles')
 <style>
     body {
-        background: linear-gradient(135deg, #fff7ed 0%, #fef3c7 33%, #f1f5f9 100%);
+        background: linear-gradient(135deg, #eaf3f6 0%, #c8ede3 33%, #f1f5f9 100%);
         min-height: 100vh;
     }
 
@@ -47,9 +47,9 @@
     }
 
     .action-btn.primary {
-        background: linear-gradient(120deg, #f97316, #f43f5e);
+        background: linear-gradient(120deg, #0f4c73, #f43f5e);
         color: #fff;
-        box-shadow: 0 18px 40px rgba(249, 115, 22, 0.35);
+        box-shadow: 0 18px 40px rgba(15, 76, 115, 0.35);
     }
 
     .action-btn.secondary {
@@ -263,3 +263,8 @@
     });
 </script>
 @endpush
+
+
+
+
+

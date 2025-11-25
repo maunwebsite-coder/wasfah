@@ -306,6 +306,24 @@ class Workshop extends Model
         ];
     }
 
+    /**
+     * Resolve the calendar identifier for the workshop host.
+     */
+    public function hostCalendarId(): ?string
+    {
+        return $this->meeting_calendar_id ?: $this->hostGoogleEmail();
+    }
+
+    /**
+     * Build Google Meet credentials for the workshop host when available.
+     */
+    public function hostGoogleMeetCredentials(): ?array
+    {
+        $this->loadMissing('chef');
+
+        return $this->chef?->googleMeetCredentials($this->hostCalendarId());
+    }
+
     public function meetingStarter()
     {
         return $this->belongsTo(User::class, 'meeting_started_by');

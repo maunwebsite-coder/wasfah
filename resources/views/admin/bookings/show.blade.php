@@ -1061,3 +1061,4 @@ function updatePayment(bookingId) {
 }
 </script>
 @endsection
+

@@ -103,6 +103,8 @@ class Breadcrumbs
      */
     protected static function siteRouteDefinitions(): array
     {
+        $brandLinksLabel = 'روابط ' . config('app.name', 'Peahskill');
+
         return [
             'recipes' => [self::class, 'recipesTrail'],
             'recipe.show' => [self::class, 'recipeTrail'],
@@ -176,9 +178,9 @@ class Breadcrumbs
                     },
                 ],
             ],
-            'links' => self::singleCrumbTrail('روابط Wasfah'),
+            'links' => self::singleCrumbTrail($brandLinksLabel),
             'links.chef' => [
-                self::crumb('روابط Wasfah', 'links'),
+                self::crumb($brandLinksLabel, 'links'),
                 [
                     'label' => static function () {
                         $page = request()->route('chefLinkPage');
@@ -347,9 +349,11 @@ class Breadcrumbs
      */
     protected static function recipesTrail(): array
     {
+        $recipesLabel = self::translateLabel('breadcrumbs.recipes', 'الوصفات');
+
         $trail = [
             [
-                'label' => 'الوصفات',
+                'label' => $recipesLabel,
                 'url' => null,
             ],
         ];
@@ -378,21 +382,16 @@ class Breadcrumbs
      */
     protected static function recipeTrail(): array
     {
+        $recipesLabel = self::translateLabel('breadcrumbs.recipes', 'الوصفات');
+
         $trail = [
             [
-                'label' => 'الوصفات',
+                'label' => $recipesLabel,
                 'url' => route('recipes'),
             ],
         ];
 
         $recipe = request()->route('recipe');
-
-        if ($recipe && $recipe->category) {
-            $trail[] = [
-                'label' => $recipe->category->name,
-                'url' => route('recipes', ['category' => $recipe->category->id]),
-            ];
-        }
 
         if ($recipe) {
             $trail[] = [
@@ -538,7 +537,7 @@ class Breadcrumbs
     {
         $trail = [
             [
-                'label' => self::translateLabel('breadcrumbs.chef.area', 'Chef zone'),
+                'label' => self::translateLabel('breadcrumbs.chef.area', 'Peahskill zone'),
                 'url' => self::routeUrl('chef.dashboard'),
             ],
         ];
@@ -693,11 +692,14 @@ class Breadcrumbs
     {
         return [
             'dashboard' => [
-                'label' => self::translateLabel('breadcrumbs.chef.sections.dashboard', 'Chef dashboard'),
+                'label' => self::translateLabel('breadcrumbs.chef.sections.dashboard', 'Peahskill dashboard'),
                 'route' => 'chef.dashboard',
             ],
             'links' => [
-                'label' => self::translateLabel('breadcrumbs.chef.sections.links', 'Wasfah links'),
+                'label' => self::translateLabel(
+                    'breadcrumbs.chef.sections.links',
+                    config('app.name', 'Peahskill') . ' links'
+                ),
                 'route' => 'chef.links.edit',
             ],
             'recipes' => [
@@ -705,7 +707,7 @@ class Breadcrumbs
                 'route' => 'chef.recipes.index',
             ],
             'workshops' => [
-                'label' => self::translateLabel('breadcrumbs.chef.sections.workshops', 'Chef workshops'),
+                'label' => self::translateLabel('breadcrumbs.chef.sections.workshops', 'Peahskill workshops'),
                 'route' => 'chef.workshops.index',
             ],
         ];

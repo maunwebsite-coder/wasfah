@@ -1,4 +1,4 @@
-/**
+﻿/**
  * نظام مشاركة الوصفات
  * يتعامل مع مشاركة الوصفات عبر وسائل التواصل الاجتماعي ونسخ الرابط
  */
@@ -314,12 +314,12 @@ function printRecipe() {
                 .recipe-header {
                     text-align: center;
                     margin-bottom: 30px;
-                    border-bottom: 2px solid #f97316;
+                    border-bottom: 2px solid #0f4c73;
                     padding-bottom: 20px;
                 }
                 .recipe-title {
                     font-size: 2.5em;
-                    color: #f97316;
+                    color: #0f4c73;
                     margin-bottom: 10px;
                 }
                 .recipe-meta {
@@ -346,7 +346,7 @@ function printRecipe() {
                 }
                 .section-title {
                     font-size: 1.8em;
-                    color: #f97316;
+                    color: #0f4c73;
                     margin-bottom: 20px;
                     border-bottom: 1px solid #e9ecef;
                     padding-bottom: 10px;
@@ -360,7 +360,7 @@ function printRecipe() {
                     margin: 8px 0;
                     padding: 12px 20px;
                     border-radius: 8px;
-                    border-right: 4px solid #f97316;
+                    border-right: 4px solid #0f4c73;
                 }
                 .instructions-list {
                     counter-reset: step-counter;
@@ -380,7 +380,7 @@ function printRecipe() {
                     position: absolute;
                     right: -15px;
                     top: -15px;
-                    background: #f97316;
+                    background: #0f4c73;
                     color: white;
                     width: 30px;
                     height: 30px;
@@ -464,3 +464,4 @@ window.ShareRecipe = {
     printRecipe,
     shareViaWebAPI
 };
+

@@ -17,7 +17,7 @@
                     <div>
                         <h1 class="text-3xl font-bold text-gray-900">{{ $chef->name }}</h1>
                         <p class="text-gray-600 mt-1">
-                            {{ $chef->chef_specialty_description ?: 'شيف مبدع يشارك وصفاته مع مجتمع وصفه.' }}
+                            {{ $chef->chef_specialty_description ?: 'شيف مبدع يشارك وصفاته مع المجتمع.' }}
                         </p>
                     </div>
 
@@ -85,7 +85,7 @@
                                         @php
                                             $coverImage = $workshop->image
                                                 ? asset('storage/' . ltrim($workshop->image, '/'))
-                                                : 'https://placehold.co/600x400/f97316/FFFFFF?text=ورشة';
+                                                : 'https://placehold.co/600x400/0f4c73/FFFFFF?text=ورشة';
                                             $startDateLabel = $workshop->start_date
                                                 ? $workshop->start_date->copy()->locale('ar')->translatedFormat('j F Y • h:i a')
                                                 : 'سيتم التحديد لاحقاً';
@@ -162,7 +162,7 @@
                                         @php
                                             $coverImage = $workshop->image
                                                 ? asset('storage/' . ltrim($workshop->image, '/'))
-                                                : 'https://placehold.co/600x400/f97316/FFFFFF?text=ورشة';
+                                                : 'https://placehold.co/600x400/0f4c73/FFFFFF?text=ورشة';
                                             $startDateLabel = $workshop->start_date
                                                 ? $workshop->start_date->copy()->locale('ar')->translatedFormat('j F Y • h:i a')
                                                 : 'موعد غير محدد';
@@ -294,4 +294,6 @@
         </div>
     </div>
 @endsection
+
+
 

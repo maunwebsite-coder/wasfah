@@ -83,9 +83,10 @@ class MeetingRedirectController extends Controller
 
         $eventId = (string) ($payload['meeting_event_id'] ?? $host->meeting_event_id ?? '');
         $calendarId = $payload['calendar_id'] ?? $host->meeting_calendar_id;
+        $hostCredentials = $host->hostGoogleMeetCredentials();
 
         if ($eventId !== '') {
-            $attendeeStatus = $this->googleMeetService->eventHasAttendee($eventId, $chefEmail, $calendarId);
+            $attendeeStatus = $this->googleMeetService->eventHasAttendee($eventId, $chefEmail, $calendarId, $hostCredentials);
 
             if ($attendeeStatus === false) {
                 $hostPayload = $host->hostAttendeePayload();
@@ -95,13 +96,14 @@ class MeetingRedirectController extends Controller
                     $attendeeStatus = $this->googleMeetService->ensureAttendeePresent(
                         $eventId,
                         $hostPayload,
-                        $calendarId
+                        $calendarId,
+                        $hostCredentials
                     );
                 }
 
                 if ($attendeeStatus === false) {
                     $this->meetingAttendeeSyncService->sync($host);
-                    $attendeeStatus = $this->googleMeetService->eventHasAttendee($eventId, $chefEmail, $calendarId);
+                    $attendeeStatus = $this->googleMeetService->eventHasAttendee($eventId, $chefEmail, $calendarId, $hostCredentials);
                 }
 
                 if ($attendeeStatus === false) {

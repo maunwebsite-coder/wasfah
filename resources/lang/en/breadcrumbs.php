@@ -2,6 +2,7 @@
 
 return [
     'home' => 'Home',
+    'recipes' => 'Peahskill Guides',
     'search' => 'Search Results',
     'workshops' => 'Workshops',
     'bookings' => [
@@ -19,12 +20,12 @@ return [
         'dashboard' => 'Partners Program',
     ],
     'chef' => [
-        'area' => 'Chef zone',
+        'area' => 'Peahskill zone',
         'sections' => [
-            'dashboard' => 'Chef dashboard',
+            'dashboard' => 'Peahskill dashboard',
             'links' => 'Wasfah links',
             'recipes' => 'My recipes',
-            'workshops' => 'Chef workshops',
+            'workshops' => 'Peahskill workshops',
         ],
         'links' => [
             'edit' => 'Edit links page',

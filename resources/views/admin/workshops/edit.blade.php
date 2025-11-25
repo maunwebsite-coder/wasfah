@@ -5,7 +5,7 @@
 @push('styles')
 <style>
     body {
-        background: linear-gradient(135deg, #f8fafc 0%, #e0f2fe 40%, #fff7ed 100%);
+        background: linear-gradient(135deg, #f8fafc 0%, #e0f2fe 40%, #eaf3f6 100%);
         min-height: 100vh;
     }
 
@@ -39,7 +39,7 @@
     }
 
     .notification.warning {
-        background: linear-gradient(135deg, #f59e0b, #d97706);
+        background: linear-gradient(135deg, #0d8b76, #0a344f);
     }
 
     .image-upload-area.has-image {
@@ -48,9 +48,9 @@
     }
 
     .recipe-item.selected {
-        border-color: rgba(249, 115, 22, 0.65);
-        background-color: #fff7ed;
-        box-shadow: 0 20px 35px -25px rgba(249, 115, 22, 0.6);
+        border-color: rgba(15, 76, 115, 0.65);
+        background-color: #eaf3f6;
+        box-shadow: 0 20px 35px -25px rgba(15, 76, 115, 0.6);
     }
 
     .online-meeting-tools {
@@ -97,7 +97,7 @@
     }
 
     .meeting-status[data-state="manual"] {
-        background: #fef3c7;
+        background: #c8ede3;
         color: #92400e;
     }
 
@@ -440,15 +440,12 @@
                         </div>
 
                         <div>
-                            <label for="registration_deadline" class="block text-sm font-semibold text-slate-700 mb-2">آخر موعد للتسجيل</label>
-                            <input id="registration_deadline" name="registration_deadline" type="datetime-local"
-                                   value="{{ old('registration_deadline', optional($workshop->registration_deadline)->format('Y-m-d\TH:i')) }}"
-                                   class="w-full rounded-2xl border-2 border-slate-200 bg-white/80 px-4 py-3 text-slate-800 shadow-sm transition focus:border-sky-400 focus:ring-4 focus:ring-sky-200 @error('registration_deadline') border-red-400 focus:border-red-500 focus:ring-red-200 @enderror">
-                            @error('registration_deadline')
-                                <p class="mt-2 text-sm font-semibold text-red-500">{{ $message }}</p>
-                            @enderror
+                            <p class="mb-2 block text-sm font-semibold text-slate-700">آخر موعد للتسجيل</p>
+                            <div class="rounded-2xl border border-emerald-100 bg-emerald-50/80 px-4 py-3 text-sm text-emerald-800 shadow-inner">
+                                يتم تعيين الموعد النهائي للتسجيل تلقائياً قبل بداية الورشة بدقيقتين وفق توقيت المضيف.
+                            </div>
                             <p class="mt-2 text-xs text-slate-500">
-                                يساعد المشاركين على معرفة إمكانية التسجيل قبل الموعد النهائي.
+                                لا حاجة لتعديل هذا الحقل يدوياً بعد الآن.
                             </p>
                         </div>
                     </div>
@@ -1145,5 +1142,11 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 @endpush
+
+
+
+
+
+
 
 

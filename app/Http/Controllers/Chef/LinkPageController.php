@@ -24,9 +24,7 @@ class LinkPageController extends Controller
 
         $upcomingWorkshop = $user->nextUpcomingWorkshop();
 
-        $heroImageUrl = $page->hero_image_path
-            ? Storage::disk('public')->url($page->hero_image_path)
-            : ($page->avatar_url ?? BrandAssets::logoAsset('webp'));
+        $heroImageUrl = $page->avatar_url ?? BrandAssets::logoAsset('webp');
 
         $linkPresets = [
             [
@@ -71,7 +69,7 @@ class LinkPageController extends Controller
             'items' => $page->items,
             'heroImageUrl' => $heroImageUrl,
             'publicUrl' => route('links.chef', $page),
-            'accentColor' => $page->accent_color ?? '#f97316',
+            'accentColor' => $page->accent_color ?? '#0f4c73',
             'linkPresets' => $linkPresets,
             'upcomingWorkshop' => $upcomingWorkshop,
         ]);
@@ -114,7 +112,10 @@ class LinkPageController extends Controller
 
         $page->save();
 
-        return back()->with('success', 'تم تحديث صفحة روابط Wasfah الخاصة بك بنجاح.');
+        return back()->with(
+            'success',
+            'تم تحديث صفحة روابط ' . config('app.name', 'Peahskill') . ' الخاصة بك بنجاح.'
+        );
     }
 
     /**
@@ -143,4 +144,5 @@ class LinkPageController extends Controller
         return $value;
     }
 }
+
 

@@ -5,7 +5,7 @@
 @push('styles')
 <style>
     body {
-        background: linear-gradient(135deg, #f8fafc 0%, #e0f2fe 45%, #fff7ed 100%);
+        background: linear-gradient(135deg, #f8fafc 0%, #e0f2fe 45%, #eaf3f6 100%);
         min-height: 100vh;
     }
 
@@ -22,9 +22,9 @@
         overflow: hidden;
         background: linear-gradient(135deg, rgba(255,255,255,0.96) 0%, rgba(254, 243, 199, 0.94) 55%, rgba(224, 242, 254, 0.94) 100%);
         border-radius: 1.75rem;
-        border: 1px solid rgba(249, 115, 22, 0.16);
+        border: 1px solid rgba(15, 76, 115, 0.16);
         padding: 2.75rem 2.5rem;
-        box-shadow: 0 35px 60px -42px rgba(249, 115, 22, 0.55);
+        box-shadow: 0 35px 60px -42px rgba(15, 76, 115, 0.55);
     }
 
     .page-hero::before,
@@ -49,7 +49,7 @@
         height: 420px;
         bottom: -220px;
         right: -170px;
-        background: radial-gradient(circle, rgba(249, 115, 22, 0.3), transparent 70%);
+        background: radial-gradient(circle, rgba(15, 76, 115, 0.3), transparent 70%);
     }
 
     .page-hero > * {
@@ -99,7 +99,7 @@
     .hero-badge--featured {
         background: rgba(250, 204, 21, 0.3);
         border-color: rgba(250, 204, 21, 0.45);
-        color: #b45309;
+        color: #0a344f;
     }
 
     .hero-meta-grid {
@@ -179,7 +179,7 @@
     .progress-fill {
         position: absolute;
         inset: 0;
-        background: linear-gradient(135deg, #f97316, #fb923c);
+        background: linear-gradient(135deg, #0f4c73, #0fb39a);
         border-radius: inherit;
         transition: width 0.4s ease;
     }
@@ -214,7 +214,7 @@
     }
 
     .notification.warning {
-        background: linear-gradient(135deg, #f59e0b, #d97706);
+        background: linear-gradient(135deg, #0d8b76, #0a344f);
     }
 
     @media (max-width: 1024px) {
@@ -331,7 +331,7 @@
         <div class="grid gap-8 lg:grid-cols-[2fr_1fr]">
             <div class="space-y-8">
                 <div class="admin-card overflow-hidden">
-                    <img src="{{ $workshop->image ? asset('storage/' . $workshop->image) : 'https://placehold.co/1200x600/f97316/FFFFFF?text=ورشة' }}"
+                    <img src="{{ $workshop->image ? asset('storage/' . $workshop->image) : 'https://placehold.co/1200x600/0f4c73/FFFFFF?text=ورشة' }}"
                          alt="{{ $workshop->title }}"
                          class="h-72 w-full object-cover" loading="lazy">
                 </div>
@@ -460,7 +460,7 @@
                                 @foreach($workshop->recipes as $recipe)
                                     <div class="rounded-2xl border border-slate-100 bg-white/90 p-4 shadow-sm">
                                         <div class="flex items-start gap-3">
-                                            <img src="{{ $recipe->image_url ?: 'https://placehold.co/80x80/f97316/FFFFFF?text=وصفة' }}"
+                                            <img src="{{ $recipe->image_url ?: 'https://placehold.co/80x80/0f4c73/FFFFFF?text=وصفة' }}"
                                                  alt="{{ $recipe->title }}"
                                                  class="h-16 w-16 rounded-xl border border-slate-200 object-cover"
                                                 onerror="this.src='{{ \App\Support\BrandAssets::logoAsset('webp') }}';" loading="lazy">
@@ -611,5 +611,12 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 @endpush
+
+
+
+
+
+
+
 
 

@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class CategorySeeder extends Seeder
 {
@@ -14,11 +15,25 @@ class CategorySeeder extends Seeder
     {
         DB::table('categories')->insert([
             // IDs will be auto-incremented starting from 1
-            ['name' => 'حلويات', 'created_at' => now(), 'updated_at' => now()],         // Corresponds to category_id: 1
-            ['name' => 'سلطات', 'created_at' => now(), 'updated_at' => now()],          // Corresponds to category_id: 2
-            ['name' => 'سناكات صحية', 'created_at' => now(), 'updated_at' => now()],   // Corresponds to category_id: 3
-            ['name' => 'أطباق رئيسية', 'created_at' => now(), 'updated_at' => now()],  // Corresponds to category_id: 4
-            ['name' => 'شوربات', 'created_at' => now(), 'updated_at' => now()],        // Corresponds to category_id: 5
+            $this->buildCategory('حلويات'),        // Corresponds to category_id: 1
+            $this->buildCategory('سلطات'),         // Corresponds to category_id: 2
+            $this->buildCategory('سناكات صحية'),   // Corresponds to category_id: 3
+            $this->buildCategory('أطباق رئيسية'),  // Corresponds to category_id: 4
+            $this->buildCategory('شوربات'),        // Corresponds to category_id: 5
         ]);
+    }
+
+    protected function buildCategory(string $name): array
+    {
+        $now = now();
+
+        return [
+            'name' => $name,
+            'slug' => Str::slug($name, '-', 'ar'),
+            'image' => null,
+            'is_active' => true,
+            'created_at' => $now,
+            'updated_at' => $now,
+        ];
     }
 }

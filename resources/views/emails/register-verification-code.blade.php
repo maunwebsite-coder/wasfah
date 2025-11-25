@@ -20,11 +20,11 @@
             background-color: #ffffff;
             border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 20px 60px rgba(249, 115, 22, 0.15);
-            border: 1px solid rgba(249, 115, 22, 0.12);
+            box-shadow: 0 20px 60px rgba(15, 76, 115, 0.15);
+            border: 1px solid rgba(15, 76, 115, 0.12);
         }
         .header {
-            background: linear-gradient(135deg, #f97316, #fb923c);
+            background: linear-gradient(135deg, #0f4c73, #0fb39a);
             color: #ffffff;
             padding: 2rem;
             text-align: center;
@@ -39,7 +39,7 @@
             letter-spacing: 0.5rem;
             font-weight: 800;
             text-align: center;
-            color: #ea580c;
+            color: #0a8070;
         }
         .footer {
             padding: 1.5rem 2.5rem 2.5rem;
@@ -48,7 +48,7 @@
             line-height: 1.6;
         }
         .highlight {
-            color: #ea580c;
+            color: #0a8070;
             font-weight: 700;
         }
     </style>
@@ -79,4 +79,8 @@
     </div>
 </body>
 </html>
+
+
+
+
 

@@ -63,6 +63,7 @@
     $currentUser = auth()->user();
     $chefName = $currentUser?->name ?? __('navbar.mobile_banner.guest');
     $canViewRawMeetingLink = $currentUser && method_exists($currentUser, 'isAdmin') && $currentUser->isAdmin();
+    $canManageRecipes = $currentUser && method_exists($currentUser, 'isAdmin') && $currentUser->isAdmin();
 @endphp
 
 <div class="min-h-screen bg-gray-50 py-10">
@@ -74,14 +75,16 @@
                 <p class="text-gray-600 mt-1">{{ __('chef.hero.description') }}</p>
             </div>
             <div class="grid w-full grid-cols-2 gap-3 sm:flex sm:w-auto sm:flex-row sm:items-stretch sm:justify-end">
-                <a href="{{ route('chef.recipes.create') }}" class="order-1 sm:order-5 col-span-2 sm:col-span-1 group flex w-full sm:w-auto items-center gap-3 rounded-full bg-gradient-to-r from-orange-500 to-orange-600 px-6 py-3 text-white font-semibold shadow-[0_12px_30px_rgba(249,115,22,0.35)] transition-[transform,box-shadow] hover:-translate-y-0.5 hover:shadow-[0_18px_45px_rgba(234,88,12,0.4)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/70">
-                    <span class="flex h-11 w-11 sm:h-10 sm:w-10 flex-shrink-0 items-center justify-center rounded-full bg-white/20 text-lg text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.3)]">
-                        <i class="fas fa-plus" aria-hidden="true"></i>
-                    </span>
-                    <span class="flex flex-col text-left leading-tight">
-                        <span>{{ __('chef.hero.actions.new_recipe') }}</span>
-                    </span>
-                </a>
+                @if ($canManageRecipes)
+                    <a href="{{ route('chef.recipes.create') }}" class="order-1 sm:order-5 col-span-2 sm:col-span-1 group flex w-full sm:w-auto items-center gap-3 rounded-full bg-gradient-to-r from-orange-500 to-orange-600 px-6 py-3 text-white font-semibold shadow-[0_12px_30px_rgba(249,115,22,0.35)] transition-[transform,box-shadow] hover:-translate-y-0.5 hover:shadow-[0_18px_45px_rgba(234,88,12,0.4)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/70">
+                        <span class="flex h-11 w-11 sm:h-10 sm:w-10 flex-shrink-0 items-center justify-center rounded-full bg-white/20 text-lg text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.3)]">
+                            <i class="fas fa-plus" aria-hidden="true"></i>
+                        </span>
+                        <span class="flex flex-col text-left leading-tight">
+                            <span>{{ __('chef.hero.actions.new_recipe') }}</span>
+                        </span>
+                    </a>
+                @endif
                 <a href="{{ route('chef.workshops.create') }}" class="order-2 sm:order-4 col-span-2 sm:col-span-1 group flex w-full sm:w-auto items-center gap-3 rounded-full bg-gradient-to-r from-blue-700 via-blue-600 to-blue-500 px-6 py-3 text-white font-semibold shadow-[0_12px_30px_rgba(37,99,235,0.32)] transition-[transform,box-shadow] hover:-translate-y-0.5 hover:shadow-[0_18px_42px_rgba(37,99,235,0.45)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/70">
                     <span class="flex h-11 w-11 sm:h-10 sm:w-10 flex-shrink-0 items-center justify-center rounded-full bg-white/20 text-lg text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.3)]">
                         <i class="fas fa-calendar-plus" aria-hidden="true"></i>
@@ -413,10 +416,14 @@
                     </div>
                     <h2 class="text-xl font-semibold text-gray-800 mb-2">{{ __('chef.empty_state.title') }}</h2>
                     <p class="text-sm text-gray-500 mb-6">{{ __('chef.empty_state.description') }}</p>
-                    <a href="{{ route('chef.recipes.create') }}" class="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-orange-500 to-orange-600 px-5 py-3 text-white font-semibold hover:from-orange-600 hover:to-orange-700 transition">
-                        <i class="fas fa-plus"></i>
-                        {{ __('chef.empty_state.cta') }}
-                    </a>
+                    @if ($canManageRecipes)
+                        <a href="{{ route('chef.recipes.create') }}" class="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-orange-500 to-orange-600 px-5 py-3 text-white font-semibold hover:from-orange-600 hover:to-orange-700 transition">
+                            <i class="fas fa-plus"></i>
+                            {{ __('chef.empty_state.cta') }}
+                        </a>
+                    @else
+                        <p class="text-sm font-semibold text-gray-600">إضافة الوصفات متاحة للإدمن فقط.</p>
+                    @endif
                 </div>
             @else
                 <div class="overflow-x-auto">
@@ -524,4 +531,5 @@
     </div>
 </div>
 @endsection
+
 

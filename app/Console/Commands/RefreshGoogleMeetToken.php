@@ -26,10 +26,15 @@ class RefreshGoogleMeetToken extends Command
     public function handle()
     {
         $service = app(\App\Services\GoogleMeetService::class);
-        $client = $service->refreshAccessToken();
-
-        if ($client) {
-            \Log::info('Google token refreshed successfully.');
+        try {
+            $client = $service->refreshAccessToken();
+            if ($client) {
+                \Log::info('Google token refreshed successfully.');
+                $this->info('Google token refreshed successfully.');
+            }
+        } catch (\Throwable $e) {
+            \Log::error('Google token refresh failed: ' . $e->getMessage());
+            $this->error('Google token refresh failed: ' . $e->getMessage());
         }
     }
 }

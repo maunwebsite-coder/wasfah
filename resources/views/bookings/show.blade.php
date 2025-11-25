@@ -77,6 +77,17 @@
                     <p class="mt-1 text-sm text-slate-500">
                         {{ $workshop->is_online ? 'This workshop runs via Google Meet inside Wasfah.' : ($workshop->location ?? 'Details will be shared soon.') }}
                     </p>
+                    <p class="mt-3 text-xs text-slate-500">
+                        {{ __('bookings.notices.registration_closure', ['minutes' => 2]) }}
+                    </p>
+                    @if ($workshop->is_online)
+                        <p class="mt-2">
+                            <span class="text-sm text-slate-500 __web-inspector-hide-shortcut__">This workshop is online-only and cannot be switched to in-person.</span>
+                        </p>
+                        <div class="mt-3 rounded-xl border border-slate-100 bg-slate-50 px-4 py-3 text-xs leading-relaxed text-slate-600">
+                            ننشئ غرفة Google Meet مباشرة من حسابك في Google لتبقى أنت المضيف. <span class="font-semibold text-slate-800">حساب المضيف:</span> maunwebsite@gmail.com
+                        </div>
+                    @endif
 
                     @if ($workshop->is_online && $workshop->meeting_link)
                         @if ($booking->status === 'confirmed')
@@ -118,3 +129,4 @@
     </div>
 </div>
 @endsection
+
