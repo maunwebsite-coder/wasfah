@@ -411,14 +411,20 @@
         .hero-badge {
             display: inline-flex;
             align-items: center;
-            gap: 0.5rem;
-            font-size: 0.95rem;
+            gap: 0.35rem;
+            font-size: 0.8rem;
             font-weight: 700;
             color: #0a344f;
             background: linear-gradient(135deg, rgba(15, 162, 137, 0.22), rgba(12, 63, 97, 0.22));
             border-radius: 9999px;
-            padding: 0.55rem 1.35rem;
-            box-shadow: 0 10px 18px rgba(15, 76, 115, 0.18);
+            padding: 0.35rem 0.9rem;
+            box-shadow: 0 8px 14px rgba(15, 76, 115, 0.16);
+            align-self: flex-start;
+        }
+        .hero-badge.is-right,
+        .hero-badge.is-end {
+            align-self: flex-end;
+            margin-inline-start: auto;
         }
         .hero-title {
             font-size: clamp(1.9rem, 4.8vw, 3rem);
@@ -1266,7 +1272,8 @@
             }
             .hero-media {
                 min-height: 0;
-                aspect-ratio: 1 / 1;
+                height: clamp(180px, 48vw, 240px);
+                aspect-ratio: 16 / 9;
             }
             .hero-media picture,
             .hero-media img,
@@ -1362,6 +1369,9 @@
                 min-width: 105px;
                 padding: 0.45rem 0.8rem;
                 font-size: 0.78rem;
+            }
+            .hero-media {
+                height: clamp(160px, 52vw, 200px);
             }
             .hero-latest-header h2 {
                 font-size: 1.35rem;

@@ -167,10 +167,12 @@
                 <i class="fas fa-utensils ml-2"></i>
                 عرض الوصفات
             </a>
-            <a href="{{ route('tools') }}" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-lg transition-colors">
-                <i class="fas fa-tools ml-2"></i>
-                عرض الأدوات
-            </a>
+            @if(auth()->user()?->isAdmin())
+                <a href="{{ route('tools') }}" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-lg transition-colors">
+                    <i class="fas fa-tools ml-2"></i>
+                    عرض الأدوات
+                </a>
+            @endif
         </div>
     </div>
 </div>

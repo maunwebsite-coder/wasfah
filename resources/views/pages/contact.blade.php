@@ -163,7 +163,6 @@
                         @php
                             $channelStyles = [
                                 ['wrapper' => 'bg-gradient-to-r from-pink-500 to-purple-600 text-white', 'icon' => 'fab fa-instagram text-2xl'],
-                                ['wrapper' => 'bg-red-600 text-white', 'icon' => 'fab fa-youtube text-2xl'],
                             ];
                             $defaultChannelStyle = ['wrapper' => 'bg-slate-900 text-white', 'icon' => 'fas fa-share-alt text-2xl'];
                         @endphp

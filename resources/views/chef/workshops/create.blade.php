@@ -8,7 +8,7 @@
         <div class="mb-8 flex flex-wrap items-center justify-between gap-4">
             <div>
                 <p class="text-sm font-semibold uppercase tracking-wider text-orange-500">{{ __('chef.workshops_create.hero_badge') }}</p>
-                <h1 class="mt-1 text-3xl font-bold text-slate-900">{{ __('chef.workshops_create.hero_heading') }}</h1>
+                <h1 class="mt-3 text-3xl font-bold text-slate-900">{{ __('chef.workshops_create.hero_heading') }}</h1>
                 <p class="mt-2 text-sm text-slate-600">{{ __('chef.workshops_create.hero_description') }}</p>
             </div>
             <a href="{{ route('chef.workshops.index') }}"

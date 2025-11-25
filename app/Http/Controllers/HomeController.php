@@ -118,6 +118,7 @@ class HomeController extends Controller
             ->take(8);
 
         $authenticatedUser = auth()->user();
+        $showToolsForAdmin = $authenticatedUser?->isAdmin() ?? false;
 
         // إضافة حالة الحفظ للمستخدمين المسجلين
         if ($authenticatedUser) {
@@ -144,14 +145,18 @@ class HomeController extends Controller
             });
         }
 
-        $homeTools = Tool::active()->ordered()->limit(12)->get();
+        $homeTools = $showToolsForAdmin
+            ? Tool::active()->ordered()->limit(12)->get()
+            : collect();
 
         $heroMedia = [
             'workshop' => $this->resolveWorkshopHeroMedia($featuredWorkshop, $workshops),
             'recipe' => $this->resolveRecipeHeroMedia($feedVideos, $latestRecipes),
-            'tool' => $this->resolveToolHeroMedia(),
             'links' => $this->resolveLinksHeroMedia(),
         ];
+        if ($showToolsForAdmin) {
+            $heroMedia['tool'] = $this->resolveToolHeroMedia();
+        }
 
         $isAuthenticated = (bool) $authenticatedUser;
         $isChefUser = $authenticatedUser?->isChef() ?? false;
@@ -173,7 +178,7 @@ class HomeController extends Controller
         ];
 
         $managedHeroSlides = $this->loadManagedHeroSlides();
-        $heroSlides = $this->transformHeroSlides($managedHeroSlides, $heroMedia, $createWorkshopAction, $createWasfahLinkAction);
+        $heroSlides = $this->transformHeroSlides($managedHeroSlides, $heroMedia, $createWorkshopAction, $createWasfahLinkAction, $showToolsForAdmin);
 
         $bookedWorkshopIds = [];
 
@@ -195,7 +200,8 @@ class HomeController extends Controller
             'heroMedia',
             'heroSlides',
             'homeTools',
-            'bookedWorkshopIds'
+            'bookedWorkshopIds',
+            'showToolsForAdmin'
         ));
     }
 
@@ -344,44 +350,54 @@ class HomeController extends Controller
         return asset('storage/' . ltrim($path, '/'));
     }
 
-    protected function transformHeroSlides(Collection $managedSlides, array $heroMedia, array $createWorkshopAction, array $createWasfahLinkAction): array
+    protected function transformHeroSlides(Collection $managedSlides, array $heroMedia, array $createWorkshopAction, array $createWasfahLinkAction, bool $showTools): array
     {
         if ($managedSlides->isEmpty()) {
-            return $this->defaultHeroSlides($heroMedia, $createWorkshopAction, $createWasfahLinkAction);
+            $slides = $this->defaultHeroSlides($heroMedia, $createWorkshopAction, $createWasfahLinkAction, $showTools);
+        } else {
+            $fallbackDesktop = data_get($heroMedia, 'workshop.desktop', asset('image/wterm.webp'));
+            $fallbackMobile = data_get($heroMedia, 'workshop.mobile', $fallbackDesktop);
+
+            $slides = $managedSlides
+                ->map(function (HeroSlide $slide) use ($fallbackDesktop, $fallbackMobile, $createWorkshopAction, $createWasfahLinkAction) {
+                    $desktop = $slide->desktop_image_url ?? $fallbackDesktop;
+                    $mobile = $slide->mobile_image_url ?? $slide->desktop_image_url ?? $fallbackMobile;
+
+                    $features = collect($slide->features ?? [])->filter()->values()->all();
+
+                    $actions = collect($slide->actions ?? [])
+                        ->map(fn ($action) => $this->resolveHeroSlideAction($action, $createWorkshopAction, $createWasfahLinkAction))
+                        ->filter()
+                        ->values()
+                        ->all();
+
+                    return [
+                        'badge' => $slide->badge,
+                        'title' => $slide->title,
+                        'description' => $slide->description,
+                        'features' => $features,
+                        'image' => $desktop,
+                        'mobile_image' => $mobile,
+                        'image_alt' => $slide->image_alt ?: $slide->title,
+                        'actions' => $actions,
+                    ];
+                })
+                ->map(fn (array $slide) => $this->localizeHeroSlide($slide))
+                ->all();
         }
 
-        $fallbackDesktop = data_get($heroMedia, 'workshop.desktop', asset('image/wterm.webp'));
-        $fallbackMobile = data_get($heroMedia, 'workshop.mobile', $fallbackDesktop);
+        if (! $showTools) {
+            $slides = array_values(array_filter($slides, fn (array $slide) => ! $this->isToolsSlide($slide)));
+        }
 
-        return $managedSlides
-            ->map(function (HeroSlide $slide) use ($fallbackDesktop, $fallbackMobile, $createWorkshopAction, $createWasfahLinkAction) {
-                $desktop = $slide->desktop_image_url ?? $fallbackDesktop;
-                $mobile = $slide->mobile_image_url ?? $slide->desktop_image_url ?? $fallbackMobile;
+        if (empty($slides)) {
+            $slides = $this->defaultHeroSlides($heroMedia, $createWorkshopAction, $createWasfahLinkAction, $showTools);
+        }
 
-                $features = collect($slide->features ?? [])->filter()->values()->all();
-
-                $actions = collect($slide->actions ?? [])
-                    ->map(fn ($action) => $this->resolveHeroSlideAction($action, $createWorkshopAction, $createWasfahLinkAction))
-                    ->filter()
-                    ->values()
-                    ->all();
-
-                return [
-                    'badge' => $slide->badge,
-                    'title' => $slide->title,
-                    'description' => $slide->description,
-                    'features' => $features,
-                    'image' => $desktop,
-                    'mobile_image' => $mobile,
-                    'image_alt' => $slide->image_alt ?: $slide->title,
-                    'actions' => $actions,
-                ];
-            })
-            ->map(fn (array $slide) => $this->localizeHeroSlide($slide))
-            ->all();
+        return $slides;
     }
 
-    protected function defaultHeroSlides(array $heroMedia, array $createWorkshopAction, array $createWasfahLinkAction): array
+    protected function defaultHeroSlides(array $heroMedia, array $createWorkshopAction, array $createWasfahLinkAction, bool $showTools): array
     {
         $defaults = trans('home.hero.defaults');
 
@@ -461,7 +477,10 @@ class HomeController extends Controller
                     ],
                 ],
             ],
-            [
+        ];
+
+        if ($showTools) {
+            $slides[] = [
                 'badge' => data_get($tools, 'badge', 'أدوات الشيف'),
                 'title' => data_get($tools, 'title', 'دليل أدوات الشيف'),
                 'description' => data_get($tools, 'description', 'اختيارات دقيقة لأدوات تساعدك على الإتقان.'),
@@ -485,38 +504,68 @@ class HomeController extends Controller
                         'open_in_new_tab' => false,
                     ],
                 ],
-            ],
+            ];
+        }
+
+        $recipeActionButtons = [
             [
-                'badge' => data_get($recipes, 'badge', 'الوصفات'),
-                'title' => data_get($recipes, 'title', 'مكتبة وصفات عالمية'),
-                'description' => data_get($recipes, 'description', 'وصفات فاخرة مجرَّبة مع شرح مصوَّر ونصائح مختصرة.'),
-                'features' => $recipeFeatures,
-                'image' => data_get($heroMedia, 'recipe.desktop', asset('image/brownies.webp')),
-                'mobile_image' => data_get($heroMedia, 'recipe.mobile', data_get($heroMedia, 'recipe.desktop', asset('image/brownies.webp'))),
-                'image_alt' => data_get($recipes, 'image_alt', 'حلى براونيز فاخرة'),
-                'actions' => [
-                    [
-                        'label' => data_get($recipeActions, 'primary', 'ابدأ اكتشاف الوصفات'),
-                        'url' => route('recipes'),
-                        'icon' => 'fas fa-utensils',
-                        'type' => 'primary',
-                        'open_in_new_tab' => false,
-                    ],
-                    [
-                        'label' => data_get($recipeActions, 'secondary', 'الوصفات المحفوظة'),
-                        'url' => route('saved.index'),
-                        'icon' => 'fas fa-bookmark',
-                        'type' => 'secondary',
-                        'open_in_new_tab' => false,
-                    ],
-                ],
+                'label' => data_get($recipeActions, 'primary', 'ابدأ اكتشاف الوصفات'),
+                'url' => route('recipes'),
+                'icon' => 'fas fa-utensils',
+                'type' => 'primary',
+                'open_in_new_tab' => false,
             ],
+        ];
+
+        if ($showTools) {
+            $recipeActionButtons[] = [
+                'label' => data_get($recipeActions, 'secondary', 'الوصفات المحفوظة'),
+                'url' => route('saved.index'),
+                'icon' => 'fas fa-bookmark',
+                'type' => 'secondary',
+                'open_in_new_tab' => false,
+            ];
+        }
+
+        $slides[] = [
+            'badge' => data_get($recipes, 'badge', 'الوصفات'),
+            'title' => data_get($recipes, 'title', 'مكتبة وصفات عالمية'),
+            'description' => data_get($recipes, 'description', 'وصفات فاخرة مجرَّبة مع شرح مصوَّر ونصائح مختصرة.'),
+            'features' => $recipeFeatures,
+            'image' => data_get($heroMedia, 'recipe.desktop', asset('image/brownies.webp')),
+            'mobile_image' => data_get($heroMedia, 'recipe.mobile', data_get($heroMedia, 'recipe.desktop', asset('image/brownies.webp'))),
+            'image_alt' => data_get($recipes, 'image_alt', 'حلى براونيز فاخرة'),
+            'actions' => $recipeActionButtons,
         ];
 
         return array_map(
             fn (array $slide) => $this->localizeHeroSlide($slide),
             $slides
         );
+    }
+
+    protected function isToolsSlide(array $slide): bool
+    {
+        $text = Str::lower(trim(
+            implode(' ', array_filter([
+                $slide['badge'] ?? null,
+                $slide['title'] ?? null,
+                $slide['description'] ?? null,
+            ]))
+        ));
+
+        if (Str::contains($text, ['tool', 'tools', 'أدوات', 'ادوات'])) {
+            return true;
+        }
+
+        foreach ($slide['actions'] ?? [] as $action) {
+            $url = Str::lower((string) ($action['url'] ?? ''));
+            if ($url && Str::contains($url, '/tools')) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     protected function resolveHeroSlideAction(array $action, array $createWorkshopAction, array $createWasfahLinkAction): ?array

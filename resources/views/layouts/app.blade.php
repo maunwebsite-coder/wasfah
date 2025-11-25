@@ -3,6 +3,7 @@
     $isRtl = $isRtl ?? ($currentLocale === 'ar');
     $brandLogoBase = \App\Support\BrandAssets::logoBase($currentLocale);
     $brandLogoUrl = \App\Support\BrandAssets::logoAsset('webp', $currentLocale);
+    $showAdminTools = auth()->user()?->isAdmin() ?? false;
 @endphp
 <!DOCTYPE html>
 <html lang="{{ $currentLocale }}" dir="{{ $isRtl ? 'rtl' : 'ltr' }}" style="margin:0;padding:0;">
@@ -141,56 +142,58 @@
 
     @include('partials.mobile-tab-bar', ['lockVisibility' => $lockMobileTabBar])
 
-    <!-- Load Cart Count Script -->
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Load cart count on page load
-        loadCartCount();
-    });
-    
-    function loadCartCount() {
-        fetch('/cart/count')
-            .then(response => response.json())
-            .then(data => {
-                const cartCountEl = document.getElementById('cart-count');
-                if (cartCountEl) {
-                    const oldCount = parseInt(cartCountEl.textContent) || 0;
-                    const newCount = data.count;
-                    
-                    cartCountEl.textContent = newCount;
-                    
-                    if (newCount > 0) {
-                        cartCountEl.classList.remove('hidden');
+    @if($showAdminTools)
+        <!-- Load Cart Count Script -->
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load cart count on page load
+            loadCartCount();
+        });
+        
+        function loadCartCount() {
+            fetch('/cart/count')
+                .then(response => response.json())
+                .then(data => {
+                    const cartCountEl = document.getElementById('cart-count');
+                    if (cartCountEl) {
+                        const oldCount = parseInt(cartCountEl.textContent) || 0;
+                        const newCount = data.count;
                         
-                        // Adjust width based on number of digits
-                        if (newCount > 9) {
-                            cartCountEl.classList.remove('h-5', 'w-5');
-                            cartCountEl.classList.add('h-6', 'w-6', 'px-1');
+                        cartCountEl.textContent = newCount;
+                        
+                        if (newCount > 0) {
+                            cartCountEl.classList.remove('hidden');
+                            
+                            // Adjust width based on number of digits
+                            if (newCount > 9) {
+                                cartCountEl.classList.remove('h-5', 'w-5');
+                                cartCountEl.classList.add('h-6', 'w-6', 'px-1');
+                            } else {
+                                cartCountEl.classList.remove('h-6', 'w-6', 'px-1');
+                                cartCountEl.classList.add('h-5', 'w-5');
+                            }
+                            
+                            // Add animation if count increased
+                            if (newCount > oldCount) {
+                                cartCountEl.classList.add('animate-pulse');
+                                setTimeout(() => {
+                                    cartCountEl.classList.remove('animate-pulse');
+                                }, 1000);
+                            }
                         } else {
-                            cartCountEl.classList.remove('h-6', 'w-6', 'px-1');
-                            cartCountEl.classList.add('h-5', 'w-5');
+                            cartCountEl.classList.add('hidden');
                         }
-                        
-                        // Add animation if count increased
-                        if (newCount > oldCount) {
-                            cartCountEl.classList.add('animate-pulse');
-                            setTimeout(() => {
-                                cartCountEl.classList.remove('animate-pulse');
-                            }, 1000);
-                        }
-                    } else {
-                        cartCountEl.classList.add('hidden');
                     }
-                }
-            })
-            .catch(error => {
-                console.error('Error loading cart count:', error);
-            });
-    }
-    
-    // Make function globally available
-    window.loadCartCount = loadCartCount;
-    </script>
+                })
+                .catch(error => {
+                    console.error('Error loading cart count:', error);
+                });
+        }
+        
+        // Make function globally available
+        window.loadCartCount = loadCartCount;
+        </script>
+    @endif
 
     <!-- Footer -->
     @unless(isset($hideFooter) && $hideFooter)

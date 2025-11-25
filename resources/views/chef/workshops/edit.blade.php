@@ -8,7 +8,7 @@
         <div class="mb-8 flex flex-wrap items-center justify-between gap-4">
             <div>
                 <p class="text-sm font-semibold uppercase tracking-wider text-orange-500">منطقة الشيف</p>
-                <h1 class="mt-1 text-3xl font-bold text-slate-900">تعديل الورشة: {{ $workshop->title }}</h1>
+                <h1 class="mt-3 text-3xl font-bold text-slate-900">تعديل الورشة: {{ $workshop->title }}</h1>
                 <p class="mt-2 text-sm text-slate-600">يمكنك تحديث المحتوى أو توليد رابط Google Meet جديد في أي وقت.</p>
             </div>
             <a href="{{ route('chef.workshops.index') }}"

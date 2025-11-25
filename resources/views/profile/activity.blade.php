@@ -96,12 +96,14 @@
 
             <section class="mt-8 grid gap-6 lg:grid-cols-2">
                 <article class="rounded-3xl border border-gray-100 bg-white p-6 shadow-sm">
-                    <div class="flex items-center justify-between">
-                        <h2 class="text-xl font-bold text-gray-800">الوصفات المحفوظة</h2>
+                <div class="flex items-center justify-between">
+                    <h2 class="text-xl font-bold text-gray-800">الوصفات المحفوظة</h2>
+                    @if(auth()->user()?->isAdmin())
                         <a href="{{ route('saved.index') }}" class="text-sm font-medium text-orange-600 hover:text-orange-700">
                             إدارة المكتبة
                         </a>
-                    </div>
+                    @endif
+                </div>
                     <div class="mt-4 space-y-4">
                         @forelse ($savedRecipes->take(5) as $recipe)
                             <div class="flex gap-3 rounded-2xl border border-gray-100 bg-gray-50 p-3 shadow-sm">

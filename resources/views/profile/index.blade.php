@@ -180,9 +180,11 @@
                         {{ $stats['saved_recipes_count'] > 0 ? 'Your personal recipe library grows every day.' : 'Start saving favorite recipes for quick access.' }}
                     </p>
                     <div class="mt-4">
-                        <a href="{{ route('saved.index') }}" class="text-sm font-medium text-orange-600 hover:text-orange-700">
-                            View saved recipes
-                        </a>
+                        @if(auth()->user()?->isAdmin())
+                            <a href="{{ route('saved.index') }}" class="text-sm font-medium text-orange-600 hover:text-orange-700">
+                                View saved recipes
+                            </a>
+                        @endif
                     </div>
                 </article>
 
@@ -198,9 +200,11 @@
                         {{ $stats['made_recipes_count'] > 0 ? 'Your feedback helps the rest of the community.' : 'Share the first Wasfah recipe you make.' }}
                     </p>
                     <div class="mt-4">
-                        <a href="{{ route('saved.index') }}#made" class="text-sm font-medium text-orange-600 hover:text-orange-700">
-                            Tasting archive
-                        </a>
+                        @if(auth()->user()?->isAdmin())
+                            <a href="{{ route('saved.index') }}#made" class="text-sm font-medium text-orange-600 hover:text-orange-700">
+                                Tasting archive
+                            </a>
+                        @endif
                     </div>
                 </article>
 
@@ -344,9 +348,11 @@
             <section class="mt-8">
                 <div class="flex items-center justify-between">
                     <h2 class="text-xl font-bold text-gray-800">Recently saved recipes</h2>
-                    <a href="{{ route('saved.index') }}" class="text-sm font-medium text-orange-600 hover:text-orange-700">
-                        Manage all saved recipes
-                    </a>
+                    @if(auth()->user()?->isAdmin())
+                        <a href="{{ route('saved.index') }}" class="text-sm font-medium text-orange-600 hover:text-orange-700">
+                            Manage all saved recipes
+                        </a>
+                    @endif
                 </div>
                 <div class="mt-4 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
                     @php

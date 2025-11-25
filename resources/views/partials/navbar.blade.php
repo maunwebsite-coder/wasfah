@@ -8,17 +8,21 @@
     $mobileSections = $navCopy['mobile_sections'] ?? [];
     $mobileDescriptionsFallback = $navCopy['mobile_descriptions_default'] ?? 'وصول فوري لأبرز أقسام وصفة';
     $chefLinkLabels = $navCopy['chef_links'] ?? [];
+    $authUser = Auth::user();
+    $showAdminTools = $authUser?->isAdmin() ?? false;
     $primaryLinks = [
         ['route' => 'home', 'icon' => 'fas fa-house', 'label' => $navCopy['links']['home']],
         ['route' => 'recipes', 'icon' => 'fas fa-play', 'label' => $navCopy['links']['recipes']],
         ['route' => 'workshops', 'icon' => 'fas fa-graduation-cap', 'label' => $navCopy['links']['workshops']],
         ['route' => 'tools', 'icon' => 'fas fa-kitchen-set', 'label' => $navCopy['links']['tools']],
     ];
+    if (! $showAdminTools) {
+        $primaryLinks = array_values(array_filter($primaryLinks, fn ($link) => $link['route'] !== 'tools'));
+    }
     $mobileLinkDescriptions = $navCopy['mobile_descriptions'];
     $guestActions = $navCopy['guest_actions'] ?? [];
     $accountMenuCopy = $navCopy['account_menu'] ?? [];
     $accountMenuLinks = $accountMenuCopy['links'] ?? [];
-    $authUser = Auth::user();
     $desktopSearchHasQuery = trim(old('q', request('q'))) !== '';
     $guestPlaceholder = $mobileBannerCopy['guest'] ?? 'ضيفنا العزيز';
     $mobileGreeting = __('navbar.mobile_banner.greeting', ['name' => $authUser?->name ?? $guestPlaceholder]);
@@ -86,15 +90,17 @@
                     </button>
                 @endif
 
-                <a href="{{ route('saved.index') }}" class="relative flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition-all duration-200 hover:border-orange-300 hover:text-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-200">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <circle cx="9" cy="21" r="1" fill="none" stroke="currentColor" />
-                        <circle cx="20" cy="21" r="1" fill="none" stroke="currentColor" />
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M1 1h4l2.68 13.39A2 2 0 009.64 16h9.72a2 2 0 001.96-1.61L23 6H6" />
-                    </svg>
-                    <span id="mobile-cart-count" class="absolute -top-1 -right-1 bg-orange-500 text-white text-[10px] font-bold rounded-full h-5 w-5 flex items-center justify-center hidden min-w-[20px]">0</span>
-                    <span class="sr-only">{{ $navCopy['saved']['sr'] }}</span>
-                </a>
+                @if($showAdminTools)
+                    <a href="{{ route('saved.index') }}" class="relative flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition-all duration-200 hover:border-orange-300 hover:text-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-200">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <circle cx="9" cy="21" r="1" fill="none" stroke="currentColor" />
+                            <circle cx="20" cy="21" r="1" fill="none" stroke="currentColor" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M1 1h4l2.68 13.39A2 2 0 009.64 16h9.72a2 2 0 001.96-1.61L23 6H6" />
+                        </svg>
+                        <span id="mobile-cart-count" class="absolute -top-1 -right-1 bg-orange-500 text-white text-[10px] font-bold rounded-full h-5 w-5 flex items-center justify-center hidden min-w-[20px]">0</span>
+                        <span class="sr-only">{{ $navCopy['saved']['sr'] }}</span>
+                    </a>
+                @endif
 
                 @auth
                     <a href="{{ route('notifications.index') }}" class="relative flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition-all duration-200 hover:border-orange-300 hover:text-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-200">
@@ -131,11 +137,13 @@
                 @endif
 
                 <nav class="flex items-center gap-2 text-sm font-medium text-slate-600" aria-label="{{ $navCopy['account_nav_label'] }}">
-                    <a href="{{ route('saved.index') }}" class="relative flex items-center gap-2 rounded-full border border-transparent bg-white px-3 py-2 text-[13px] text-slate-500 shadow-sm transition-all duration-200 hover:border-orange-200 hover:bg-orange-50 hover:text-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-200">
-                        <i class="fas fa-bookmark text-base"></i>
-                        <span class="hidden text-[13px] xl:inline">{{ $navCopy['saved']['label'] }}</span>
-                        <span id="saved-count" class="absolute -top-1 -right-1 bg-orange-500 text-white text-[10px] font-bold rounded-full h-5 w-5 flex items-center justify-center hidden min-w-[20px]">0</span>
-                    </a>
+                    @if($showAdminTools)
+                        <a href="{{ route('saved.index') }}" class="relative flex items-center gap-2 rounded-full border border-transparent bg-white px-3 py-2 text-[13px] text-slate-500 shadow-sm transition-all duration-200 hover:border-orange-200 hover:bg-orange-50 hover:text-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-200">
+                            <i class="fas fa-bookmark text-base"></i>
+                            <span class="hidden text-[13px] xl:inline">{{ $navCopy['saved']['label'] }}</span>
+                            <span id="saved-count" class="absolute -top-1 -right-1 bg-orange-500 text-white text-[10px] font-bold rounded-full h-5 w-5 flex items-center justify-center hidden min-w-[20px]">0</span>
+                        </a>
+                    @endif
 
                     <a href="{{ route('partnership') }}" class="hidden lg:inline-flex items-center gap-2 rounded-full border border-orange-200 bg-orange-50 px-4 py-2 text-sm font-semibold text-orange-600 transition-all duration-200 hover:border-orange-300 hover:bg-orange-100 focus:outline-none focus:ring-2 focus:ring-orange-200">
                         <i class="fas fa-handshake-angle text-base"></i>
@@ -359,6 +367,7 @@
                 </a>
             </section>
 
+            @if($showAdminTools)
             <section class="rounded-2xl border border-slate-100 bg-white/90 p-4 shadow-sm">
                 <div class="mb-4 flex items-center justify-between">
                     <p class="text-base font-semibold text-slate-900">{{ data_get($mobileSections, 'tool_hub.title', 'مركز أدواتك') }}</p>
@@ -393,6 +402,7 @@
                     </a>
                 </div>
             </section>
+            @endif
 
             @auth
                 <section class="space-y-3">

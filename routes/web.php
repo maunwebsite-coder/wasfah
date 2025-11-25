@@ -74,6 +74,7 @@ Route::permanentRedirect('/wasfah-links', '/peahskill-links');
 
 Route::get('/peahskill-links', function () {
     $locale = app()->getLocale();
+    $showAdminTools = auth()->user()?->isAdmin() ?? false;
 
     $fallbackSelections = collect([
         [
@@ -88,13 +89,13 @@ Route::get('/peahskill-links', function () {
             'alt' => __('links.fallback.workshops.alt'),
             'url' => url('/workshops'),
         ],
-        [
+        $showAdminTools ? [
             'title' => __('links.fallback.tools.title'),
             'image' => asset('image/term.webp'),
             'alt' => __('links.fallback.tools.alt'),
             'url' => url('/tools'),
-        ],
-    ]);
+        ] : null,
+    ])->filter()->values();
 
     $monthlySelections = Recipe::approved()
         ->public()
@@ -213,7 +214,7 @@ Route::post('/login', [LoginController::class, 'store'])
 
 // مسارات المحفوظات
 Route::prefix('saved')->middleware(['web'])->group(function () {
-    Route::middleware('auth')->group(function () {
+    Route::middleware(['auth', 'admin'])->group(function () {
         Route::get('/', [App\Http\Controllers\SavedController::class, 'index'])->name('saved.index');
         Route::post('/add', [App\Http\Controllers\SavedController::class, 'add'])->name('saved.add');
         Route::post('/remove', [App\Http\Controllers\SavedController::class, 'remove'])->name('saved.remove');
@@ -320,20 +321,21 @@ Route::post('/feed/quick-post', [App\Http\Controllers\RecipeController::class, '
     ->name('feed.quick-post')
     ->middleware(['auth', 'admin']);
 
-// مسار الأدوات
-Route::get('/tools', [App\Http\Controllers\ToolsController::class, 'index'])->name('tools');
-Route::get('/tools/{tool}', [App\Http\Controllers\ToolsController::class, 'show'])->name('tools.show');
+// مسارات الأدوات والسلة (لأدمن فقط)
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/tools', [App\Http\Controllers\ToolsController::class, 'index'])->name('tools');
+    Route::get('/tools/{tool}', [App\Http\Controllers\ToolsController::class, 'show'])->name('tools.show');
 
-// مسارات السلة
-Route::prefix('cart')->name('cart.')->group(function () {
-    Route::get('/', [CartController::class, 'index'])->name('index');
-    Route::post('/', [CartController::class, 'add'])->name('add');
-    Route::delete('/clear', [CartController::class, 'clear'])->name('clear');
-    Route::get('/count', [CartController::class, 'count'])->name('count');
-    Route::get('/quantities', [CartController::class, 'quantities'])->name('quantities');
-    Route::delete('/remove-by-tool', [CartController::class, 'removeByToolId'])->name('remove-by-tool');
-    Route::patch('/{cart}', [CartController::class, 'update'])->name('update');
-    Route::delete('/{cart}', [CartController::class, 'remove'])->name('remove');
+    Route::prefix('cart')->name('cart.')->group(function () {
+        Route::get('/', [CartController::class, 'index'])->name('index');
+        Route::post('/', [CartController::class, 'add'])->name('add');
+        Route::delete('/clear', [CartController::class, 'clear'])->name('clear');
+        Route::get('/count', [CartController::class, 'count'])->name('count');
+        Route::get('/quantities', [CartController::class, 'quantities'])->name('quantities');
+        Route::delete('/remove-by-tool', [CartController::class, 'removeByToolId'])->name('remove-by-tool');
+        Route::patch('/{cart}', [CartController::class, 'update'])->name('update');
+        Route::delete('/{cart}', [CartController::class, 'remove'])->name('remove');
+    });
 });
 
 // مسارات الحجوزات - محمية بـ middleware المصادقة (باستثناء الانضمام الذي يسمح للضيوف)
@@ -497,13 +499,17 @@ Route::get('/test-recipe-debug', [App\Http\Controllers\DebugController::class, '
 Route::get('/test-recipe-page', [App\Http\Controllers\DebugController::class, 'testRecipePage'])->name('test.recipe.page');
 Route::get('/check-script-loading', [App\Http\Controllers\DebugController::class, 'checkScriptLoading'])->name('check.script.loading');
 Route::get('/check-dom-elements', [App\Http\Controllers\DebugController::class, 'checkDomElements'])->name('check.dom.elements');
-Route::get('/check-tools', [App\Http\Controllers\DebugController::class, 'checkTools'])->name('check.tools');
+Route::get('/check-tools', [App\Http\Controllers\DebugController::class, 'checkTools'])
+    ->middleware(['auth', 'admin'])
+    ->name('check.tools');
 Route::get('/test-save', function() { return view('test-save'); })->name('test.save');
 Route::get('/test-flip-cards', function() { return view('test-flip-cards'); })->name('test.flip.cards');
 Route::get('/test-workshop-simple', [App\Http\Controllers\WorkshopController::class, 'testSimple'])->name('test.workshop.simple');
 
 // Test Amazon extraction without CSRF
-Route::post('/test-amazon-extraction', [App\Http\Controllers\Admin\AdminToolsController::class, 'extractAmazonData'])->name('test.amazon.extraction');
+Route::post('/test-amazon-extraction', [App\Http\Controllers\Admin\AdminToolsController::class, 'extractAmazonData'])
+    ->middleware(['auth', 'admin'])
+    ->name('test.amazon.extraction');
 
 // مسارات الاتصال
 Route::get('/contact', [App\Http\Controllers\ContactController::class, 'index'])->name('contact');

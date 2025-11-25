@@ -3,6 +3,7 @@
     $currentLocale = app()->getLocale();
     $alternateLocale = $currentLocale === 'ar' ? 'en' : 'ar';
     $languageCopy = \Illuminate\Support\Facades\Lang::get('navbar.language');
+    $showAdminTools = auth()->user()?->isAdmin() ?? false;
     $footerLinks = [
         ['route' => 'recipes', 'label' => __('footer.bottom.links.recipes')],
         ['route' => 'workshops', 'label' => __('footer.bottom.links.workshops')],
@@ -11,6 +12,9 @@
         ['route' => 'contact', 'label' => __('footer.bottom.links.contact')],
         ['route' => 'legal.terms', 'label' => __('footer.bottom.links.legal')],
     ];
+    if (! $showAdminTools) {
+        $footerLinks = array_values(array_filter($footerLinks, fn ($link) => $link['route'] !== 'tools'));
+    }
 @endphp
 <footer class="border-t border-gray-200 bg-white py-8">
     <div class="container mx-auto px-4 space-y-6">

@@ -136,13 +136,8 @@ return [
         'channels' => [
             [
                 'title' => 'Instagram',
-                'handle' => '@wasfah.jo',
-                'url' => 'https://www.instagram.com/wasfah.jo/',
-            ],
-            [
-                'title' => 'YouTube',
-                'handle' => '@wasfah.jordan',
-                'url' => 'https://www.youtube.com/@wasfah.jordan',
+                'handle' => '@peahskill',
+                'url' => 'https://www.instagram.com/peahskill/',
             ],
         ],
     ],

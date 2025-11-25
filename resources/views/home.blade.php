@@ -48,6 +48,7 @@
 @section('content')
     @php
         $showAdminMetrics = auth()->check() && auth()->user()->isAdmin();
+        $showToolsForAdmin = $showToolsForAdmin ?? false;
     @endphp
     <!-- قسم المحتوى الرئيسي -->
     <main class="container mx-auto px-4 py-6 lg:py-8">
@@ -346,6 +347,7 @@
     </section>
     @endif
 
+    @if($showToolsForAdmin)
     <!-- قسم أدوات الشيف -->
     <section class="container mx-auto px-4 py-10 lg:py-14">
         <div class="home-tools-section p-6 lg:p-10">
@@ -434,6 +436,7 @@
             @endif
         </div>
     </section>
+    @endif
 
     <!-- قسم فيديوهات الخلاصة -->
     <section class="container mx-auto px-4 py-12">
