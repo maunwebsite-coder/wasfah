@@ -58,7 +58,7 @@
     }
 @endphp
 
-<header class="sticky top-0 bg-white/95 backdrop-blur border-b border-orange-100 shadow-sm" data-navbar-layer>
+<header class="sticky top-0 bg-white/95 backdrop-blur border-b border-orange-100 shadow-sm" data-navbar-layer data-header>
     <div class="h-1 w-full bg-gradient-to-l from-orange-500 via-rose-500 to-amber-400 hidden md:block"></div>
     <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between gap-4 py-3 md:py-4 header-container">
@@ -68,11 +68,12 @@
                     <span class="hidden md:inline text-xl font-bold tracking-tight"></span>
                 </a>
 
-                <nav class="hidden lg:flex items-center gap-1 text-sm font-medium text-slate-600" aria-label="{{ $navCopy['primary_nav_label'] }}">
+                <nav class="hidden md:flex flex-wrap items-center gap-2 lg:gap-1 text-sm font-medium text-slate-600" aria-label="{{ $navCopy['primary_nav_label'] }}">
                     @foreach ($primaryLinks as $link)
                         @php $active = request()->routeIs($link['route'] . '*'); @endphp
                         <a href="{{ route($link['route']) }}"
-                           class="flex items-center gap-2 px-4 py-2 rounded-full transition-all duration-200 {{ $active ? 'bg-orange-500/10 text-orange-600 shadow-sm border border-orange-200' : 'hover:text-orange-600 hover:bg-orange-50 border border-transparent' }}">
+                           aria-label="{{ $link['label'] }}"
+                           class="flex items-center gap-2 px-3 py-2 lg:px-4 rounded-full transition-all duration-200 {{ $active ? 'bg-orange-500/10 text-orange-600 shadow-sm border border-orange-200' : 'hover:text-orange-600 hover:bg-orange-50 border border-transparent' }}">
                             <i class="{{ $link['icon'] }} text-base"></i>
                             <span>{{ $link['label'] }}</span>
                         </a>

@@ -544,6 +544,7 @@ return [
             'pricing_notice_title' => 'هام:',
             'pricing_notice_body' => 'يتم اقتطاع نسبة تتراوح بين :fee_range لصالح منصة Peahskill لتغطية بوابات الدفع، الدعم التقني والتسويق.',
             'pricing_notice_followup' => 'بعد خصم هذه النسبة يتم تحويل الصافي إليك خلال 7 أيام عمل من انتهاء الورشة.',
+            'registration_deadline_notice' => 'سيتم إغلاق التسجيل تلقائياً قبل بداية الورشة بدقيقتين وفقاً لتوقيت المضيف.',
             'meeting_hint_auto' => 'نوفر لك روابط Google Meet تلقائياً من حسابك، فقط أضف حساب الـ Gmail الخاص بالمضيف وسنربطه.',
             'meeting_hint_manual' => 'يمكنك لصق رابط اجتماع جاهز إن رغبت.',
             'google_ready' => 'تم تهيئة رابط Google Meet:',
@@ -552,6 +553,9 @@ return [
             'calendar_connect_required_title' => 'يرجى ربط Google Calendar أولاً',
             'calendar_connect_required_body' => 'يرجى ربط حساب Google Calendar الخاص بك لإنشاء رابط الاجتماع من حسابك.',
             'calendar_connect_button' => 'ربط تقويم Google',
+            'calendar_connected_title' => 'تم ربط Google Calendar',
+            'calendar_connected_body' => 'سنقوم بتوليد رابط Google Meet من تقويمك وإضافته تلقائياً.',
+            'calendar_connected_body_with_email' => 'سنقوم بتوليد رابط Google Meet من تقويمك (:email) وإضافته تلقائياً.',
             'image_max_size' => 'لا يمكن رفع صورة أكبر من 5 ميجابايت.',
         ],
         'js' => [

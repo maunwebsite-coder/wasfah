@@ -2,39 +2,39 @@
 
 return [
     'meta' => [
-        'title' => 'About Peahskill – Multi-industry platform',
+        'title' => 'About Peahskill – Skills platform for operators',
     ],
 
     'hero' => [
         'title' => 'About Peahskill',
-        'subtitle' => 'A platform connecting experts and teams across industries to publish guides, host live sessions, and share the tools they trust.',
+        'subtitle' => 'Peahskill is a skills platform for teams to publish practical guides, run live labs, and share the workflows they trust.',
     ],
 
     'mission' => [
-        'title' => 'Our vision',
-        'description' => 'We aim to be the region’s go-to hub for skills and applied learning—helping anyone learn, launch, and grow in any industry.',
+        'title' => 'Our mission',
+        'description' => 'We give operators, creators, and teams one place to learn, document, and launch without jumping between tools.',
         'highlight' => [
-            'title' => 'Cross-industry learning',
-            'description' => 'We believe knowledge travels better when it is practical, shareable, and open to every craft.',
+            'title' => 'Built for doers',
+            'description' => 'Practical, repeatable, and bias-free content you can apply to any function.',
         ],
         'stats_card' => [
-            'title' => '150+ guides',
-            'description' => 'Playbooks, SOPs, and templates you can apply immediately.',
+            'title' => '200+ workflows',
+            'description' => 'Guides, SOPs, and templates ready to plug into your day.',
         ],
     ],
 
     'features' => [
         [
-            'title' => 'Guides & templates',
-            'description' => 'From recipes and briefs to product playbooks and SOPs across industries.',
+            'title' => 'Guides & playbooks',
+            'description' => 'Documented workflows, templates, and SOPs for marketing, product, operations, and more.',
         ],
         [
-            'title' => 'Interactive experiences',
-            'description' => 'Live and recorded sessions led by vetted experts with immediate application.',
+            'title' => 'Live & on-demand sessions',
+            'description' => 'Labs and office hours led by vetted experts with real examples and follow-up resources.',
         ],
         [
-            'title' => 'Engaged community',
-            'description' => 'Join learners, operators, and creators to swap experiments and get feedback fast.',
+            'title' => 'Community & support',
+            'description' => 'A responsive space to ask, test, and get help implementing what you learn.',
         ],
     ],
 
@@ -42,12 +42,12 @@ return [
         'title' => 'Our story',
         'sections' => [
             [
-                'title' => 'The beginning',
-                'description' => 'Peahskill began as a culinary community and expanded to serve any craft, maker, or industry.',
+                'title' => 'Why we built Peahskill',
+                'description' => 'We started Peahskill to remove guesswork for growing teams by capturing proven processes in one library.',
             ],
             [
-                'title' => 'The evolution',
-                'description' => 'We grew into an all-in-one platform for guides, live experiences, tools, and partner workflows—and we keep shipping features that help you move faster.',
+                'title' => 'Where we are going',
+                'description' => 'We are expanding with partner tools, data-backed recommendations, and collaboration features so teams ship faster together.',
             ],
         ],
     ],
@@ -55,10 +55,10 @@ return [
     'stats' => [
         'title' => 'Our numbers',
         'items' => [
-            ['value' => '150+', 'label' => 'Guides & templates'],
-            ['value' => '30+', 'label' => 'Live sessions'],
+            ['value' => '200+', 'label' => 'Guides & workflows'],
+            ['value' => '50+', 'label' => 'Live labs & sessions'],
             ['value' => '12K+', 'label' => 'Members'],
-            ['value' => '80+', 'label' => 'Experts & creators'],
+            ['value' => '120+', 'label' => 'Experts & mentors'],
         ],
     ],
 
@@ -67,15 +67,15 @@ return [
         'members' => [
             [
                 'title' => 'Product & engineering',
-                'description' => 'Product thinkers and developers building the rails that power creators and teams.',
+                'description' => 'Product thinkers and developers building the platform that keeps knowledge organized and actionable.',
             ],
             [
-                'title' => 'Experts & creators',
-                'description' => 'Certified trainers, consultants, chefs, and makers sharing their craft.',
+                'title' => 'Experts & mentors',
+                'description' => 'Operators, trainers, consultants, and creators sharing repeatable playbooks.',
             ],
             [
-                'title' => 'Success & support',
-                'description' => 'A bilingual team ready to help with bookings, tools, and setup.',
+                'title' => 'Customer success',
+                'description' => 'A bilingual team ready to help you publish, book sessions, and integrate tools.',
             ],
         ],
     ],

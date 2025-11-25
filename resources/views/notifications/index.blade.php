@@ -74,31 +74,31 @@
         ],
     ];
 @endphp
-<div class="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100">
+<div class="notifications-page min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100">
     <section class="border-b border-slate-100 bg-white/95">
         <div class="container mx-auto px-4">
             <div class="max-w-5xl mx-auto py-10 space-y-6">
                 <div class="grid gap-6 lg:grid-cols-3">
-                    <div class="notifications-hero relative overflow-hidden rounded-[32px] border border-slate-100 bg-white p-8 shadow-xl shadow-slate-100 lg:col-span-2">
-                        <div class="flex flex-col gap-5">
-                            <div class="space-y-2">
+                    <div class="notifications-hero relative overflow-hidden rounded-[32px] border border-slate-100 bg-white p-5 shadow-xl shadow-slate-100 sm:p-8 lg:col-span-2">
+                        <div class="flex flex-col gap-4 sm:gap-5">
+                            <div class="space-y-2 sm:space-y-3">
                                 <p class="text-xs font-semibold uppercase tracking-[0.45em] text-slate-400">{{ __('notifications.page.title') }}</p>
-                                <h1 class="text-3xl font-black leading-tight text-slate-900">{{ __('notifications.page.description') }}</h1>
-                                <p class="text-sm text-slate-500">{{ $heroTagline }}</p>
-                                <p class="text-sm text-slate-400">{{ $heroSubline }}</p>
+                                <h1 class="text-xl font-black leading-tight text-slate-900 sm:text-3xl lg:text-4xl">{{ __('notifications.page.description') }}</h1>
+                                <p class="text-xs text-slate-500 sm:text-sm">{{ $heroTagline }}</p>
+                                <p class="text-xs text-slate-400 sm:text-sm">{{ $heroSubline }}</p>
                             </div>
-                            <div class="flex flex-wrap items-center gap-4 text-slate-900">
+                            <div class="flex flex-wrap items-center gap-3 text-slate-900 sm:gap-4">
                                 <div>
                                     <p class="text-xs font-semibold uppercase tracking-[0.3em] text-slate-400">{{ $isArabic ? 'غير المقروء' : 'Unread' }}</p>
-                                    <p class="text-4xl font-black">{{ $unreadCount }}</p>
+                                    <p class="text-2xl font-black sm:text-4xl unread-count">{{ $unreadCount }}</p>
                                 </div>
                                 <span class="h-10 w-px bg-slate-200"></span>
                                 <div class="flex flex-wrap gap-2">
-                                    <button id="mark-all-read" class="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-5 py-2 text-sm font-semibold text-slate-700 shadow-sm transition hover:border-orange-200 hover:text-orange-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-100 {{ $hasNotifications ? '' : 'opacity-40 cursor-not-allowed' }}" {{ $hasNotifications ? '' : 'disabled' }}>
+                                    <button id="mark-all-read" class="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-xs font-semibold text-slate-700 shadow-sm transition hover:border-orange-200 hover:text-orange-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-100 sm:px-5 sm:text-sm {{ $hasNotifications ? '' : 'opacity-40 cursor-not-allowed' }}" {{ $hasNotifications ? '' : 'disabled' }}>
                                         <i class="fas fa-check-double text-orange-500"></i>
                                         {{ __('notifications.buttons.mark_all_read') }}
                                     </button>
-                                    <button id="clear-read" class="inline-flex items-center gap-2 rounded-full border border-rose-200 bg-white px-5 py-2 text-sm font-semibold text-rose-500 shadow-sm transition hover:border-rose-300 hover:text-rose-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-100 {{ $hasNotifications ? '' : 'opacity-40 cursor-not-allowed' }}" {{ $hasNotifications ? '' : 'disabled' }}>
+                                    <button id="clear-read" class="inline-flex items-center gap-2 rounded-full border border-rose-200 bg-white px-4 py-2 text-xs font-semibold text-rose-500 shadow-sm transition hover:border-rose-300 hover:text-rose-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-100 sm:px-5 sm:text-sm {{ $hasNotifications ? '' : 'opacity-40 cursor-not-allowed' }}" {{ $hasNotifications ? '' : 'disabled' }}>
                                         <i class="fas fa-trash"></i>
                                         {{ __('notifications.buttons.clear_read') }}
                                     </button>
@@ -127,7 +127,7 @@
                                         <div class="stats-slide" data-stat-slide>
                                             <div class="rounded-3xl border border-slate-100 bg-white px-5 py-4 text-slate-700 shadow-sm">
                                                 <p class="text-xs font-semibold uppercase tracking-widest text-slate-400">{{ $stat['label'] }}</p>
-                                                <p class="mt-1 text-3xl font-black text-slate-900">{{ $stat['value'] }}</p>
+                                                <p class="mt-1 text-3xl font-black text-slate-900 stat-value">{{ $stat['value'] }}</p>
                                                 <p class="text-xs text-slate-400">{{ $stat['description'] }}</p>
                                             </div>
                                         </div>
@@ -141,7 +141,7 @@
                             @foreach($statsCopy as $stat)
                                 <div class="rounded-3xl border border-slate-100 bg-white px-5 py-4 text-slate-700 shadow-sm">
                                     <p class="text-xs font-semibold uppercase tracking-widest text-slate-400">{{ $stat['label'] }}</p>
-                                    <p class="mt-1 text-3xl font-black text-slate-900">{{ $stat['value'] }}</p>
+                                    <p class="mt-1 text-3xl font-black text-slate-900 stat-value">{{ $stat['value'] }}</p>
                                     <p class="text-xs text-slate-400">{{ $stat['description'] }}</p>
                                 </div>
                             @endforeach
@@ -429,6 +429,90 @@
             inset-inline-end: -60%;
             top: -10%;
             width: 120%;
+        }
+
+        .notifications-page .notifications-hero {
+            padding: 1.25rem;
+            border-radius: 24px;
+        }
+
+        .notifications-page .notifications-hero h1 {
+            font-size: 1.15rem;
+            line-height: 1.35;
+        }
+
+        .notifications-page .notifications-hero p {
+            font-size: 0.85rem;
+        }
+
+        .notifications-page .unread-count {
+            font-size: 1.65rem;
+        }
+
+        .notifications-page #mark-all-read,
+        .notifications-page #clear-read {
+            padding: 0.6rem 0.9rem;
+            font-size: 0.82rem;
+        }
+
+        .notifications-page .stat-value {
+            font-size: 1.7rem;
+        }
+
+        .notifications-page .filter-pill {
+            font-size: 0.9rem;
+            padding: 0.5rem 0.9rem;
+        }
+
+        .notifications-page #notification-search {
+            font-size: 0.9rem;
+            padding-inline-start: 2.7rem;
+            padding-inline-end: 1rem;
+        }
+
+        .notifications-page .notification-item {
+            padding: 1rem;
+            border-radius: 22px;
+        }
+
+        .notifications-page .notification-icon {
+            width: 2.75rem;
+            height: 2.75rem;
+            font-size: 0.9rem;
+        }
+
+        .notifications-page .notification-item h3 {
+            font-size: 0.95rem;
+        }
+
+        .notifications-page .notification-message {
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .notifications-page .notification-status {
+            font-size: 0.72rem;
+            padding: 0.25rem 0.55rem;
+        }
+
+        .notifications-page .notification-actions {
+            gap: 0.4rem;
+        }
+
+        .notifications-page .notification-actions button {
+            padding: 0.4rem 0.65rem;
+            font-size: 0.78rem;
+        }
+
+        .notifications-page .notification-timeline-line {
+            top: 1.15rem;
+            bottom: 1.15rem;
+        }
+
+        .notifications-page .notification-timeline-dot {
+            top: 1.05rem;
+            width: 10px;
+            height: 10px;
         }
     }
 </style>

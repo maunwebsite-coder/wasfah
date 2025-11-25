@@ -5,8 +5,8 @@
 @section('content')
 @php
     $copy = \Illuminate\Support\Facades\Lang::get('about');
-    $featureIcons = ['fas fa-book', 'fas fa-graduation-cap', 'fas fa-users'];
-    $teamIcons = ['fas fa-user', 'fas fa-chef-hat', 'fas fa-headset'];
+    $featureIcons = ['fas fa-book', 'fas fa-bolt', 'fas fa-users'];
+    $teamIcons = ['fas fa-user-astronaut', 'fas fa-lightbulb', 'fas fa-headset'];
 @endphp
 <div class="min-h-screen bg-gray-50 py-8">
     <div class="container mx-auto px-4 space-y-12">
@@ -33,7 +33,7 @@
                     </div>
                 </div>
                 <div class="bg-gradient-to-br from-orange-100 to-orange-200 rounded-xl p-8 text-center">
-                    <i class="fas fa-utensils text-6xl text-orange-600 mb-4"></i>
+                    <i class="fas fa-rocket text-6xl text-orange-600 mb-4"></i>
                     <h3 class="text-2xl font-bold text-gray-800 mb-4">{{ $copy['mission']['stats_card']['title'] }}</h3>
                     <p class="text-gray-600">{{ $copy['mission']['stats_card']['description'] }}</p>
                 </div>

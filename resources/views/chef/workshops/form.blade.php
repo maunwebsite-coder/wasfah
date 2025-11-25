@@ -254,7 +254,7 @@
             <div class="space-y-3">
                 <p class="text-sm font-semibold text-slate-700">{{ __('chef.workshop_form.fields.registration_deadline.label') }}</p>
                 <div class="rounded-2xl border border-emerald-100 bg-emerald-50/70 px-4 py-3 text-sm text-emerald-800 shadow-inner">
-                    سيتم إغلاق التسجيل تلقائياً قبل بداية الورشة بدقيقتين وفقاً لتوقيت المضيف.
+                    {{ __('chef.workshop_form.messages.registration_deadline_notice') }}
                 </div>
             </div>
         </div>
@@ -300,9 +300,12 @@
                                 <i class="fas fa-check"></i>
                             </span>
                             <div class="space-y-1 text-sm text-slate-700">
-                                <p class="font-semibold">تم ربط Google Calendar</p>
+                                <p class="font-semibold">{{ __('chef.workshop_form.messages.calendar_connected_title') }}</p>
                                 <p class="text-xs text-slate-500">
-                                    سيتم إنشاء رابط Google Meet من حسابك {{ $hostCalendarEmail ? '('.$hostCalendarEmail.')' : '' }} وإضافته لتقويمك تلقائياً.
+                                    {{ $hostCalendarEmail
+                                        ? __('chef.workshop_form.messages.calendar_connected_body_with_email', ['email' => $hostCalendarEmail])
+                                        : __('chef.workshop_form.messages.calendar_connected_body')
+                                    }}
                                 </p>
                             </div>
                         </div>
@@ -507,6 +510,74 @@
             googleReady: @json(__('chef.workshop_form.messages.google_ready')),
         };
 
+        const draftForm = document.querySelector('form[data-preserve-key]');
+        const draftStorageKey = draftForm?.dataset?.preserveKey;
+        const persistableFields = draftForm
+            ? Array.from(draftForm.elements).filter((field) => {
+                if (!field.name || field.name === '_token') {
+                    return false;
+                }
+                if (['file', 'submit', 'button'].includes(field.type)) {
+                    return false;
+                }
+                if (field.type === 'hidden') {
+                    return false;
+                }
+                return true;
+            })
+            : [];
+
+        const canUseLocalStorage = (() => {
+            try {
+                const testKey = '__workshop_draft__';
+                localStorage.setItem(testKey, '1');
+                localStorage.removeItem(testKey);
+                return true;
+            } catch (error) {
+                return false;
+            }
+        })();
+
+        function persistDraft() {
+            if (!canUseLocalStorage || !draftStorageKey || !persistableFields.length) {
+                return;
+            }
+            const payload = {};
+            persistableFields.forEach((field) => {
+                if (field.type === 'checkbox') {
+                    payload[field.name] = field.checked;
+                    return;
+                }
+                payload[field.name] = field.value;
+            });
+            localStorage.setItem(draftStorageKey, JSON.stringify(payload));
+        }
+
+        function restoreDraft() {
+            if (!canUseLocalStorage || !draftStorageKey || !persistableFields.length) {
+                return;
+            }
+            const rawDraft = localStorage.getItem(draftStorageKey);
+            if (!rawDraft) {
+                return;
+            }
+            try {
+                const stored = JSON.parse(rawDraft);
+                persistableFields.forEach((field) => {
+                    if (!(field.name in stored)) {
+                        return;
+                    }
+                    if (field.type === 'checkbox') {
+                        field.checked = !!stored[field.name];
+                        return;
+                    }
+                    field.value = stored[field.name];
+                });
+            } catch (error) {
+                localStorage.removeItem(draftStorageKey);
+            }
+        }
+
         function toggleModeFields() {
             const isOnline = !!isOnlineInput?.checked;
             if (onlineFields) {
@@ -532,6 +603,16 @@
 
         isOnlineInput?.addEventListener('change', toggleModeFields);
         autoGenerateInput?.addEventListener('change', toggleMeetingInputState);
+        if (canUseLocalStorage && draftStorageKey && persistableFields.length) {
+            restoreDraft();
+            persistableFields.forEach((field) => {
+                const eventName = field.type === 'checkbox' || field.tagName === 'SELECT' ? 'change' : 'input';
+                field.addEventListener(eventName, persistDraft);
+            });
+            draftForm?.addEventListener('submit', () => {
+                localStorage.removeItem(draftStorageKey);
+            });
+        }
         toggleModeFields();
         toggleMeetingInputState();
 

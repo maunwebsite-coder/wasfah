@@ -1362,11 +1362,73 @@
             });
             
             // مراقبة التغييرات في DOM
-            observer.observe(document.body, {
-                childList: true,
-                subtree: true
-            });
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true
         });
+    });
+    </script>
+    <script>
+        // Fallback: shrink/expand navbar on mobile without relying on lazy modules
+        (function () {
+            if (typeof window === 'undefined' || typeof document === 'undefined' || window.__navbarCompactionInit) {
+                return;
+            }
+
+            const navbar = document.querySelector('[data-navbar-layer]');
+            if (!navbar) {
+                return;
+            }
+
+            const mobileQuery = window.matchMedia('(max-width: 768px)');
+            const THRESHOLD = 48;
+            const DELTA = 6;
+            let lastY = window.scrollY || window.pageYOffset || 0;
+            let ticking = false;
+
+            const applyState = () => {
+                ticking = false;
+                const isMobile = mobileQuery ? mobileQuery.matches : true;
+                const y = window.scrollY || window.pageYOffset || 0;
+
+                if (!isMobile) {
+                    navbar.classList.remove('navbar-compact');
+                    lastY = y;
+                    return;
+                }
+
+                const diff = y - lastY;
+
+                if (y <= THRESHOLD || diff < -DELTA) {
+                    navbar.classList.remove('navbar-compact');
+                } else if (diff > DELTA && y > THRESHOLD) {
+                    navbar.classList.add('navbar-compact');
+                }
+
+                lastY = y;
+            };
+
+            const onScroll = () => {
+                if (ticking) {
+                    return;
+                }
+                ticking = true;
+                (window.requestAnimationFrame || window.setTimeout)(() => {
+                    ticking = false;
+                    applyState();
+                });
+            };
+
+            window.addEventListener('scroll', onScroll, { passive: true });
+            window.addEventListener('resize', applyState);
+            if (mobileQuery && typeof mobileQuery.addEventListener === 'function') {
+                mobileQuery.addEventListener('change', applyState);
+            }
+            navbar.addEventListener('click', () => navbar.classList.remove('navbar-compact'));
+
+            window.__navbarCompactionInit = true;
+            applyState();
+        })();
     </script>
 </body>
 </html>

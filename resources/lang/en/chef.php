@@ -478,6 +478,7 @@ return [
             'pricing_notice_title' => 'Important:',
             'pricing_notice_body' => 'Peahskill retains a :fee_range service fee to cover payment gateways, technical support, and marketing.',
             'pricing_notice_followup' => 'After this fee is deducted, the net payout is transferred to you within 7 business days of the workshop.',
+            'registration_deadline_notice' => 'Registration closes automatically 2 minutes before the workshop starts, based on the host timezone.',
             'meeting_hint_auto' => 'We provide automatic Google Meet links for you from your account—add the host Gmail and we will attach it.',
             'meeting_hint_manual' => 'You can paste an existing meeting link if you prefer.',
             'google_ready' => 'A Google Meet link is ready:',
@@ -486,6 +487,9 @@ return [
             'calendar_connect_required_title' => 'Please connect Google Calendar first',
             'calendar_connect_required_body' => 'Please link your Google Calendar account so we can create the meeting link from your own calendar.',
             'calendar_connect_button' => 'Connect Google Calendar',
+            'calendar_connected_title' => 'Google Calendar connected',
+            'calendar_connected_body' => 'We will generate the Google Meet link from your calendar and add it automatically.',
+            'calendar_connected_body_with_email' => 'We will generate the Google Meet link from your calendar (:email) and add it automatically.',
             'image_max_size' => 'You cannot upload an image larger than 5 MB.',
         ],
         'js' => [

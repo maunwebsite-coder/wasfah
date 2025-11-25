@@ -5,6 +5,7 @@
 
 const USER_MENU_HANDLER_KEY = '__userMenuDropdownHandlers';
 let headerModuleInitialized = false;
+let mobileNavbarCompactionInitialized = false;
 
 async function initHeaderModule() {
 	if (headerModuleInitialized) {
@@ -16,6 +17,7 @@ async function initHeaderModule() {
 	
 	// Mobile Search Modal functionality
 	setupMobileSearch();
+	setupMobileNavbarCompaction();
 	
 	// التحقق من وجود مستخدم مسجل في الصفحة
 	const userMenuContainer = document.getElementById('user-menu-container');
@@ -152,6 +154,79 @@ function handleLogout() {
 	// إضافة form إلى الصفحة وتنفيذه
 	document.body.appendChild(form);
 	form.submit();
+}
+
+function setupMobileNavbarCompaction() {
+	if (
+		mobileNavbarCompactionInitialized ||
+		typeof window === 'undefined' ||
+		typeof document === 'undefined' ||
+		window.__navbarCompactionInit
+	) {
+		return;
+	}
+
+	const navbar = document.querySelector('[data-navbar-layer]');
+	if (!navbar) {
+		return;
+	}
+
+	const mobileQuery = window.matchMedia('(max-width: 768px)');
+	const COMPACT_OFFSET = 48;
+	const MIN_DELTA = 6;
+	let ticking = false;
+	let lastScrollY = window.scrollY || window.pageYOffset || 0;
+
+	const applyState = () => {
+		ticking = false;
+		const isMobile = mobileQuery ? mobileQuery.matches : true;
+		const scrollY = window.scrollY || window.pageYOffset || 0;
+
+		if (!isMobile) {
+			navbar.classList.remove('navbar-compact');
+			lastScrollY = scrollY;
+			return;
+		}
+
+		const delta = scrollY - lastScrollY;
+
+		if (scrollY <= COMPACT_OFFSET || delta < -MIN_DELTA) {
+			navbar.classList.remove('navbar-compact');
+		} else if (delta > MIN_DELTA && scrollY > COMPACT_OFFSET) {
+			navbar.classList.add('navbar-compact');
+		}
+
+		lastScrollY = scrollY;
+	};
+
+	const handleScroll = () => {
+		if (ticking) {
+			return;
+		}
+		ticking = true;
+		const scheduler = window.requestAnimationFrame || window.setTimeout;
+		scheduler(applyState);
+	};
+
+	const handleResize = () => applyState();
+
+	window.addEventListener('scroll', handleScroll, { passive: true });
+	window.addEventListener('resize', handleResize);
+	navbar.addEventListener('click', () => {
+		if (navbar.classList.contains('navbar-compact')) {
+			navbar.classList.remove('navbar-compact');
+		}
+	});
+
+	if (mobileQuery && typeof mobileQuery.addEventListener === 'function') {
+		mobileQuery.addEventListener('change', applyState);
+	} else if (mobileQuery && typeof mobileQuery.addListener === 'function') {
+		mobileQuery.addListener(applyState);
+	}
+
+	applyState();
+	window.__navbarCompactionInit = true;
+	mobileNavbarCompactionInitialized = true;
 }
 
 /**

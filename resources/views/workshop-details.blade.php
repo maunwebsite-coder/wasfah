@@ -54,10 +54,17 @@
         border-radius: var(--radius-lg);
         overflow: hidden;
         background: var(--primary-dark);
+        background-size: cover !important;
+        background-repeat: no-repeat !important;
+        background-position: center !important;
         color: white;
         box-shadow: var(--shadow-soft);
         min-height: 500px;
         display: flex;
+        flex-wrap: wrap;
+        gap: 1.75rem;
+        align-items: stretch;
+        padding: 0 !important;
     }
 
     .workshop-hero-bg {
@@ -88,6 +95,7 @@
         padding: 4rem;
         width: 100%;
         max-width: 800px;
+        flex: 1 1 520px;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -168,6 +176,103 @@
         font-weight: 700;
         font-size: 1rem;
         color: white;
+    }
+
+    .workshop-hero-visual {
+        position: relative;
+        z-index: 10;
+        flex: 1 1 380px;
+        min-width: 320px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2.5rem 3rem;
+    }
+
+    .hero-image-glow {
+        position: absolute;
+        inset: 18%;
+        background: radial-gradient(circle at 20% 20%, rgba(245, 158, 11, 0.45), transparent 45%),
+                    radial-gradient(circle at 85% 30%, rgba(56, 189, 248, 0.4), transparent 45%),
+                    radial-gradient(circle at 40% 80%, rgba(16, 185, 129, 0.35), transparent 50%);
+        filter: blur(40px);
+        opacity: 0.85;
+        z-index: 0;
+    }
+
+    .hero-image-card {
+        position: relative;
+        width: 100%;
+        max-width: 460px;
+        aspect-ratio: 4 / 5;
+        border-radius: 1.5rem;
+        overflow: hidden;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.04));
+        border: 1px solid rgba(255, 255, 255, 0.24);
+        box-shadow: 0 32px 70px -32px rgba(0, 0, 0, 0.55);
+        backdrop-filter: blur(10px);
+        isolation: isolate;
+    }
+
+    .hero-image-card img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transform: scale(1.02);
+        transition: transform 0.5s ease;
+    }
+
+    .hero-image-card:hover img {
+        transform: scale(1.06);
+    }
+
+    .hero-image-chip {
+        position: absolute;
+        top: 1.25rem;
+        left: 1.25rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        padding: 0.6rem 0.9rem;
+        background: rgba(11, 52, 79, 0.75);
+        border-radius: 10px;
+        font-weight: 700;
+        color: #e2e8f0;
+        font-size: 0.85rem;
+        box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        z-index: 2;
+    }
+
+    .hero-image-footer {
+        position: absolute;
+        inset: auto 0 0 0;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1rem;
+        padding: 1.1rem 1.35rem;
+        background: linear-gradient(180deg, transparent 0%, rgba(11, 52, 79, 0.9) 65%);
+        color: #e2e8f0;
+        z-index: 1;
+    }
+
+    .hero-image-meta {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+
+    .hero-meta-label {
+        font-size: 0.75rem;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: rgba(226, 232, 240, 0.78);
+    }
+
+    .hero-meta-value {
+        font-weight: 800;
+        font-size: 1rem;
+        color: #fff;
     }
 
     /* Main Content Layout */
@@ -331,6 +436,15 @@
         .content-wrapper {
             grid-template-columns: 1fr;
         }
+
+        .workshop-hero {
+            flex-direction: column;
+        }
+
+        .workshop-hero-visual {
+            padding: 2rem 2.5rem;
+            width: 100%;
+        }
         
         .booking-sidebar {
             position: static;
@@ -338,16 +452,63 @@
     }
 
     @media (max-width: 768px) {
+        .workshop-hero {
+            min-height: 320px;
+            gap: 0;
+        }
+
         .workshop-hero-content {
-            padding: 2rem;
+            padding: 0.75rem 0.65rem 0.05rem;
+        }
+
+        .workshop-hero-visual {
+            padding: 0 0.6rem 0.6rem;
+            margin-top: -0.8rem;
+        }
+
+        .hero-image-card {
+            max-width: 320px;
+            max-height: 320px;
         }
         
         .workshop-title {
             font-size: 2rem;
+            margin-bottom: 0.45rem;
+        }
+
+        .workshop-excerpt {
+            margin-bottom: 0.75rem;
+            font-size: 1rem;
+            line-height: 1.5;
         }
         
         .hero-stats {
-            gap: 1rem;
+            gap: 0.35rem;
+            margin-bottom: -0.35rem;
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .hero-stat-icon {
+            width: 1.9rem;
+            height: 1.9rem;
+            font-size: 0.82rem;
+        }
+
+        .hero-stat-item {
+            gap: 0.35rem;
+        }
+
+        .hero-stat-label {
+            font-size: 0.65rem;
+        }
+
+        .hero-stat-value {
+            font-size: 0.85rem;
+        }
+
+        .hero-image-footer {
+            grid-template-columns: 1fr;
         }
     }
     
@@ -408,19 +569,19 @@
     .floating-booking-bar {
         position: fixed;
         inset-inline-start: 50%;
-        bottom: calc(1.1rem + var(--floating-booking-mobile-offset, 0px));
+        bottom: var(--floating-booking-mobile-offset, 1.1rem);
         transform: translate3d(-50%, 0, 0);
         background: rgba(255, 255, 255, 0.96);
-        padding: 0.9rem 1.5rem;
-        border-radius: 999px;
+        padding: 0.5rem 0.85rem;
+        border-radius: 8px;
         box-shadow: 0 20px 50px rgba(0,0,0,0.2);
         display: flex;
         align-items: center;
-        gap: 1.5rem;
+        gap: 0.75rem;
         z-index: 50;
         border: 1px solid rgba(0,0,0,0.05);
-        width: 90%;
-        max-width: 520px;
+        width: 82%;
+        max-width: 440px;
         transition:
             transform 0.45s cubic-bezier(0.4, 0, 0.2, 1),
             opacity 0.3s ease,
@@ -440,35 +601,35 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        gap: 1rem;
+        gap: 0.65rem;
         animation: floating-bar-fade-up 0.45s cubic-bezier(0.4, 0, 0.2, 1) both;
     }
 
     .floating-booking-bar .floating-info {
         display: flex;
         flex-direction: column;
-        gap: 0.3rem;
+        gap: 0.15rem;
         color: #0f172a;
     }
 
     .floating-booking-bar .floating-price {
         font-weight: 800;
-        font-size: 1.15rem;
+        font-size: 0.96rem;
     }
 
     .floating-booking-bar .floating-meta {
-        font-size: 0.9rem;
+        font-size: 0.8rem;
         color: #475569;
     }
 
     .floating-booking-bar .floating-btn {
-        min-width: 140px;
-        padding: 0.75rem 1.3rem;
+        min-width: 108px;
+        padding: 0.5rem 0.9rem;
         border-radius: 999px;
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        gap: 0.5rem;
+        gap: 0.35rem;
         background: linear-gradient(135deg, #0f4c73, #0d8b76);
         color: #fff;
         box-shadow: 0 14px 32px rgba(15, 76, 115, 0.28);
@@ -481,7 +642,7 @@
     }
 
     .floating-booking-bar .floating-btn i {
-        font-size: 0.95rem;
+        font-size: 0.85rem;
     }
 
     @keyframes floating-bar-fade-up {
@@ -501,8 +662,8 @@
 
     @media (max-width: 768px) {
         .floating-booking-bar {
-            width: calc(100% - 2rem);
-            padding: 0.9rem 1.25rem;
+            width: calc(100% - 2.5rem);
+            padding: 0.6rem 1rem;
         }
     }
     
@@ -708,10 +869,13 @@
     $workshopDateLabel = $workshop->start_date ? $workshop->start_date->format('d/m/Y') : $notSpecifiedLabel;
     $workshopStartTimeLabel = $workshop->start_date ? $workshop->start_date->format('g:i A') : $notSpecifiedLabel;
     $workshopEndTimeLabel = $workshop->end_date ? $workshop->end_date->format('g:i A') : $notSpecifiedLabel;
-    $workshopStartDateTimeLabel = $workshop->start_date ? $workshop->start_date->format('m/d/Y g:i A') : $notSpecifiedLabel;
-    $workshopEndDateTimeLabel = $workshop->end_date ? $workshop->end_date->format('m/d/Y g:i A') : $notSpecifiedLabel;
+    $workshopStartDateTimeLabel = $workshop->start_date ? $workshop->start_date->format('d/m/Y g:i A') : $notSpecifiedLabel;
+    $workshopEndDateTimeLabel = $workshop->end_date ? $workshop->end_date->format('d/m/Y g:i A') : $notSpecifiedLabel;
     $workshopStartIso = optional($workshop->start_date)->toIso8601String();
     $workshopEndIso = optional($workshop->end_date)->toIso8601String();
+    $workshopDurationLabel = $workshop->duration
+        ? __('workshops.details.recipes.minutes', ['count' => $workshop->duration])
+        : $notSpecifiedLabel;
     $hostTimezoneName = $workshop->host_timezone
         ?? optional($workshop->start_date)?->getTimezone()?->getName()
         ?? config('app.timezone', 'UTC');
@@ -754,13 +918,16 @@
             'classes' => 'bg-emerald-100 text-emerald-700 border-emerald-200',
         ];
     }
+    $heroImageUrl = $workshop->image
+        ? asset('storage/' . $workshop->image)
+        : 'https://placehold.co/800x600/f87171/FFFFFF?text=' . urlencode(__('workshops.labels.featured_placeholder_text'));
 @endphp
 <div class="workshop-details-wrapper min-h-screen" style="background-color: #f3f4f6;">
     <!-- Workshop Hero Section -->
     <section class="workshop-hero-container">
         <div class="workshop-hero">
             <div class="workshop-hero-bg">
-                <img src="{{ $workshop->image ? asset('storage/' . $workshop->image) : 'https://placehold.co/800x600/f87171/FFFFFF?text=' . urlencode(__('workshops.labels.featured_placeholder_text')) }}" 
+                <img src="{{ $heroImageUrl }}" 
                      alt="{{ $workshop->title }}"
                      onerror="this.src='{{ \App\Support\BrandAssets::logoAsset('webp') }}';">
             </div>
@@ -779,30 +946,41 @@
 
                 @if(! empty($workshop->description))
                     <p class="workshop-excerpt">
-                        {{ $workshop->description }}
+                        {{ \Illuminate\Support\Str::words($workshop->description ?? '', 10, '...') }}
                     </p>
                 @endif
 
                 <div class="hero-stats">
-                    <!-- Date -->
+                    <!-- Start -->
                     <div class="hero-stat-item">
                         <div class="hero-stat-icon">
-                            <i class="fas fa-calendar-day"></i>
+                            <i class="fas fa-play"></i>
                         </div>
                         <div class="hero-stat-text">
-                            <span class="hero-stat-label">{{ __('workshops.details.hero.date_label') }}</span>
-                            <span class="hero-stat-value">{{ $workshopDateLabel }}</span>
+                            <span class="hero-stat-label">{{ __('workshops.details.hero.start_label') }}</span>
+                            <span class="hero-stat-value">{{ $workshopStartDateTimeLabel }}</span>
                         </div>
                     </div>
 
-                    <!-- Time -->
+                    <!-- End -->
                     <div class="hero-stat-item">
                         <div class="hero-stat-icon">
-                            <i class="fas fa-clock"></i>
+                            <i class="fas fa-flag-checkered"></i>
                         </div>
                         <div class="hero-stat-text">
-                            <span class="hero-stat-label">{{ __('workshops.details.booking_card.hours_label') }}</span>
-                            <span class="hero-stat-value">{{ $workshopStartTimeLabel }} - {{ $workshopEndTimeLabel }}</span>
+                            <span class="hero-stat-label">{{ __('workshops.details.hero.end_label') }}</span>
+                            <span class="hero-stat-value">{{ $workshopEndDateTimeLabel }}</span>
+                        </div>
+                    </div>
+
+                    <!-- Duration -->
+                    <div class="hero-stat-item">
+                        <div class="hero-stat-icon">
+                            <i class="fas fa-hourglass-half"></i>
+                        </div>
+                        <div class="hero-stat-text">
+                            <span class="hero-stat-label">{{ __('workshops.details.hero.duration_label') }}</span>
+                            <span class="hero-stat-value">{{ $workshopDurationLabel }}</span>
                         </div>
                     </div>
 
@@ -816,6 +994,15 @@
                             <span class="hero-stat-value">{{ $workshop->instructor ?? $notSpecifiedLabel }}</span>
                         </div>
                     </div>
+                </div>
+            </div>
+
+            <div class="workshop-hero-visual">
+                <div class="hero-image-glow" aria-hidden="true"></div>
+                <div class="hero-image-card">
+                    <img src="{{ $heroImageUrl }}"
+                         alt="{{ $workshop->title }}"
+                         onerror="this.src='{{ \App\Support\BrandAssets::logoAsset('webp') }}';">
                 </div>
             </div>
         </div>
@@ -963,6 +1150,16 @@
                             <div>
                                 <p class="text-xs text-gray-500 uppercase tracking-wider font-semibold">{{ __('workshops.details.booking_card.summary.start_time') }}</p>
                                 <p class="font-bold text-gray-900">{{ $workshopStartTimeLabel }}</p>
+                            </div>
+                        </div>
+
+                        <div class="booking-feature">
+                            <div class="feature-icon">
+                                <i class="fas fa-flag-checkered"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs text-gray-500 uppercase tracking-wider font-semibold">{{ __('workshops.details.booking_card.summary.end_time') }}</p>
+                                <p class="font-bold text-gray-900">{{ $workshopEndDateTimeLabel }}</p>
                             </div>
                         </div>
 
@@ -1140,6 +1337,24 @@
                     </div>
                 </div>
                 <div class="additional-details-grid">
+                    <div class="additional-detail">
+                        <div class="additional-detail-icon">
+                            <i class="fas fa-play"></i>
+                        </div>
+                        <div>
+                            <p class="additional-detail-label">{{ __('workshops.details.sidebar.start') }}</p>
+                            <p class="additional-detail-value">{{ $workshopStartDateTimeLabel }}</p>
+                        </div>
+                    </div>
+                    <div class="additional-detail">
+                        <div class="additional-detail-icon">
+                            <i class="fas fa-flag-checkered"></i>
+                        </div>
+                        <div>
+                            <p class="additional-detail-label">{{ __('workshops.details.sidebar.end') }}</p>
+                            <p class="additional-detail-value">{{ $workshopEndDateTimeLabel }}</p>
+                        </div>
+                    </div>
                     <div class="additional-detail">
                         <div class="additional-detail-icon">
                             <i class="fas fa-tag"></i>
@@ -2208,8 +2423,11 @@ function initFloatingBookingBarFooterObserver() {
 
     const floatingBar = document.querySelector('.floating-booking-bar');
     const footer = document.querySelector('footer');
+    const bookingSection = document.getElementById('workshop-booking');
+    const stripeSection = document.getElementById('stripe-checkout-card');
+    const observerTargets = [footer, bookingSection, stripeSection].filter(Boolean);
 
-    if (!floatingBar || !footer) {
+    if (!floatingBar || !observerTargets.length) {
         return;
     }
 
@@ -2218,17 +2436,30 @@ function initFloatingBookingBarFooterObserver() {
     };
 
     if ('IntersectionObserver' in window) {
+        const intersectingTargets = new Set();
         const observer = new IntersectionObserver(entries => {
             entries.forEach(entry => {
-                toggleBar(entry.isIntersecting);
+                if (entry.isIntersecting) {
+                    intersectingTargets.add(entry.target);
+                } else {
+                    intersectingTargets.delete(entry.target);
+                }
             });
+
+            toggleBar(intersectingTargets.size > 0);
+        }, {
+            rootMargin: '0px 0px -10% 0px',
         });
 
-        observer.observe(footer);
+        observerTargets.forEach(target => observer.observe(target));
     } else {
         const handleScroll = () => {
-            const footerRect = footer.getBoundingClientRect();
-            toggleBar(footerRect.top < window.innerHeight);
+            const shouldHide = observerTargets.some(target => {
+                const rect = target.getBoundingClientRect();
+                return rect.top < window.innerHeight && rect.bottom > 0;
+            });
+
+            toggleBar(shouldHide);
         };
 
         window.addEventListener('scroll', handleScroll);
@@ -2253,7 +2484,7 @@ function initFloatingBookingBarTabBarSync() {
     const mediaQuery = typeof window.matchMedia === 'function'
         ? window.matchMedia('(max-width: 768px)')
         : null;
-    const BASE_SPACING = 16;
+    const BASE_SPACING = 12;
 
     const updateOffset = () => {
         if (!mediaQuery || !mediaQuery.matches) {
@@ -2264,7 +2495,7 @@ function initFloatingBookingBarTabBarSync() {
         const navRect = mobileTabBar.getBoundingClientRect();
         const navHeight = navRect && navRect.height ? navRect.height : 0;
         const isHidden = mobileTabBar.classList.contains('mobile-tab-bar--hidden');
-        const offset = isHidden ? BASE_SPACING : Math.round(navHeight + BASE_SPACING);
+        const offset = isHidden ? BASE_SPACING : Math.round(navHeight);
 
         floatingBar.style.setProperty('--floating-booking-mobile-offset', `${offset}px`);
     };

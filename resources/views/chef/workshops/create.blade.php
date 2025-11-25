@@ -34,9 +34,10 @@
             $formWorkshop->is_online = true;
             $formWorkshop->currency = 'USD';
             $formWorkshop->level = 'beginner';
+            $formDraftStorageKey = 'chef_workshop_create_' . (auth()->id() ?? 'guest');
         @endphp
 
-        <form method="POST" action="{{ route('chef.workshops.store') }}" enctype="multipart/form-data" class="space-y-10">
+        <form method="POST" action="{{ route('chef.workshops.store') }}" enctype="multipart/form-data" class="space-y-10" data-preserve-key="{{ $formDraftStorageKey }}">
             @csrf
 
             @include('chef.workshops.form', [
