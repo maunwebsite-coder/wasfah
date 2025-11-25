@@ -197,8 +197,8 @@ class AdminAreaController extends Controller
                         'route' => 'admin.visibility.index',
                     ],
                     [
-                        'label' => 'صفحة روابط Wasfah',
-                        'url' => 'https://peahskill.com/wasfah-links',
+                        'label' => 'صفحة روابط Peahskill',
+                        'url' => 'https://peahskill.com/peahskill-links',
                     ],
                     [
                         'label' => 'إدارة سلايدر الهيرو',

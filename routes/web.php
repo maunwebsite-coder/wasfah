@@ -69,8 +69,10 @@ Route::view('/privacy', 'pages.legal.privacy')->name('legal.privacy');
 // تبديل اللغة
 Route::post('/locale', [LanguageController::class, 'switch'])->name('locale.switch');
 
-// صفحة روابط Wasfah للمنصات الاجتماعية
-Route::get('/wasfah-links', function () {
+// صفحة روابط Peahskill للمنصات الاجتماعية
+Route::permanentRedirect('/wasfah-links', '/peahskill-links');
+
+Route::get('/peahskill-links', function () {
     $locale = app()->getLocale();
 
     $fallbackSelections = collect([
@@ -147,8 +149,11 @@ Route::get('/wasfah-links', function () {
     ]);
 })->name('links');
 
-Route::get('/wasfah-links/{chefLinkPage:slug}', [ChefLinkPublicController::class, 'show'])
+Route::get('/peahskill-links/{chefLinkPage:slug}', [ChefLinkPublicController::class, 'show'])
     ->name('links.chef');
+Route::get('/wasfah-links/{chefLinkPage:slug}', function ($chefLinkPage) {
+    return redirect()->route('links.chef', $chefLinkPage, 301);
+});
 
 // صفحة عامة لعرض بروفايلات الشيف مع وصفاتهم
 Route::get('/chefs/{chef}', [ChefPublicProfileController::class, 'show'])
