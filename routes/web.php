@@ -160,8 +160,12 @@ Route::get('/chefs/{chef}', [ChefPublicProfileController::class, 'show'])
     ->whereNumber('chef')
     ->name('chefs.show');
 
-Route::get('/chef/{username}/workshops', [ChefPublicWorkshopController::class, 'show'])
+Route::get('/expert/{username}/workshops', [ChefPublicWorkshopController::class, 'show'])
     ->name('chef.public.workshops');
+
+Route::get('/chef/{username}/workshops', function ($username) {
+    return redirect()->to("/expert/{$username}/workshops", 301);
+});
 
 Route::middleware('auth')->group(function () {
     Route::post('/chefs/{chef}/follow', [ChefFollowController::class, 'store'])
@@ -271,7 +275,7 @@ Route::middleware(['auth'])->group(function () {
 });
 
 // منطقة الشيف - إدارة الوصفات الخاصة
-Route::middleware(['auth', 'chef'])->prefix('chef')->name('chef.')->group(function () {
+Route::middleware(['auth', 'chef'])->prefix('expert')->name('chef.')->group(function () {
     Route::get('/', [ChefRecipeController::class, 'index'])->name('dashboard');
     Route::get('google/calendar/connect', [ChefGoogleCalendarController::class, 'redirect'])->name('google.calendar.connect');
     Route::get('google/calendar/callback', [ChefGoogleCalendarController::class, 'callback'])->name('google.calendar.callback');
@@ -291,6 +295,11 @@ Route::middleware(['auth', 'chef'])->prefix('chef')->name('chef.')->group(functi
     Route::get('workshops/earnings', [ChefWorkshopController::class, 'earnings'])->name('workshops.earnings');
     Route::resource('workshops', ChefWorkshopController::class)->except(['show']);
 });
+
+Route::get('/chef/{any?}', function ($any = null) {
+    $suffix = $any ? '/' . ltrim($any, '/') : '';
+    return redirect('/expert' . $suffix, 301);
+})->where('any', '.*');
 
 Route::get('/recipe/{recipe:slug}', [App\Http\Controllers\RecipeController::class, 'show'])->name('recipe.show');
 
