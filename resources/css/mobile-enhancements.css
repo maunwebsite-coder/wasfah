@@ -335,29 +335,39 @@
         [data-navbar-layer].navbar-compact {
             background: rgba(255, 255, 255, 0.92);
             box-shadow: 0 14px 34px rgba(15, 23, 42, 0.12);
-            transform: translateY(-6px) scale(0.97);
-            border-radius: 24px;
+            transform: translateY(-14px) scale(0.4);
+            border-radius: 999px;
             border: 1px solid rgb(var(--brand-navy-rgb, 15 76 115) / 0.08);
-            width: calc(100% - 1.2rem);
-            margin: 0.45rem auto 0.35rem;
+            width: calc(100% - 4rem);
+            margin: 0.7rem auto 0.6rem;
             backdrop-filter: blur(12px);
         }
 
+        /* Disable inner interactions while compact; click on the bar returns it to normal */
+        [data-navbar-layer].navbar-compact * {
+            pointer-events: none;
+        }
+
         [data-navbar-layer].navbar-compact .header-container {
-            padding: 0.3rem 0.75rem;
+            padding: 0.08rem 0.35rem;
         }
 
         [data-navbar-layer].navbar-compact .header-logo {
-            height: 1.75rem;
+            height: 0.65rem;
         }
 
         [data-navbar-layer].navbar-compact .mobile-menu-btn > * {
-            height: 2.15rem;
-            width: 2.15rem;
+            height: 0.95rem;
+            width: 0.95rem;
         }
 
         [data-navbar-layer].navbar-compact .mobile-menu-btn {
             gap: 0.25rem;
+        }
+
+        [data-navbar-layer].navbar-compact .mobile-menu-btn svg,
+        [data-navbar-layer].navbar-compact .mobile-menu-btn i {
+            font-size: 0.6rem;
         }
 
         .header-container {
