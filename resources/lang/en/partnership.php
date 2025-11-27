@@ -62,7 +62,7 @@ return [
             ],
         ],
         [
-            'icon' => 'fas fa-utensils',
+            'icon' => 'fas fa-chalkboard-teacher',
             'title' => '3. What experts do inside Peahskill',
             'description' => 'We offer experts a professional dashboard to manage everything about their content so Peahskill becomes their main platform to amplify presence and sales.',
             'tags' => ['Active community', 'Live experiences'],

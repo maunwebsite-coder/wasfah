@@ -448,7 +448,17 @@ class GoogleMeetService
 
     public function eventHasAttendee(string $eventId, string $email, ?string $calendarId = null, ?array $credentialsOverride = null): ?bool
     {
-        [$service, $credentials] = $this->resolveCalendarService($credentialsOverride);
+        try {
+            [$service, $credentials] = $this->resolveCalendarService($credentialsOverride);
+        } catch (\Throwable $exception) {
+            Log::warning('Failed to resolve Google Meet service while checking attendee.', [
+                'event_id' => $eventId,
+                'calendar_id' => $calendarId,
+                'error' => $exception->getMessage(),
+            ]);
+
+            return null;
+        }
 
         $targetCalendar = $calendarId ?: $credentials['calendar_id'];
 
@@ -491,7 +501,17 @@ class GoogleMeetService
         ?string $calendarId = null,
         ?array $credentialsOverride = null
     ): bool {
-        [$service, $credentials] = $this->resolveCalendarService($credentialsOverride);
+        try {
+            [$service, $credentials] = $this->resolveCalendarService($credentialsOverride);
+        } catch (\Throwable $exception) {
+            Log::warning('Failed to resolve Google Meet service while ensuring attendee.', [
+                'event_id' => $eventId,
+                'calendar_id' => $calendarId,
+                'error' => $exception->getMessage(),
+            ]);
+
+            return false;
+        }
 
         $targetCalendar = $calendarId ?: $credentials['calendar_id'];
 

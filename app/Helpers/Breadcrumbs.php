@@ -220,7 +220,9 @@ class Breadcrumbs
             'about' => self::singleCrumbTrail('عن وصفة'),
             'baking-tips' => self::singleCrumbTrail('نصائح الخَبز'),
             'advertising' => self::singleCrumbTrail('الإعلان مع وصفة'),
-            'partnership' => self::singleCrumbTrail('شركاء وصفة'),
+            'partnership' => self::singleCrumbTrail(
+                self::translateLabel('breadcrumbs.partnership', 'Peahskill Partner')
+            ),
             'contact' => self::singleCrumbTrail('اتصل بنا'),
             'login' => self::singleCrumbTrail('تسجيل الدخول'),
             'register' => self::singleCrumbTrail('إنشاء حساب'),

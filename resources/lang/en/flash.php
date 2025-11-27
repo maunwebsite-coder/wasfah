@@ -1,9 +1,11 @@
 <?php
 
+$brand = config('app.name', 'Peahskill');
+
 return [
     'success' => [
         'contact' => [
-            'message_submitted' => 'Thanks! Your message has been recorded and the Wasfah team will get back to you after reviewing it.',
+            'message_submitted' => "Thanks! Your message has been recorded and the {$brand} team will get back to you after reviewing it.",
         ],
         'workshop' => [
             'created_for_chef' => 'Workshop created successfully! You can track bookings from the dashboard.',
@@ -26,7 +28,7 @@ return [
             'updated' => 'Recipe updated successfully!',
         ],
         'links' => [
-            'page_updated' => 'Your Wasfah Links page was updated successfully.',
+            'page_updated' => "Your {$brand} Links page was updated successfully.",
             'added' => 'Link added successfully.',
             'updated' => 'Link updated successfully.',
             'deleted' => 'Link deleted.',
@@ -36,28 +38,28 @@ return [
         ],
         'auth' => [
             'social' => [
-                'onboarding_required' => 'Welcome! We need a few more details to verify you as a chef on Wasfah.',
+                'onboarding_required' => "Welcome! We need a few more details to verify you as a chef on {$brand}.",
                 'pending_workshop' => [
                     'new_chef' => 'New chef account created successfully! You can now follow up on the selected workshop.',
                     'new_customer' => 'New account created successfully! You can now book the workshop.',
                     'existing_chef' => 'Signed in successfully as a chef! You can now follow up on the selected workshop.',
                     'existing_customer' => 'Signed in successfully! You can now book the workshop.',
                 ],
-                'new_chef' => 'New chef account created successfully! Welcome to Wasfah.',
-                'new_customer' => 'New customer account created successfully! Welcome to Wasfah.',
-                'new_generic' => 'New account created successfully! Welcome to Wasfah.',
-                'existing_chef' => 'Signed in successfully! Your account has been updated to chef on Wasfah.',
-                'existing_customer' => 'Signed in successfully! Your Wasfah account is ready to use.',
-                'existing_generic' => 'Signed in successfully! Welcome back to Wasfah.',
+                'new_chef' => "New chef account created successfully! Welcome to {$brand}.",
+                'new_customer' => "New customer account created successfully! Welcome to {$brand}.",
+                'new_generic' => "New account created successfully! Welcome to {$brand}.",
+                'existing_chef' => "Signed in successfully! Your account has been updated to chef on {$brand}.",
+                'existing_customer' => "Signed in successfully! Your {$brand} account is ready to use.",
+                'existing_generic' => "Signed in successfully! Welcome back to {$brand}.",
             ],
             'register' => [
                 'email_verified' => 'Email verified and account created successfully!',
                 'complete_chef_profile' => 'Account created successfully! Please complete your details to finish the chef approval.',
                 'workshop_flow' => 'Account created successfully! You can now complete your workshop booking.',
-                'welcome' => 'Account created successfully! Welcome to Wasfah 🎉',
+                'welcome' => "Account created successfully! Welcome to {$brand} 🎉",
             ],
             'policy' => [
-                'default' => 'Signed in successfully! Enjoy your Wasfah experience.',
+                'default' => "Signed in successfully! Enjoy your {$brand} experience.",
             ],
             'onboarding' => [
                 'instant_approval' => 'Congratulations! You were instantly approved as a chef and can start sharing your recipes and workshops.',
@@ -97,7 +99,7 @@ return [
             'chef_only' => 'This page is only for approved chefs. Please complete your profile to continue.',
             'login_required' => 'You need to sign in first.',
             'social' => [
-                'account_not_found' => "We couldn't find a Wasfah account linked to your email. Please choose the create account option.",
+                'account_not_found' => "We couldn't find a {$brand} account linked to your email. Please choose the create account option.",
                 'login_failed' => 'Something went wrong while signing in. Please try again.',
             ],
             'register' => [

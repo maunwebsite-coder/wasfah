@@ -5,6 +5,7 @@ return [
     'recipes' => 'Peahskill Guides',
     'search' => 'Search Results',
     'workshops' => 'Workshops',
+    'partnership' => 'Peahskill Partner',
     'bookings' => [
         'index' => 'My Bookings',
         'show' => [

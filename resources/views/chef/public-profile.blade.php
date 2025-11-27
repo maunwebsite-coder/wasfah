@@ -927,6 +927,43 @@
             background: rgba(15, 23, 42, 0.7);
         }
 
+        .chef-workshop-card__price {
+            position: absolute;
+            inset-block-start: 1.1rem;
+            inset-inline-end: 1.2rem;
+            background: linear-gradient(135deg, #f97316, #f59e0b);
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 0.9rem;
+            padding: 0.4rem 0.95rem;
+            border-radius: 999px;
+            box-shadow: 0 12px 24px -18px rgba(15, 23, 42, 0.25);
+        }
+
+        .chef-workshop-card__overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(180deg, rgba(15, 23, 42, 0.25), rgba(15, 23, 42, 0.5));
+            backdrop-filter: blur(2px);
+        }
+
+        .chef-workshop-card__overlay span {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: #fbbf24;
+            color: #92400e;
+            font-weight: 800;
+            padding: 0.55rem 1.15rem;
+            border-radius: 999px;
+            box-shadow: 0 10px 22px -18px rgba(0, 0, 0, 0.28);
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+        }
+
         .chef-workshop-card__body {
             display: flex;
             flex-direction: column;
@@ -1362,8 +1399,64 @@
                 font-size: 1.35rem;
             }
 
+            .chef-workshops-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .chef-workshop-card {
+                border-radius: 1.35rem;
+                box-shadow: 0 18px 32px -26px rgba(15, 23, 42, 0.22);
+            }
+
+            .chef-workshop-card__media {
+                aspect-ratio: 16 / 10;
+            }
+
+            .chef-workshop-card__badge {
+                font-size: 0.78rem;
+                padding: 0.32rem 0.75rem;
+                inset-block-start: 0.95rem;
+                inset-inline-start: 0.95rem;
+            }
+
+            .chef-workshop-card__price {
+                inset-block-start: 0.9rem;
+                inset-inline-end: 0.95rem;
+                font-size: 0.82rem;
+                padding: 0.35rem 0.85rem;
+            }
+
+            .chef-workshop-card__overlay span {
+                font-size: 0.9rem;
+                padding: 0.5rem 0.9rem;
+            }
+
             .chef-workshop-card__body {
-                padding: 1.5rem;
+                padding: 1.25rem;
+                gap: 0.85rem;
+            }
+
+            .chef-workshop-card__meta {
+                gap: 0.45rem;
+            }
+
+            .chef-workshop-chip {
+                font-size: 0.78rem;
+                padding: 0.35rem 0.7rem;
+            }
+
+            .chef-workshop-card__title {
+                font-size: 1.05rem;
+            }
+
+            .chef-workshop-card__details {
+                font-size: 0.9rem;
+                gap: 0.6rem;
+            }
+
+            .chef-workshop-card__cta {
+                padding: 0.95rem 1.1rem;
+                font-size: 0.95rem;
             }
 
             .chef-tab-btn {
@@ -1746,7 +1839,13 @@
                                     <article class="chef-workshop-card">
                                         <div class="chef-workshop-card__media">
                                             <img src="{{ $coverImage }}" alt="{{ __('chef.workshops.image_alt', ['title' => $workshop->title]) }}" loading="lazy">
+                                            <span class="chef-workshop-card__price">{{ $priceLabel }}</span>
                                             <span class="{{ $badgeClass }}">{{ $badgeLabel }}</span>
+                                            @if (! $isRegistrationOpen)
+                                                <div class="chef-workshop-card__overlay">
+                                                    <span>{{ __('chef.workshops.registration_closed') }}</span>
+                                                </div>
+                                            @endif
                                         </div>
                                         <div class="chef-workshop-card__body">
                                             <div class="chef-workshop-card__meta">
@@ -1840,6 +1939,7 @@
                                     <article class="chef-workshop-card">
                                         <div class="chef-workshop-card__media">
                                             <img src="{{ $coverImage }}" alt="{{ __('chef.workshops.image_alt', ['title' => $workshop->title]) }}" loading="lazy">
+                                            <span class="chef-workshop-card__price">{{ $priceLabel }}</span>
                                             <span class="chef-workshop-card__badge is-closed">{{ __('chef.workshops.badges.completed') }}</span>
                                         </div>
                                         <div class="chef-workshop-card__body">

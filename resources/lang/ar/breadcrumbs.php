@@ -5,6 +5,7 @@ return [
     'recipes' => 'أدلة Peahskill',
     'search' => 'نتائج البحث',
     'workshops' => 'ورشات العمل',
+    'partnership' => 'شريك Peahskill',
     'bookings' => [
         'index' => 'حجوزاتي',
         'show' => [
