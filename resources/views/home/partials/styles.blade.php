@@ -1180,6 +1180,10 @@
                 padding: clamp(1.15rem, 4vw, 2.25rem);
                 background: rgba(255, 255, 255, 0.96);
             }
+            .featured-workshop-media {
+                aspect-ratio: 16 / 10;
+                min-height: 260px;
+            }
         }
 
         @media (max-width: 768px) {
@@ -1242,8 +1246,11 @@
                 font-size: 0.9rem;
             }
             .featured-workshop-section {
-                padding-top: 2.5rem !important;
-                padding-bottom: 2.5rem !important;
+                padding-top: 2rem !important;
+                padding-bottom: 2rem !important;
+            }
+            .featured-workshop-media {
+                min-height: 220px;
             }
         }
 
@@ -1366,12 +1373,24 @@
                 border-radius: 1.5rem;
             }
             .featured-workshop-section {
-                padding-top: 2rem !important;
-                padding-bottom: 2rem !important;
+                padding-top: 1.5rem !important;
+                padding-bottom: 1.5rem !important;
+            }
+            .featured-workshop-media {
+                min-height: 200px;
+                aspect-ratio: 16 / 11;
             }
         }
 
         @media (max-width: 480px) {
+            .featured-workshop-section {
+                padding-top: 1.35rem !important;
+                padding-bottom: 1.35rem !important;
+            }
+            .featured-workshop-media {
+                min-height: 180px;
+                aspect-ratio: 16 / 12;
+            }
             .hero-title {
                 font-size: 1.2rem;
             }
@@ -1416,11 +1435,11 @@
             
             /* Featured workshop image mobile fix */
             .featured-workshop-image {
-                height: 250px;
+                height: 210px;
                 object-fit: cover;
                 object-position: center;
-                min-height: 200px;
-                max-height: 300px;
+                min-height: 180px;
+                max-height: 240px;
             }
         }
         
@@ -1435,11 +1454,11 @@
             
             /* Featured workshop image mobile fix */
             .featured-workshop-image {
-                height: 220px;
+                height: 190px;
                 object-fit: cover;
                 object-position: center;
-                min-height: 180px;
-                max-height: 250px;
+                min-height: 160px;
+                max-height: 220px;
             }
         }
 

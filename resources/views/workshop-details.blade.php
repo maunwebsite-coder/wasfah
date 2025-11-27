@@ -386,6 +386,60 @@
         background: #f1f5f9;
     }
 
+    .booking-additional-details {
+        margin-top: 1.75rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid rgba(15, 76, 115, 0.12);
+    }
+
+    .booking-additional-heading {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+    }
+
+    .booking-additional-icon {
+        width: 2.5rem;
+        height: 2.5rem;
+        border-radius: 0.75rem;
+        background: linear-gradient(145deg, var(--primary-color), var(--primary-dark));
+        color: #ffffff;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 10px 20px rgba(15, 76, 115, 0.2);
+    }
+
+    .booking-additional-title {
+        margin: 0;
+        font-weight: 800;
+        color: var(--primary-dark);
+        line-height: 1.3;
+    }
+
+    .booking-additional-sub {
+        margin: 0.15rem 0 0;
+        color: var(--text-muted);
+        font-size: 0.95rem;
+    }
+
+    .booking-card .additional-details-grid {
+        margin-top: 0.5rem;
+    }
+
+    .booking-card .additional-detail {
+        background: #f8fafc;
+        border-color: rgba(15, 76, 115, 0.08);
+        box-shadow: none;
+    }
+
+    .booking-card .additional-detail-icon {
+        background: #ffffff;
+        color: var(--primary-color);
+        box-shadow: none;
+    }
+
     .feature-icon {
         width: 2.5rem;
         height: 2.5rem;
@@ -1174,6 +1228,68 @@
                         </div>
                     </div>
 
+                    <div class="booking-additional-details">
+                        <div class="booking-additional-heading">
+                            <div class="booking-additional-icon">
+                                <i class="fas fa-info"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs font-semibold uppercase tracking-[0.08em] text-amber-600 mb-1">
+                                    {{ __('workshops.details.sidebar.title') }}
+                                </p>
+                                <p class="booking-additional-title">{{ $workshop->title }}</p>
+                                <p class="booking-additional-sub">{{ $workshop->location ?? $workshopLocationLabel }}</p>
+                            </div>
+                        </div>
+                        <div class="additional-details-grid">
+                            <div class="additional-detail">
+                                <div class="additional-detail-icon">
+                                    <i class="fas fa-play"></i>
+                                </div>
+                                <div>
+                                    <p class="additional-detail-label">{{ __('workshops.details.sidebar.start') }}</p>
+                                    <p class="additional-detail-value">{{ $workshopStartDateTimeLabel }}</p>
+                                </div>
+                            </div>
+                            <div class="additional-detail">
+                                <div class="additional-detail-icon">
+                                    <i class="fas fa-flag-checkered"></i>
+                                </div>
+                                <div>
+                                    <p class="additional-detail-label">{{ __('workshops.details.sidebar.end') }}</p>
+                                    <p class="additional-detail-value">{{ $workshopEndDateTimeLabel }}</p>
+                                </div>
+                            </div>
+                            <div class="additional-detail">
+                                <div class="additional-detail-icon">
+                                    <i class="fas fa-tag"></i>
+                                </div>
+                                <div>
+                                    <p class="additional-detail-label">{{ __('workshops.details.sidebar.category') }}</p>
+                                    <p class="additional-detail-value">{{ $workshop->category ?? $notSpecifiedLabel }}</p>
+                                </div>
+                            </div>
+                            <div class="additional-detail">
+                                <div class="additional-detail-icon">
+                                    <i class="fas fa-layer-group"></i>
+                                </div>
+                                <div>
+                                    <p class="additional-detail-label">{{ __('workshops.details.sidebar.level') }}</p>
+                                    <p class="additional-detail-value">{{ $levelLabels[$workshop->level] ?? $levelLabels['beginner'] }}</p>
+                                </div>
+                            </div>
+                            <div class="additional-detail">
+                                <div class="additional-detail-icon">
+                                    <i class="fas fa-eye"></i>
+                                </div>
+                                <div>
+                                    <p class="additional-detail-label">{{ __('workshops.details.sidebar.views') }}</p>
+                                    <p class="additional-detail-value">{{ $workshop->views_count }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="booking-actions" id="booking-methods">
                         <div id="booking-primary-action">
                         @if($workshop->is_completed)
@@ -1322,72 +1438,7 @@
                 </div>
             </div>
 
-            <!-- Additional Details Card -->
-            <div class="content-card additional-details-card mt-6">
-                <div class="additional-details-header">
-                    <div class="additional-details-icon">
-                        <i class="fas fa-info"></i>
-                    </div>
-                    <div>
-                        <p class="text-xs font-semibold uppercase tracking-[0.08em] text-amber-600 mb-1">
-                            {{ __('workshops.details.sidebar.title') }}
-                        </p>
-                        <p class="additional-details-title">{{ $workshop->title }}</p>
-                        <p class="additional-details-sub">{{ $workshop->location ?? $workshopLocationLabel }}</p>
-                    </div>
-                </div>
-                <div class="additional-details-grid">
-                    <div class="additional-detail">
-                        <div class="additional-detail-icon">
-                            <i class="fas fa-play"></i>
-                        </div>
-                        <div>
-                            <p class="additional-detail-label">{{ __('workshops.details.sidebar.start') }}</p>
-                            <p class="additional-detail-value">{{ $workshopStartDateTimeLabel }}</p>
-                        </div>
-                    </div>
-                    <div class="additional-detail">
-                        <div class="additional-detail-icon">
-                            <i class="fas fa-flag-checkered"></i>
-                        </div>
-                        <div>
-                            <p class="additional-detail-label">{{ __('workshops.details.sidebar.end') }}</p>
-                            <p class="additional-detail-value">{{ $workshopEndDateTimeLabel }}</p>
-                        </div>
-                    </div>
-                    <div class="additional-detail">
-                        <div class="additional-detail-icon">
-                            <i class="fas fa-tag"></i>
-                        </div>
-                        <div>
-                            <p class="additional-detail-label">{{ __('workshops.details.sidebar.category') }}</p>
-                            <p class="additional-detail-value">{{ $workshop->category ?? $notSpecifiedLabel }}</p>
-                        </div>
-                    </div>
-                    <div class="additional-detail">
-                        <div class="additional-detail-icon">
-                            <i class="fas fa-layer-group"></i>
-                        </div>
-                        <div>
-                            <p class="additional-detail-label">{{ __('workshops.details.sidebar.level') }}</p>
-                            <p class="additional-detail-value">{{ $levelLabels[$workshop->level] ?? $levelLabels['beginner'] }}</p>
-                        </div>
-                    </div>
-                    <div class="additional-detail">
-                        <div class="additional-detail-icon">
-                            <i class="fas fa-eye"></i>
-                        </div>
-                        <div>
-                            <p class="additional-detail-label">{{ __('workshops.details.sidebar.views') }}</p>
-                            <p class="additional-detail-value">{{ $workshop->views_count }}</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    @if($relatedWorkshops->count() > 0)
+@if($relatedWorkshops->count() > 0)
         <section class="related-workshops-section">
             <div class="content-wrapper">
                 <div class="text-center mb-12">
@@ -1445,7 +1496,7 @@
                 </div>
             </div>
         </section>
-    @endif
+@endif
 </div>
 
 @if($showFloatingBookingButton)

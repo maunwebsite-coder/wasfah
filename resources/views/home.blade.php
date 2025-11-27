@@ -207,76 +207,76 @@
         $featuredInstructorLabel = $featuredWorkshop->instructor ?? __('home.labels.unspecified');
         $featuredIsBooked = !empty($bookedWorkshopIds) && in_array($featuredWorkshop->id, $bookedWorkshopIds, true);
     @endphp
-    <section class="container mx-auto px-4 py-12 featured-workshop-section">
+    <section class="container mx-auto px-4 py-8 sm:py-12 featured-workshop-section">
         <div class="bg-gradient-to-r from-amber-500 to-orange-600 rounded-3xl overflow-hidden shadow-xl featured-workshop-card">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-0">
                 <!-- المحتوى النصي -->
-                <div class="p-6 lg:p-9 text-white flex flex-col justify-center">
+                <div class="p-5 sm:p-6 lg:p-9 text-white flex flex-col justify-center">
                     <div class="mb-5">
-                        <span class="bg-white/20 text-white text-sm font-semibold px-4 py-2 rounded-full inline-block mb-4">
+                        <span class="bg-white/20 text-white text-xs sm:text-sm font-semibold px-3 sm:px-4 py-1.5 sm:py-2 rounded-full inline-block mb-3 sm:mb-4">
                             {{ __('home.featured_workshop.title') }}
                         </span>
-                        <h2 class="text-2xl lg:text-3xl font-bold mb-3 leading-tight">
+                        <h2 class="text-xl sm:text-2xl lg:text-3xl font-bold mb-3 leading-tight">
                             {{ $featuredWorkshop->title }}
                         </h2>
-                        <p class="text-base text-amber-100 mb-5 leading-relaxed">
+                        <p class="text-sm sm:text-base text-amber-100 mb-4 sm:mb-5 leading-relaxed">
                             {{ $featuredWorkshop->featured_description ?: $featuredWorkshop->description }}
                         </p>
                     </div>
                     
                     <!-- تفاصيل الورشة -->
-                    <div class="space-y-3 mb-5">
+                    <div class="space-y-2 sm:space-y-3 mb-4 sm:mb-5">
                         <div class="flex items-center text-amber-100">
                             <i class="fas fa-calendar-alt w-5 text-center ml-3"></i>
-                            <span class="font-medium">{{ $featuredStartDateLabel }}</span>
+                            <span class="font-medium text-sm sm:text-base">{{ $featuredStartDateLabel }}</span>
                         </div>
                         <div class="flex items-center text-amber-100">
                             <i class="fas {{ $featuredWorkshop->is_online ? 'fa-video' : 'fa-map-marker-alt' }} w-5 text-center ml-3"></i>
-                            <span class="font-medium">{{ $featuredLocationLabel }}</span>
+                            <span class="font-medium text-sm sm:text-base">{{ $featuredLocationLabel }}</span>
                         </div>
                         <div class="flex items-center text-amber-100">
                             <i class="fas fa-user w-5 text-center ml-3"></i>
-                            <span class="font-medium">{{ __('home.labels.with') }} {{ $featuredInstructorLabel }}</span>
+                            <span class="font-medium text-sm sm:text-base">{{ __('home.labels.with') }} {{ $featuredInstructorLabel }}</span>
                         </div>
                         @if($showAdminMetrics)
                             <div class="flex items-center text-amber-100">
                                 <i class="fas fa-users w-5 text-center ml-3"></i>
-                                <span class="font-medium">{{ $featuredWorkshop->bookings_count }}/{{ $featuredWorkshop->max_participants }} {{ __('home.featured_workshop.participant_label') }}</span>
+                                <span class="font-medium text-sm sm:text-base">{{ $featuredWorkshop->bookings_count }}/{{ $featuredWorkshop->max_participants }} {{ __('home.featured_workshop.participant_label') }}</span>
                             </div>
                         @endif
                     </div>
                     
                     <!-- أزرار الإجراءات -->
-                    <div class="flex flex-col sm:flex-row gap-3 featured-workshop-actions">
+                    <div class="flex flex-col sm:flex-row gap-2.5 sm:gap-3 featured-workshop-actions">
                         @if($featuredIsCompleted)
-                            <button type="button" class="bg-gray-400 text-gray-600 font-bold py-3 px-6 rounded-xl cursor-not-allowed flex items-center justify-center shadow-lg w-full sm:w-auto">
-                                <i class="fas fa-check-circle mr-2 rtl:ml-2 text-xl"></i>
+                            <button type="button" class="bg-gray-400 text-gray-600 font-bold text-sm sm:text-base py-2.5 px-4 sm:py-3 sm:px-6 rounded-lg sm:rounded-xl cursor-not-allowed flex items-center justify-center shadow-lg w-full sm:w-auto">
+                                <i class="fas fa-check-circle mr-2 rtl:ml-2 text-lg sm:text-xl"></i>
                                 {{ __('home.featured_workshop.status_full') }}
                             </button>
                         @elseif($featuredIsBooked)
-                            <button type="button" class="bg-green-500 text-white font-bold py-3 px-6 rounded-xl cursor-not-allowed flex items-center justify-center shadow-lg w-full sm:w-auto" disabled>
-                                <i class="fas fa-check mr-2 rtl:ml-2 text-xl booking-button-icon"></i>
+                            <button type="button" class="bg-green-500 text-white font-bold text-sm sm:text-base py-2.5 px-4 sm:py-3 sm:px-6 rounded-lg sm:rounded-xl cursor-not-allowed flex items-center justify-center shadow-lg w-full sm:w-auto" disabled>
+                                <i class="fas fa-check mr-2 rtl:ml-2 text-lg sm:text-xl booking-button-icon"></i>
                                 <span class="booking-button-label">{{ __('home.featured_workshop.status_booked') }}</span>
                             </button>
                         @elseif($featuredIsFull)
-                            <button type="button" class="bg-gray-400 text-gray-600 font-bold py-3 px-6 rounded-xl cursor-not-allowed flex items-center justify-center shadow-lg w-full sm:w-auto">
-                                <i class="fas fa-lock mr-2 rtl:ml-2 text-xl"></i>
+                            <button type="button" class="bg-gray-400 text-gray-600 font-bold text-sm sm:text-base py-2.5 px-4 sm:py-3 sm:px-6 rounded-lg sm:rounded-xl cursor-not-allowed flex items-center justify-center shadow-lg w-full sm:w-auto">
+                                <i class="fas fa-lock mr-2 rtl:ml-2 text-lg sm:text-xl"></i>
                                 {{ __('home.featured_workshop.status_full') }}
                             </button>
                         @elseif($featuredIsRegistrationClosed)
-                            <button type="button" class="bg-yellow-400 text-yellow-800 font-bold py-3 px-6 rounded-xl cursor-not-allowed flex items-center justify-center shadow-lg w-full sm:w-auto">
-                                <i class="fas fa-clock mr-2 rtl:ml-2 text-xl"></i>
+                            <button type="button" class="bg-yellow-400 text-yellow-800 font-bold text-sm sm:text-base py-2.5 px-4 sm:py-3 sm:px-6 rounded-lg sm:rounded-xl cursor-not-allowed flex items-center justify-center shadow-lg w-full sm:w-auto">
+                                <i class="fas fa-clock mr-2 rtl:ml-2 text-lg sm:text-xl"></i>
                                 {{ __('home.featured_workshop.status_closed') }}
                             </button>
                         @else
                             <a href="{{ route('workshop.show', $featuredWorkshop->slug) }}#workshop-booking"
-                               class="bg-white text-green-600 hover:bg-green-50 font-bold py-3 px-6 rounded-xl transition-all duration-300 flex items-center justify-center shadow-lg hover:shadow-xl w-full sm:w-auto">
-                                <i class="fas fa-calendar-check mr-2 rtl:ml-2 text-xl booking-button-icon"></i>
+                               class="bg-white text-green-600 hover:bg-green-50 font-bold text-sm sm:text-base py-2.5 px-4 sm:py-3 sm:px-6 rounded-lg sm:rounded-xl transition-all duration-300 flex items-center justify-center shadow-lg hover:shadow-xl w-full sm:w-auto">
+                                <i class="fas fa-calendar-check mr-2 rtl:ml-2 text-lg sm:text-xl booking-button-icon"></i>
                                 <span class="booking-button-label">{{ __('home.featured_workshop.primary_cta') }}</span>
                             </a>
                         @endif
                         <a href="{{ route('workshop.show', $featuredWorkshop->slug) }}" 
-                           class="border-2 border-white text-white hover:bg-white hover:text-amber-600 font-bold py-3 px-6 rounded-xl transition-all duration-300 flex items-center justify-center w-full sm:w-auto">
+                           class="border-2 border-white text-white hover:bg-white hover:text-amber-600 font-bold text-sm sm:text-base py-2.5 px-4 sm:py-3 sm:px-6 rounded-lg sm:rounded-xl transition-all duration-300 flex items-center justify-center w-full sm:w-auto">
                             <i class="fas fa-info-circle mr-2 rtl:ml-2"></i>
                             {{ __('home.featured_workshop.secondary_cta') }}
                         </a>
@@ -284,7 +284,7 @@
                 </div>
                 
                 <!-- الصورة -->
-                <div class="relative h-56 lg:h-auto overflow-hidden featured-workshop-media">
+                <div class="relative h-48 sm:h-56 lg:h-auto overflow-hidden featured-workshop-media">
                     <img src="{{ $featuredWorkshop->image ? asset('storage/' . $featuredWorkshop->image) : 'https://placehold.co/800x600/f87171/FFFFFF?text=Premium+Workshop' }}" 
                          alt="{{ $featuredWorkshop->title }}" 
                          class="w-full h-full object-cover featured-workshop-image"
@@ -299,32 +299,32 @@
     </section>
     @else
     <!-- رسالة عدم وجود ورشات قادمة -->
-    <section class="container mx-auto px-4 py-12 featured-workshop-section">
+    <section class="container mx-auto px-4 py-8 sm:py-12 featured-workshop-section">
         <div class="bg-gradient-to-r from-amber-500 to-orange-600 rounded-3xl overflow-hidden shadow-xl">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-0">
                 <!-- المحتوى النصي -->
-                <div class="p-6 lg:p-9 text-white flex flex-col justify-center">
+                <div class="p-5 sm:p-6 lg:p-9 text-white flex flex-col justify-center">
                     <div class="mb-5">
-                        <span class="bg-white/20 text-white text-sm font-semibold px-4 py-2 rounded-full inline-block mb-4">
+                        <span class="bg-white/20 text-white text-xs sm:text-sm font-semibold px-3 sm:px-4 py-1.5 sm:py-2 rounded-full inline-block mb-3 sm:mb-4">
                             {{ __('home.featured_workshop.title') }}
                         </span>
-                        <h2 class="text-2xl lg:text-3xl font-bold mb-3 leading-tight">
+                        <h2 class="text-xl sm:text-2xl lg:text-3xl font-bold mb-3 leading-tight">
                             {{ __('home.featured_workshop.empty_title') }}
                         </h2>
-                        <p class="text-base text-amber-100 mb-6 leading-relaxed">
+                        <p class="text-sm sm:text-base text-amber-100 mb-4 sm:mb-6 leading-relaxed">
                             {{ __('home.featured_workshop.empty_description') }}
                         </p>
                     </div>
                     
                     <!-- أزرار الإجراءات -->
-                    <div class="flex flex-col sm:flex-row gap-3">
+                    <div class="flex flex-col sm:flex-row gap-2.5 sm:gap-3">
                         <a href="{{ route('workshops') }}" 
-                           class="bg-white text-amber-600 hover:bg-amber-50 font-bold py-3 px-6 rounded-xl transition-all duration-300 flex items-center justify-center shadow-lg hover:shadow-xl">
-                            <i class="fas fa-list mr-2 rtl:ml-2 text-xl"></i>
+                           class="bg-white text-amber-600 hover:bg-amber-50 font-bold text-sm sm:text-base py-2.5 px-4 sm:py-3 sm:px-6 rounded-lg sm:rounded-xl transition-all duration-300 flex items-center justify-center shadow-lg hover:shadow-xl">
+                            <i class="fas fa-list mr-2 rtl:ml-2 text-lg sm:text-xl"></i>
                             {{ __('home.featured_workshop.empty_primary') }}
                         </a>
                         <a href="{{ route('recipes') }}" 
-                           class="border-2 border-white text-white hover:bg-white hover:text-amber-600 font-bold py-3 px-6 rounded-xl transition-all duration-300 flex items-center justify-center">
+                           class="border-2 border-white text-white hover:bg-white hover:text-amber-600 font-bold text-sm sm:text-base py-2.5 px-4 sm:py-3 sm:px-6 rounded-lg sm:rounded-xl transition-all duration-300 flex items-center justify-center">
                             <i class="fas fa-utensils mr-2 rtl:ml-2"></i>
                             {{ __('home.featured_workshop.empty_secondary') }}
                         </a>
@@ -332,9 +332,9 @@
                 </div>
                 
                 <!-- الصورة/الأيقونة -->
-                <div class="relative h-56 lg:h-auto overflow-hidden flex items-center justify-center">
+                <div class="relative h-48 sm:h-56 lg:h-auto overflow-hidden flex items-center justify-center">
                     <div class="w-full h-full flex items-center justify-center">
-                        <div class="relative w-56 h-56 bg-white/10 rounded-full flex items-center justify-center">
+                        <div class="relative w-44 h-44 sm:w-56 sm:h-56 bg-white/10 rounded-full flex items-center justify-center">
                             <div class="absolute inset-4 bg-white/20 rounded-full"></div>
                             <div class="absolute inset-12 bg-white/10 rounded-full"></div>
                             <i class="fas fa-calendar-alt text-white text-5xl"></i>
