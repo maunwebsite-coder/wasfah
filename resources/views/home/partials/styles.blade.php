@@ -411,13 +411,13 @@
         .hero-badge {
             display: inline-flex;
             align-items: center;
-            gap: 0.3rem;
-            font-size: 0.75rem;
+            gap: 0.2rem;
+            font-size: 0.45rem;
             font-weight: 700;
             color: #0a344f;
             background: linear-gradient(135deg, rgba(15, 162, 137, 0.22), rgba(12, 63, 97, 0.22));
             border-radius: 9999px;
-            padding: 0.28rem 0.8rem;
+            padding: 0.18rem 0.55rem;
             box-shadow: 0 8px 14px rgba(15, 76, 115, 0.16);
             align-self: flex-start;
         }
@@ -1299,8 +1299,8 @@
                 font-size: 0.85rem;
             }
             .hero-badge {
-                font-size: 0.9rem;
-                padding: 0.5rem 1.15rem;
+                font-size: 0.5rem;
+                padding: 0.25rem 0.65rem;
             }
             .hero-main-image {
                 max-height: none;
