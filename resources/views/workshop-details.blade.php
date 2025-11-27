@@ -507,7 +507,14 @@
         }
 
         .workshop-hero-content {
-            padding: 0.75rem 0.65rem 0.05rem;
+            padding: 1rem 0.85rem 0.65rem;
+        }
+
+        .hero-badge {
+            gap: 0.35rem;
+            padding: 0.35rem 0.75rem;
+            font-size: 0.75rem;
+            margin-bottom: 0.9rem;
         }
 
         .workshop-hero-visual {
@@ -516,36 +523,52 @@
         }
 
         .hero-image-card {
-            max-width: 320px;
-            max-height: 320px;
+            max-width: 280px;
+            max-height: 280px;
         }
         
         .workshop-title {
-            font-size: 2rem;
-            margin-bottom: 0.45rem;
+            font-size: 1.6rem;
+            margin-bottom: 0.35rem;
+            line-height: 1.2;
+        }
+
+        .workshop-excerpt-wrapper {
+            margin-bottom: 1.2rem;
+            gap: 0.5rem;
         }
 
         .workshop-excerpt {
-            margin-bottom: 0.75rem;
-            font-size: 1rem;
-            line-height: 1.5;
+            margin-bottom: 0.4rem;
+            font-size: 0.95rem;
+            line-height: 1.45;
+        }
+
+        .workshop-excerpt-toggle {
+            gap: 0.35rem;
+            padding: 0.35rem 0.65rem;
+            font-size: 0.78rem;
+        }
+
+        .workshop-excerpt-toggle i {
+            font-size: 0.75rem;
         }
         
         .hero-stats {
-            gap: 0.35rem;
-            margin-bottom: -0.35rem;
+            gap: 0.5rem;
+            margin-bottom: 0.4rem;
             display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
+            grid-template-columns: repeat(2, minmax(0, 1fr));
         }
 
         .hero-stat-icon {
-            width: 1.9rem;
-            height: 1.9rem;
-            font-size: 0.82rem;
+            width: 1.8rem;
+            height: 1.8rem;
+            font-size: 0.8rem;
         }
 
         .hero-stat-item {
-            gap: 0.35rem;
+            gap: 0.25rem;
         }
 
         .hero-stat-label {
@@ -553,7 +576,7 @@
         }
 
         .hero-stat-value {
-            font-size: 0.85rem;
+            font-size: 0.82rem;
         }
 
         .hero-image-footer {

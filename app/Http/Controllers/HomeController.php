@@ -431,17 +431,10 @@ class HomeController extends Controller
                 'image_alt' => data_get($workshops, 'image_alt', 'ورشة عمل للحلويات الاحترافية'),
                 'actions' => [
                     [
-                        'label' => data_get($workshopActions, 'primary', 'استكشف الورشات'),
+                        'label' => data_get($workshopActions, 'primary', 'احجز مقعدك في أقرب تجربة مباشرة'),
                         'url' => route('workshops'),
-                        'icon' => 'fas fa-chalkboard-teacher',
+                        'icon' => 'fas fa-calendar-check',
                         'type' => 'primary',
-                        'open_in_new_tab' => false,
-                    ],
-                    [
-                        'label' => data_get($workshopActions, 'secondary', 'جدول الورشات'),
-                        'url' => route('workshops'),
-                        'icon' => 'fas fa-calendar-alt',
-                        'type' => 'secondary',
                         'open_in_new_tab' => false,
                     ],
                 ],

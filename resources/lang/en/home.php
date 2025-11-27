@@ -17,8 +17,7 @@ return [
                     'materials' => 'Practical files and shareable certificates',
                 ],
                 'actions' => [
-                    'primary' => 'Workshops',
-                    'secondary' => 'Schedule',
+                    'primary' => 'Book your seat in the next live session',
                 ],
                 'image_alt' => 'Cross-industry live training',
             ],

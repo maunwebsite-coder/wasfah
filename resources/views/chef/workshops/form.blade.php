@@ -56,6 +56,82 @@
     }
 @endphp
 
+@push('styles')
+<style>
+    .workshop-hero-visual {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        min-height: 260px;
+        padding: 2rem;
+        border-radius: 1.5rem;
+        overflow: hidden;
+        isolation: isolate;
+        background: linear-gradient(135deg, #0b344f 0%, #0f4c73 60%, #0f172a 100%);
+        box-shadow: 0 18px 46px -28px rgba(0, 0, 0, 0.6);
+    }
+
+    .hero-image-glow {
+        position: absolute;
+        inset: 12%;
+        background: radial-gradient(circle at 20% 20%, rgba(245, 158, 11, 0.45), transparent 45%),
+                    radial-gradient(circle at 85% 30%, rgba(56, 189, 248, 0.4), transparent 45%),
+                    radial-gradient(circle at 40% 80%, rgba(16, 185, 129, 0.35), transparent 50%);
+        filter: blur(38px);
+        opacity: 0.9;
+        z-index: 0;
+    }
+
+    .hero-image-card {
+        position: relative;
+        width: 100%;
+        max-width: 420px;
+        aspect-ratio: 4 / 5;
+        border-radius: 1.3rem;
+        overflow: hidden;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.06));
+        border: 1px solid rgba(255, 255, 255, 0.24);
+        box-shadow: 0 32px 70px -32px rgba(0, 0, 0, 0.55);
+        backdrop-filter: blur(10px);
+        z-index: 1;
+    }
+
+    .hero-image-card img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transform: scale(1.02);
+        transition: transform 0.45s ease;
+        display: block;
+    }
+
+    .hero-image-card:hover img {
+        transform: scale(1.06);
+    }
+
+    .hero-image-placeholder {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: 0.5rem;
+        height: 100%;
+        width: 100%;
+        background: linear-gradient(135deg, rgba(15, 76, 115, 0.6), rgba(15, 23, 42, 0.8));
+        color: #e2e8f0;
+        font-weight: 600;
+        text-align: center;
+    }
+
+    .hero-image-placeholder i {
+        color: #f59e0b;
+        font-size: 1.75rem;
+    }
+</style>
+@endpush
+
 @if (! $hostCalendarConnected)
     <div class="mb-6 rounded-3xl border border-emerald-100 bg-emerald-50/80 px-4 py-4 shadow-sm">
         <div class="flex flex-wrap items-center justify-between gap-3">
@@ -459,15 +535,20 @@
                     </label>
                 @endif
             </div>
-            <div class="rounded-2xl border border-slate-100 bg-slate-50 p-3 text-center">
-                @if ($coverImageUrl)
-                    <img src="{{ $coverImageUrl }}" alt="{{ __('chef.workshop_form.sections.image.preview_alt') }}" class="mx-auto h-40 w-full rounded-2xl object-cover" loading="lazy">
-                @else
-                    <div class="flex h-40 flex-col items-center justify-center text-slate-400">
-                        <i class="fas fa-image text-3xl"></i>
-                        <p class="mt-2 text-sm">{{ __('chef.workshop_form.sections.image.preview_placeholder') }}</p>
+            <div class="rounded-2xl border border-slate-100 bg-slate-900 text-white shadow-sm">
+                <div class="workshop-hero-visual">
+                    <div class="hero-image-glow" aria-hidden="true"></div>
+                    <div class="hero-image-card">
+                        @if ($coverImageUrl)
+                            <img src="{{ $coverImageUrl }}" alt="{{ __('chef.workshop_form.sections.image.preview_alt') }}" onerror="this.src='https://peahskill.com/image/logo.webp';" loading="lazy">
+                        @else
+                            <div class="hero-image-placeholder">
+                                <i class="fas fa-image"></i>
+                                <p class="text-sm">{{ __('chef.workshop_form.sections.image.preview_placeholder') }}</p>
+                            </div>
+                        @endif
                     </div>
-                @endif
+                </div>
             </div>
         </div>
     </section>

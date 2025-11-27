@@ -242,21 +242,21 @@
                     
                     <!-- تفاصيل الورشة -->
                     <div class="space-y-2 sm:space-y-3 mb-4 sm:mb-5">
-                        <div class="flex items-center text-amber-100">
-                            <i class="fas fa-calendar-alt w-5 text-center ml-3"></i>
+                        <div class="flex items-center gap-3 text-amber-100">
+                            <i class="fas fa-calendar-alt w-5 text-center"></i>
                             <span class="font-medium text-sm sm:text-base">{{ $featuredStartDateLabel }}</span>
                         </div>
-                        <div class="flex items-center text-amber-100">
-                            <i class="fas {{ $featuredWorkshop->is_online ? 'fa-video' : 'fa-map-marker-alt' }} w-5 text-center ml-3"></i>
+                        <div class="flex items-center gap-3 text-amber-100">
+                            <i class="fas {{ $featuredWorkshop->is_online ? 'fa-video' : 'fa-map-marker-alt' }} w-5 text-center"></i>
                             <span class="font-medium text-sm sm:text-base">{{ $featuredLocationLabel }}</span>
                         </div>
-                        <div class="flex items-center text-amber-100">
-                            <i class="fas fa-user w-5 text-center ml-3"></i>
+                        <div class="flex items-center gap-3 text-amber-100">
+                            <i class="fas fa-user w-5 text-center"></i>
                             <span class="font-medium text-sm sm:text-base">{{ __('home.labels.with') }} {{ $featuredInstructorLabel }}</span>
                         </div>
                         @if($showAdminMetrics)
-                            <div class="flex items-center text-amber-100">
-                                <i class="fas fa-users w-5 text-center ml-3"></i>
+                            <div class="flex items-center gap-3 text-amber-100">
+                                <i class="fas fa-users w-5 text-center"></i>
                                 <span class="font-medium text-sm sm:text-base">{{ $featuredWorkshop->bookings_count }}/{{ $featuredWorkshop->max_participants }} {{ __('home.featured_workshop.participant_label') }}</span>
                             </div>
                         @endif
