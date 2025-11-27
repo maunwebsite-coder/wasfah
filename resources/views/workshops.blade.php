@@ -165,21 +165,21 @@
                     
                     <!-- Workshop details -->
                     <div class="space-y-1.5 sm:space-y-3 mb-6 sm:mb-8">
-                        <div class="flex items-center text-amber-100">
-                            <i class="fas fa-calendar-alt w-5 text-center ml-3"></i>
+                        <div class="flex items-center text-amber-100 gap-2.5 sm:gap-3">
+                            <i class="fas fa-calendar-alt w-5 text-center shrink-0"></i>
                             <span class="font-medium">{{ $featuredWorkshop->start_date->format('d/m/Y') }}</span>
                         </div>
-                        <div class="flex items-center text-amber-100">
-                            <i class="fas {{ $featuredWorkshop->is_online ? 'fa-video' : 'fa-map-marker-alt' }} w-5 text-center ml-3"></i>
+                        <div class="flex items-center text-amber-100 gap-2.5 sm:gap-3">
+                            <i class="fas {{ $featuredWorkshop->is_online ? 'fa-video' : 'fa-map-marker-alt' }} w-5 text-center shrink-0"></i>
                             <span class="font-medium">{{ $featuredLocationLabel }}</span>
                         </div>
-                        <div class="flex items-center text-amber-100">
-                            <i class="fas fa-user w-5 text-center ml-3"></i>
+                        <div class="flex items-center text-amber-100 gap-2.5 sm:gap-3">
+                            <i class="fas fa-user w-5 text-center shrink-0"></i>
                             <span class="font-medium">{{ __('workshops.labels.with') }} {{ $featuredInstructor }}</span>
                         </div>
                         @if($showAdminMetrics)
-                            <div class="flex items-center text-amber-100">
-                                <i class="fas fa-users w-5 text-center ml-3"></i>
+                            <div class="flex items-center text-amber-100 gap-2.5 sm:gap-3">
+                                <i class="fas fa-users w-5 text-center shrink-0"></i>
                                 <span class="font-medium">{{ $featuredWorkshop->bookings_count }}/{{ $featuredWorkshop->max_participants }} {{ __('workshops.labels.participants') }}</span>
                             </div>
                         @endif

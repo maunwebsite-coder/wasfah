@@ -101,7 +101,7 @@ return [
         'status_booked' => 'تم الحجز بالفعل',
         'status_closed' => 'أُغلق التسجيل',
         'primary_cta' => 'احجز مقعدك الآن',
-        'secondary_cta' => 'تفاصيل أكثر',
+        'secondary_cta' => 'اظهار المزيد',
         'empty_title' => 'لا توجد تجارب قادمة الآن',
         'empty_description' => 'نجهز تجارب جديدة ومتنوعة مع خبراء من مجالات مختلفة.',
         'empty_primary' => 'تصفح كل التجارب',

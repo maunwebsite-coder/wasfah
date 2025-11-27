@@ -12,7 +12,7 @@ return [
         'full' => 'الورشة مكتملة',
         'closed' => 'انتهى التسجيل',
         'primary_cta' => 'احجز',
-        'secondary_cta' => 'تفاصيل أكثر',
+        'secondary_cta' => 'اظهار المزيد',
         'no_upcoming_title' => 'لا توجد ورشات قادمة الآن',
         'no_upcoming_description' => 'نحن نعمل على إعداد ورشات جديدة ومميزة لك. انتظرونا في الورشة القادمة!',
         'no_upcoming_primary' => 'تصفح جميع الورشات',

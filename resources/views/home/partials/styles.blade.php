@@ -1114,9 +1114,11 @@
             transform: translateY(-2px);
         }
         .featured-workshop-media {
-            aspect-ratio: 4 / 3;
-            min-height: 320px;
+            aspect-ratio: 16 / 9;
+            min-height: 360px;
             position: relative;
+            width: 100%;
+            height: 100%;
             overflow: hidden;
             isolation: isolate;
             background: radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.12), transparent 45%),
@@ -1273,8 +1275,10 @@
                 background: rgba(255, 255, 255, 0.96);
             }
             .featured-workshop-media {
-                aspect-ratio: 16 / 10;
-                min-height: 260px;
+                aspect-ratio: 16 / 9;
+                min-height: 300px;
+                width: 100%;
+                height: 100%;
             }
             .featured-media-badge {
                 inset-inline-end: 1.1rem;
@@ -1357,7 +1361,8 @@
                 padding-bottom: 2rem !important;
             }
             .featured-workshop-media {
-                min-height: 220px;
+                aspect-ratio: 16 / 9;
+                min-height: 240px;
             }
             .featured-media-badge {
                 inset-inline-end: 0.9rem;
@@ -1394,16 +1399,17 @@
                 border-radius: 1.5rem;
             }
             .hero-actions {
-                gap: 0.35rem;
+                gap: 0.45rem;
                 flex-direction: row;
-                flex-wrap: nowrap;
+                flex-wrap: wrap;
                 justify-content: center;
             }
             .hero-action {
-                flex: 1 1 0;
-                min-width: 0;
-                padding: 0.5rem 0.8rem;
-                font-size: 0.85rem;
+                flex: 0 1 auto;
+                min-width: 140px;
+                padding: 0.65rem 1.05rem;
+                font-size: 0.95rem;
+                min-height: 44px;
             }
             .hero-badge {
                 font-size: 0.35rem;
@@ -1448,6 +1454,19 @@
             }
             .hero-latest-card {
                 border-radius: 1.5rem;
+                padding: 1.05rem;
+                gap: 0.9rem;
+            }
+            .hero-latest-header h2 {
+                font-size: 1.1rem;
+            }
+            .hero-latest-link {
+                font-size: 0.85rem;
+            }
+            .hero-latest-list {
+                gap: 0.65rem;
+                grid-template-columns: calc(100% - 1.75rem);
+                grid-auto-columns: calc(100% - 1.75rem);
             }
             .home-tools-section {
                 border-radius: 1.5rem;
@@ -1468,18 +1487,24 @@
                 flex-direction: column;
             }
             .latest-recipe-mini {
-                padding: 0.65rem 0.7rem;
-                border-radius: 1.1rem;
+                padding: 0.6rem 0.65rem;
+                border-radius: 1rem;
+            }
+            .latest-recipe-thumb {
+                width: 48px;
+                height: 48px;
+                border-radius: 1rem;
             }
             .latest-recipe-title {
-                font-size: 0.85rem;
+                font-size: 0.82rem;
             }
             .latest-recipe-meta {
-                gap: 0.5rem;
-                font-size: 0.75rem;
+                gap: 0.45rem;
+                font-size: 0.72rem;
             }
             .latest-recipe-chip {
-                font-size: 0.7rem;
+                font-size: 0.65rem;
+                padding: 0.2rem 0.6rem;
             }
             .card-container {
                 width: 100%;
@@ -1500,8 +1525,8 @@
                 padding-bottom: 1.5rem !important;
             }
             .featured-workshop-media {
-                min-height: 200px;
-                aspect-ratio: 16 / 11;
+                min-height: 210px;
+                aspect-ratio: 16 / 9;
             }
             .featured-media-badge {
                 inset-inline-end: 0.85rem;
@@ -1527,8 +1552,8 @@
                 padding-bottom: 1.35rem !important;
             }
             .featured-workshop-media {
-                min-height: 180px;
-                aspect-ratio: 16 / 12;
+                min-height: 190px;
+                aspect-ratio: 16 / 9;
             }
             .featured-media-badge {
                 inset-inline-end: 0.7rem;
@@ -1555,13 +1580,15 @@
                 font-size: 0.78rem;
             }
             .hero-actions {
-                gap: 0.25rem;
+                gap: 0.4rem;
+                justify-content: center;
             }
             .hero-action {
-                flex-basis: calc(50% - 0.3rem);
-                min-width: 0;
-                padding: 0.4rem 0.65rem;
-                font-size: 0.74rem;
+                flex: 1 1 48%;
+                min-width: 150px;
+                padding: 0.6rem 1rem;
+                font-size: 0.9rem;
+                min-height: 44px;
             }
             .hero-media {
                 height: auto;
