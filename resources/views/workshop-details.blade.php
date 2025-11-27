@@ -228,9 +228,9 @@
         gap: 0.9rem;
         padding: 0.9rem 1rem;
         border-radius: 1rem;
-        background: rgba(15, 23, 42, 0.45);
-        border: 1px solid rgba(255, 255, 255, 0.12);
-        box-shadow: 0 16px 40px -26px rgba(0, 0, 0, 0.75);
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 18px 38px -28px rgba(0, 0, 0, 0.75);
         overflow: hidden;
         z-index: 1;
     }
@@ -239,8 +239,8 @@
         content: '';
         position: absolute;
         inset: 0;
-        background: linear-gradient(135deg, rgba(245, 158, 11, 0.14), rgba(56, 189, 248, 0.08));
-        opacity: 0.8;
+        background: linear-gradient(145deg, rgba(245, 158, 11, 0.08), rgba(56, 189, 248, 0.06));
+        opacity: 0.55;
         pointer-events: none;
     }
 
@@ -250,17 +250,20 @@
     }
 
     .hero-stat-icon {
-        width: 3.1rem;
-        height: 3.1rem;
-        border-radius: 1rem;
-        background: radial-gradient(circle at 30% 30%, #ffe082 0%, #f59e0b 45%, #d97706 100%);
-        border: 1px solid rgba(255, 255, 255, 0.2);
+        width: 2.85rem;
+        height: 2.85rem;
+        border-radius: 999px;
+        background: radial-gradient(circle at 35% 35%, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.05)),
+                    linear-gradient(145deg, rgba(15, 76, 115, 0.9), rgba(13, 139, 118, 0.75));
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        box-shadow:
+            0 10px 26px rgba(13, 139, 118, 0.45),
+            inset 0 0 0 1px rgba(255, 255, 255, 0.12);
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 1.25rem;
-        color: #0b344f;
-        box-shadow: 0 12px 26px rgba(245, 158, 11, 0.45);
+        font-size: 1.15rem;
+        color: #ffe082;
     }
 
     .hero-stat-text {
@@ -619,14 +622,16 @@
 
         .hero-stat-item {
             gap: 0.55rem;
-            padding: 0.7rem 0.75rem;
+            padding: 0.75rem 0.8rem;
             border-radius: 0.95rem;
+            background: rgba(15, 23, 42, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.08);
         }
 
         .hero-stat-icon {
-            width: 2.15rem;
-            height: 2.15rem;
-            font-size: 0.95rem;
+            width: 2.25rem;
+            height: 2.25rem;
+            font-size: 0.98rem;
         }
 
         .hero-stat-label {
