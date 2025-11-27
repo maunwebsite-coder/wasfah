@@ -129,6 +129,33 @@
         color: #f59e0b;
         font-size: 1.75rem;
     }
+
+    .featured-media-badge {
+        position: absolute;
+        top: 1rem;
+        left: 1rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.55rem 0.9rem;
+        border-radius: 9999px;
+        background: linear-gradient(135deg, #fbbf24 0%, #f97316 60%, #ea580c 100%);
+        color: #0f172a;
+        font-weight: 700;
+        font-size: 0.85rem;
+        letter-spacing: 0.01em;
+        box-shadow: 0 16px 38px -18px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.32);
+        z-index: 3;
+    }
+
+    .featured-media-badge i {
+        color: #fff8e1;
+        text-shadow: 0 1px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .featured-media-badge span {
+        color: #0f172a;
+    }
 </style>
 @endpush
 
@@ -561,6 +588,10 @@
             </div>
             <div class="rounded-2xl border border-slate-100 bg-slate-900 text-white shadow-sm">
                 <div class="workshop-hero-visual">
+                    <div class="featured-media-badge __web-inspector-hide-shortcut__">
+                        <i class="fas fa-star"></i>
+                        <span>Next experience</span>
+                    </div>
                     <div class="hero-image-glow" aria-hidden="true"></div>
                     <div class="hero-image-card">
                         @if ($coverImageUrl)

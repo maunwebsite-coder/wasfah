@@ -12,13 +12,16 @@
                         $isLast = $index === $itemsCount - 1;
                         $itemUrl = $item['url'] ?? null;
                     @endphp
-                    <li class="flex items-center" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                    <li class="flex items-center min-w-0" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
                         @if ($itemUrl && !$isLast)
                             <a href="{{ $itemUrl }}" class="hover:text-orange-500 transition-colors" itemprop="item">
                                 <span itemprop="name">{{ $item['label'] }}</span>
                             </a>
                         @else
-                            <span class="{{ $isLast ? 'text-gray-700 font-medium' : 'text-gray-500' }}" itemprop="name">
+                            <span
+                                class="{{ $isLast ? 'text-gray-700 font-medium truncate block max-w-[11rem] sm:max-w-none' : 'text-gray-500' }}"
+                                itemprop="name"
+                            >
                                 {{ $item['label'] }}
                             </span>
                             <meta itemprop="item" content="{{ $itemUrl ?: url()->current() }}">
