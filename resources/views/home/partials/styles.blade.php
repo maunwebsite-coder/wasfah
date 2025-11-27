@@ -1116,11 +1116,27 @@
         .featured-workshop-media {
             aspect-ratio: 4 / 3;
             min-height: 320px;
+            position: relative;
+            overflow: hidden;
         }
         .featured-workshop-media img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            transform: scale(1.01);
+            transition: transform 0.3s ease, filter 0.3s ease;
+        }
+        .featured-workshop-media::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 40% 35%, rgba(255, 255, 255, 0.16), transparent 55%),
+                        linear-gradient(180deg, rgba(0, 0, 0, 0.15), transparent 45%);
+            pointer-events: none;
+        }
+        .featured-workshop-media:hover img {
+            transform: scale(1.04);
+            filter: saturate(1.05);
         }
         @media (max-width: 640px) {
             .hero-media {

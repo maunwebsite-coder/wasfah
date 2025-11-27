@@ -206,6 +206,9 @@
         $featuredDeadlineLabel = $featuredWorkshop->registration_deadline ? $featuredWorkshop->registration_deadline->format('d/m/Y') : __('home.labels.unspecified');
         $featuredInstructorLabel = $featuredWorkshop->instructor ?? __('home.labels.unspecified');
         $featuredIsBooked = !empty($bookedWorkshopIds) && in_array($featuredWorkshop->id, $bookedWorkshopIds, true);
+        $featuredDescriptionFull = $featuredWorkshop->featured_description ?: $featuredWorkshop->description;
+        $featuredDescriptionPreview = \Illuminate\Support\Str::limit($featuredDescriptionFull, 180, '…');
+        $featuredDescriptionIsTrimmed = $featuredDescriptionPreview !== $featuredDescriptionFull;
     @endphp
     <section class="container mx-auto px-4 py-8 sm:py-12 featured-workshop-section">
         <div class="bg-gradient-to-r from-amber-500 to-orange-600 rounded-3xl overflow-hidden shadow-xl featured-workshop-card">
@@ -219,9 +222,22 @@
                         <h2 class="text-xl sm:text-2xl lg:text-3xl font-bold mb-3 leading-tight">
                             {{ $featuredWorkshop->title }}
                         </h2>
-                        <p class="text-sm sm:text-base text-amber-100 mb-4 sm:mb-5 leading-relaxed">
-                            {{ $featuredWorkshop->featured_description ?: $featuredWorkshop->description }}
-                        </p>
+                        <div class="text-sm sm:text-base text-amber-100 mb-4 sm:mb-5 leading-relaxed space-y-2">
+                            <p id="featured-desc"
+                               class="line-clamp-3"
+                               data-preview-text="{{ e($featuredDescriptionPreview) }}"
+                               data-full-text="{{ e($featuredDescriptionFull) }}">
+                                {{ $featuredDescriptionPreview }}
+                            </p>
+                            @if($featuredDescriptionIsTrimmed)
+                                <button type="button"
+                                        class="inline-flex items-center gap-2 text-white text-xs font-semibold underline decoration-white/60 underline-offset-4 hover:decoration-white transition"
+                                        data-toggle="featured-desc">
+                                    <span class="toggle-label">عرض المزيد</span>
+                                    <i class="fas fa-chevron-down text-[10px]" aria-hidden="true"></i>
+                                </button>
+                            @endif
+                        </div>
                     </div>
                     
                     <!-- تفاصيل الورشة -->
@@ -671,6 +687,30 @@ const initHomePageInteractions = () => {
                 disableOnInteraction: false,
             },
             grabCursor: true,
+        });
+    }
+
+    // Toggle featured description expand/collapse
+    const featuredDesc = document.getElementById('featured-desc');
+    const featuredToggle = document.querySelector('[data-toggle="featured-desc"]');
+    if (featuredDesc && featuredToggle) {
+        const previewText = featuredDesc.dataset.previewText || '';
+        const fullText = featuredDesc.dataset.fullText || '';
+        let expanded = false;
+
+        featuredToggle.addEventListener('click', () => {
+            expanded = !expanded;
+            featuredDesc.textContent = expanded ? fullText : previewText;
+            featuredDesc.classList.toggle('line-clamp-3', !expanded);
+            const label = featuredToggle.querySelector('.toggle-label');
+            const icon = featuredToggle.querySelector('i');
+            if (label) {
+                label.textContent = expanded ? 'إظهار أقل' : 'عرض المزيد';
+            }
+            if (icon) {
+                icon.classList.toggle('fa-chevron-down', !expanded);
+                icon.classList.toggle('fa-chevron-up', expanded);
+            }
         });
     }
 
