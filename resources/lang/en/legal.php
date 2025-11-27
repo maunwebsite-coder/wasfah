@@ -45,15 +45,12 @@ return [
             ],
             [
                 'title' => '9. Changes, suspension, and contact',
-                'body' => 'We may update these terms, eligibility rules, or platform features; continued use after updates constitutes acceptance. We may suspend or terminate access for violations, risk, or legal requirements. For legal notices or questions, contact legal@peahskill.com.',
+                'body' => 'We may update these terms, eligibility rules, or platform features; continued use after updates constitutes acceptance. We may suspend or terminate access for violations, risk, or legal requirements.',
             ],
         ],
         'footnote' => [
             'updated_label' => 'Last updated',
             'updated_value' => '2025-11-25',
-            'contact_label' => 'Legal notices and inquiries',
-            'contact_email' => 'legal@peahskill.com',
-            'contact_note' => 'Formal notices (including regulatory or rights requests) should be sent to the email above.',
         ],
     ],
 

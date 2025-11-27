@@ -4,6 +4,8 @@
     $copy = \Illuminate\Support\Facades\Lang::get('legal.terms');
     $sections = $copy['sections'] ?? [];
     $footnote = $copy['footnote'] ?? [];
+    $contactLabel = data_get($footnote, 'contact_label');
+    $contactEmail = data_get($footnote, 'contact_email');
 @endphp
 
 @section('title', data_get($copy, 'meta.title', 'Wasfah'))
@@ -30,12 +32,14 @@
 
         <div class="rounded-2xl bg-orange-50 border border-orange-200 p-6 text-sm text-gray-700 space-y-2">
             <p>{{ data_get($footnote, 'updated_label') }}: {{ now()->format('Y-m-d') }}</p>
-            <p>
-                {{ data_get($footnote, 'contact_label') }}
-                <a href="mailto:{{ data_get($footnote, 'contact_email') }}" class="text-orange-600 font-semibold">
-                    {{ data_get($footnote, 'contact_email') }}
-                </a>.
-            </p>
+            @if ($contactLabel && $contactEmail)
+                <p>
+                    {{ $contactLabel }}
+                    <a href="mailto:{{ $contactEmail }}" class="text-orange-600 font-semibold">
+                        {{ $contactEmail }}
+                    </a>.
+                </p>
+            @endif
         </div>
     </div>
 </section>

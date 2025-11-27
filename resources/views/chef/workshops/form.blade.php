@@ -426,6 +426,30 @@
                         <p id="meetingLinkHint" class="text-xs text-slate-500">
                             {{ $autoGenerateMeeting ? __('chef.workshop_form.messages.meeting_hint_auto') : __('chef.workshop_form.messages.meeting_hint_manual') }}
                         </p>
+                        <div id="meetingAppLinks" class="hidden space-y-2 rounded-2xl border border-emerald-100 bg-emerald-50/80 px-3 py-3">
+                            <p class="text-xs font-semibold text-emerald-800">
+                                {{ __('chef.workshop_form.messages.mobile_launch_title') }}
+                            </p>
+                            <p class="text-xs text-emerald-700">
+                                {{ __('chef.workshop_form.messages.mobile_launch_body') }}
+                            </p>
+                            <div class="flex flex-wrap gap-2">
+                                <a id="androidMeetDeepLink"
+                                   class="inline-flex items-center gap-2 rounded-full bg-emerald-600 px-3 py-1 text-xs font-semibold text-white shadow hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-200"
+                                   target="_blank"
+                                   rel="noreferrer">
+                                    <i class="fab fa-android"></i>
+                                    {{ __('chef.workshop_form.messages.mobile_launch_android') }}
+                                </a>
+                                <a id="iosMeetDeepLink"
+                                   class="inline-flex items-center gap-2 rounded-full bg-white px-3 py-1 text-xs font-semibold text-emerald-700 shadow-inner ring-1 ring-emerald-100 hover:bg-emerald-50 focus:outline-none focus:ring-2 focus:ring-emerald-200"
+                                   target="_blank"
+                                   rel="noreferrer">
+                                    <i class="fab fa-apple"></i>
+                                    {{ __('chef.workshop_form.messages.mobile_launch_ios') }}
+                                </a>
+                            </div>
+                        </div>
                         @error('meeting_link')
                             <p class="text-sm text-red-600">{{ $message }}</p>
                         @enderror
@@ -579,6 +603,9 @@
         const meetingHint = document.getElementById('meetingLinkHint');
         const generateBtn = document.getElementById('generateMeetLinkBtn');
         const generatedInfo = document.getElementById('generatedMeetingInfo');
+        const meetingAppLinks = document.getElementById('meetingAppLinks');
+        const androidMeetLink = document.getElementById('androidMeetDeepLink');
+        const iosMeetLink = document.getElementById('iosMeetDeepLink');
         const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
         const meetingHints = {
             auto: @json(__('chef.workshop_form.messages.meeting_hint_auto')),
@@ -682,8 +709,53 @@
             }
         }
 
+        function buildMeetDeepLinks(rawUrl) {
+            if (!rawUrl) {
+                return null;
+            }
+            try {
+                const parsed = new URL(rawUrl.trim());
+                if (!parsed.hostname.includes('meet.google.com')) {
+                    return null;
+                }
+                const parts = parsed.pathname.split('/').filter(Boolean);
+                const code = parts[0];
+                if (!code || !/^[a-z]{3}-[a-z]{4}-[a-z]{3}$/i.test(code)) {
+                    return null;
+                }
+                const normalizedCode = code.toLowerCase();
+                const canonical = `https://meet.google.com/${normalizedCode}`;
+                return {
+                    canonical,
+                    android: `intent://meet.google.com/${normalizedCode}#Intent;scheme=https;package=com.google.android.apps.meetings;end`,
+                    ios: canonical,
+                };
+            } catch (error) {
+                return null;
+            }
+        }
+
+        function refreshMeetAppLinks() {
+            if (!meetingAppLinks || !androidMeetLink || !iosMeetLink || !meetingLinkInput) {
+                return;
+            }
+            const links = buildMeetDeepLinks(meetingLinkInput.value);
+            if (!links) {
+                meetingAppLinks.classList.add('hidden');
+                return;
+            }
+            androidMeetLink.href = links.android;
+            iosMeetLink.href = links.ios;
+            meetingAppLinks.classList.remove('hidden');
+        }
+
         isOnlineInput?.addEventListener('change', toggleModeFields);
-        autoGenerateInput?.addEventListener('change', toggleMeetingInputState);
+        autoGenerateInput?.addEventListener('change', () => {
+            toggleMeetingInputState();
+            refreshMeetAppLinks();
+        });
+        meetingLinkInput?.addEventListener('input', refreshMeetAppLinks);
+        meetingLinkInput?.addEventListener('change', refreshMeetAppLinks);
         if (canUseLocalStorage && draftStorageKey && persistableFields.length) {
             restoreDraft();
             persistableFields.forEach((field) => {
@@ -696,6 +768,7 @@
         }
         toggleModeFields();
         toggleMeetingInputState();
+        refreshMeetAppLinks();
 
         generateBtn?.addEventListener('click', async () => {
             if (!csrfToken) return;
@@ -730,6 +803,7 @@
                 const data = await response.json();
                 if (meetingLinkInput) {
                     meetingLinkInput.value = data.meeting_link;
+                    refreshMeetAppLinks();
                 }
 
                 if (generatedInfo) {

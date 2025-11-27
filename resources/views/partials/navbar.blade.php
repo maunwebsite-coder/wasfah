@@ -321,10 +321,10 @@
                     </div>
                     <div class="min-w-0">
                         <p class="text-xs text-white/80">{{ $mobileGreeting }}</p>
-                        <p class="text-lg font-black leading-snug">{{ $mobileBannerCopy['tagline'] ?? 'جاهز لتجربة نكهات جديدة؟' }}</p>
+                        <p class="text-base font-black leading-snug">{{ $mobileBannerCopy['tagline'] ?? 'جاهز لتجربة نكهات جديدة؟' }}</p>
                     </div>
                 </div>
-                <p class="mt-3 text-sm text-white/90">{{ $mobileBannerCopy['subtitle'] ?? 'تصفح كل ما يهمك من وصفات، أدوات وورش في ثوانٍ.' }}</p>
+                <p class="mt-3 text-xs text-white/90">{{ $mobileBannerCopy['subtitle'] ?? 'تصفح كل ما يهمك من وصفات، أدوات وورش في ثوانٍ.' }}</p>
             </div>
 
             <section class="space-y-3">
@@ -336,12 +336,12 @@
                     @foreach ($primaryLinks as $link)
                         @php $active = request()->routeIs($link['route'] . '*'); @endphp
                         <a href="{{ route($link['route']) }}"
-                           class="group flex h-full flex-col justify-between rounded-2xl border p-4 text-sm transition-all duration-200 {{ $active ? 'border-orange-300 bg-orange-50/80 shadow-sm' : 'border-slate-100 bg-white hover:border-orange-200 hover:shadow-md' }}">
+                           class="group flex h-full flex-col justify-between rounded-2xl border p-4 text-xs sm:text-sm transition-all duration-200 {{ $active ? 'border-orange-300 bg-orange-50/80 shadow-sm' : 'border-slate-100 bg-white hover:border-orange-200 hover:shadow-md' }}">
                             <div class="flex items-center gap-3">
                                 <span class="flex h-11 w-11 items-center justify-center rounded-2xl bg-orange-100 text-orange-600 shadow-inner">
                                     <i class="{{ $link['icon'] }}"></i>
                                 </span>
-                                <span class="font-semibold text-slate-900">{{ $link['label'] }}</span>
+                                <span class="text-[13px] font-semibold text-slate-900">{{ $link['label'] }}</span>
                             </div>
                             <p class="mt-3 text-xs leading-5 text-slate-500">
                                 {{ $mobileLinkDescriptions[$link['route']] ?? $mobileDescriptionsFallback }}
@@ -357,12 +357,12 @@
                         <i class="fas fa-handshake-angle"></i>
                     </span>
                     <div>
-                        <p class="text-sm font-semibold text-orange-600">{{ data_get($mobileSections, 'partners.title', 'حلول الشركاء') }}</p>
+                        <p class="text-xs font-semibold text-orange-600">{{ data_get($mobileSections, 'partners.title', 'حلول الشركاء') }}</p>
                         <p class="text-xs text-slate-500">{{ data_get($mobileSections, 'partners.subtitle', 'عرض متكامل للتعاون مع وصفة.') }}</p>
                     </div>
                 </div>
-                <p class="mt-3 text-sm text-slate-600">{{ data_get($mobileSections, 'partners.description', 'اطلع على الأرقام، النماذج، وخطوات الشراكة في ملف واحد.') }}</p>
-                <a href="{{ route('partnership') }}" class="mt-4 inline-flex w-full items-center justify-center rounded-2xl bg-orange-500 px-4 py-2 text-sm font-semibold text-white shadow transition hover:bg-orange-600">
+                <p class="mt-3 text-xs text-slate-600">{{ data_get($mobileSections, 'partners.description', 'اطلع على الأرقام، النماذج، وخطوات الشراكة في ملف واحد.') }}</p>
+                <a href="{{ route('partnership') }}" class="mt-4 inline-flex w-full items-center justify-center rounded-2xl bg-orange-500 px-4 py-2 text-xs font-semibold text-white shadow transition hover:bg-orange-600">
                     {{ data_get($mobileSections, 'partners.cta', 'اكتشف ملف الشراكات') }}
                     <i class="fas fa-arrow-left ml-2 text-xs"></i>
                 </a>

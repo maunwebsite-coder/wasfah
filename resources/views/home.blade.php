@@ -314,16 +314,6 @@
                         <i class="fas fa-star"></i>
                         <span>{{ __('home.featured_workshop.title') }}</span>
                     </div>
-                    <div class="featured-media-meta">
-                        <div class="meta-item">
-                            <i class="fas fa-calendar-alt" aria-hidden="true"></i>
-                            <span>{{ $featuredStartDateLabel }}</span>
-                        </div>
-                        <div class="meta-item">
-                            <i class="fas {{ $featuredWorkshop->is_online ? 'fa-video' : 'fa-map-marker-alt' }}" aria-hidden="true"></i>
-                            <span>{{ $featuredLocationLabel }}</span>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>

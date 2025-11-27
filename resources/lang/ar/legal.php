@@ -34,8 +34,6 @@ return [
         ],
         'footnote' => [
             'updated_label' => 'آخر تحديث',
-            'contact_label' => 'للاستفسارات القانونية',
-            'contact_email' => 'legal@peahskill.com',
         ],
     ],
 
