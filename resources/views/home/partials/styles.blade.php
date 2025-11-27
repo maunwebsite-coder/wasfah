@@ -411,13 +411,13 @@
         .hero-badge {
             display: inline-flex;
             align-items: center;
-            gap: 0.2rem;
-            font-size: 0.45rem;
+            gap: 0.3rem;
+            font-size: 0.75rem;
             font-weight: 700;
             color: #0a344f;
             background: linear-gradient(135deg, rgba(15, 162, 137, 0.22), rgba(12, 63, 97, 0.22));
             border-radius: 9999px;
-            padding: 0.18rem 0.55rem;
+            padding: 0.28rem 0.8rem;
             box-shadow: 0 8px 14px rgba(15, 76, 115, 0.16);
             align-self: flex-start;
         }
@@ -1118,25 +1118,101 @@
             min-height: 320px;
             position: relative;
             overflow: hidden;
-        }
-        .featured-workshop-media img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transform: scale(1.01);
-            transition: transform 0.3s ease, filter 0.3s ease;
+            isolation: isolate;
+            background: radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.12), transparent 45%),
+                        linear-gradient(135deg, #0f172a, #b45309);
+            box-shadow: 0 28px 60px rgba(0, 0, 0, 0.25);
         }
         .featured-workshop-media::after {
             content: "";
             position: absolute;
-            inset: 0;
-            background: radial-gradient(circle at 40% 35%, rgba(255, 255, 255, 0.16), transparent 55%),
-                        linear-gradient(180deg, rgba(0, 0, 0, 0.15), transparent 45%);
+            inset: -12% -8%;
+            background: radial-gradient(circle at 25% 30%, rgba(255, 255, 255, 0.15), transparent 48%),
+                        radial-gradient(circle at 80% 10%, rgba(255, 255, 255, 0.12), transparent 46%);
+            filter: blur(10px);
+            opacity: 0.6;
+            z-index: 0;
             pointer-events: none;
         }
+        .featured-media-backdrop {
+            position: absolute;
+            inset: -8%;
+            background: linear-gradient(140deg, rgba(255, 237, 213, 0.4), rgba(251, 191, 36, 0.2));
+            filter: blur(28px);
+            transform: scale(1.08);
+            z-index: 0;
+        }
+        .featured-workshop-media img {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: scale(1.02);
+            transition: transform 0.35s ease, filter 0.35s ease;
+            z-index: 1;
+        }
+        .featured-media-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(120deg, rgba(15, 23, 42, 0.55) 0%, rgba(15, 23, 42, 0.2) 42%, rgba(251, 191, 36, 0.3) 100%);
+            mix-blend-mode: multiply;
+            opacity: 0.92;
+            z-index: 2;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        .featured-media-badge {
+            position: absolute;
+            inset-inline-end: 1.4rem;
+            inset-block-start: 1.2rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.65rem 1rem;
+            background: rgba(255, 255, 255, 0.9);
+            color: #92400e;
+            font-weight: 800;
+            border-radius: 999px;
+            box-shadow: 0 18px 36px rgba(0, 0, 0, 0.18);
+            backdrop-filter: blur(12px);
+            z-index: 3;
+        }
+        .featured-media-badge i {
+            color: #f59e0b;
+        }
+        .featured-media-meta {
+            position: absolute;
+            inset-inline-start: 1.25rem;
+            inset-block-end: 1.25rem;
+            display: grid;
+            gap: 0.45rem;
+            min-width: min(280px, 82%);
+            padding: 0.9rem 1.05rem;
+            background: rgba(15, 23, 42, 0.55);
+            color: #f8fafc;
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            border-radius: 1.2rem;
+            box-shadow: 0 22px 44px rgba(0, 0, 0, 0.22);
+            backdrop-filter: blur(14px);
+            z-index: 3;
+        }
+        .featured-media-meta .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.55rem;
+            font-weight: 700;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        .featured-media-meta i {
+            color: #fbbf24;
+        }
         .featured-workshop-media:hover img {
-            transform: scale(1.04);
-            filter: saturate(1.05);
+            transform: scale(1.06);
+            filter: saturate(1.08) contrast(1.05);
+        }
+        .featured-workshop-media:hover .featured-media-overlay {
+            opacity: 0.8;
         }
         @media (max-width: 640px) {
             .hero-media {
@@ -1199,6 +1275,21 @@
             .featured-workshop-media {
                 aspect-ratio: 16 / 10;
                 min-height: 260px;
+            }
+            .featured-media-badge {
+                inset-inline-end: 1.1rem;
+                inset-block-start: 1.1rem;
+                padding: 0.55rem 0.9rem;
+                font-size: 0.9rem;
+            }
+            .featured-media-meta {
+                inset-inline-start: 1.1rem;
+                inset-block-end: 1.1rem;
+                min-width: min(260px, 88%);
+                padding: 0.8rem 0.95rem;
+            }
+            .featured-media-meta .meta-item {
+                font-size: 0.9rem;
             }
         }
 
@@ -1268,6 +1359,22 @@
             .featured-workshop-media {
                 min-height: 220px;
             }
+            .featured-media-badge {
+                inset-inline-end: 0.9rem;
+                inset-block-start: 0.9rem;
+                padding: 0.5rem 0.85rem;
+                font-size: 0.85rem;
+            }
+            .featured-media-meta {
+                inset-inline-start: 0.9rem;
+                inset-block-end: 0.9rem;
+                min-width: min(230px, 90%);
+                padding: 0.75rem 0.85rem;
+                gap: 0.35rem;
+            }
+            .featured-media-meta .meta-item {
+                font-size: 0.85rem;
+            }
         }
 
         @media (max-width: 640px) {
@@ -1299,8 +1406,8 @@
                 font-size: 0.85rem;
             }
             .hero-badge {
-                font-size: 0.5rem;
-                padding: 0.25rem 0.65rem;
+                font-size: 0.35rem;
+                padding: 0.18rem 0.45rem;
             }
             .hero-main-image {
                 max-height: none;
@@ -1396,6 +1503,22 @@
                 min-height: 200px;
                 aspect-ratio: 16 / 11;
             }
+            .featured-media-badge {
+                inset-inline-end: 0.85rem;
+                inset-block-start: 0.8rem;
+                padding: 0.45rem 0.8rem;
+                font-size: 0.82rem;
+            }
+            .featured-media-meta {
+                inset-inline-start: 0.8rem;
+                inset-block-end: 0.8rem;
+                min-width: min(210px, 92%);
+                padding: 0.7rem 0.8rem;
+                gap: 0.3rem;
+            }
+            .featured-media-meta .meta-item {
+                font-size: 0.82rem;
+            }
         }
 
         @media (max-width: 480px) {
@@ -1406,6 +1529,21 @@
             .featured-workshop-media {
                 min-height: 180px;
                 aspect-ratio: 16 / 12;
+            }
+            .featured-media-badge {
+                inset-inline-end: 0.7rem;
+                inset-block-start: 0.7rem;
+                padding: 0.4rem 0.7rem;
+                font-size: 0.78rem;
+            }
+            .featured-media-meta {
+                inset-inline-start: 0.7rem;
+                inset-block-end: 0.7rem;
+                min-width: min(200px, 94%);
+                padding: 0.65rem 0.75rem;
+            }
+            .featured-media-meta .meta-item {
+                font-size: 0.78rem;
             }
             .hero-title {
                 font-size: 1.2rem;

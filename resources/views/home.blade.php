@@ -301,14 +301,29 @@
                 
                 <!-- الصورة -->
                 <div class="relative h-48 sm:h-56 lg:h-auto overflow-hidden featured-workshop-media">
-                    <img src="{{ $featuredWorkshop->image ? asset('storage/' . $featuredWorkshop->image) : 'https://placehold.co/800x600/f87171/FFFFFF?text=Premium+Workshop' }}" 
-                         alt="{{ $featuredWorkshop->title }}" 
+                    <div class="featured-media-backdrop" aria-hidden="true"></div>
+                    <img src="{{ $featuredWorkshop->image ? asset('storage/' . $featuredWorkshop->image) : 'https://placehold.co/800x600/f87171/FFFFFF?text=Premium+Workshop' }}"
+                         alt="{{ $featuredWorkshop->title }}"
                          class="w-full h-full object-cover featured-workshop-image"
                          width="1200"
                          height="900"
                          loading="lazy"
                          decoding="async">
-                    <div class="absolute inset-0 bg-gradient-to-l from-transparent to-amber-500/20"></div>
+                    <div class="featured-media-overlay" aria-hidden="true"></div>
+                    <div class="featured-media-badge">
+                        <i class="fas fa-star"></i>
+                        <span>{{ __('home.featured_workshop.title') }}</span>
+                    </div>
+                    <div class="featured-media-meta">
+                        <div class="meta-item">
+                            <i class="fas fa-calendar-alt" aria-hidden="true"></i>
+                            <span>{{ $featuredStartDateLabel }}</span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas {{ $featuredWorkshop->is_online ? 'fa-video' : 'fa-map-marker-alt' }}" aria-hidden="true"></i>
+                            <span>{{ $featuredLocationLabel }}</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
