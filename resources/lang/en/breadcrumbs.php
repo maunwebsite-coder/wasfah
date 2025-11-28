@@ -7,7 +7,7 @@ return [
     'workshops' => 'Workshops',
     'partnership' => 'Peahskill Partner',
     'bookings' => [
-        'index' => 'My Bookings',
+        'index' => 'Record Management',
         'show' => [
             'title' => 'Booking Details',
             'with_code' => 'Booking Details #:code',

@@ -16,6 +16,11 @@
                 <p class="mt-2 text-sm text-slate-600">{{ __('chef.dashboard.workshops.hero.description') }}</p>
             </div>
             <div class="flex flex-wrap items-center gap-3">
+                <a href="{{ route('chef.workshops.recordings') }}"
+                   class="inline-flex items-center gap-2 rounded-2xl border border-indigo-200 bg-white px-5 py-3 text-indigo-600 shadow-sm hover:border-indigo-300 hover:text-indigo-700">
+                    <i class="fas fa-play-circle"></i>
+                    {{ __('chef.dashboard.workshops.ctas.recordings') }}
+                </a>
                 <a href="{{ route('chef.workshops.create') }}"
                    class="inline-flex items-center gap-2 rounded-2xl bg-gradient-to-r from-orange-500 to-orange-600 px-5 py-3 text-white shadow hover:from-orange-600 hover:to-orange-700">
                     <i class="fas fa-plus"></i>

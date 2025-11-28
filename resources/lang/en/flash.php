@@ -8,6 +8,7 @@ return [
             'message_submitted' => "Thanks! Your message has been recorded and the {$brand} team will get back to you after reviewing it.",
         ],
         'workshop' => [
+            'created_online_no_link' => 'Workshop created successfully! Your meeting link is saved inside the workshop details.',
             'created_for_chef' => 'Workshop created successfully! You can track bookings from the dashboard.',
             'created_basic' => 'Workshop created successfully!',
             'updated' => 'Workshop updated successfully!',

@@ -206,8 +206,8 @@ class Breadcrumbs
                         $name = $chef?->name;
 
                         return $name
-                            ? 'بروفايل الشيف ' . $name
-                            : 'بروفايل الشيف';
+                            ? 'بروفايل ' . $name
+                            : 'بروفايل';
                     },
                 ],
             ],

@@ -6,8 +6,10 @@ use App\Models\Workshop;
 use App\Models\WorkshopBooking;
 use App\Models\Notification;
 use App\Services\GoogleMeetService;
+use App\Services\GoogleDriveService;
 use App\Services\WorkshopLinkSecurityService;
 use App\Services\WorkshopMeetingAttendeeSyncService;
+use App\Support\Concerns\ResolvesWorkshopRecordings;
 use App\Support\GoogleMeetAccountChooser;
 use App\Support\NotificationCopy;
 use Illuminate\Http\Request;
@@ -20,11 +22,49 @@ use Carbon\Carbon;
 
 class WorkshopBookingController extends Controller
 {
+    use ResolvesWorkshopRecordings;
+
     public function __construct(
         protected WorkshopLinkSecurityService $linkSecurity,
         protected GoogleMeetService $googleMeetService,
         protected WorkshopMeetingAttendeeSyncService $meetingAttendeeSyncService,
+        protected GoogleDriveService $googleDriveService,
     ) {
+    }
+
+    public function toggleRecordingVisibility(Request $request, Workshop $workshop)
+    {
+        $user = Auth::user();
+
+        if (! $user || ! ($user->isChef() && $workshop->user_id === $user->id)) {
+            abort(403);
+        }
+
+        $request->validate([
+            'hidden' => ['required', 'boolean'],
+            'scope' => ['nullable', 'in:public,platform'],
+        ]);
+
+        $hidden = $request->boolean('hidden');
+        $scope = $request->input('scope', 'public');
+
+        $updates = [];
+
+        if ($scope === 'platform' && Schema::hasColumn('workshops', 'hide_recording_everywhere')) {
+            $updates['hide_recording_everywhere'] = $hidden;
+        } elseif (Schema::hasColumn('workshops', 'hide_public_recording')) {
+            $updates['hide_public_recording'] = $hidden;
+        }
+
+        if (! empty($updates)) {
+            $workshop->forceFill($updates)->save();
+        }
+
+        $message = $hidden
+            ? __('bookings.recordings.hidden_success')
+            : __('bookings.recordings.shown_success');
+
+        return back()->with('success', $message);
     }
 
     public function store(Request $request)
@@ -122,7 +162,194 @@ class WorkshopBookingController extends Controller
                                   ->orderBy('created_at', 'desc')
                                   ->paginate(10);
 
-        return view('bookings.index', compact('bookings'));
+        $recordingEntries = collect();
+        $locale = app()->getLocale() === 'ar' ? 'ar' : 'en';
+        $dateFormat = __('chef.workshops.datetime_format');
+        $viewer = Auth::user();
+        $isChefOwner = $viewer && method_exists($viewer, 'isChef') && $viewer->isChef();
+
+        foreach ($bookings as $booking) {
+            $workshop = $booking->workshop;
+
+            if (! $workshop) {
+                continue;
+            }
+
+            $isOwner = $isChefOwner && $workshop->user_id === $viewer->id;
+            $isHiddenEverywhere = (bool) ($workshop->hide_recording_everywhere ?? false);
+
+            if ($isHiddenEverywhere && ! $isOwner) {
+                continue;
+            }
+
+            $resolvedRecordingUrl = $this->resolveRecordingUrl($workshop);
+
+            if (! $resolvedRecordingUrl && $this->googleDriveService->isEnabled() && $workshop->meeting_code) {
+                $resolvedRecordingUrl = $this->googleDriveService->findRecordingUrl($workshop->meeting_code);
+            }
+
+            $previewUrl = $this->buildRecordingPreviewUrl($resolvedRecordingUrl);
+
+            if (! $resolvedRecordingUrl && ! $previewUrl) {
+                continue;
+            }
+
+            $workshop->setAttribute('recording_resolved_url', $resolvedRecordingUrl);
+            $workshop->setAttribute('recording_preview_url', $previewUrl);
+            $workshop->setAttribute('recording_is_direct_video', $this->isDirectVideoUrl($resolvedRecordingUrl));
+
+            $startDateLabel = $workshop->start_date
+                ? $workshop->start_date->copy()->locale($locale)->translatedFormat($dateFormat)
+                : __('chef.workshops.unscheduled_time');
+
+            $locationLabel = $workshop->is_online
+                ? __('chef.workshops.online_live')
+                : ($workshop->location ?? __('chef.workshops.location_tbd'));
+
+            $recordingEntries->push([
+                'id' => 'booking-' . $booking->id,
+                'title' => $workshop->title,
+                'excerpt' => Str::limit(strip_tags((string) $workshop->description), 140),
+                'date_label' => $startDateLabel,
+                'location_label' => $locationLabel,
+                'watch_url' => $resolvedRecordingUrl,
+                'preview_url' => $previewUrl,
+                'details_url' => route('bookings.show', $booking),
+                'badge' => $previewUrl
+                    ? __('chef.recordings.badges.available')
+                    : __('chef.recordings.badges.drive'),
+                'type' => 'booking',
+                'sort_timestamp' => (int) ($workshop->start_date?->getTimestamp() ?? 0),
+                'poster' => $workshop->image
+                    ? asset('storage/' . ltrim($workshop->image, '/'))
+                    : null,
+                'is_direct_video' => $this->isDirectVideoUrl($resolvedRecordingUrl),
+                'access' => __('bookings.recordings.access.booking'),
+                'is_owner' => $isOwner,
+                'hidden' => (bool) ($workshop->hide_public_recording ?? false),
+                'hidden_global' => $isHiddenEverywhere,
+                'viewer_count' => $workshop->confirmedBookings()->count(),
+                'viewer_names' => $workshop->confirmedBookings()
+                    ->with('user:id,name')
+                    ->take(6)
+                    ->get()
+                    ->pluck('user.name')
+                    ->filter()
+                    ->values()
+                    ->all(),
+                'workshop_id' => $workshop->id,
+            ]);
+        }
+
+        // Add owner recordings that may not be in their bookings (for chefs managing their own workshops)
+        if ($isChefOwner) {
+            $ownerWorkshops = Workshop::query()
+                ->where('user_id', $viewer->id)
+                ->whereNotNull('recording_url')
+                ->orderByDesc('start_date')
+                ->limit(8)
+                ->get();
+
+            foreach ($ownerWorkshops as $workshop) {
+                $resolvedRecordingUrl = $this->resolveRecordingUrl($workshop);
+                $previewUrl = $this->buildRecordingPreviewUrl($resolvedRecordingUrl);
+
+                if (! $resolvedRecordingUrl && $this->googleDriveService->isEnabled() && $workshop->meeting_code) {
+                    $resolvedRecordingUrl = $this->googleDriveService->findRecordingUrl($workshop->meeting_code);
+                    $previewUrl = $this->buildRecordingPreviewUrl($resolvedRecordingUrl);
+                }
+
+                if (! $resolvedRecordingUrl && ! $previewUrl) {
+                    continue;
+                }
+
+                $startDateLabel = $workshop->start_date
+                    ? $workshop->start_date->copy()->locale($locale)->translatedFormat($dateFormat)
+                    : __('chef.workshops.unscheduled_time');
+
+                $recordingEntries->push([
+                    'id' => 'owner-workshop-' . $workshop->id,
+                    'title' => $workshop->title,
+                    'excerpt' => Str::limit(strip_tags((string) $workshop->description), 140),
+                    'date_label' => $startDateLabel,
+                    'location_label' => $workshop->is_online
+                        ? __('chef.workshops.online_live')
+                        : ($workshop->location ?? __('chef.workshops.location_tbd')),
+                    'watch_url' => $resolvedRecordingUrl,
+                    'preview_url' => $previewUrl,
+                    'details_url' => route('chef.workshops.edit', $workshop),
+                    'badge' => $previewUrl
+                        ? __('chef.recordings.badges.available')
+                        : __('chef.recordings.badges.drive'),
+                    'type' => 'workshop',
+                    'sort_timestamp' => (int) ($workshop->start_date?->getTimestamp() ?? 0),
+                    'poster' => $workshop->image
+                        ? asset('storage/' . ltrim($workshop->image, '/'))
+                        : null,
+                    'is_direct_video' => $this->isDirectVideoUrl($resolvedRecordingUrl),
+                    'access' => __('bookings.recordings.access.booking'),
+                    'is_owner' => true,
+                    'hidden' => (bool) ($workshop->hide_public_recording ?? false),
+                    'hidden_global' => (bool) ($workshop->hide_recording_everywhere ?? false),
+                    'viewer_count' => $workshop->confirmedBookings()->count(),
+                    'viewer_names' => $workshop->confirmedBookings()
+                        ->with('user:id,name')
+                        ->take(6)
+                        ->get()
+                        ->pluck('user.name')
+                        ->filter()
+                        ->values()
+                        ->all(),
+                    'workshop_id' => $workshop->id,
+                ]);
+            }
+        }
+
+        // Include latest Drive recordings (platform library) so users can still watch even without bookings
+        $driveEntries = collect($this->googleDriveService->listRecordings(null, 12))
+            ->filter(fn ($file) => $file instanceof \Google\Service\Drive\DriveFile)
+            ->map(function (\Google\Service\Drive\DriveFile $file) use ($locale, $dateFormat): array {
+                $modifiedAt = $file->getModifiedTime()
+                    ? Carbon::parse($file->getModifiedTime())->locale($locale)
+                    : null;
+
+                $fileId = $file->getId();
+                $previewUrl = $fileId
+                    ? sprintf('https://drive.google.com/file/d/%s/preview', $fileId)
+                    : null;
+
+                $watchUrl = $file->getWebViewLink() ?: $previewUrl ?: $file->getWebContentLink();
+                $description = $file->getDescription();
+
+                return [
+                    'id' => 'drive-' . ($fileId ?: uniqid('drive-', true)),
+                    'title' => $file->getName() ?: __('chef.recordings.untitled'),
+                    'excerpt' => $description
+                        ? Str::limit($description, 130)
+                        : __('chef.recordings.drive_default_description'),
+                    'date_label' => $modifiedAt
+                        ? $modifiedAt->translatedFormat($dateFormat)
+                        : __('chef.recordings.updated_unknown'),
+                    'location_label' => __('chef.recordings.library_label'),
+                    'watch_url' => $watchUrl,
+                    'preview_url' => $previewUrl,
+                    'details_url' => $watchUrl,
+                    'badge' => __('chef.recordings.badges.available'),
+                    'type' => 'drive',
+                    'sort_timestamp' => $modifiedAt ? $modifiedAt->getTimestamp() : 0,
+                    'poster' => $file->getIconLink(),
+                    'is_direct_video' => false,
+                    'access' => __('bookings.recordings.access.drive'),
+                ];
+            });
+
+        $recordingEntries = $recordingEntries
+            ->merge($driveEntries)
+            ->sortByDesc('sort_timestamp')
+            ->take(12)
+            ->values();
+
+        return view('bookings.index', compact('bookings', 'recordingEntries'));
     }
 
     public function show(WorkshopBooking $booking)

@@ -1,0 +1,40 @@
+            ->orderByDesc('confirmed_at')
+            ->orderByDesc('updated_at')
+            ->limit(6)
+            ->get();
+
+        return view('chef.workshops.join', [
+            'workshop' => $workshop,
+            'user' => $currentUser,
+            'meetingLink' => $workshop->meeting_link,
+            'recentParticipants' => $recentParticipants,
+            'startsAtIso' => optional($workshop->start_date)->toIso8601String(),
+            'hostRedirectUrl' => HostMeetRedirectLinkFactory::make($workshop),
+        ]);
+    }
+
+    public function startMeeting(Request $request, Workshop $workshop)
+    {
+        $this->authorizeWorkshop($workshop);
+        $meetingLockSupported = $this->meetingLockSupported();
+
+        if (!$request->expectsJson() && !$workshop->meeting_started_at) {
+            $request->validate([
+                'confirm_host' => ['accepted'],
+            ], [
+                'confirm_host.accepted' => 'يرجى تأكيد أنك المضيف قبل بدء الاجتماع.',
+            ]);
+        }
+
+        if (!$workshop->is_online || !$workshop->meeting_link) {
+            return response()->json([
+                'success' => false,
+                'message' => 'لا يمكن بدء اجتماع لورشة غير أونلاين أو بدون رابط جاهز.',
+            ], 422);
+        }
+
+        $alreadyStarted = (bool) $workshop->meeting_started_at;
+
+        if (!$alreadyStarted) {
+            $workshop->meeting_started_at = now();
+            $workshop->meeting_started_by = Auth::id();

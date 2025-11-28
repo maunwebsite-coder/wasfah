@@ -42,6 +42,12 @@
                 </div>
 
                 <div class="flex flex-wrap justify-center md:justify-end gap-3">
+                    @if ($user->isChef())
+                        <a href="{{ route('bookings.index') }}" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-indigo-600 text-white font-medium shadow-md transition-all hover:bg-indigo-700 hover:shadow-lg">
+                            <i class="fas fa-calendar-check text-sm"></i>
+                            <span>ورش العمل المسجّلة</span>
+                        </a>
+                    @endif
                     <a href="#profile-settings" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-orange-500 text-white font-medium shadow-md transition-all hover:bg-orange-600 hover:shadow-lg">
                         <i class="fas fa-edit text-sm"></i>
                         <span>تعديل البيانات</span>

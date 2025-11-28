@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Recipe;
 use App\Models\User;
 use App\Models\Workshop;
+use App\Models\WorkshopBooking;
 use App\Services\GoogleDriveService;
 use App\Support\BrandAssets;
 use App\Support\Concerns\ResolvesWorkshopRecordings;
@@ -127,7 +128,9 @@ class ChefPublicProfileController extends Controller
         $recordingEntries = $this->buildRecordingEntries(
             $recordedWorkshops,
             $carbonLocale,
-            $workshopDateTimeFormat
+            $workshopDateTimeFormat,
+            $viewer ? $this->confirmedBookingsForViewer($viewer, $recordedWorkshops->pluck('id')->all()) : [],
+            $isOwner
         );
 
         if (!$visibilityColumnExists) {
@@ -257,10 +260,12 @@ class ChefPublicProfileController extends Controller
     protected function buildRecordingEntries(
         Collection $recordedWorkshops,
         string $locale,
-        string $dateTimeFormat
+        string $dateTimeFormat,
+        array $allowedWorkshopIds = [],
+        bool $isOwner = false
     ): Collection {
         $workshopEntries = $recordedWorkshops
-            ->map(function (Workshop $workshop) use ($locale, $dateTimeFormat): ?array {
+            ->map(function (Workshop $workshop) use ($locale, $dateTimeFormat, $allowedWorkshopIds, $isOwner): ?array {
                 $startDateLabel = $workshop->start_date
                     ? $workshop->start_date->copy()->locale($locale)->translatedFormat($dateTimeFormat)
                     : __('chef.workshops.unscheduled_time');
@@ -273,6 +278,13 @@ class ChefPublicProfileController extends Controller
                 $previewUrl = $workshop->getAttribute('video_preview_url');
 
                 if (! $recordingUrl && ! $previewUrl) {
+                    return null;
+                }
+
+                $isHiddenPublic = (bool) ($workshop->hide_public_recording ?? false);
+                $isHiddenEverywhere = (bool) ($workshop->hide_recording_everywhere ?? false);
+
+                if (! $isOwner && ($isHiddenEverywhere || $isHiddenPublic || ! in_array($workshop->id, $allowedWorkshopIds, true))) {
                     return null;
                 }
 
@@ -347,6 +359,24 @@ class ChefPublicProfileController extends Controller
             ->sortByDesc('sort_timestamp')
             ->take(12)
             ->values();
+    }
+
+    /**
+     * Get IDs of workshops this viewer has confirmed bookings for.
+     */
+    protected function confirmedBookingsForViewer(User $viewer, array $workshopIds): array
+    {
+        if (empty($workshopIds)) {
+            return [];
+        }
+
+        return WorkshopBooking::query()
+            ->where('user_id', $viewer->id)
+            ->whereIn('workshop_id', $workshopIds)
+            ->where('status', 'confirmed')
+            ->pluck('workshop_id')
+            ->unique()
+            ->all();
     }
 }
 

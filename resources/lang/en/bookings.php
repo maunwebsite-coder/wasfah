@@ -1,11 +1,11 @@
 <?php
 
 return [
-    'meta_title' => 'My bookings - Wasfah',
+    'meta_title' => 'Record Management',
 
     'hero' => [
-        'title' => 'My bookings',
-        'description' => 'Every workshop you booked on Wasfah in one place. Track each status and enter the live room once it is confirmed.',
+        'title' => 'Record Management',
+        'description' => 'Every workshop recording available to you in one place. Watch past sessions or track booking status while you wait.',
         'explore' => 'Explore new workshops',
         'profile' => 'Back to profile',
     ],
@@ -15,6 +15,29 @@ return [
         'confirmed' => 'Confirmed bookings',
         'pending' => 'Pending review',
         'updated' => 'Last updated',
+    ],
+
+    'recordings' => [
+        'manage_title' => 'Record management',
+        'manage_note' => 'Control which recordings appear in your view, copy their links, and understand who can access them.',
+        'hide' => 'Hide from list',
+        'show_all' => 'Show all hidden',
+        'access_label' => 'Access',
+        'access' => [
+            'booking' => 'Only you (linked to your booking)',
+            'drive' => 'Anyone with the link (Google Drive)',
+        ],
+        'copy_link' => 'Copy link',
+        'copied' => 'Copied',
+        'hidden_badge' => 'Hidden from public profile',
+        'show_global' => 'Show on public profile',
+        'hide_global' => 'Hide from public profile',
+        'hide_platform' => 'Hide across platform',
+        'show_platform' => 'Show across platform',
+        'viewers' => 'Can watch: :count confirmed',
+        'viewer_list' => 'Recent viewers',
+        'hidden_success' => 'Recording hidden from public profile.',
+        'shown_success' => 'Recording shown on public profile.',
     ],
 
     'history' => [
@@ -33,6 +56,9 @@ return [
         'actions' => [
             'details' => 'Details',
             'enter_room' => 'Enter workshop room',
+            'cancel' => 'Cancel booking',
+            'cancel_confirm' => 'Are you sure you want to cancel this booking? The Wasfah team will be notified automatically.',
+            'watch_recording' => 'Watch recording',
         ],
         'empty' => [
             'message' => 'You have not booked a workshop yet. Explore the available sessions and reserve your first seat.',

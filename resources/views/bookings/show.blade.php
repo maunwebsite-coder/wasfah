@@ -16,7 +16,7 @@
     <div class="container mx-auto px-4">
         <div class="mb-6 flex flex-wrap items-center justify-between gap-3">
             <div>
-                <p class="text-sm uppercase tracking-widest text-orange-500 font-semibold">My bookings</p>
+                <p class="text-sm uppercase tracking-widest text-orange-500 font-semibold">{{ __('bookings.hero.title') }}</p>
                 <h1 class="text-3xl font-bold text-slate-900">Booking details #{{ $booking->id }}</h1>
                 <p class="text-slate-500 mt-1">Review the workshop details, booking status, and the available join links.</p>
             </div>
@@ -66,11 +66,11 @@
                         </dd>
                     </div>
                 </dl>
-            </div>
+                </div>
 
-            <div class="space-y-6">
-                <div class="rounded-3xl border border-slate-100 bg-white p-6 shadow-sm">
-                    <p class="text-xs uppercase tracking-wider text-slate-500 font-semibold">Location / join method</p>
+                <div class="space-y-6">
+                    <div class="rounded-3xl border border-slate-100 bg-white p-6 shadow-sm">
+                        <p class="text-xs uppercase tracking-wider text-slate-500 font-semibold">Location / join method</p>
                     <h3 class="mt-2 text-lg font-semibold text-slate-900">
                         {{ $workshop->is_online ? 'Online workshop' : 'In-person workshop' }}
                     </h3>
@@ -112,6 +112,20 @@
                         @endif
                     @endif
                 </div>
+
+                @if (!empty($workshop->recording_url))
+                    <div class="rounded-3xl border border-indigo-100 bg-indigo-50 p-6 shadow-sm">
+                        <p class="text-xs uppercase tracking-wider text-indigo-600 font-semibold">Recorded workshop</p>
+                        <h3 class="mt-2 text-lg font-semibold text-slate-900">
+                            {{ $workshop->title ?? 'Workshop recording' }}
+                        </h3>
+                        <p class="mt-1 text-sm text-slate-600">Watch the recording of this session any time.</p>
+                        <a href="{{ $workshop->recording_url }}" target="_blank" rel="noopener" class="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white shadow hover:bg-slate-800">
+                            <i class="fas fa-play"></i>
+                            {{ __('bookings.history.actions.watch_recording') }}
+                        </a>
+                    </div>
+                @endif
 
                 @if ($booking->status === 'pending')
                     <div class="rounded-3xl border border-amber-100 bg-amber-50 p-5 text-sm text-amber-700">

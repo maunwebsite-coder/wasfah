@@ -7,7 +7,7 @@ return [
     'workshops' => 'ورشات العمل',
     'partnership' => 'شريك Peahskill',
     'bookings' => [
-        'index' => 'حجوزاتي',
+        'index' => 'إدارة التسجيلات',
         'show' => [
             'title' => 'تفاصيل الحجز',
             'with_code' => 'تفاصيل الحجز #:code',

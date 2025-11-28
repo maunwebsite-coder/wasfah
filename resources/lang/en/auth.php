@@ -60,6 +60,7 @@ return [
         'name_label' => 'Full name',
         'name_placeholder' => 'Type your full name here',
         'terms_statement' => 'I agree to Peahskill\'s Terms of Service and Privacy Policy.',
+        'terms_statement_html' => 'I agree to Peahskill\'s :terms and :privacy.',
         'terms_hint' => 'Open each policy link below in its own page before continuing.',
         'terms_link' => 'Terms of Service',
         'privacy_link' => 'Privacy Policy',

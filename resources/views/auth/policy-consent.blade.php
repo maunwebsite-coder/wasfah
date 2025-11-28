@@ -2,7 +2,15 @@
 
 @php
     $copy = \Illuminate\Support\Facades\Lang::get('auth.policy_consent');
-    $termsStatement = __('auth.policy_consent.terms_statement');
+    $termsLinkLabel = __('auth.policy_consent.terms_link');
+    $privacyLinkLabel = __('auth.policy_consent.privacy_link');
+    $termsStatementHtml = __(
+        'auth.policy_consent.terms_statement_html',
+        [
+            'terms' => '<a href="' . e($termsUrl) . '" target="_blank" rel="noopener noreferrer" class="font-semibold text-orange-600 hover:text-orange-700 hover:underline">' . e($termsLinkLabel) . '</a>',
+            'privacy' => '<a href="' . e($privacyUrl) . '" target="_blank" rel="noopener noreferrer" class="font-semibold text-orange-600 hover:text-orange-700 hover:underline">' . e($privacyLinkLabel) . '</a>',
+        ]
+    );
     $termsHint = __('auth.policy_consent.terms_hint');
 @endphp
 
@@ -53,18 +61,30 @@
                     >
                     <div class="flex-1">
                         <label for="accept_terms" class="text-sm text-gray-800 leading-6">
-                            {{ $termsStatement }}
+                            {!! $termsStatementHtml !!}
                             <span class="block text-xs text-gray-500 mt-1">
                                 {{ $termsHint }}
                             </span>
                         </label>
-                        <div class="mt-3 flex flex-wrap items-center gap-3 text-xs font-semibold text-orange-600">
-                            <a href="{{ $termsUrl }}" target="_blank" rel="noopener noreferrer" class="hover:underline">
-                                {{ __('auth.policy_consent.terms_link') }}
+                        <div class="mt-3 flex flex-wrap items-center gap-3 text-xs font-semibold text-orange-700">
+                            <a
+                                href="{{ $termsUrl }}"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="inline-flex items-center gap-2 rounded-full border border-orange-100 bg-white px-3 py-1 hover:bg-orange-50 hover:border-orange-200"
+                            >
+                                <i class="fas fa-file-contract text-[11px]"></i>
+                                {{ $termsLinkLabel }}
                             </a>
                             <span class="text-gray-300" aria-hidden="true">•</span>
-                            <a href="{{ $privacyUrl }}" target="_blank" rel="noopener noreferrer" class="hover:underline">
-                                {{ __('auth.policy_consent.privacy_link') }}
+                            <a
+                                href="{{ $privacyUrl }}"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="inline-flex items-center gap-2 rounded-full border border-orange-100 bg-white px-3 py-1 hover:bg-orange-50 hover:border-orange-200"
+                            >
+                                <i class="fas fa-shield-alt text-[11px]"></i>
+                                {{ $privacyLinkLabel }}
                             </a>
                         </div>
                     </div>

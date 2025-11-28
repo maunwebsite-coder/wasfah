@@ -1,0 +1,200 @@
+        }
+
+        if (!$workshop->meeting_started_by) {
+            $workshop->meeting_started_by = Auth::id();
+        }
+
+        if ($meetingLockSupported && $workshop->meeting_locked_at !== null) {
+            $workshop->meeting_locked_at = null;
+        }
+
+        $dirtyAttributes = ['meeting_started_at', 'meeting_started_by'];
+
+        if ($meetingLockSupported) {
+            $dirtyAttributes[] = 'meeting_locked_at';
+        }
+
+        if ($workshop->isDirty($dirtyAttributes)) {
+            $workshop->save();
+        }
+
+        $payload = [
+            'success' => true,
+            'already_started' => $alreadyStarted,
+            'started_at' => $workshop->meeting_started_at->toIso8601String(),
+        ];
+
+        if ($request->expectsJson()) {
+            return response()->json($payload);
+        }
+
+        return back()->with('success', $alreadyStarted ? 'تم بدء الاجتماع مسبقاً.' : 'تم فتح الغرفة ويمكن للمشاركين الدخول الآن.');
+    }
+
+    public function resetHostDeviceLock(Request $request, Workshop $workshop): RedirectResponse
+    {
+        $this->authorizeWorkshop($workshop);
+
+        if (!$this->hostDeviceLockSupported()) {
+            return redirect()
+                ->route('chef.workshops.join', $workshop)
+                ->with('info', 'لا يتطلب هذا الاجتماع إعادة تعيين للجهاز الموثوق.');
+        }
+
+        $validator = Validator::make($request->all(), [
+            'password' => ['required', 'current_password'],
+        ], [
+            'password.required' => 'يرجى إدخال كلمة المرور لتأكيد الهوية.',
+            'password.current_password' => 'كلمة المرور المدخلة غير صحيحة.',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()
+                ->route('chef.workshops.index')
+                ->withErrors($validator)
+                ->withInput($request->except('password'))
+                ->with([
+                    'error' => 'تعذر تأكيد الهوية. يرجى المحاولة مرة أخرى.',
+                    'host_join_device_reset_workshop_slug' => $workshop->slug,
+                    'host_join_device_reset_workshop_title' => $workshop->title,
+                    'host_join_device_reset_reason' => 'manual_reset_validation_failed',
+                ]);
+        }
+
+        $this->clearHostDeviceLock($workshop);
+
+        $cookieName = $this->getHostJoinDeviceCookieName($workshop);
+        Cookie::queue(Cookie::forget(
+            $cookieName,
+            '/',
+            config('session.domain')
+        ));
+
+        Log::info('Chef reset host workshop device lock.', [
+            'workshop_id' => $workshop->id,
+            'user_id' => Auth::id(),
+        ]);
+
+        return redirect()
+            ->route('chef.workshops.join', $workshop)
+            ->with('success', 'تمت إعادة تعيين الجهاز الموثوق. يمكنك الآن فتح غرفة الورشة من هذا الجهاز.');
+    }
+
+    public function updatePresence(Request $request, Workshop $workshop)
+    {
+        $this->authorizeWorkshop($workshop);
+
+        $validated = $request->validate([
+            'state' => ['required', Rule::in(['online', 'offline'])],
+        ]);
+
+        $state = $validated['state'];
+        $meetingStarted = (bool) $workshop->meeting_started_at;
+        $meetingLockSupported = $this->meetingLockSupported();
+
+        if (!$meetingLockSupported) {
+            $dirty = false;
+
+            if ($state === 'online' && !$meetingStarted) {
+                $workshop->meeting_started_at = now();
+                $workshop->meeting_started_by = Auth::id();
+                $dirty = true;
+            }
+
+            if ($state === 'online' && !$workshop->meeting_started_by) {
+                $workshop->meeting_started_by = Auth::id();
+                $dirty = true;
+            }
+
+            if ($dirty) {
+                $workshop->save();
+            }
+
+            return response()->json([
+                'success' => true,
+                'meeting_started' => (bool) $workshop->meeting_started_at,
+                'meeting_locked' => false,
+                'locked_at' => null,
+            ]);
+        }
+
+        if (!$meetingStarted) {
+            if ($state === 'offline' && $workshop->meeting_locked_at !== null) {
+                $workshop->meeting_locked_at = null;
+                $workshop->save();
+            }
+
+            return response()->json([
+                'success' => true,
+                'meeting_started' => false,
+                'meeting_locked' => (bool) $workshop->meeting_locked_at,
+                'locked_at' => optional($workshop->meeting_locked_at)->toIso8601String(),
+            ]);
+        }
+
+        $lockChanged = false;
+
+        if ($state === 'online') {
+            if ($workshop->meeting_locked_at !== null) {
+                $workshop->meeting_locked_at = null;
+                $lockChanged = true;
+            }
+        } else {
+            if ($workshop->meeting_locked_at === null) {
+                $workshop->meeting_locked_at = now();
+                $lockChanged = true;
+            }
+        }
+
+        $starterChanged = false;
+
+        if (!$workshop->meeting_started_by && $state === 'online') {
+            $workshop->meeting_started_by = Auth::id();
+            $starterChanged = true;
+        }
+
+        if ($lockChanged || $starterChanged) {
+            $workshop->save();
+        }
+
+        return response()->json([
+            'success' => true,
+            'meeting_started' => true,
+            'meeting_locked' => (bool) $workshop->meeting_locked_at,
+            'locked_at' => optional($workshop->meeting_locked_at)->toIso8601String(),
+        ]);
+    }
+
+    public function syncRecording(Request $request, Workshop $workshop): JsonResponse
+    {
+        $this->authorizeWorkshop($workshop);
+
+        if (!$workshop->is_online) {
+            return $this->recordingJsonError(
+                __('chef.dashboard.workshops.host_room.recording.messages.offline'),
+                422
+            );
+        }
+
+        if (!$this->googleDriveService->isEnabled()) {
+            return $this->recordingJsonError(
+                __('chef.dashboard.workshops.host_room.recording.messages.disabled'),
+                503
+            );
+        }
+
+        $meetingCode = $workshop->meeting_code ?: Workshop::extractMeetingCode($workshop->meeting_link);
+
+        if (!$meetingCode) {
+            return $this->recordingJsonError(
+                __('chef.dashboard.workshops.host_room.recording.messages.missing_code'),
+                422
+            );
+        }
+
+        $recordingUrl = $this->googleDriveService->findRecordingUrl($meetingCode);
+
+        if (!$recordingUrl) {
+            return $this->recordingJsonError(
+                __('chef.dashboard.workshops.host_room.recording.messages.not_found'),
+                404

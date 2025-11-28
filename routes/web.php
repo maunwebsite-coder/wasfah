@@ -293,6 +293,7 @@ Route::middleware(['auth', 'chef'])->prefix('expert')->name('chef.')->group(func
     Route::post('workshops/{workshop}/presence', [ChefWorkshopController::class, 'updatePresence'])->name('workshops.presence');
     Route::post('workshops/{workshop}/reset-device', [ChefWorkshopController::class, 'resetHostDeviceLock'])->name('workshops.reset-device');
     Route::post('workshops/generate-meeting-link', [ChefWorkshopController::class, 'generateMeetingLink'])->name('workshops.generate-link');
+    Route::get('workshops/recordings', [ChefWorkshopController::class, 'recordings'])->name('workshops.recordings');
     Route::get('workshops/earnings', [ChefWorkshopController::class, 'earnings'])->name('workshops.earnings');
     Route::resource('workshops', ChefWorkshopController::class)->except(['show']);
 });
@@ -341,20 +342,21 @@ Route::middleware(['auth', 'admin'])->group(function () {
 // مسارات الحجوزات - محمية بـ middleware المصادقة (باستثناء الانضمام الذي يسمح للضيوف)
 Route::middleware('auth')->group(function () {
     Route::get('/meetings', [UserMeetingController::class, 'index'])->name('meetings.index');
-    Route::post('/bookings', [App\Http\Controllers\WorkshopBookingController::class, 'store'])->name('bookings.store');
-    Route::get('/bookings', [App\Http\Controllers\WorkshopBookingController::class, 'index'])->name('bookings.index');
-    Route::get('/bookings/{booking}', [App\Http\Controllers\WorkshopBookingController::class, 'show'])->name('bookings.show');
-    Route::post('/bookings/{booking}/cancel', [App\Http\Controllers\WorkshopBookingController::class, 'cancel'])->name('bookings.cancel');
+    Route::post('/record-management', [App\Http\Controllers\WorkshopBookingController::class, 'store'])->name('bookings.store');
+    Route::get('/record-management', [App\Http\Controllers\WorkshopBookingController::class, 'index'])->name('bookings.index');
+    Route::get('/record-management/{booking}', [App\Http\Controllers\WorkshopBookingController::class, 'show'])->name('bookings.show');
+    Route::post('/record-management/{booking}/cancel', [App\Http\Controllers\WorkshopBookingController::class, 'cancel'])->name('bookings.cancel');
+    Route::post('/record-management/recordings/{workshop}/visibility', [App\Http\Controllers\WorkshopBookingController::class, 'toggleRecordingVisibility'])->name('bookings.recordings.visibility');
 
     Route::post('/payments/stripe/intent', [StripeBookingController::class, 'createIntent'])->name('payments.stripe.intent');
     Route::post('/payments/stripe/confirm', [StripeBookingController::class, 'confirm'])->name('payments.stripe.confirm');
 });
 
-Route::get('/bookings/{booking:public_code}/status', [App\Http\Controllers\WorkshopBookingController::class, 'status'])
+Route::get('/record-management/{booking:public_code}/status', [App\Http\Controllers\WorkshopBookingController::class, 'status'])
     ->name('bookings.status');
-Route::get('/bookings/{booking:public_code}/join', [App\Http\Controllers\WorkshopBookingController::class, 'join'])
+Route::get('/record-management/{booking:public_code}/join', [App\Http\Controllers\WorkshopBookingController::class, 'join'])
     ->name('bookings.join');
-Route::get('/bookings/{booking:public_code}/launch', [App\Http\Controllers\WorkshopBookingController::class, 'launch'])
+Route::get('/record-management/{booking:public_code}/launch', [App\Http\Controllers\WorkshopBookingController::class, 'launch'])
     ->name('bookings.launch');
 
 // مسارات الإشعارات - محمية بـ middleware المصادقة
@@ -514,6 +516,12 @@ Route::post('/test-amazon-extraction', [App\Http\Controllers\Admin\AdminToolsCon
 // مسارات الاتصال
 Route::get('/contact', [App\Http\Controllers\ContactController::class, 'index'])->name('contact');
 Route::post('/contact/send', [App\Http\Controllers\ContactController::class, 'sendMessage'])->name('contact.send');
+
+// إعادة توجيه المسارات القديمة للورشات المسجلة إلى المسار الجديد
+Route::get('/bookings/{any?}', function ($any = null) {
+    $suffix = $any ? '/' . ltrim($any, '/') : '';
+    return redirect('/record-management' . $suffix, 301);
+})->where('any', '.*');
 
 
 

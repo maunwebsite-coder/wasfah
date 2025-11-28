@@ -12,6 +12,7 @@ use App\Services\EnhancedImageUploadService;
 use App\Services\GoogleDriveService;
 use App\Services\GoogleMeetService;
 use App\Services\WorkshopMeetingAttendeeSyncService;
+use App\Support\Concerns\ResolvesWorkshopRecordings;
 use App\Support\ImageUploadConstraints;
 use App\Support\HostMeetRedirectLinkFactory;
 use App\Support\Timezones;
@@ -32,6 +33,8 @@ use Illuminate\Validation\ValidationException;
 
 class WorkshopController extends Controller
 {
+    use ResolvesWorkshopRecordings;
+
     public function __construct(
         protected GoogleMeetService $googleMeetService,
         protected WorkshopMeetingAttendeeSyncService $meetingAttendeeSync,
@@ -63,6 +66,48 @@ class WorkshopController extends Controller
         ];
 
         return view('chef.workshops.index', compact('workshops', 'stats'));
+    }
+
+    public function recordings(): \Illuminate\View\View
+    {
+        $chefId = Auth::id();
+
+        $workshops = Workshop::query()
+            ->where('user_id', $chefId)
+            ->where(function ($query) {
+                $query->whereNotNull('recording_url')
+                    ->orWhereNotNull('meeting_code')
+                    ->orWhereNotNull('meeting_link');
+            })
+            ->orderByDesc('start_date')
+            ->paginate(9)
+            ->withQueryString();
+
+        $driveEnabled = $this->googleDriveService->isEnabled();
+
+        foreach ($workshops as $workshop) {
+            $recordingUrl = $this->resolveRecordingUrl($workshop);
+            $recordingPreview = $this->buildRecordingPreviewUrl($recordingUrl);
+
+            if (! $recordingUrl && $driveEnabled && $workshop->meeting_code) {
+                $recordingUrl = $this->googleDriveService->findRecordingUrl($workshop->meeting_code);
+                $recordingPreview = $this->buildRecordingPreviewUrl($recordingUrl);
+            }
+
+            $workshop->setAttribute('recording_source_url', $recordingUrl);
+            $workshop->setAttribute('recording_preview_url', $recordingPreview);
+            $workshop->setAttribute(
+                'formatted_start_date',
+                $workshop->start_date
+                    ? $workshop->start_date->locale(app()->getLocale())->translatedFormat(__('chef.workshops.datetime_format'))
+                    : null
+            );
+        }
+
+        return view('chef.workshops.recordings', [
+            'workshops' => $workshops,
+            'driveEnabled' => $driveEnabled,
+        ]);
     }
 
     public function earnings(): \Illuminate\View\View
@@ -171,13 +216,9 @@ class WorkshopController extends Controller
         $this->meetingAttendeeSync->sync($workshop);
         $this->notifyAdminsIfReviewRequired($workshop);
 
-        $successMessage = 'تم إنشاء الورشة بنجاح!';
-
-        if ($workshop->is_online && $workshop->meeting_link) {
-            $successMessage .= ' هذا هو رابط الاجتماع الخاص بك: ' . $workshop->meeting_link;
-        } else {
-            $successMessage .= ' يمكنك متابعة حالة الحجوزات من لوحة التحكم.';
-        }
+        $successMessage = $workshop->is_online
+            ? __('flash.success.workshop.created_online_no_link')
+            : __('flash.success.workshop.created_for_chef');
 
         return redirect()
             ->route('chef.workshops.index')

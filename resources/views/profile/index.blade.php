@@ -87,8 +87,8 @@
                             </span>
                         @endif
                         <a href="{{ route('bookings.index') }}" class="inline-flex items-center gap-2 rounded-xl border border-orange-200 bg-orange-50 px-3 py-1 font-semibold text-orange-600 hover:border-orange-300 hover:text-orange-700">
-                            <i class="fas fa-arrow-left text-xs"></i>
-                            View all bookings
+                            <i class="fas fa-calendar-check text-xs"></i>
+                            إدارة الورشات المسجلة
                         </a>
                     </div>
 </div>

@@ -109,6 +109,7 @@ return [
             'ctas' => [
                 'new' => 'Add new workshop',
                 'earnings' => 'Workshop earnings',
+                'recordings' => 'Recordings',
                 'recipes' => 'Back to recipes',
             ],
             'device_reset' => [
@@ -314,6 +315,7 @@ return [
         'title' => 'Recorded workshops',
         'description' => 'Catch up on :name\'s completed sessions and watch every recording from here.',
         'view_all' => 'Open recordings page',
+        'button' => 'Recording workshops',
         'fallback_drive' => 'Recording available via Google Drive',
         'badges' => [
             'available' => 'Playable now',
@@ -677,10 +679,10 @@ return [
 
     'recipes' => [
         'tabs' => [
-            'public' => 'Public recipes',
-            'exclusive' => 'Exclusive recipes',
+            'public' => '',
+            'exclusive' => '',
         ],
-        'public_empty' => 'No public recipes yet. Stay tuned for the upcoming creations!',
+        'public_empty' => '',
         'exclusive_empty' => 'No exclusive recipes yet. Share your premium creations here.',
         'category_fallback' => 'Recipe',
         'no_rating' => 'No rating yet',

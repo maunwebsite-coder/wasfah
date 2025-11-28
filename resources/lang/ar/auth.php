@@ -60,6 +60,7 @@ return [
         'name_label' => 'الاسم الكامل',
         'name_placeholder' => 'اكتب اسمك الكامل هنا',
         'terms_statement' => 'أوافق على شروط الخدمة وسياسة الخصوصية الخاصة بـ Peahskill.',
+        'terms_statement_html' => 'أوافق على :terms و :privacy الخاصة بـ Peahskill.',
         'terms_hint' => 'اضغط على كل رابط أدناه لفتح صفحة السياسة المخصصة قبل المتابعة.',
         'terms_link' => 'شروط الخدمة',
         'privacy_link' => 'سياسة الخصوصية',
