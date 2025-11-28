@@ -28,8 +28,8 @@ return [
     ],
 
     'premium' => [
-        'title' => 'Gourmet dessert workshops',
-        'subtitle' => 'Join our exclusive professional workshops and learn the secrets to crafting the finest international desserts',
+        'title' => 'Peahskill signature workshops',
+        'subtitle' => 'Train with Peahskill pastry mentors in curated masterclasses that blend global techniques with hands-on practice',
     ],
 
     'cards' => [
@@ -50,20 +50,20 @@ return [
         'title' => 'Why choose our workshops?',
         'items' => [
             'chefs' => [
-                'title' => 'Expert chefs',
-                'description' => 'Learn from leading chefs and specialists.',
+                'title' => 'Peahskill pastry mentors',
+                'description' => 'Train directly with Peahskill-certified pastry coaches using our proven methods.',
             ],
             'hands_on' => [
-                'title' => 'Hands-on practice',
-                'description' => 'Our workshops are interactive and focused on practical application.',
+                'title' => 'Live, step-by-step coaching',
+                'description' => 'Follow along in real time with guided checkpoints instead of prerecorded lectures.',
             ],
             'ingredients' => [
-                'title' => 'Premium ingredients',
-                'description' => 'We provide top-quality fresh ingredients for the best results.',
+                'title' => 'Curated ingredient lists',
+                'description' => 'Peahskill-approved shopping lists and swaps keep every dessert consistent.',
             ],
             'certificate' => [
-                'title' => 'Completion certificate',
-                'description' => 'Receive a recognition certificate after every workshop.',
+                'title' => 'Peahskill completion badge',
+                'description' => 'Earn a shareable certificate and unlock advanced tracks when you finish.',
             ],
         ],
     ],

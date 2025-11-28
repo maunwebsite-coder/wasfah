@@ -90,6 +90,120 @@
         background-size: 20px 20px;
         background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
     }
+
+    /* Why section */
+    .why-carousel {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .why-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 1.5rem;
+        align-items: stretch;
+    }
+
+    .why-card {
+        background: linear-gradient(140deg, #fff7ed 0%, #fef3c7 45%, #fffbeb 100%);
+        border: 1px solid #fde68a;
+        box-shadow: 0 10px 30px -18px rgba(249, 115, 22, 0.8);
+        border-radius: 1.25rem;
+        padding: 1.5rem;
+        min-height: 220px;
+        height: 100%;
+        text-align: left;
+        transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+        display: flex;
+        flex-direction: column;
+        gap: 0.65rem;
+    }
+
+    .why-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 18px 40px -20px rgba(249, 115, 22, 0.8);
+        border-color: #f59e0b;
+    }
+
+    .why-card .why-icon {
+        width: 3.25rem;
+        height: 3.25rem;
+        border-radius: 9999px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: radial-gradient(circle at 30% 30%, #fb923c, #f97316);
+        color: #fff;
+        margin-bottom: 1rem;
+        box-shadow: 0 10px 25px -14px rgba(249, 115, 22, 0.9);
+    }
+
+    .why-card h3 {
+        font-size: 1.1rem;
+        font-weight: 800;
+        color: #111827;
+        margin-bottom: 0.4rem;
+    }
+
+    .why-card p {
+        color: #4b5563;
+        line-height: 1.55;
+    }
+
+    .why-fade {
+        display: none;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 72px;
+        pointer-events: none;
+        background: linear-gradient(90deg, #ffffff 0%, rgba(255, 255, 255, 0) 100%);
+    }
+
+    .why-fade-right {
+        right: -8px;
+    }
+
+    .why-fade-left {
+        left: -8px;
+        transform: scaleX(-1);
+    }
+
+    @media (max-width: 1024px) {
+        .why-cards {
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        }
+    }
+
+    @media (max-width: 768px) {
+        .why-cards {
+            display: flex;
+            gap: 1rem;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scroll-padding: 1rem;
+            padding: 0.5rem 1rem 1.25rem;
+            scrollbar-width: none;
+        }
+
+        .why-cards::-webkit-scrollbar {
+            display: none;
+        }
+
+        .why-card {
+            min-width: 78vw;
+            max-width: 86vw;
+            flex: 0 0 auto;
+            scroll-snap-align: center;
+            scroll-snap-stop: always;
+            text-align: start;
+            min-height: 240px;
+        }
+
+        .why-fade {
+            display: none;
+        }
+    }
 </style>
 @endpush
 
@@ -111,10 +225,10 @@
         'user' => data_get($whatsappBookingConfig ?? [], 'user', []),
     ];
     $whyIcons = [
-        'chefs' => 'fas fa-user-tie',
-        'hands_on' => 'fas fa-hands-helping',
-        'ingredients' => 'fas fa-star',
-        'certificate' => 'fas fa-certificate',
+        'chefs' => 'fas fa-utensils',
+        'hands_on' => 'fas fa-chalkboard-teacher',
+        'ingredients' => 'fas fa-leaf',
+        'certificate' => 'fas fa-award',
     ];
     $cardPlaceholderUrl = sprintf(
         'https://placehold.co/600x400/f87171/FFFFFF?text=%s',
@@ -432,18 +546,24 @@
 
     <!-- Why Choose Us? Section -->
     <section class="py-16 bg-white">
-        <div class="container mx-auto px-6 text-center">
-            <h2 class="text-3xl font-bold text-gray-800 mb-10">{{ __('workshops.why.title') }}</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                @foreach($whyItems as $key => $item)
-                    <div class="flex flex-col items-center">
-                        <div class="bg-orange-100 text-orange-500 rounded-full h-16 w-16 flex items-center justify-center mb-4">
-                            <i class="{{ $whyIcons[$key] ?? 'fas fa-star' }} text-3xl"></i>
-                        </div>
-                        <h3 class="text-xl font-bold text-gray-800 mb-2">{{ $item['title'] ?? '' }}</h3>
-                        <p class="text-gray-600">{{ $item['description'] ?? '' }}</p>
-                    </div>
-                @endforeach
+        <div class="container mx-auto px-6">
+            <div class="text-center max-w-3xl mx-auto mb-10">
+                <h2 class="text-3xl font-bold text-gray-800">{{ __('workshops.why.title') }}</h2>
+            </div>
+            <div class="why-carousel">
+                <div class="why-cards" aria-label="{{ __('workshops.why.title') }}">
+                    @foreach($whyItems as $key => $item)
+                        <article class="why-card">
+                            <div class="why-icon">
+                                <i class="{{ $whyIcons[$key] ?? 'fas fa-star' }} text-xl"></i>
+                            </div>
+                            <h3>{{ $item['title'] ?? '' }}</h3>
+                            <p>{{ $item['description'] ?? '' }}</p>
+                        </article>
+                    @endforeach
+                </div>
+                <div class="why-fade why-fade-left" aria-hidden="true"></div>
+                <div class="why-fade why-fade-right" aria-hidden="true"></div>
             </div>
         </div>
     </section>
