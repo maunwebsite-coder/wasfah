@@ -4,6 +4,7 @@
 
 @php
     use Carbon\Carbon;
+
 @endphp
 
 @section('content')
@@ -180,61 +181,63 @@
                 </article>
             </section>
 
-            <section class="mt-8 rounded-3xl border border-gray-100 bg-white p-6 shadow-sm">
-                <div class="flex items-center justify-between">
-                    <h2 class="text-xl font-bold text-gray-800">الحجوزات</h2>
-                    <a href="{{ route('bookings.index') }}" class="text-sm font-medium text-orange-600 hover:text-orange-700">
-                        إدارة الحجوزات
-                    </a>
-                </div>
-                <div class="mt-4 space-y-4">
-                    @forelse ($bookedWorkshops->take(6) as $booking)
-                        @php
-                            $workshop = $booking->workshop;
-                            $start = optional($workshop?->start_date);
-                            $status = $booking->status;
-                            $statusClasses = [
-                                'confirmed' => 'bg-green-100 text-green-700',
-                                'pending' => 'bg-yellow-100 text-yellow-700',
-                                'cancelled' => 'bg-red-100 text-red-700',
-                            ];
-                        @endphp
-                        <article class="rounded-2xl border border-gray-100 bg-gray-50 p-4 shadow-sm">
-                            <div class="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
-                                <div>
-                                    <h3 class="text-md font-semibold text-gray-800">
-                                        {{ $workshop->title ?? 'ورشة بدون عنوان' }}
-                                    </h3>
-                                    <div class="mt-1 text-sm text-gray-500">
-                                        @if ($start)
-                                            <span class="ml-3">
-                                                <i class="fas fa-clock text-orange-500"></i>
-                                                {{ $start->locale('ar')->translatedFormat('d F Y • h:i a') }}
+            @if (auth()->check())
+                <section class="mt-8 rounded-3xl border border-gray-100 bg-white p-6 shadow-sm">
+                    <div class="flex items-center justify-between">
+                        <h2 class="text-xl font-bold text-gray-800">الحجوزات</h2>
+                        <a href="{{ route('bookings.index') }}" class="text-sm font-medium text-orange-600 hover:text-orange-700">
+                            إدارة الحجوزات
+                        </a>
+                    </div>
+                    <div class="mt-4 space-y-4">
+                        @forelse ($bookedWorkshops->take(6) as $booking)
+                            @php
+                                $workshop = $booking->workshop;
+                                $start = optional($workshop?->start_date);
+                                $status = $booking->status;
+                                $statusClasses = [
+                                    'confirmed' => 'bg-green-100 text-green-700',
+                                    'pending' => 'bg-yellow-100 text-yellow-700',
+                                    'cancelled' => 'bg-red-100 text-red-700',
+                                ];
+                            @endphp
+                            <article class="rounded-2xl border border-gray-100 bg-gray-50 p-4 shadow-sm">
+                                <div class="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+                                    <div>
+                                        <h3 class="text-md font-semibold text-gray-800">
+                                            {{ $workshop->title ?? 'ورشة بدون عنوان' }}
+                                        </h3>
+                                        <div class="mt-1 text-sm text-gray-500">
+                                            @if ($start)
+                                                <span class="ml-3">
+                                                    <i class="fas fa-clock text-orange-500"></i>
+                                                    {{ $start->locale('ar')->translatedFormat('d F Y • h:i a') }}
+                                                </span>
+                                            @endif
+                                            <span>
+                                                <i class="fas fa-map-marker-alt ml-1 text-orange-500"></i>
+                                                {{ $workshop->is_online ? 'أونلاين' : ($workshop->location ?? 'سيتم تحديده') }}
                                             </span>
-                                        @endif
-                                        <span>
-                                            <i class="fas fa-map-marker-alt ml-1 text-orange-500"></i>
-                                            {{ $workshop->is_online ? 'أونلاين' : ($workshop->location ?? 'سيتم تحديده') }}
+                                        </div>
+                                    </div>
+                                    <div class="flex flex-wrap items-center gap-3">
+                                        <span class="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-medium {{ $statusClasses[$status] ?? 'bg-gray-100 text-gray-600' }}">
+                                            {{ $status === 'confirmed' ? 'مؤكد' : ($status === 'pending' ? 'بانتظار' : ($status === 'cancelled' ? 'ملغي' : $status)) }}
                                         </span>
+                                        <a href="{{ route('bookings.show', ['booking' => $booking->id]) }}" class="text-sm font-medium text-orange-600 hover:text-orange-700">
+                                            التفاصيل
+                                        </a>
                                     </div>
                                 </div>
-                                <div class="flex flex-wrap items-center gap-3">
-                                    <span class="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-medium {{ $statusClasses[$status] ?? 'bg-gray-100 text-gray-600' }}">
-                                        {{ $status === 'confirmed' ? 'مؤكد' : ($status === 'pending' ? 'بانتظار' : ($status === 'cancelled' ? 'ملغي' : $status)) }}
-                                    </span>
-                                    <a href="{{ route('bookings.show', ['booking' => $booking->id]) }}" class="text-sm font-medium text-orange-600 hover:text-orange-700">
-                                        التفاصيل
-                                    </a>
-                                </div>
+                            </article>
+                        @empty
+                            <div class="rounded-2xl border border-dashed border-gray-200 bg-white p-6 text-center text-gray-500">
+                                لا توجد حجوزات مسجلة حتى الآن.
                             </div>
-                        </article>
-                    @empty
-                        <div class="rounded-2xl border border-dashed border-gray-200 bg-white p-6 text-center text-gray-500">
-                            لا توجد حجوزات مسجلة حتى الآن.
-                        </div>
-                    @endforelse
-                </div>
-            </section>
+                        @endforelse
+                    </div>
+                </section>
+            @endif
         </div>
     </div>
 @endsection

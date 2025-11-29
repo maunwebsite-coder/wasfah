@@ -12,8 +12,10 @@
         ? __('chef.defaults.specialty_with_area', ['area' => $chef->chef_specialty_area])
         : __('chef.defaults.specialty_generic');
 
-    $statsAverage = $stats['average_rating']
-        ? number_format($stats['average_rating'], 1)
+    $ratedWorkshopsCount = max(0, (int) data_get($stats, 'rated_workshops_count', 0));
+
+    $statsAverage = $ratedWorkshopsCount > 0 && $stats['average_rating']
+        ? number_format((float) $stats['average_rating'], 1)
         : '—';
 
     $wasfahFollowers = max(
@@ -38,7 +40,6 @@
     }
 
     $platformFollowers = $totalFollowers;
-    $recipesCount = max(0, (int) $stats['recipes_count']);
     $workshopPlaceholderText = rawurlencode(__('chef.workshops.placeholder_text'));
     $workshopDateTimeFormat = __('chef.workshops.datetime_format');
     $workshopDateFormat = __('chef.workshops.date_format');
@@ -54,8 +55,18 @@
     $hasRecordedWorkshops = $recordedWorkshops instanceof \Illuminate\Support\Collection
         ? $recordedWorkshops->isNotEmpty()
         : false;
-    $privateRecordingsUrl = route('chef.workshops.recordings');
-    $canViewPrivateRecordings = $isOwner && $chef->isChef() && $hasRecordedWorkshops;
+    $smartDatePlaceholder = 'mm/dd/yyyy --:-- --';
+    $registrationAutoNote = $locale === 'ar'
+        ? 'يغلق التسجيل تلقائياً قبل بدء الورشة بدقيقتين وفق توقيت المضيف.'
+        : 'Registration closes automatically 2 minutes before the workshop starts, based on the host timezone.';
+    $smartSuggestionCta = $locale === 'ar' ? 'اقتراح وقت ذكي' : 'Smart time suggestion';
+    $smartSuggestionInfo = $locale === 'ar'
+        ? 'سنقترح وقتاً مناسباً بالاعتماد على توقيتك الحالي وتوقيت المضيف.'
+        : 'We will suggest a suitable slot based on your timezone and the host timezone.';
+    $startLabelText = $locale === 'ar' ? 'تاريخ البداية *' : 'Start date *';
+    $endLabelText = $locale === 'ar' ? 'تاريخ النهاية *' : 'End date *';
+    $deadlineLabelText = $locale === 'ar' ? 'موعد إغلاق التسجيل' : 'Registration deadline';
+    $locationLabelText = $locale === 'ar' ? 'الموقع' : 'Location';
 @endphp
 
 @push('styles')
@@ -175,7 +186,6 @@
                             <div class="space-y-1">
                                 <p class="text-sm font-semibold text-orange-600">{{ $specialty }}</p>
                                 <h1 class="text-3xl font-bold text-slate-900">{{ __('chef.hero.heading', ['name' => $chef->name]) }}</h1>
-                                <p class="text-sm text-slate-500">{{ __('chef.hero.stats.recipes') }}: {{ number_format($recipesCount) }}</p>
                             </div>
                             <div class="flex flex-col items-start gap-2 md:items-end">
                                 @if (! $isOwner)
@@ -199,15 +209,17 @@
                                     </a>
                                 @endauth
                                 @endif
-                                @if ($canViewPrivateRecordings)
-                                    <a
-                                        href="{{ $privateRecordingsUrl }}"
-                                        class="inline-flex items-center gap-2 rounded-2xl border border-indigo-100 bg-white px-4 py-2 text-xs font-semibold text-indigo-700 transition hover:border-indigo-200 hover:bg-indigo-50 md:text-sm"
-                                    >
-                                        <i class="fa-solid fa-cloud-arrow-down"></i>
-                                        <span>{{ __('chef.dashboard.workshops.ctas.recordings') }}</span>
-                                    </a>
-                                @endif
+                                @auth
+                                    @if(auth()->user()?->canAccessRecordManagement())
+                                        <a
+                                            href="{{ route('bookings.index') }}"
+                                            class="inline-flex items-center gap-2 rounded-2xl border border-blue-100 bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-700 transition hover:border-blue-200 hover:bg-blue-100"
+                                        >
+                                            <i class="fa-solid fa-calendar-check"></i>
+                                            <span>{{ __('navbar.account_menu.links.bookings') }}</span>
+                                        </a>
+                                    @endif
+                                @endauth
                                 <a href="{{ $publicWorkshopsUrl }}" class="inline-flex items-center gap-2 rounded-2xl border border-orange-100 bg-orange-50 px-4 py-2 text-sm font-semibold text-orange-700 transition hover:border-orange-200 hover:bg-orange-100">
                                     <i class="fa-solid fa-circle-play"></i>
                                     <span>{{ __('chef.recordings.button') }}</span>
@@ -236,7 +248,7 @@
                     </div>
                 </div>
 
-                <div class="mt-6 grid grid-cols-2 gap-3 md:grid-cols-4">
+                <div class="mt-6 grid grid-cols-2 gap-3 md:grid-cols-3">
                     <div class="rounded-2xl bg-gray-50 px-4 py-3 text-center">
                         <p class="text-xs text-slate-500">{{ __('chef.hero.stats.wasfah_followers') }}</p>
                         <p
@@ -250,10 +262,6 @@
                         <p class="text-xl font-bold text-slate-900">{{ number_format($platformFollowers) }}</p>
                     </div>
                     <div class="rounded-2xl bg-gray-50 px-4 py-3 text-center">
-                        <p class="text-xs text-slate-500">{{ __('chef.hero.stats.recipes') }}</p>
-                        <p class="text-xl font-bold text-slate-900">{{ number_format($recipesCount) }}</p>
-                    </div>
-                    <div class="rounded-2xl bg-gray-50 px-4 py-3 text-center">
                         <p class="text-xs text-slate-500">{{ __('chef.hero.stats.average_rating') }}</p>
                         <p class="text-xl font-bold text-slate-900">{{ $statsAverage }}</p>
                     </div>
@@ -264,18 +272,31 @@
                         <i class="fa-solid fa-bookmark text-orange-500"></i>
                         {{ __('chef.recipes.saves', ['count' => number_format((int) $stats['total_saves'])]) }}
                     </span>
-                    <span class="chef-chip">
-                        <i class="fa-solid fa-utensils text-emerald-500"></i>
-                        {{ __('chef.recipes.likes', ['count' => number_format((int) $stats['total_made'])]) }}
-                    </span>
-                    <span class="chef-chip">
-                        <i class="fa-solid fa-star text-amber-400"></i>
-                        {{ __('chef.recipes.likes', ['count' => number_format((int) $stats['rating_count'])]) }}
-                    </span>
+                    @if ($ratedWorkshopsCount > 0 && $statsAverage !== '—')
+                        <span class="chef-chip">
+                            <i class="fa-solid fa-star text-amber-400"></i>
+                            {{ __('chef.recipes.rated_workshops_average', [
+                                'value' => $statsAverage,
+                                'count' => number_format($ratedWorkshopsCount),
+                            ]) }}
+                        </span>
+                    @endif
                 </div>
             </section>
 
-            @if ($recordingEntries->isNotEmpty())
+            @php
+                $driveBadgeLabel = __('chef.recordings.badges.drive');
+                $visibleRecordingEntries = ($recordingEntries instanceof \Illuminate\Support\Collection ? $recordingEntries : collect($recordingEntries ?? []))
+                    ->filter(function ($entry) use ($driveBadgeLabel) {
+                        $hasRecording = ! empty($entry['preview_url']) || ! empty($entry['watch_url']) || ! empty($entry['is_direct_video']);
+                        $badgeLabel = is_string($entry['badge'] ?? null) ? trim($entry['badge']) : '';
+                        $isExternalDrive = $badgeLabel === $driveBadgeLabel;
+
+                        return $hasRecording && ! $isExternalDrive;
+                    });
+            @endphp
+
+            @if ($visibleRecordingEntries->isNotEmpty())
                 <section class="chef-card rounded-3xl bg-white p-6 md:p-8">
                     <div class="flex flex-wrap items-start justify-between gap-4">
                         <div class="space-y-1">
@@ -292,7 +313,7 @@
                     </div>
 
                     <div class="mt-6 grid gap-4 md:grid-cols-2">
-                        @foreach ($recordingEntries as $entry)
+                        @foreach ($visibleRecordingEntries as $entry)
                             @php
                                 $previewUrl = $entry['preview_url'] ?? null;
                                 $watchUrl = $entry['watch_url'] ?? null;
@@ -370,167 +391,6 @@
             @endif
 
 
-            @if ($popularRecipes->isNotEmpty())
-                <section class="chef-card rounded-3xl bg-white p-6 md:p-8">
-                    <div class="flex flex-wrap items-center justify-between gap-3">
-                        <div>
-                            <h2 class="text-2xl font-bold text-slate-900">{{ __('chef.popular.title') }}</h2>
-                            <p class="text-sm text-slate-500">{{ __('chef.popular.subtitle') }}</p>
-                        </div>
-                    </div>
-                    <div class="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-                        @foreach ($popularRecipes as $recipe)
-                            <article class="flex h-full flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
-                                <a href="{{ route('recipe.show', ['recipe' => $recipe->slug]) }}" class="block h-48 w-full overflow-hidden bg-gray-100">
-                                    <img src="{{ $recipe->image_url ?? asset('image/brownies.webp') }}" alt="{{ $recipe->title }}" class="h-full w-full object-cover transition duration-200 hover:scale-[1.02]" loading="lazy">
-                                </a>
-                                <div class="flex flex-1 flex-col gap-3 p-4">
-                                    <div class="flex flex-wrap gap-2 text-xs font-semibold text-slate-600">
-                                        <span class="chef-chip">
-                                            <i class="fa-solid fa-star text-amber-400"></i>
-                                            {{ $recipe->interactions_avg_rating ? number_format($recipe->interactions_avg_rating, 1) : '—' }}
-                                        </span>
-                                        <span class="chef-chip">
-                                            <i class="fa-solid fa-bookmark"></i>
-                                            {{ __('chef.recipes.saves', ['count' => number_format($recipe->saved_count ?? 0)]) }}
-                                        </span>
-                                        <span class="chef-chip">
-                                            <i class="fa-solid fa-heart"></i>
-                                            {{ __('chef.recipes.likes', ['count' => number_format($recipe->rating_count ?? 0)]) }}
-                                        </span>
-                                    </div>
-                                    <h3 class="text-lg font-bold text-slate-900">{{ $recipe->title }}</h3>
-                                    <div class="mt-auto pt-2">
-                                        <a href="{{ route('recipe.show', ['recipe' => $recipe->slug]) }}" class="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-orange-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-orange-600">
-                                            {{ __('chef.popular.view_details') }}
-                                            <i class="fa-solid {{ $arrowIcon }}"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </article>
-                        @endforeach
-                    </div>
-                </section>
-            @endif
-            <section class="chef-card rounded-3xl bg-white p-6 md:p-8">
-                <div class="flex flex-wrap items-center justify-between gap-3">
-                    <div class="space-y-1">
-                        <h2 class="text-2xl font-bold text-slate-900">{{ __('chef.hero.stats.recipes') }}</h2>
-                        <p class="text-sm text-slate-500">{{ __('chef.recipes.tabs.public') }} @if ($canViewExclusive) • {{ __('chef.recipes.tabs.exclusive') }} @endif</p>
-                    </div>
-                    <div class="chef-tab-nav" role="tablist">
-                        <button class="chef-tab-btn is-active" data-tab="public" type="button" role="tab" aria-selected="true">
-                            {{ __('chef.recipes.tabs.public') }}
-                        </button>
-                        @if ($canViewExclusive)
-                            <button class="chef-tab-btn" data-tab="exclusive" type="button" role="tab" aria-selected="false">
-                                {{ __('chef.recipes.tabs.exclusive') }}
-                            </button>
-                        @endif
-                    </div>
-                </div>
-
-                <div class="mt-6 space-y-6">
-                    <div class="chef-tab-panel is-active" data-panel="public" role="tabpanel">
-                        @if ($publicRecipes->isEmpty())
-                            <div class="chef-empty-state">
-                                {{ __('chef.recipes.public_empty') }}
-                            </div>
-                        @else
-                            <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-                                @foreach ($publicRecipes as $recipe)
-                                    <article class="flex h-full flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
-                                        <a href="{{ route('recipe.show', ['recipe' => $recipe->slug]) }}" class="block h-48 w-full overflow-hidden bg-gray-100">
-                                            <img src="{{ $recipe->image_url ?? asset('image/brownies.webp') }}" alt="{{ $recipe->title }}" class="h-full w-full object-cover transition duration-200 hover:scale-[1.02]" loading="lazy">
-                                        </a>
-                                        <div class="flex flex-1 flex-col gap-3 p-4">
-                                            <div class="flex flex-wrap gap-2 text-xs font-semibold text-slate-600">
-                                                @if ($recipe->category)
-                                                    <span class="chef-chip">
-                                                        <i class="fa-solid fa-tag"></i>
-                                                        {{ $recipe->category->category_name ?? __('chef.recipes.category_fallback') }}
-                                                    </span>
-                                                @endif
-                                                <span class="chef-chip">
-                                                    <i class="fa-solid fa-star text-amber-400"></i>
-                                                    {{ $recipe->interactions_avg_rating ? number_format($recipe->interactions_avg_rating, 1) : __('chef.recipes.no_rating') }}
-                                                </span>
-                                            </div>
-                                            <h3 class="text-lg font-bold text-slate-900">{{ $recipe->title }}</h3>
-                                            <div class="flex flex-wrap gap-2 text-sm font-semibold text-slate-700">
-                                                <span class="chef-chip">
-                                                    <i class="fa-solid fa-bookmark"></i>
-                                                    {{ __('chef.recipes.saves', ['count' => number_format($recipe->saved_count ?? 0)]) }}
-                                                </span>
-                                                <span class="chef-chip">
-                                                    <i class="fa-solid fa-heart"></i>
-                                                    {{ __('chef.recipes.likes', ['count' => number_format($recipe->rating_count ?? 0)]) }}
-                                                </span>
-                                            </div>
-                                            <div class="mt-auto pt-2">
-                                                <a href="{{ route('recipe.show', ['recipe' => $recipe->slug]) }}" class="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-800">
-                                                    {{ __('chef.recipes.view_recipe') }}
-                                                    <i class="fa-solid {{ $arrowIcon }}"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </article>
-                                @endforeach
-                            </div>
-                        @endif
-                    </div>
-
-                    @if ($canViewExclusive)
-                        <div class="chef-tab-panel" data-panel="exclusive" role="tabpanel">
-                            @if ($exclusiveRecipes->isEmpty())
-                                <div class="chef-empty-state">
-                                    {{ __('chef.recipes.exclusive_empty') }}
-                                </div>
-                            @else
-                                <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-                                    @foreach ($exclusiveRecipes as $recipe)
-                                        <article class="flex h-full flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
-                                            <a href="{{ route('recipe.show', ['recipe' => $recipe->slug]) }}" class="block h-48 w-full overflow-hidden bg-gray-100">
-                                                <img src="{{ $recipe->image_url ?? asset('image/brownies.webp') }}" alt="{{ $recipe->title }}" class="h-full w-full object-cover transition duration-200 hover:scale-[1.02]" loading="lazy">
-                                            </a>
-                                            <div class="flex flex-1 flex-col gap-3 p-4">
-                                                <div class="flex flex-wrap gap-2 text-xs font-semibold text-slate-600">
-                                                    <span class="chef-chip">
-                                                        <i class="fa-solid fa-lock"></i>
-                                                        {{ __('chef.recipes.private_tag') }}
-                                                    </span>
-                                                    <span class="chef-chip">
-                                                        <i class="fa-solid fa-star text-amber-400"></i>
-                                                        {{ $recipe->interactions_avg_rating ? number_format($recipe->interactions_avg_rating, 1) : __('chef.recipes.no_rating') }}
-                                                    </span>
-                                                </div>
-                                                <h3 class="text-lg font-bold text-slate-900">{{ $recipe->title }}</h3>
-                                                <div class="flex flex-wrap gap-2 text-sm font-semibold text-slate-700">
-                                                    <span class="chef-chip">
-                                                        <i class="fa-solid fa-book-open"></i>
-                                                        {{ __('chef.recipes.private_details') }}
-                                                    </span>
-                                                    <span class="chef-chip">
-                                                        <i class="fa-solid fa-shield-halved"></i>
-                                                        {{ __('chef.recipes.private_access') }}
-                                                    </span>
-                                                </div>
-                                                <div class="mt-auto pt-2">
-                                                    <a href="{{ route('recipe.show', ['recipe' => $recipe->slug]) }}" class="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-800">
-                                                        {{ __('chef.recipes.view_recipe') }}
-                                                        <i class="fa-solid {{ $arrowIcon }}"></i>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </article>
-                                    @endforeach
-                                </div>
-                            @endif
-                        </div>
-                    @endif
-                </div>
-            </section>
-
             @if ($upcomingWorkshops->isNotEmpty() || $pastWorkshops->isNotEmpty())
                 <section class="chef-card rounded-3xl bg-white p-6 md:p-8">
                     <div class="flex flex-wrap items-start justify-between gap-4">
@@ -560,7 +420,10 @@
                                             : "https://placehold.co/600x400/0f4c73/FFFFFF?text={$workshopPlaceholderText}";
                                         $startDateLabel = $workshop->start_date
                                             ? $workshop->start_date->copy()->locale($carbonLocale)->translatedFormat($workshopDateTimeFormat)
-                                            : __('chef.workshops.tbd_time');
+                                            : $smartDatePlaceholder;
+                                        $endDateLabel = $workshop->end_date
+                                            ? $workshop->end_date->copy()->locale($carbonLocale)->translatedFormat($workshopDateTimeFormat)
+                                            : $smartDatePlaceholder;
                                         $locationLabel = $workshop->is_online
                                             ? __('chef.workshops.online_live')
                                             : ($workshop->location ?: __('chef.workshops.location_tbd'));
@@ -574,6 +437,7 @@
                                         $deadlineLabel = $workshop->registration_deadline
                                             ? $workshop->registration_deadline->copy()->locale($carbonLocale)->translatedFormat($workshopDateFormat)
                                             : null;
+                                        $hostTimezoneLabel = $workshop->host_timezone ?: config('app.timezone', 'UTC');
                                         $isRegistrationOpen = (bool) $workshop->is_registration_open;
                                     @endphp
                                     <article class="flex h-full flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
@@ -601,23 +465,65 @@
                                                     <p class="text-sm text-slate-500">{{ __('chef.workshops.with_instructor', ['name' => $workshop->instructor]) }}</p>
                                                 @endif
                                             </div>
-                                            <ul class="space-y-1 text-sm text-slate-600">
-                                                <li class="flex items-center gap-2">
-                                                    <i class="fa-solid fa-calendar-day text-amber-500"></i>
-                                                    {{ $startDateLabel }}
+                                            <ul class="space-y-2 text-sm text-slate-600">
+                                                <li class="flex items-start gap-3">
+                                                    <span class="mt-0.5 rounded-full bg-amber-50 p-2 text-amber-600">
+                                                        <i class="fa-solid fa-calendar-day"></i>
+                                                    </span>
+                                                    <div>
+                                                        <p class="text-xs font-semibold text-slate-500">{{ $startLabelText }}</p>
+                                                        <p class="font-semibold text-slate-900">{{ $startDateLabel }}</p>
+                                                    </div>
                                                 </li>
-                                                <li class="flex items-center gap-2">
-                                                    <i class="fa-solid fa-location-dot text-emerald-500"></i>
-                                                    {{ $locationLabel }}
+                                                <li class="flex items-start gap-3">
+                                                    <span class="mt-0.5 rounded-full bg-indigo-50 p-2 text-indigo-600">
+                                                        <i class="fa-solid fa-flag-checkered"></i>
+                                                    </span>
+                                                    <div>
+                                                        <p class="text-xs font-semibold text-slate-500">{{ $endLabelText }}</p>
+                                                        <p class="font-semibold text-slate-900">{{ $endDateLabel }}</p>
+                                                    </div>
                                                 </li>
-                                                @if ($deadlineLabel)
-                                                    <li class="flex items-center gap-2">
-                                                        <i class="fa-solid fa-hourglass-half text-slate-500"></i>
-                                                        {{ __('chef.workshops.register_until', ['date' => $deadlineLabel]) }}
-                                                    </li>
-                                                @endif
+                                                <li class="flex items-start gap-3">
+                                                    <span class="mt-0.5 rounded-full bg-emerald-50 p-2 text-emerald-600">
+                                                        <i class="fa-solid fa-location-dot"></i>
+                                                    </span>
+                                                    <div>
+                                                        <p class="text-xs font-semibold text-slate-500">{{ $locationLabelText }}</p>
+                                                        <p>{{ $locationLabel }}</p>
+                                                    </div>
+                                                </li>
+                                                <li class="flex items-start gap-3">
+                                                    <span class="mt-0.5 rounded-full bg-slate-100 p-2 text-slate-600">
+                                                        <i class="fa-solid fa-hourglass-half"></i>
+                                                    </span>
+                                                    <div class="space-y-1">
+                                                        <p class="text-xs font-semibold text-slate-500">{{ $deadlineLabelText }}</p>
+                                                        <p class="font-semibold text-slate-900">
+                                                            {{ $deadlineLabel ? __('chef.workshops.register_until', ['date' => $deadlineLabel]) : ($locale === 'ar' ? 'يغلق قبل بدء الورشة' : 'Closes before the workshop starts') }}
+                                                        </p>
+                                                        <p class="text-xs leading-relaxed text-slate-500">
+                                                            {{ $registrationAutoNote }} ({{ $hostTimezoneLabel }})
+                                                        </p>
+                                                    </div>
+                                                </li>
                                             </ul>
-                                            <div class="mt-auto pt-2">
+                                            <div class="mt-auto space-y-2 pt-2">
+                                                <div class="space-y-1">
+                                                    <button
+                                                        type="button"
+                                                        class="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-orange-200 bg-white px-4 py-2 text-sm font-semibold text-orange-700 transition hover:border-orange-300 hover:bg-orange-50"
+                                                        data-smart-suggest
+                                                        data-smart-start="{{ optional($workshop->start_date)->toIso8601String() }}"
+                                                        data-smart-end="{{ optional($workshop->end_date)->toIso8601String() }}"
+                                                        data-smart-timezone="{{ $hostTimezoneLabel }}"
+                                                        data-smart-note="{{ $registrationAutoNote }}"
+                                                    >
+                                                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                                                        <span>{{ $smartSuggestionCta }}</span>
+                                                    </button>
+                                                    <p class="text-xs text-slate-500">{{ $smartSuggestionInfo }}</p>
+                                                </div>
                                                 @if ($isRegistrationOpen)
                                                     <a href="{{ route('workshop.show', ['workshop' => $workshop->slug]) }}" class="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-orange-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-orange-600">
                                                         {{ __('chef.workshops.book_now') }}
@@ -849,6 +755,60 @@
 
                 updateFollowState(followButton.classList.contains('is-following'));
             }
+
+            const smartSuggestionButtons = document.querySelectorAll('[data-smart-suggest]');
+            smartSuggestionButtons.forEach((button) => {
+                button.addEventListener('click', () => {
+                    const startIso = button.dataset.smartStart;
+                    const endIso = button.dataset.smartEnd;
+                    const timezone = button.dataset.smartTimezone || 'UTC';
+                    const note = button.dataset.smartNote || '';
+                    const locale = document.documentElement.lang || 'en';
+
+                    const fallbackDate = new Date();
+                    fallbackDate.setDate(fallbackDate.getDate() + 3);
+                    fallbackDate.setHours(19, 0, 0, 0);
+
+                    const baseDate = startIso ? new Date(startIso) : fallbackDate;
+                    const displayDate = Number.isNaN(baseDate.getTime()) ? fallbackDate : baseDate;
+
+                    const formatter = new Intl.DateTimeFormat(locale, {
+                        dateStyle: 'full',
+                        timeStyle: 'short',
+                        timeZone: timezone,
+                    });
+
+                    const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone || timezone;
+                    const userFormatter = new Intl.DateTimeFormat(locale, {
+                        dateStyle: 'full',
+                        timeStyle: 'short',
+                        timeZone: userTimezone,
+                    });
+
+                    const parts = [
+                        locale.startsWith('ar') ? 'اقتراح وقت للورشة' : 'Suggested workshop time',
+                        `${formatter.format(displayDate)} (${timezone})`,
+                        `${locale.startsWith('ar') ? 'عندك' : 'Your time'}: ${userFormatter.format(displayDate)} (${userTimezone})`,
+                    ];
+
+                    if (endIso) {
+                        const endDate = new Date(endIso);
+                        if (!Number.isNaN(endDate.getTime())) {
+                            parts.push(
+                                locale.startsWith('ar')
+                                    ? `ينتهي تقريباً في ${formatter.format(endDate)}`
+                                    : `Ends around ${formatter.format(endDate)}`
+                            );
+                        }
+                    }
+
+                    if (note) {
+                        parts.push(note);
+                    }
+
+                    alert(parts.join('\n'));
+                });
+            });
         });
     </script>
 @endpush

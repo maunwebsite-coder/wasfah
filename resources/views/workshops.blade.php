@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('title', __('workshops.meta.title'))
 
@@ -15,9 +15,9 @@
         box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
     }
     .filter-btn.active {
-        background-color: #0f4c73;
+        background-color: #0819ff;
         color: white;
-        border-color: #0f4c73;
+        border-color: #0819ff;
     }
     .faq-question {
         transition: background-color 0.3s ease;
@@ -373,11 +373,6 @@
                            class="bg-white text-amber-600 hover:bg-amber-50 font-bold py-2.5 px-5 sm:py-4 sm:px-8 rounded-xl transition-all duration-300 flex items-center justify-center shadow-lg hover:shadow-xl">
                             <i class="fas fa-list mr-2 rtl:ml-2 text-xl"></i>
                             {{ __('workshops.featured.no_upcoming_primary') }}
-                        </a>
-                        <a href="{{ route('recipes') }}" 
-                           class="border-2 border-white text-white hover:bg-white hover:text-amber-600 font-bold py-2.5 px-5 sm:py-4 sm:px-8 rounded-xl transition-all duration-300 flex items-center justify-center">
-                            <i class="fas fa-utensils mr-2 rtl:ml-2"></i>
-                            {{ __('workshops.featured.no_upcoming_secondary') }}
                         </a>
                     </div>
                 </div>
@@ -768,5 +763,6 @@ window.filterWorkshops = filterWorkshops;
 @endif
 
 @endpush
+
 
 

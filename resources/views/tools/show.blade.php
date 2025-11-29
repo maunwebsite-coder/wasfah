@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @php
     $shortToolName = \Illuminate\Support\Str::limit($tool->name, 60, '...');
@@ -9,9 +9,9 @@
 @push('styles')
 <style>
     :root {
-        --tool-cream: var(--brand-cream, #eaf3f6);
-        --tool-gold-rgb: var(--brand-gold-rgb, 15, 162, 137);
-        --tool-teal-rgb: var(--brand-teal-rgb, 15, 162, 137);
+        --tool-cream: var(--brand-cream, #f4f6ff);
+        --tool-gold-rgb: var(--brand-gold-rgb, 26, 184, 255);
+        --tool-teal-rgb: var(--brand-teal-rgb, 26, 184, 255);
     }
     .tool-detail-hero {
         position: relative;
@@ -171,7 +171,7 @@
         padding: 0.5rem 1.1rem;
         border-radius: 999px;
         background: rgba(var(--tool-teal-rgb), 0.12);
-        color: #0f4c73;
+        color: #0819ff;
         font-weight: 600;
         font-size: 0.9rem;
     }
@@ -188,10 +188,10 @@
         display: flex;
         flex-direction: column;
         gap: 0.4rem;
-        box-shadow: 0 18px 34px rgba(15, 76, 115, 0.14);
+        box-shadow: 0 18px 34px rgba(8, 25, 255, 0.14);
     }
     .tool-overview-card i {
-        color: #0f4c73;
+        color: #0819ff;
         font-size: 1.1rem;
     }
     .tool-overview-label {
@@ -216,10 +216,10 @@
     }
     .tool-price-card {
         border-radius: 1.75rem;
-        border: 1px solid rgba(15, 76, 115, 0.28);
+        border: 1px solid rgba(8, 25, 255, 0.28);
         background: linear-gradient(135deg, rgba(var(--tool-gold-rgb), 0.2) 0%, rgba(246, 242, 228, 0.92) 100%);
         padding: 1.5rem;
-        box-shadow: 0 26px 40px rgba(15, 76, 115, 0.18);
+        box-shadow: 0 26px 40px rgba(8, 25, 255, 0.18);
     }
     .tool-price-note {
         font-size: 0.8rem;
@@ -560,7 +560,7 @@
                     <div class="tool-cta-group">
                         @if($tool->amazon_url)
                             <a href="{{ $tool->amazon_url }}" target="_blank" rel="noopener"
-                               class="w-full inline-flex items-center justify-center gap-2 px-6 py-3 text-sm font-semibold text-white bg-[#0f4c73] hover:bg-[#0a8070] transition-colors shadow-md rounded-xl">
+                               class="w-full inline-flex items-center justify-center gap-2 px-6 py-3 text-sm font-semibold text-white bg-[#0819ff] hover:bg-[#0f78ad] transition-colors shadow-md rounded-xl">
                                 <i class="fab fa-amazon text-lg"></i>
                                 <span>Continue on Amazon</span>
                                 <i class="fas fa-external-link-alt text-xs"></i>
@@ -979,6 +979,8 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 </script>
 @endpush
+
+
 
 
 

@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('title', 'إضافة فيديو قصير جديد - موقع وصفة')
 
@@ -26,7 +26,7 @@
         left: 0;
         right: 0;
         height: 4px;
-        background: linear-gradient(90deg, #0f4c73, #0a8070, #dc2626);
+        background: linear-gradient(90deg, #0819ff, #0f78ad, #dc2626);
     }
     
     .form-input {
@@ -41,8 +41,8 @@
     
     .form-input:focus {
         outline: none;
-        border-color: #0f4c73;
-        box-shadow: 0 0 0 4px rgba(15, 76, 115, 0.1);
+        border-color: #0819ff;
+        box-shadow: 0 0 0 4px rgba(8, 25, 255, 0.1);
         background: white;
         transform: translateY(-1px);
     }
@@ -68,12 +68,12 @@
         left: 0;
         width: 30px;
         height: 2px;
-        background: linear-gradient(90deg, #0f4c73, #0a8070);
+        background: linear-gradient(90deg, #0819ff, #0f78ad);
         border-radius: 1px;
     }
     
     .btn-primary {
-        background: linear-gradient(135deg, #0f4c73 0%, #0a8070 100%);
+        background: linear-gradient(135deg, #0819ff 0%, #0f78ad 100%);
         border: none;
         color: white;
         padding: 1rem 2rem;
@@ -84,7 +84,7 @@
         cursor: pointer;
         position: relative;
         overflow: hidden;
-        box-shadow: 0 4px 14px 0 rgba(15, 76, 115, 0.39);
+        box-shadow: 0 4px 14px 0 rgba(8, 25, 255, 0.39);
     }
     
     .btn-primary::before {
@@ -103,9 +103,9 @@
     }
     
     .btn-primary:hover {
-        background: linear-gradient(135deg, #0a8070 0%, #0b344f 100%);
+        background: linear-gradient(135deg, #0f78ad 0%, #0b344f 100%);
         transform: translateY(-2px);
-        box-shadow: 0 8px 25px 0 rgba(15, 76, 115, 0.5);
+        box-shadow: 0 8px 25px 0 rgba(8, 25, 255, 0.5);
     }
     
     .btn-primary:active {
@@ -240,7 +240,7 @@
         left: 0;
         right: 0;
         height: 3px;
-        background: linear-gradient(90deg, #0f4c73, #0a8070, #dc2626);
+        background: linear-gradient(90deg, #0819ff, #0f78ad, #dc2626);
     }
     
     .section-title {
@@ -254,7 +254,7 @@
     }
     
     .section-title i {
-        color: #0f4c73;
+        color: #0819ff;
         font-size: 1.25rem;
     }
     
@@ -281,7 +281,7 @@
     }
     
     .progress-fill {
-        background: linear-gradient(90deg, #0f4c73, #0a8070);
+        background: linear-gradient(90deg, #0819ff, #0f78ad);
         height: 100%;
         border-radius: 1rem;
         transition: width 0.5s ease;
@@ -376,12 +376,12 @@
     }
     
     .image-upload-area:hover {
-        border-color: #0f4c73;
+        border-color: #0819ff;
         background: #fef7ed;
     }
     
     .image-upload-area.dragover {
-        border-color: #0f4c73;
+        border-color: #0819ff;
         background: #fef7ed;
         transform: scale(1.02);
     }
@@ -412,13 +412,13 @@
         bottom: 2rem;
         right: 2rem;
         z-index: 50;
-        background: linear-gradient(135deg, #0f4c73 0%, #0a8070 100%);
+        background: linear-gradient(135deg, #0819ff 0%, #0f78ad 100%);
         color: white;
         border: none;
         border-radius: 50px;
         padding: 1rem 1.5rem;
         font-weight: 700;
-        box-shadow: 0 8px 25px 0 rgba(15, 76, 115, 0.5);
+        box-shadow: 0 8px 25px 0 rgba(8, 25, 255, 0.5);
         cursor: pointer;
         transition: all 0.3s ease;
         opacity: 0;
@@ -432,7 +432,7 @@
     
     .floating-save:hover {
         transform: translateY(-2px) scale(1.05);
-        box-shadow: 0 12px 30px 0 rgba(15, 76, 115, 0.6);
+        box-shadow: 0 12px 30px 0 rgba(8, 25, 255, 0.6);
     }
     
     @media (max-width: 768px) {
@@ -1264,6 +1264,8 @@ setupDragAndDrop();
 </script>
 @endpush
 @endsection
+
+
 
 
 

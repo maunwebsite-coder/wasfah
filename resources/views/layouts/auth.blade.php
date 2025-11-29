@@ -1,4 +1,4 @@
-@php
+﻿@php
     $currentLocale = $currentLocale ?? app()->getLocale();
     $isRtl = $isRtl ?? ($currentLocale === 'ar');
     $alternateLocale = $currentLocale === 'ar' ? 'en' : 'ar';
@@ -44,7 +44,7 @@
     <style>
     body {
         font-family: 'Tajawal', 'Cairo', sans-serif;
-        background: radial-gradient(circle at top right, rgba(15, 76, 115, 0.18), transparent 50%),
+        background: radial-gradient(circle at top right, rgba(8, 25, 255, 0.18), transparent 50%),
             radial-gradient(circle at bottom left, rgba(251, 146, 60, 0.15), transparent 40%),
             #fdeee2;
     }
@@ -88,5 +88,6 @@
     @stack('scripts')
 </body>
 </html>
+
 
 

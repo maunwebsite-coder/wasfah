@@ -28,7 +28,7 @@
         </div>
 
         <div class="rounded-2xl bg-white shadow-sm border border-gray-200 p-6 text-sm text-gray-700 space-y-2">
-            <p>{{ data_get($copy, 'updated_label') }}: {{ now()->format('Y-m-d') }}</p>
+            <p>{{ data_get($copy, 'updated_label') }}: {{ data_get($copy, 'updated_value', now()->format('Y-m-d')) }}</p>
             <p>
                 {{ data_get($copy, 'contact_label') }}:
                 <a href="mailto:{{ data_get($copy, 'contact_email') }}" class="text-orange-600 font-semibold">

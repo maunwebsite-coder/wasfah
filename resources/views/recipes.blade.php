@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('title', __('recipes.meta.title'))
 
@@ -14,7 +14,7 @@
 <style>
 :root {
     --peah-navy: #0f1f3d;
-    --peah-teal: #0fb39a;
+    --peah-teal: #16c3ff;
     --peah-yellow: #f7c948;
     --peah-ink: #0b1f33;
     --peah-cloud: #f4f7fb;
@@ -105,7 +105,7 @@
     padding: 1.2rem 1.4rem 1.5rem;
     display: grid;
     gap: 1rem;
-    background: radial-gradient(circle at 16% 20%, rgba(15, 179, 154, 0.06), transparent 34%),
+    background: radial-gradient(circle at 16% 20%, rgba(26, 184, 255, 0.06), transparent 34%),
         radial-gradient(circle at 80% 10%, rgba(15, 31, 61, 0.04), transparent 42%);
 }
 
@@ -143,8 +143,8 @@
 .composer-field input:focus,
 .composer-field textarea:focus {
     outline: none;
-    border-color: rgba(15, 179, 154, 0.45);
-    box-shadow: 0 0 0 3px rgba(15, 179, 154, 0.15);
+    border-color: rgba(26, 184, 255, 0.45);
+    box-shadow: 0 0 0 3px rgba(26, 184, 255, 0.15);
 }
 
 .composer-field textarea {
@@ -204,7 +204,7 @@
     gap: 0.35rem;
     padding: 0.45rem 0.65rem;
     border-radius: 10px;
-    background: rgba(15, 179, 154, 0.12);
+    background: rgba(26, 184, 255, 0.12);
     color: #0c8f78;
     font-weight: 800;
     font-size: 0.9rem;
@@ -239,9 +239,9 @@
 }
 
 .composer-btn--primary {
-    background: linear-gradient(135deg, #0fb39a, #0c8f78);
+    background: linear-gradient(135deg, #16c3ff, #0c8f78);
     color: #fff;
-    box-shadow: 0 12px 24px rgba(15, 179, 154, 0.24);
+    box-shadow: 0 12px 24px rgba(26, 184, 255, 0.24);
 }
 
 .composer-modal__close {
@@ -314,7 +314,7 @@ body.is-modal-open {
     height: 46px;
     border-radius: 50%;
     overflow: hidden;
-    background: linear-gradient(135deg, rgba(15, 179, 154, 0.14), rgba(15, 31, 61, 0.12));
+    background: linear-gradient(135deg, rgba(26, 184, 255, 0.14), rgba(15, 31, 61, 0.12));
     display: grid;
     place-items: center;
     font-weight: 900;
@@ -352,7 +352,7 @@ body.is-modal-open {
 }
 
 .post-composer__trigger:hover {
-    border-color: rgba(15, 179, 154, 0.28);
+    border-color: rgba(26, 184, 255, 0.28);
     box-shadow: 0 6px 14px rgba(15, 31, 61, 0.08);
     transform: translateY(-1px);
 }
@@ -390,7 +390,7 @@ body.is-modal-open {
 }
 
 .composer-action--photo i {
-    color: #0f4c73;
+    color: #0819ff;
 }
 
 .composer-action--article i {
@@ -398,7 +398,7 @@ body.is-modal-open {
 }
 
 .composer-action:hover {
-    background: rgba(15, 179, 154, 0.08);
+    background: rgba(26, 184, 255, 0.08);
     transform: translateY(-1px);
 }
 
@@ -427,7 +427,7 @@ body:has([data-navbar-layer]) .feed-page {
     position: absolute;
     inset: 0;
     background:
-        radial-gradient(circle at 15% 20%, rgba(15, 179, 154, 0.08), transparent 28%),
+        radial-gradient(circle at 15% 20%, rgba(26, 184, 255, 0.08), transparent 28%),
         radial-gradient(circle at 85% 30%, rgba(247, 201, 72, 0.07), transparent 32%),
         radial-gradient(circle at 70% 80%, rgba(12, 143, 120, 0.08), transparent 32%);
     opacity: 0.75;
@@ -789,7 +789,7 @@ body:has([data-navbar-layer]) .feed-page {
 }
 
 .value-chip i {
-    color: #0fb39a;
+    color: #16c3ff;
 }
 
 .feed-pill {
@@ -805,7 +805,7 @@ body:has([data-navbar-layer]) .feed-page {
 }
 
 .feed-pill i {
-    color: #0fb39a;
+    color: #16c3ff;
 }
 
 .feed-card__info {
@@ -920,15 +920,15 @@ body:has([data-navbar-layer]) .feed-page {
     gap: 0.35rem;
     padding: 0.75rem 0.95rem;
     border-radius: 12px;
-    background: rgba(15, 179, 154, 0.12);
+    background: rgba(26, 184, 255, 0.12);
     color: #0c8f78;
     font-weight: 800;
-    border: 1px solid rgba(15, 179, 154, 0.25);
+    border: 1px solid rgba(26, 184, 255, 0.25);
     transition: background 0.15s ease;
 }
 
 .cta-secondary:hover {
-    background: rgba(15, 179, 154, 0.18);
+    background: rgba(26, 184, 255, 0.18);
 }
 
 .feed-empty {
@@ -964,7 +964,7 @@ body:has([data-navbar-layer]) .feed-page {
     width: 42px;
     height: 42px;
     border: 4px solid rgba(255, 255, 255, 0.14);
-    border-top-color: #0fb39a;
+    border-top-color: #16c3ff;
     border-radius: 50%;
     margin: 0 auto 0.4rem;
     animation: spin 0.9s linear infinite;
@@ -976,7 +976,7 @@ body:has([data-navbar-layer]) .feed-page {
 
 @media (min-width: 1024px) {
     .feed-page {
-        background: radial-gradient(circle at 10% 20%, rgba(15, 179, 154, 0.08), transparent 30%),
+        background: radial-gradient(circle at 10% 20%, rgba(26, 184, 255, 0.08), transparent 30%),
             radial-gradient(circle at 88% 16%, rgba(247, 201, 72, 0.08), transparent 36%),
             radial-gradient(circle at 65% 78%, rgba(12, 143, 120, 0.06), transparent 32%),
             #030712;
@@ -1127,7 +1127,7 @@ body:has([data-navbar-layer]) .feed-page {
         border-radius: 8px;
         background: #e6f7f3;
         color: #0c8f78;
-        border: 1px solid rgba(15, 179, 154, 0.25);
+        border: 1px solid rgba(26, 184, 255, 0.25);
         font-weight: 800;
         font-size: 0.8rem;
     }
@@ -1180,7 +1180,7 @@ body:has([data-navbar-layer]) .feed-page {
                 'label' => 'Cooking Skills',
                 'subtitle' => 'Recipes · Quick meals · Kitchen hacks',
                 'color' => '#0f1f3d',
-                'accent' => '#0fb39a',
+                'accent' => '#16c3ff',
             ],
             'content' => [
                 'label' => 'Content Creation',
@@ -1272,7 +1272,7 @@ body:has([data-navbar-layer]) .feed-page {
                 @php
                     // Fallbacks in case helpers are not defined
                     $skillTracks = $skillTracks ?? [
-                        'cooking' => ['label' => 'Cooking Skills', 'accent' => '#0fb39a', 'color' => '#0f1f3d'],
+                        'cooking' => ['label' => 'Cooking Skills', 'accent' => '#16c3ff', 'color' => '#0f1f3d'],
                         'content' => ['label' => 'Content Creation', 'accent' => '#8f7ee7', 'color' => '#0b2239'],
                         'business' => ['label' => 'Business Skills', 'accent' => '#f7c948', 'color' => '#0f1f3d'],
                         'crafts' => ['label' => 'Crafts & DIY', 'accent' => '#e46f4d', 'color' => '#0f1f3d'],
@@ -2617,3 +2617,5 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 @endpush
+
+

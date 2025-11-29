@@ -1,11 +1,11 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('title', __('chef.dashboard.workshops.host_room.meta_title', ['title' => $workshop->title]))
 
 @push('styles')
 <style>
     body {
-        background: linear-gradient(135deg, #eaf3f6 0%, #c8ede3 35%, #f7f4ea 65%, #f1f5f9 100%);
+        background: linear-gradient(135deg, #f4f6ff 0%, #e3ecff 35%, #f7f4ea 65%, #f1f5f9 100%);
         min-height: 100vh;
     }
 
@@ -33,9 +33,9 @@
 
     .participants-card {
         border-radius: 1.5rem;
-        border: 1px solid rgba(15, 76, 115, 0.25);
-        background: linear-gradient(120deg, rgba(15, 76, 115, 0.08), rgba(15, 162, 137, 0.18), #eaf3f6);
-        box-shadow: 0 35px 80px -65px rgba(15, 76, 115, 0.55);
+        border: 1px solid rgba(8, 25, 255, 0.25);
+        background: linear-gradient(120deg, rgba(8, 25, 255, 0.08), rgba(26, 184, 255, 0.18), #f4f6ff);
+        box-shadow: 0 35px 80px -65px rgba(8, 25, 255, 0.55);
         padding: 2rem;
     }
 
@@ -51,9 +51,9 @@
     }
 
     .action-btn.primary {
-        background: linear-gradient(120deg, #0f4c73, #0fb39a);
+        background: linear-gradient(120deg, #0819ff, #16c3ff);
         color: #fff;
-        box-shadow: 0 18px 35px rgba(15, 76, 115, 0.35);
+        box-shadow: 0 18px 35px rgba(8, 25, 255, 0.35);
     }
 
     .action-btn.secondary {
@@ -307,6 +307,8 @@
     });
 </script>
 @endpush
+
+
 
 
 

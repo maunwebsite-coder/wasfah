@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('title', 'صفحة روابط ' . config('app.name', 'Peahskill') . ' الخاصة بي')
 
@@ -14,7 +14,7 @@
     $bioValue = old('bio', $page->bio) ?? '';
     $ctaLabelValue = old('cta_label', $page->cta_label) ?? '';
     $ctaUrlValue = old('cta_url', $page->cta_url) ?: '#';
-    $accentColorValue = old('accent_color', $page->accent_color ?? $accentColor ?? '#0f4c73') ?: '#0f4c73';
+    $accentColorValue = old('accent_color', $page->accent_color ?? $accentColor ?? '#0819ff') ?: '#0819ff';
     $lastUpdated = $page->updated_at?->locale('ar')->diffForHumans() ?? 'الآن';
     $heroPlaceholder = \App\Support\BrandAssets::logoAsset('webp');
     $heroPreviewDefault = $heroImageUrl ?: $heroPlaceholder;
@@ -133,7 +133,7 @@
                                 <label for="accent_color" class="text-sm font-medium text-gray-700">لون التمييز</label>
                                 <div class="flex items-center gap-3">
                                     <input type="color" id="accent_color_picker" value="{{ $accentColorValue }}" class="h-12 w-14 rounded-xl border border-gray-200" data-preview-target="accent_color">
-                                    <input type="text" id="accent_color" name="accent_color" value="{{ old('accent_color', $page->accent_color) }}" class="flex-1 rounded-xl border border-gray-200 px-4 py-3 text-sm focus:border-orange-400 focus:ring focus:ring-orange-100" placeholder="#0f4c73" data-preview-target="accent_color">
+                                    <input type="text" id="accent_color" name="accent_color" value="{{ old('accent_color', $page->accent_color) }}" class="flex-1 rounded-xl border border-gray-200 px-4 py-3 text-sm focus:border-orange-400 focus:ring focus:ring-orange-100" placeholder="#0819ff" data-preview-target="accent_color">
                                 </div>
                                 <p class="text-xs text-gray-500">يمكنك لصق كود اللون (Hex) أو اختياره من لوحة الألوان.</p>
                             </div>
@@ -405,7 +405,7 @@
 
             <div class="order-1 space-y-8 lg:order-2 lg:sticky lg:top-8">
                 <div id="chef-links-preview" class="rounded-3xl border border-orange-100 bg-white shadow-sm overflow-hidden" style="--accent-color: {{ $accentColorValue }};" data-default-color="{{ $accentColorValue }}">
-                    <div class="relative h-36" style="background: linear-gradient(135deg, var(--accent-color), rgba(15, 76, 115, 0.3));">
+                    <div class="relative h-36" style="background: linear-gradient(135deg, var(--accent-color), rgba(8, 25, 255, 0.3));">
                         <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(circle at 30% 20%, rgba(255,255,255,0.7), transparent 60%), radial-gradient(circle at 70% 80%, rgba(255,255,255,0.5), transparent 60%);"></div>
                         <div class="relative flex h-full flex-col items-center justify-center gap-3 px-6 text-center text-white">
                             <div class="h-20 w-20 overflow-hidden rounded-2xl border border-white/50 shadow" style="background-color: rgba(255,255,255,0.15);">
@@ -728,7 +728,7 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        const fallback = previewRoot.getAttribute('data-default-color') || '#0f4c73';
+        const fallback = previewRoot.getAttribute('data-default-color') || '#0819ff';
         const hex = normalizeHex(value) || fallback;
 
         previewRoot.style.setProperty('--accent-color', hex);
@@ -950,7 +950,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const colorPicker = document.getElementById('accent_color_picker');
     const colorInput = document.getElementById('accent_color');
-    const initialAccent = colorInput?.value || colorPicker?.value || (previewRoot ? previewRoot.getAttribute('data-default-color') : '#0f4c73');
+    const initialAccent = colorInput?.value || colorPicker?.value || (previewRoot ? previewRoot.getAttribute('data-default-color') : '#0819ff');
     applyAccentColor(initialAccent);
 
     if (colorPicker && colorInput) {
@@ -1021,6 +1021,8 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 </script>
 @endpush
+
+
 
 
 

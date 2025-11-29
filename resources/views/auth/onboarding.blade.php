@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('title', __('onboarding.page_title'))
 
@@ -8,14 +8,14 @@
         background: white;
         border-radius: 1.5rem;
         box-shadow: 0 20px 45px rgba(15, 23, 42, 0.12);
-        border: 1px solid rgba(15, 76, 115, 0.08);
+        border: 1px solid rgba(8, 25, 255, 0.08);
     }
     .onboarding-card[dir="rtl"] {
         direction: rtl;
         text-align: right;
     }
     .onboarding-header {
-        background: linear-gradient(135deg, #0f4c73 0%, #0fb39a 40%, #a1dfd1 100%);
+        background: linear-gradient(135deg, #0819ff 0%, #16c3ff 40%, #c8d6ff 100%);
         color: white;
         border-radius: 1.5rem 1.5rem 0 0;
         padding: 2.5rem 2rem;
@@ -48,7 +48,7 @@
         padding: 0.4rem 0.9rem;
         border-radius: 9999px;
         background: rgba(255, 255, 255, 0.18);
-        color: #eaf3f6;
+        color: #f4f6ff;
         font-size: 0.85rem;
         font-weight: 600;
     }
@@ -64,8 +64,8 @@
         font-size: 0.85rem;
     }
     .helper-checklist {
-        background: #eaf3f6;
-        border: 1px solid #c8ede3;
+        background: #f4f6ff;
+        border: 1px solid #e3ecff;
         border-radius: 1rem;
         padding: 1.25rem 1.5rem;
     }
@@ -80,7 +80,7 @@
         width: 1.5rem;
         height: 1.5rem;
         border-radius: 9999px;
-        background: #0f4c73;
+        background: #0819ff;
         color: white;
         display: inline-flex;
         align-items: center;
@@ -93,7 +93,7 @@
     }
     .form-section {
         padding-top: 1.5rem;
-        border-top: 1px dashed #c8ede3;
+        border-top: 1px dashed #e3ecff;
         margin-top: 1.5rem;
     }
     .form-section:first-of-type {
@@ -140,11 +140,11 @@
     }
     .input-control:focus {
         outline: none;
-        border-color: #0fb39a;
+        border-color: #16c3ff;
         box-shadow: 0 0 0 3px rgba(251, 146, 60, 0.25);
     }
     .submit-btn {
-        background: linear-gradient(135deg, #0f4c73 0%, #0a8070 100%);
+        background: linear-gradient(135deg, #0819ff 0%, #0f78ad 100%);
         color: white;
         padding: 0.95rem 1.5rem;
         border-radius: 0.85rem;
@@ -155,11 +155,11 @@
     }
     .submit-btn:hover {
         transform: translateY(-2px);
-        box-shadow: 0 18px 35px rgba(15, 76, 115, 0.35);
+        box-shadow: 0 18px 35px rgba(8, 25, 255, 0.35);
     }
     .submit-btn:focus {
         outline: none;
-        box-shadow: 0 0 0 4px rgba(15, 76, 115, 0.28);
+        box-shadow: 0 0 0 4px rgba(8, 25, 255, 0.28);
     }
     .stepper {
         display: grid;
@@ -173,23 +173,23 @@
         align-items: flex-start;
         padding: 1rem 1.1rem;
         border-radius: 1rem;
-        border: 1px solid #c8ede3;
+        border: 1px solid #e3ecff;
         background: #f8fafc;
-        box-shadow: 0 10px 24px rgba(15, 76, 115, 0.08);
+        box-shadow: 0 10px 24px rgba(8, 25, 255, 0.08);
         transition: all 0.2s ease;
     }
     .step-pill.is-active {
-        background: #0f4c73;
-        border-color: #0f4c73;
-        color: #eaf3f6;
-        box-shadow: 0 18px 36px rgba(15, 76, 115, 0.3);
+        background: #0819ff;
+        border-color: #0819ff;
+        color: #f4f6ff;
+        box-shadow: 0 18px 36px rgba(8, 25, 255, 0.3);
     }
     .step-pill__index {
         width: 2.25rem;
         height: 2.25rem;
         border-radius: 9999px;
-        background: #a1dfd1;
-        color: #0a344f;
+        background: #c8d6ff;
+        color: #050f9f;
         display: inline-flex;
         align-items: center;
         justify-content: center;
@@ -198,7 +198,7 @@
     }
     .step-pill.is-active .step-pill__index {
         background: white;
-        color: #0f4c73;
+        color: #0819ff;
         box-shadow: inset 0 0 0 0;
     }
     .step-pill__body p {
@@ -235,8 +235,8 @@
         margin-top: 1rem;
     }
     .ghost-btn {
-        border: 1px dashed #0f4c73;
-        color: #0f4c73;
+        border: 1px dashed #0819ff;
+        color: #0819ff;
         background: #f8fafc;
         padding: 0.85rem 1rem;
         border-radius: 0.85rem;
@@ -252,8 +252,8 @@
         transition: all 0.2s ease;
     }
     .secondary-btn:hover {
-        border-color: #0f4c73;
-        color: #0f4c73;
+        border-color: #0819ff;
+        color: #0819ff;
     }
     .step-actions .submit-btn {
         min-width: 200px;
@@ -634,3 +634,5 @@
     });
 </script>
 @endpush
+
+

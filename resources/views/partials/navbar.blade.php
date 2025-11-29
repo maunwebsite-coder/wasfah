@@ -9,6 +9,7 @@
     $mobileDescriptionsFallback = $navCopy['mobile_descriptions_default'] ?? 'وصول فوري لأبرز أقسام وصفة';
     $chefLinkLabels = $navCopy['chef_links'] ?? [];
     $authUser = Auth::user();
+    $canAccessRecordManagement = $authUser?->canAccessRecordManagement() ?? false;
     $showAdminTools = $authUser?->isAdmin() ?? false;
     $primaryLinks = [
         ['route' => 'home', 'icon' => 'fas fa-house', 'label' => $navCopy['links']['home']],
@@ -56,9 +57,13 @@
             }
         }
     }
+
+    $showBreadcrumbs = (bool) ($showBreadcrumbs ?? false);
+    $headerClasses = 'sticky top-0 bg-white/95 backdrop-blur shadow-sm';
+    $headerClasses .= $showBreadcrumbs ? ' border-b-0' : ' border-b border-orange-100';
 @endphp
 
-<header class="sticky top-0 bg-white/95 backdrop-blur border-b border-orange-100 shadow-sm" data-navbar-layer data-header>
+<header class="{{ $headerClasses }}" data-navbar-layer data-header>
     <div class="h-1 w-full bg-gradient-to-l from-orange-500 via-rose-500 to-amber-400 hidden md:block"></div>
     <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between gap-4 py-3 md:py-4 header-container">
@@ -226,6 +231,12 @@
                                         <i class="fas fa-calendar-check text-orange-500"></i>
                                         <span>{{ data_get($accountMenuLinks, 'bookings', 'حجوزاتي') }}</span>
                                     </a>
+                                    @if($canAccessRecordManagement)
+                                        <a href="{{ route('bookings.recordings') }}" class="flex items-center gap-3 rounded-2xl px-4 py-2 transition hover:bg-orange-50 hover:text-orange-600" role="menuitem">
+                                            <i class="fas fa-video text-orange-500"></i>
+                                            <span>{{ __('bookings.recordings.manage_title') }}</span>
+                                        </a>
+                                    @endif
                                     @if($chefLinkData)
                                         <a href="{{ $chefLinkData['route'] }}" class="flex items-center gap-3 rounded-2xl px-4 py-2 transition hover:bg-orange-50 hover:text-orange-600" role="menuitem">
                                             <i class="{{ $chefLinkData['icon'] }} text-orange-500"></i>
@@ -436,6 +447,20 @@
                             </div>
                             <i class="fas fa-chevron-left text-orange-300"></i>
                         </a>
+                        @if($canAccessRecordManagement)
+                            <a href="{{ route('bookings.recordings') }}" class="flex items-center justify-between rounded-2xl border border-indigo-100 bg-white p-4 text-sm font-semibold text-slate-800 transition hover:border-indigo-200 hover:bg-indigo-50">
+                                <div class="flex items-center gap-3">
+                                    <span class="flex h-10 w-10 items-center justify-center rounded-2xl bg-indigo-100 text-indigo-600">
+                                        <i class="fas fa-video"></i>
+                                    </span>
+                                    <div>
+                                        <p>{{ __('bookings.recordings.manage_title') }}</p>
+                                        <p class="text-xs font-normal text-slate-500">{{ __('bookings.recordings.manage_note') }}</p>
+                                    </div>
+                                </div>
+                                <i class="fas fa-chevron-left text-indigo-300"></i>
+                            </a>
+                        @endif
                         @if($chefLinkData)
                             <a href="{{ $chefLinkData['route'] }}" class="flex items-center justify-between rounded-2xl border border-orange-200 bg-orange-50/80 p-4 text-sm font-semibold text-orange-700 transition hover:bg-orange-100">
                                 <div class="flex items-center gap-3">

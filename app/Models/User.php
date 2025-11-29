@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Recipe;
 use App\Models\ChefLinkPage;
+use App\Models\Recording;
 use App\Models\Workshop;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -40,6 +41,11 @@ class User extends Authenticatable
         'google_calendar_refresh_token',
         'google_calendar_token_expires_at',
         'google_calendar_scopes',
+        'google_drive_email',
+        'google_access_token',
+        'google_refresh_token',
+        'google_expires_at',
+        'google_drive_scopes',
         'password',
         'phone',
         'timezone',
@@ -87,6 +93,8 @@ class User extends Authenticatable
         'provider_token',
         'google_calendar_access_token',
         'google_calendar_refresh_token',
+        'google_access_token',
+        'google_refresh_token',
     ];
 
     /**
@@ -112,6 +120,7 @@ class User extends Authenticatable
             'referral_skip_platform_fee' => 'boolean',
             'policies_accepted_at' => 'datetime',
             'google_calendar_token_expires_at' => 'datetime',
+            'google_expires_at' => 'datetime',
         ];
     }
 
@@ -290,6 +299,32 @@ class User extends Authenticatable
     }
 
     /**
+     * Determine if the user has connected Google Drive.
+     */
+    public function hasGoogleDriveCredentials(): bool
+    {
+        return (bool) ($this->google_refresh_token ?? $this->google_access_token);
+    }
+
+    /**
+     * Retrieve the preferred email associated with Google Drive.
+     */
+    public function preferredGoogleDriveEmail(): ?string
+    {
+        $email = $this->google_drive_email
+            ?: $this->google_email
+            ?: $this->email;
+
+        if (!is_string($email)) {
+            return null;
+        }
+
+        $normalized = strtolower(trim($email));
+
+        return filter_var($normalized, FILTER_VALIDATE_EMAIL) ? $normalized : null;
+    }
+
+    /**
      * Determine if the user has connected a Google Calendar account with a refresh token.
      */
     public function hasGoogleCalendarCredentials(): bool
@@ -389,6 +424,14 @@ class User extends Authenticatable
     }
 
     /**
+     * Determine if the user can access record/booking management pages.
+     */
+    public function canAccessRecordManagement(): bool
+    {
+        return $this->isChef() || $this->isAdmin();
+    }
+
+    /**
      * Determine if platform fees should be waived for this chef's own workshops.
      */
     public function shouldWaivePlatformFeeForOwnWorkshops(): bool
@@ -415,6 +458,14 @@ class User extends Authenticatable
     }
 
     /**
+     * تسجيلات الفيديو الخاصة بالمستخدم.
+     */
+    public function recordings()
+    {
+        return $this->hasMany(Recording::class);
+    }
+
+    /**
      * التأكد من إنشاء صفحة الروابط وتعبئتها بقيم افتراضية عند الحاجة.
      */
     public function ensureLinkPage(): ChefLinkPage
@@ -433,7 +484,7 @@ class User extends Authenticatable
             'bio' => null,
             'cta_label' => 'تصفح وصفاتي',
             'cta_url' => route('chefs.show', ['chef' => $this->id]),
-            'accent_color' => '#0f4c73',
+            'accent_color' => '#0819ff',
         ]);
 
         $defaultLinks = collect([
@@ -600,6 +651,23 @@ class User extends Authenticatable
     public function workshops()
     {
         return $this->hasMany(Workshop::class);
+    }
+
+    /**
+     * علاقات حضور الورشات (pivot) لتتبع الوصول إلى التسجيلات.
+     */
+    public function workshopsAttended(): BelongsToMany
+    {
+        return $this->belongsToMany(Workshop::class, 'workshop_user')
+            ->withPivot([
+                'status',
+                'attendance_status',
+                'has_recording_access',
+                'attended_at',
+                'recording_unlocked_at',
+                'notes',
+            ])
+            ->withTimestamps();
     }
 
     /**

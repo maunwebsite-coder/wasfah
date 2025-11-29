@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('title', 'Debug & Test Pages')
 
@@ -14,7 +14,7 @@
     .debug-icon {
         width: 3rem;
         height: 3rem;
-        background: linear-gradient(135deg, #0f4c73, #0fb39a);
+        background: linear-gradient(135deg, #0819ff, #16c3ff);
         border-radius: 50%;
         display: flex;
         align-items: center;
@@ -177,5 +177,6 @@
     </div>
 </div>
 @endsection
+
 
 

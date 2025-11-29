@@ -28,6 +28,17 @@ class WorkshopReview extends Model
         'updated_at' => 'datetime',
     ];
 
+    protected static function booted(): void
+    {
+        static::saved(function (WorkshopReview $review): void {
+            static::syncWorkshopAggregates($review->workshop_id);
+        });
+
+        static::deleted(function (WorkshopReview $review): void {
+            static::syncWorkshopAggregates($review->workshop_id);
+        });
+    }
+
     // العلاقات
     public function workshop()
     {
@@ -64,5 +75,29 @@ class WorkshopReview extends Model
     public function getFormattedDateAttribute()
     {
         return $this->created_at->format('d/m/Y');
+    }
+
+    /**
+     * Recalculate rating aggregates for the parent workshop.
+     */
+    public static function syncWorkshopAggregates(int $workshopId): void
+    {
+        $stats = static::query()
+            ->where('workshop_id', $workshopId)
+            ->where('is_approved', true)
+            ->selectRaw('COUNT(*) as total_reviews, AVG(rating) as average_rating')
+            ->first();
+
+        $reviewsCount = (int) ($stats->total_reviews ?? 0);
+        $averageRating = $stats && $stats->average_rating !== null
+            ? round((float) $stats->average_rating, 2)
+            : 0;
+
+        Workshop::query()
+            ->whereKey($workshopId)
+            ->update([
+                'reviews_count' => $reviewsCount,
+                'rating' => $averageRating,
+            ]);
     }
 }

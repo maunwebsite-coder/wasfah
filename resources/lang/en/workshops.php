@@ -173,6 +173,28 @@ return [
         'reference_unknown' => 'Not available',
     ],
 
+    'reviews' => [
+        'title' => 'Workshop rating',
+        'rating_label' => 'Your rating',
+        'comment_label' => 'Your feedback',
+        'optional' => 'Optional',
+        'comment_placeholder' => 'Share what you loved or what could be improved.',
+        'submit' => 'Submit review',
+        'update' => 'Update review',
+        'messages' => [
+            'wait_until_end' => 'You can add a review 15 minutes after the workshop starts.',
+            'participant_only' => 'Only attendees who booked this workshop can leave a rating.',
+            'login_to_review' => 'Sign in to leave a rating 15 minutes after the workshop starts.',
+        ],
+        'flash' => [
+            'submitted' => 'Your rating has been saved. Thanks for sharing your feedback!',
+        ],
+        'errors' => [
+            'not_finished' => 'You can only submit a rating after 15 minutes have passed from the start time.',
+            'not_participant' => 'Only participants with a booking can review this workshop.',
+        ],
+    ],
+
     'details' => [
         'title_suffix' => 'Wasfah Workshop',
         'not_specified' => 'Not specified',
@@ -193,6 +215,7 @@ return [
             'instructor_label' => 'INSTRUCTOR',
             'duration_label' => 'DURATION',
             'capacity_label' => 'CAPACITY',
+            'rating_label' => 'RATING',
             'reviews_count' => ':count reviews',
         ],
         'sections' => [

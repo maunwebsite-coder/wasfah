@@ -9,7 +9,7 @@
     $primaryHeroIsVideo = $primaryHeroSlide && (
         \Illuminate\Support\Str::endsWith($primaryHeroDesktop, '.webm') ||
         ($primaryHeroMobile && \Illuminate\Support\Str::endsWith($primaryHeroMobile, '.webm'))
-    );
+        );
     $primaryHeroHasMedia = filled($primaryHeroDesktop);
     $heroSizesAttribute = '(max-width: 640px) 100vw, (max-width: 1024px) 75vw, 60vw';
 @endphp
@@ -51,7 +51,7 @@
         $showToolsForAdmin = $showToolsForAdmin ?? false;
     @endphp
     <!-- قسم المحتوى الرئيسي -->
-    <main class="container mx-auto px-4 py-6 lg:py-8">
+    <main class="container mx-auto px-4 pt-0 pb-6 lg:pt-0 lg:pb-8">
         @if(request()->header('X-Mobile-Tab-Bar'))
             <div data-inline-style="home" hidden aria-hidden="true">
                 @include('home.partials.styles')
@@ -314,54 +314,6 @@
                         <i class="fas fa-star"></i>
                         <span>{{ __('home.featured_workshop.title') }}</span>
                     </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    @else
-    <!-- رسالة عدم وجود ورشات قادمة -->
-    <section class="container mx-auto px-4 py-8 sm:py-12 featured-workshop-section">
-        <div class="bg-gradient-to-r from-amber-500 to-orange-600 rounded-3xl overflow-hidden shadow-xl">
-            <div class="grid grid-cols-1 lg:grid-cols-[1.1fr_1.4fr] gap-0">
-                <!-- المحتوى النصي -->
-                <div class="p-5 sm:p-6 lg:p-9 text-white flex flex-col justify-center">
-                    <div class="mb-5">
-                        <span class="bg-white/20 text-white text-xs sm:text-sm font-semibold px-3 sm:px-4 py-1.5 sm:py-2 rounded-full inline-block mb-3 sm:mb-4">
-                            {{ __('home.featured_workshop.title') }}
-                        </span>
-                        <h2 class="text-xl sm:text-2xl lg:text-3xl font-bold mb-3 leading-tight">
-                            {{ __('home.featured_workshop.empty_title') }}
-                        </h2>
-                        <p class="text-sm sm:text-base text-amber-100 mb-4 sm:mb-6 leading-relaxed">
-                            {{ __('home.featured_workshop.empty_description') }}
-                        </p>
-                    </div>
-                    
-                    <!-- أزرار الإجراءات -->
-                    <div class="flex flex-col sm:flex-row gap-2.5 sm:gap-3">
-                        <a href="{{ route('workshops') }}" 
-                           class="bg-white text-amber-600 hover:bg-amber-50 font-bold text-sm sm:text-base py-2.5 px-4 sm:py-3 sm:px-6 rounded-lg sm:rounded-xl transition-all duration-300 flex items-center justify-center shadow-lg hover:shadow-xl">
-                            <i class="fas fa-list mr-2 rtl:ml-2 text-lg sm:text-xl"></i>
-                            {{ __('home.featured_workshop.empty_primary') }}
-                        </a>
-                        <a href="{{ route('recipes') }}" 
-                           class="border-2 border-white text-white hover:bg-white hover:text-amber-600 font-bold text-sm sm:text-base py-2.5 px-4 sm:py-3 sm:px-6 rounded-lg sm:rounded-xl transition-all duration-300 flex items-center justify-center">
-                            <i class="fas fa-utensils mr-2 rtl:ml-2"></i>
-                            {{ __('home.featured_workshop.empty_secondary') }}
-                        </a>
-                    </div>
-                </div>
-                
-                <!-- الصورة/الأيقونة -->
-                <div class="relative h-48 sm:h-56 lg:h-auto overflow-hidden flex items-center justify-center">
-                    <div class="w-full h-full flex items-center justify-center">
-                        <div class="relative w-44 h-44 sm:w-56 sm:h-56 bg-white/10 rounded-full flex items-center justify-center">
-                            <div class="absolute inset-4 bg-white/20 rounded-full"></div>
-                            <div class="absolute inset-12 bg-white/10 rounded-full"></div>
-                            <i class="fas fa-calendar-alt text-white text-5xl"></i>
-                        </div>
-                    </div>
-                    <div class="absolute inset-0 bg-gradient-to-l from-transparent to-amber-500/20"></div>
                 </div>
             </div>
         </div>

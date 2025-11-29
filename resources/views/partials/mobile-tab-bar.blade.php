@@ -2,6 +2,7 @@
     $authUser = Auth::user();
     $tabBarLabels = trans('navbar.tab_bar');
     $isChef = $authUser?->isChef();
+    $hasBookingsAccess = (bool) $authUser;
     $lockVisibility = (bool) ($lockVisibility ?? false);
 
     $tabItems = [
@@ -18,13 +19,6 @@
             'icon' => 'fa-solid fa-play',
             'label' => data_get($tabBarLabels, 'recipes', __('navbar.links.recipes')),
             'active' => request()->routeIs('recipes', 'recipe.*'),
-        ],
-        [
-            'key' => 'bookings',
-            'href' => route('bookings.index'),
-            'icon' => 'fa-solid fa-calendar-check',
-            'label' => data_get($tabBarLabels, 'bookings', __('navbar.account_menu.links.bookings')),
-            'active' => request()->routeIs('bookings*'),
         ],
         [
             'key' => 'workshops',
@@ -50,6 +44,16 @@
         ),
         'active' => $isChef ? $isChefRoute : request()->routeIs('profile*'),
     ];
+
+    if ($hasBookingsAccess) {
+        array_splice($tabItems, 2, 0, [[
+            'key' => 'bookings',
+            'href' => route('bookings.index'),
+            'icon' => 'fa-solid fa-calendar-check',
+            'label' => data_get($tabBarLabels, 'bookings', __('navbar.account_menu.links.bookings')),
+            'active' => request()->routeIs('bookings*'),
+        ]]);
+    }
 
     $loaderLabel = data_get($tabBarLabels, 'loading_label', 'Updating your page');
     $loaderHint = data_get($tabBarLabels, 'loading_hint', 'Hang tight for a moment.');

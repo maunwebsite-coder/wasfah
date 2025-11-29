@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('title', 'Check Tools')
 
@@ -19,7 +19,7 @@
         margin: 10px 0;
     }
     .check-error {
-        background: #eaf3f6;
+        background: #f4f6ff;
         border: 1px solid #f44336;
         padding: 15px;
         border-radius: 5px;
@@ -27,7 +27,7 @@
     }
     .check-warning {
         background: #fff3e0;
-        border: 1px solid #0fa289;
+        border: 1px solid #1ab8ff;
         padding: 15px;
         border-radius: 5px;
         margin: 10px 0;
@@ -369,6 +369,7 @@
     });
 </script>
 @endpush
+
 
 
 

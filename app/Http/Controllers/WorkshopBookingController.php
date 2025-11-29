@@ -5,8 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Workshop;
 use App\Models\WorkshopBooking;
 use App\Models\Notification;
+use App\Models\Recording;
 use App\Services\GoogleMeetService;
-use App\Services\GoogleDriveService;
+use App\Services\UserGoogleDriveService;
 use App\Services\WorkshopLinkSecurityService;
 use App\Services\WorkshopMeetingAttendeeSyncService;
 use App\Support\Concerns\ResolvesWorkshopRecordings;
@@ -25,10 +26,11 @@ class WorkshopBookingController extends Controller
     use ResolvesWorkshopRecordings;
 
     public function __construct(
+        protected Recording $recordingModel,
         protected WorkshopLinkSecurityService $linkSecurity,
         protected GoogleMeetService $googleMeetService,
         protected WorkshopMeetingAttendeeSyncService $meetingAttendeeSyncService,
-        protected GoogleDriveService $googleDriveService,
+        protected UserGoogleDriveService $userGoogleDriveService,
     ) {
     }
 
@@ -157,6 +159,83 @@ class WorkshopBookingController extends Controller
 
     public function index()
     {
+        $user = Auth::user();
+
+        if (! $user) {
+            return redirect()->route('login');
+        }
+
+        $bookingsQuery = WorkshopBooking::with([
+            'workshop' => function ($query) {
+                $query->with(['chef']);
+            },
+        ])
+            ->where('user_id', $user->id);
+
+        $bookings = (clone $bookingsQuery)
+            ->orderByDesc('created_at')
+            ->paginate(10);
+
+        // Resolve the most useful recording link (prefer Drive if available)
+        $bookings->getCollection()->each(function (WorkshopBooking $booking) {
+            $workshop = $booking->workshop;
+
+            if (! $workshop) {
+                return;
+            }
+
+            $resolved = $this->resolveRecordingUrl($workshop);
+            $hasMeetingContext = $workshop->meeting_code || $workshop->meeting_link;
+            $resolvedIsRecording = $this->isGoogleDriveUrl((string) $resolved) || $this->isDirectVideoUrl($resolved);
+
+            // Prefer Drive recording if we only have a meeting link/code
+            if ($hasMeetingContext && ! $resolvedIsRecording) {
+                $driveUrl = $this->resolveDriveRecordingForWorkshop($workshop);
+
+                if ($driveUrl) {
+                    $resolved = $driveUrl;
+                }
+            }
+
+            if ($resolved) {
+                $workshop->setAttribute('recording_resolved_url', $resolved);
+
+                // Ensure the attendee has access to the resolved Drive recording
+                if ($booking->status === 'confirmed' && $this->isGoogleDriveUrl($resolved)) {
+                    app(\App\Services\WorkshopRecordingAccessService::class)->shareWithAttendee($booking);
+                }
+            }
+        });
+
+        $statusCounts = (clone $bookingsQuery)
+            ->selectRaw('status, COUNT(*) as total')
+            ->groupBy('status')
+            ->pluck('total', 'status');
+
+        $showEmptyState = $bookings->total() === 0;
+
+        return view('bookings.index', [
+            'bookings' => $bookings,
+            'statusCounts' => $statusCounts,
+            'showEmptyState' => $showEmptyState,
+            'canManageRecordings' => $user->canAccessRecordManagement(),
+        ]);
+    }
+
+    public function recordings()
+    {
+        $viewer = Auth::user();
+
+        if (! $viewer) {
+            return redirect()->route('login');
+        }
+
+        if (! $viewer->canAccessRecordManagement()) {
+            return redirect()
+                ->route('onboarding.show')
+                ->with('error', 'هذه الصفحة مخصصة للشيفات المعتمدين. يرجى إكمال بياناتك للمتابعة.');
+        }
+
         $bookings = WorkshopBooking::with(['workshop', 'user'])
                                   ->where('user_id', Auth::id())
                                   ->orderBy('created_at', 'desc')
@@ -165,8 +244,11 @@ class WorkshopBookingController extends Controller
         $recordingEntries = collect();
         $locale = app()->getLocale() === 'ar' ? 'ar' : 'en';
         $dateFormat = __('chef.workshops.datetime_format');
-        $viewer = Auth::user();
         $isChefOwner = $viewer && method_exists($viewer, 'isChef') && $viewer->isChef();
+        $viewerDriveEnabled = $viewer?->hasGoogleDriveCredentials() ?? false;
+        $bookingWorkshopMap = $bookings->keyBy('workshop_id');
+        $bookingWorkshopIds = $bookingWorkshopMap->keys()->filter()->values();
+        $normalizedExistingUrls = collect();
 
         foreach ($bookings as $booking) {
             $workshop = $booking->workshop;
@@ -184,11 +266,21 @@ class WorkshopBookingController extends Controller
 
             $resolvedRecordingUrl = $this->resolveRecordingUrl($workshop);
 
-            if (! $resolvedRecordingUrl && $this->googleDriveService->isEnabled() && $workshop->meeting_code) {
-                $resolvedRecordingUrl = $this->googleDriveService->findRecordingUrl($workshop->meeting_code);
+            if (! $resolvedRecordingUrl && $workshop->meeting_code) {
+                $resolvedRecordingUrl = $this->resolveDriveRecordingForWorkshop($workshop);
             }
 
             $previewUrl = $this->buildRecordingPreviewUrl($resolvedRecordingUrl);
+
+            // If the stored link isn't embeddable (e.g., Meet URL), fall back to Drive recording lookup
+            if (! $previewUrl && ! $this->isDirectVideoUrl($resolvedRecordingUrl) && $workshop->meeting_code) {
+                $driveUrl = $this->resolveDriveRecordingForWorkshop($workshop);
+
+                if ($driveUrl) {
+                    $resolvedRecordingUrl = $driveUrl;
+                    $previewUrl = $this->buildRecordingPreviewUrl($driveUrl);
+                }
+            }
 
             if (! $resolvedRecordingUrl && ! $previewUrl) {
                 continue;
@@ -239,6 +331,10 @@ class WorkshopBookingController extends Controller
                     ->all(),
                 'workshop_id' => $workshop->id,
             ]);
+
+            if ($resolvedRecordingUrl) {
+                $normalizedExistingUrls->push(strtolower(trim($resolvedRecordingUrl)));
+            }
         }
 
         // Add owner recordings that may not be in their bookings (for chefs managing their own workshops)
@@ -254,8 +350,8 @@ class WorkshopBookingController extends Controller
                 $resolvedRecordingUrl = $this->resolveRecordingUrl($workshop);
                 $previewUrl = $this->buildRecordingPreviewUrl($resolvedRecordingUrl);
 
-                if (! $resolvedRecordingUrl && $this->googleDriveService->isEnabled() && $workshop->meeting_code) {
-                    $resolvedRecordingUrl = $this->googleDriveService->findRecordingUrl($workshop->meeting_code);
+                if (! $resolvedRecordingUrl && $workshop->meeting_code) {
+                    $resolvedRecordingUrl = $this->resolveDriveRecordingForWorkshop($workshop);
                     $previewUrl = $this->buildRecordingPreviewUrl($resolvedRecordingUrl);
                 }
 
@@ -302,46 +398,140 @@ class WorkshopBookingController extends Controller
                         ->all(),
                     'workshop_id' => $workshop->id,
                 ]);
+
+                if ($resolvedRecordingUrl) {
+                    $normalizedExistingUrls->push(strtolower(trim($resolvedRecordingUrl)));
+                }
             }
         }
 
-        // Include latest Drive recordings (platform library) so users can still watch even without bookings
-        $driveEntries = collect($this->googleDriveService->listRecordings(null, 12))
-            ->filter(fn ($file) => $file instanceof \Google\Service\Drive\DriveFile)
-            ->map(function (\Google\Service\Drive\DriveFile $file) use ($locale, $dateFormat): array {
-                $modifiedAt = $file->getModifiedTime()
-                    ? Carbon::parse($file->getModifiedTime())->locale($locale)
-                    : null;
+        // Show Drive library entries only to chefs managing their own workshops
+        $driveEntries = collect();
 
-                $fileId = $file->getId();
-                $previewUrl = $fileId
-                    ? sprintf('https://drive.google.com/file/d/%s/preview', $fileId)
-                    : null;
+        if ($isChefOwner && $viewerDriveEnabled) {
+            $driveFiles = $this->userGoogleDriveService->listRecordings($viewer, 12);
 
-                $watchUrl = $file->getWebViewLink() ?: $previewUrl ?: $file->getWebContentLink();
-                $description = $file->getDescription();
+            $driveEntries = collect($driveFiles)
+                ->filter(fn ($file) => $file instanceof \Google\Service\Drive\DriveFile)
+                ->map(function (\Google\Service\Drive\DriveFile $file) use ($locale, $dateFormat): array {
+                    $modifiedAt = $file->getModifiedTime()
+                        ? Carbon::parse($file->getModifiedTime())->locale($locale)
+                        : null;
 
-                return [
-                    'id' => 'drive-' . ($fileId ?: uniqid('drive-', true)),
-                    'title' => $file->getName() ?: __('chef.recordings.untitled'),
-                    'excerpt' => $description
-                        ? Str::limit($description, 130)
-                        : __('chef.recordings.drive_default_description'),
-                    'date_label' => $modifiedAt
-                        ? $modifiedAt->translatedFormat($dateFormat)
-                        : __('chef.recordings.updated_unknown'),
-                    'location_label' => __('chef.recordings.library_label'),
-                    'watch_url' => $watchUrl,
-                    'preview_url' => $previewUrl,
-                    'details_url' => $watchUrl,
-                    'badge' => __('chef.recordings.badges.available'),
-                    'type' => 'drive',
-                    'sort_timestamp' => $modifiedAt ? $modifiedAt->getTimestamp() : 0,
-                    'poster' => $file->getIconLink(),
-                    'is_direct_video' => false,
-                    'access' => __('bookings.recordings.access.drive'),
-                ];
-            });
+                    $fileId = $file->getId();
+                    $previewUrl = $fileId
+                        ? sprintf('https://drive.google.com/file/d/%s/preview', $fileId)
+                        : null;
+
+                    $watchUrl = $file->getWebViewLink() ?: $previewUrl ?: $file->getWebContentLink();
+                    $description = $file->getDescription();
+
+                    return [
+                        'id' => 'drive-' . ($fileId ?: uniqid('drive-', true)),
+                        'title' => $file->getName() ?: __('chef.recordings.untitled'),
+                        'excerpt' => $description
+                            ? Str::limit($description, 130)
+                            : __('chef.recordings.drive_default_description'),
+                        'date_label' => $modifiedAt
+                            ? $modifiedAt->translatedFormat($dateFormat)
+                            : __('chef.recordings.updated_unknown'),
+                        'location_label' => __('chef.recordings.library_label'),
+                        'watch_url' => $watchUrl,
+                        'preview_url' => $previewUrl,
+                        'details_url' => $watchUrl,
+                        'badge' => __('chef.recordings.badges.available'),
+                        'type' => 'drive',
+                        'sort_timestamp' => $modifiedAt ? $modifiedAt->getTimestamp() : 0,
+                        'poster' => $file->getIconLink(),
+                        'is_direct_video' => false,
+                        'access' => __('bookings.recordings.access.drive'),
+                    ];
+                });
+        }
+
+        // Inject Drive recordings that were saved to the recordings table for the user's workshops/bookings
+        $savedRecordings = collect();
+
+        if ($bookingWorkshopIds->isNotEmpty()) {
+            $savedRecordings = $this->recordingModel
+                ->newQuery()
+                ->whereIn('workshop_id', $bookingWorkshopIds)
+                ->with('workshop')
+                ->orderByDesc('created_at')
+                ->limit(20)
+                ->get();
+        }
+
+        foreach ($savedRecordings as $recording) {
+            $workshop = $recording->workshop;
+            $watchUrl = $recording->recording_url;
+            $previewUrl = $recording->preview_url ?: $this->buildRecordingPreviewUrl($watchUrl);
+
+            if (! $watchUrl && ! $previewUrl) {
+                continue;
+            }
+
+            $normalizedWatch = $watchUrl ? strtolower(trim($watchUrl)) : null;
+
+            if ($normalizedWatch && $normalizedExistingUrls->contains($normalizedWatch)) {
+                continue;
+            }
+
+            $startDateLabel = $workshop?->start_date
+                ? $workshop->start_date->copy()->locale($locale)->translatedFormat($dateFormat)
+                : optional($recording->created_at)?->copy()->locale($locale)->translatedFormat($dateFormat);
+
+            $locationLabel = $workshop?->is_online
+                ? __('chef.workshops.online_live')
+                : ($workshop?->location ?? __('chef.workshops.location_tbd'));
+
+            $booking = $bookingWorkshopMap->get($recording->workshop_id);
+            $detailsUrl = $booking
+                ? route('bookings.show', $booking)
+                : ($workshop ? route('workshop.show', $workshop) : null);
+
+            $recordingEntries->push([
+                'id' => 'saved-recording-' . $recording->id,
+                'title' => $recording->title ?: ($workshop?->title ?? __('chef.recordings.untitled')),
+                'excerpt' => $workshop
+                    ? Str::limit(strip_tags((string) $workshop->description), 140)
+                    : null,
+                'date_label' => $startDateLabel,
+                'location_label' => $locationLabel,
+                'watch_url' => $watchUrl ?: $previewUrl,
+                'preview_url' => $previewUrl,
+                'details_url' => $detailsUrl,
+                'badge' => __('chef.recordings.badges.available'),
+                'type' => 'recording',
+                'sort_timestamp' => $workshop?->start_date
+                    ? (int) $workshop->start_date->getTimestamp()
+                    : (int) ($recording->created_at?->getTimestamp() ?? 0),
+                'poster' => $workshop?->image
+                    ? asset('storage/' . ltrim($workshop->image, '/'))
+                    : ($recording->meta['thumbnailLink'] ?? $recording->meta['iconLink'] ?? null),
+                'is_direct_video' => $this->isDirectVideoUrl($watchUrl),
+                'access' => __('bookings.recordings.access.booking'),
+                'is_owner' => $isChefOwner && $workshop && $workshop->user_id === $viewer->id,
+                'hidden' => (bool) ($workshop->hide_public_recording ?? false),
+                'hidden_global' => (bool) ($workshop->hide_recording_everywhere ?? false),
+                'viewer_count' => $workshop?->confirmedBookings()->count(),
+                'viewer_names' => $workshop
+                    ? $workshop->confirmedBookings()
+                        ->with('user:id,name')
+                        ->take(6)
+                        ->get()
+                        ->pluck('user.name')
+                        ->filter()
+                        ->values()
+                        ->all()
+                    : [],
+                'workshop_id' => $recording->workshop_id,
+            ]);
+
+            if ($normalizedWatch) {
+                $normalizedExistingUrls->push($normalizedWatch);
+            }
+        }
 
         $recordingEntries = $recordingEntries
             ->merge($driveEntries)
@@ -349,7 +539,9 @@ class WorkshopBookingController extends Controller
             ->take(12)
             ->values();
 
-        return view('bookings.index', compact('bookings', 'recordingEntries'));
+        $showEmptyState = $bookings->total() === 0 && $recordingEntries->isEmpty();
+
+        return view('bookings.recordings', compact('bookings', 'recordingEntries', 'showEmptyState'));
     }
 
     public function show(WorkshopBooking $booking)
@@ -464,6 +656,19 @@ class WorkshopBookingController extends Controller
         $meetingLockSupported = $this->meetingLockSupported();
         $meetingStarted = (bool) $workshop->meeting_started_at;
         $meetingLocked = $meetingLockSupported ? (bool) $workshop->meeting_locked_at : false;
+        $graceJoinMinutes = $this->participantJoinGracePeriodMinutes();
+        $graceJoinAllowed = $this->participantJoinGracePeriodReached($workshop);
+        $graceJoinAt = $this->participantJoinGraceAt($workshop);
+        $meetingExpiresAt = $this->meetingExpiresAt($workshop);
+        $meetingExpired = $this->hasMeetingExpired($workshop);
+        $reviewWindowOpen = $workshop->reviewWindowOpen();
+        $reviewUnlockAt = $workshop->reviewUnlockAt();
+        $canReview = $user ? $workshop->canBeReviewedBy($user->id) : false;
+        $userReview = $user ? $workshop->reviews()->where('user_id', $user->id)->first() : null;
+
+        if ($meetingExpired) {
+            $graceJoinAllowed = false;
+        }
 
         return view('bookings.join', [
             'booking' => $booking,
@@ -478,6 +683,16 @@ class WorkshopBookingController extends Controller
             'isMeetingLocked' => $meetingLocked,
             'meetingLocked' => $meetingLocked,
             'meetingStarted' => $meetingStarted,
+            'meetingReady' => ($meetingStarted || $graceJoinAllowed) && ! $meetingExpired,
+            'graceJoinAllowed' => $graceJoinAllowed,
+            'graceJoinAtIso' => optional($graceJoinAt)->toIso8601String(),
+            'graceJoinMinutes' => $graceJoinMinutes,
+            'canReview' => $canReview,
+            'reviewWindowOpen' => $reviewWindowOpen,
+            'reviewUnlockAtIso' => optional($reviewUnlockAt)->toIso8601String(),
+            'userReview' => $userReview,
+            'meetingExpiresAtIso' => optional($meetingExpiresAt)->toIso8601String(),
+            'meetingExpired' => $meetingExpired,
             'participantName' => $effectiveName,
             'participantEmail' => $user?->email,
             'shouldPromptForDisplayName' => $shouldPromptForDisplayName,
@@ -535,11 +750,20 @@ class WorkshopBookingController extends Controller
             return $redirect;
         }
 
+        if ($this->hasMeetingExpired($workshop)) {
+            return redirect()
+                ->route('bookings.show', $booking)
+                ->with('error', __('bookings.join.status.messages.expired'));
+        }
+
         $isGoogleMeet = $workshop->meeting_provider === 'google_meet';
 
         if ($isGoogleMeet) {
             $meetingLockSupported = $this->meetingLockSupported();
             $meetingLocked = $meetingLockSupported ? (bool) $workshop->meeting_locked_at : false;
+            $graceJoinAllowed = $meetingLocked
+                ? false
+                : $this->participantJoinGracePeriodReached($workshop);
 
             if ($meetingLocked) {
                 return redirect()
@@ -547,10 +771,12 @@ class WorkshopBookingController extends Controller
                     ->with('error', 'تم قفل الاجتماع من قبل المضيف. يرجى انتظار السماح بالدخول.');
             }
 
-            if (!$workshop->meeting_started_at) {
+            if (!$workshop->meeting_started_at && !$graceJoinAllowed) {
                 return redirect()
                     ->to($this->linkSecurity->makeParticipantJoinUrl($booking))
-                    ->with('error', 'لم يبدأ المضيف الاجتماع بعد.');
+                    ->with('error', __('bookings.join.status.messages.grace_wait', [
+                        'minutes' => $this->participantJoinGracePeriodMinutes(),
+                    ]));
             }
 
             if ($trustedRedirect = $this->attemptTrustedGoogleRedirect($booking, $workshop)) {
@@ -590,16 +816,40 @@ class WorkshopBookingController extends Controller
 
         $booking->load('workshop');
         $workshop = $booking->workshop;
+        $meetingLockSupported = $this->meetingLockSupported();
+        $meetingLocked = $meetingLockSupported && $workshop
+            ? (bool) $workshop->meeting_locked_at
+            : false;
+        $graceJoinAllowed = $meetingLocked
+            ? false
+            : $this->participantJoinGracePeriodReached($workshop);
+        $graceJoinAt = $this->participantJoinGraceAt($workshop);
+        $meetingStarted = (bool) ($workshop?->meeting_started_at);
+        $expiresAt = $this->meetingExpiresAt($workshop);
+        $meetingExpired = $this->hasMeetingExpired($workshop);
+        $reviewUnlockAt = $workshop?->reviewUnlockAt();
+        $reviewWindowOpen = $workshop?->reviewWindowOpen() ?? false;
+
+        if ($meetingExpired) {
+            $graceJoinAllowed = false;
+        }
+
+        $joinUnlocked = ($meetingStarted || $graceJoinAllowed) && ! $meetingExpired;
 
         return response()->json([
-            'meeting_started' => (bool) ($workshop?->meeting_started_at),
+            'meeting_started' => $meetingStarted,
             'started_at' => $workshop?->meeting_started_at?->toIso8601String(),
-            'meeting_locked' => $this->meetingLockSupported() && $workshop
-                ? (bool) $workshop->meeting_locked_at
-                : false,
-            'locked_at' => $this->meetingLockSupported() && $workshop
+            'join_unlocked' => $joinUnlocked,
+            'grace_join_allowed' => $graceJoinAllowed,
+            'grace_join_at' => optional($graceJoinAt)->toIso8601String(),
+            'meeting_locked' => $meetingLocked,
+            'locked_at' => $meetingLockSupported && $workshop
                 ? $workshop->meeting_locked_at?->toIso8601String()
                 : null,
+            'meeting_expired' => $meetingExpired,
+            'expires_at' => $expiresAt?->toIso8601String(),
+            'review_window_open' => $reviewWindowOpen,
+            'review_unlock_at' => optional($reviewUnlockAt)->toIso8601String(),
         ]);
     }
 
@@ -862,10 +1112,110 @@ class WorkshopBookingController extends Controller
         return $supported;
     }
 
+    protected function meetingAccessGraceHours(): int
+    {
+        return (int) config('workshop-links.participant_meeting_grace_hours', 6);
+    }
+
+    protected function resolveWorkshopEndDate(?Workshop $workshop): ?Carbon
+    {
+        if (! $workshop) {
+            return null;
+        }
+
+        if ($workshop->end_date instanceof Carbon) {
+            return $workshop->end_date->copy();
+        }
+
+        if ($workshop->start_date && is_numeric($workshop->duration ?? null)) {
+            return $workshop->start_date->copy()->addMinutes((int) $workshop->duration);
+        }
+
+        return null;
+    }
+
+    protected function meetingExpiresAt(?Workshop $workshop): ?Carbon
+    {
+        $endAt = $this->resolveWorkshopEndDate($workshop);
+
+        if (! $endAt) {
+            return null;
+        }
+
+        $graceHours = $this->meetingAccessGraceHours();
+
+        if ($graceHours <= 0) {
+            return $endAt->copy();
+        }
+
+        return $endAt->copy()->addHours($graceHours);
+    }
+
+    protected function hasMeetingExpired(?Workshop $workshop): bool
+    {
+        $expiresAt = $this->meetingExpiresAt($workshop);
+
+        if (! $expiresAt) {
+            return false;
+        }
+
+        return now($expiresAt->getTimezone())->greaterThanOrEqualTo($expiresAt);
+    }
+
+    protected function participantJoinGracePeriodMinutes(): int
+    {
+        return 15;
+    }
+
+    protected function participantJoinGraceAt(Workshop $workshop): ?Carbon
+    {
+        if (! $workshop->start_date) {
+            return null;
+        }
+
+        return $workshop->start_date->copy()->addMinutes($this->participantJoinGracePeriodMinutes());
+    }
+
+    protected function participantJoinGracePeriodReached(Workshop $workshop): bool
+    {
+        if (! $workshop->start_date) {
+            return false;
+        }
+
+        if ($this->meetingLockSupported() && $workshop->meeting_locked_at) {
+            return false;
+        }
+
+        $graceAt = $this->participantJoinGraceAt($workshop);
+
+        return $graceAt !== null && now()->greaterThanOrEqualTo($graceAt);
+    }
+
     protected function ensureBookingOwner(WorkshopBooking $booking): void
     {
         if ($booking->user_id !== Auth::id()) {
             abort(403);
         }
+    }
+
+    protected function resolveDriveRecordingForWorkshop(Workshop $workshop): ?string
+    {
+        $workshop->loadMissing('chef');
+        $owner = $workshop->chef;
+        $meetingCode = $workshop->meeting_code ?: Workshop::extractMeetingCode($workshop->meeting_link);
+
+        if (! $meetingCode) {
+            return null;
+        }
+
+        if ($owner && $owner->hasGoogleDriveCredentials()) {
+            $url = $this->userGoogleDriveService->findRecordingUrl($owner, $meetingCode);
+
+            if ($url) {
+                return $url;
+            }
+        }
+
+        return null;
     }
 }

@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('title', __('notifications.page.title'))
 
@@ -303,8 +303,8 @@
     .filter-pill.is-active {
         color: #fff;
         border-color: transparent;
-        background-image: linear-gradient(135deg, #0f4c73, #0fb39a);
-        box-shadow: 0 15px 30px rgba(15, 76, 115, 0.25);
+        background-image: linear-gradient(135deg, #0819ff, #16c3ff);
+        box-shadow: 0 15px 30px rgba(8, 25, 255, 0.25);
     }
 
     .notification-item {
@@ -315,7 +315,7 @@
     .notification-item:hover {
         transform: translateY(-4px);
         box-shadow: 0 32px 50px rgba(15, 23, 42, 0.12);
-        border-color: rgba(15, 76, 115, 0.45);
+        border-color: rgba(8, 25, 255, 0.45);
     }
 
     .notification-message {
@@ -348,8 +348,8 @@
     }
 
     .notification-timeline-dot--active {
-        background: #0f4c73;
-        box-shadow: 0 8px 20px rgba(15, 76, 115, 0.35);
+        background: #0819ff;
+        box-shadow: 0 8px 20px rgba(8, 25, 255, 0.35);
         transform: scale(1.05);
     }
 
@@ -387,7 +387,7 @@
         border-radius: 999px;
         border: 1px solid #e2e8f0;
         background: #fff;
-        color: #0f4c73;
+        color: #0819ff;
         box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
         transition: all 0.2s ease;
     }
@@ -419,8 +419,8 @@
     }
 
     .stats-dot.is-active {
-        background: #0f4c73;
-        border-color: #0f4c73;
+        background: #0819ff;
+        border-color: #0819ff;
         transform: scale(1.05);
     }
 
@@ -1231,6 +1231,8 @@ function showErrorMessage(message) {
 }
 </script>
 @endpush
+
+
 
 
 

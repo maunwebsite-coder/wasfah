@@ -15,6 +15,7 @@
     $locationLabel = $workshop->is_online
         ? __('home.labels.online_short')
         : ($workshop->location ?: __('home.labels.onsite_short'));
+    $locationStatusClass = $workshop->is_online ? 'is-online' : 'is-onsite';
 @endphp
 
 <li>
@@ -44,10 +45,32 @@
                 @endif
             </div>
             @if($locationLabel)
-                <span class="latest-recipe-chip">
+                <span class="latest-recipe-chip latest-workshop-chip {{ $locationStatusClass }}">
                     {{ $locationLabel }}
                 </span>
             @endif
         </div>
     </a>
 </li>
+
+@once
+    @push('styles')
+        <style>
+            .latest-recipe-chip.latest-workshop-chip {
+                border: 1px solid transparent;
+            }
+            .latest-recipe-chip.latest-workshop-chip.is-online {
+                background: linear-gradient(135deg, #0819ff, #2c4dff);
+                color: #ffffff;
+                border-color: #0819ff;
+                box-shadow: 0 8px 18px rgba(8, 25, 255, 0.25);
+            }
+            .latest-recipe-chip.latest-workshop-chip.is-onsite {
+                background: linear-gradient(135deg, #0a1ece, #6b7fff);
+                color: #f8fafc;
+                border-color: #1e2dd8;
+                box-shadow: 0 8px 18px rgba(8, 25, 255, 0.18);
+            }
+        </style>
+    @endpush
+@endonce

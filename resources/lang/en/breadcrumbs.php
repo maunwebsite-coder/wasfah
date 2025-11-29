@@ -27,6 +27,7 @@ return [
             'links' => 'Wasfah links',
             'recipes' => 'My recipes',
             'workshops' => 'Peahskill workshops',
+            'public' => 'Public',
         ],
         'links' => [
             'edit' => 'Edit links page',

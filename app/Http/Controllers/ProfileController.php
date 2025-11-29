@@ -7,9 +7,12 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Recipe;
 use App\Models\Workshop;
+use App\Models\Recording;
 use App\Models\UserInteraction;
+use App\Models\WorkshopUser;
 use App\Services\ContentModerationService;
 use App\Support\Timezones;
+use App\Support\Concerns\ResolvesWorkshopRecordings;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -17,6 +20,8 @@ use App\Support\ImageUploadConstraints;
 
 class ProfileController extends Controller
 {
+    use ResolvesWorkshopRecordings;
+
     /**
      * عرض صفحة الملف الشخصي للمستخدم
      */
@@ -180,7 +185,46 @@ class ProfileController extends Controller
             ->take(8);
 
         $latestActivity = $activityFeed->first();
-        
+
+        $accessibleWorkshopIds = $this->recordingWorkshopAccessIds($user);
+        $accessibleRecordings = Recording::query()
+            ->with('workshop')
+            ->where(function ($query) use ($user, $accessibleWorkshopIds) {
+                $query->where('user_id', $user->id)
+                    ->orWhere('is_public', true);
+
+                if (!empty($accessibleWorkshopIds)) {
+                    $query->orWhereIn('workshop_id', $accessibleWorkshopIds);
+                }
+            })
+            ->latest()
+            ->take(12)
+            ->get()
+            ->map(function (Recording $recording) {
+                $workshop = $recording->workshop;
+                $previewUrl = $recording->preview_url ?: $this->buildRecordingPreviewUrl($recording->recording_url);
+                $dateLabel = $workshop?->start_date
+                    ? $workshop->start_date->translatedFormat(__('chef.workshops.datetime_format'))
+                    : ($recording->created_at
+                        ? $recording->created_at->translatedFormat('d M Y')
+                        : null);
+
+                return [
+                    'id' => $recording->id,
+                    'title' => $recording->title ?: ($workshop?->title ?? __('chef.recordings.untitled')),
+                    'watch_url' => $recording->recording_url,
+                    'preview_url' => $previewUrl,
+                    'is_public' => (bool) $recording->is_public,
+                    'source' => $recording->source,
+                    'workshop_title' => $workshop?->title,
+                    'workshop_id' => $workshop?->id,
+                    'date_label' => $dateLabel,
+                    'is_direct_video' => $this->isDirectVideoUrl($recording->recording_url),
+                ];
+            })
+            ->filter()
+            ->values();
+
         // إحصائيات المستخدم
         $stats = [
             'saved_recipes_count' => $savedRecipes->count(),
@@ -390,8 +434,27 @@ class ProfileController extends Controller
             'chefOverview',
             'timezoneOptions',
             'preferredTimezone',
-            'detectedTimezone'
+            'detectedTimezone',
+            'accessibleRecordings'
         );
+    }
+
+    protected function recordingWorkshopAccessIds(User $user): array
+    {
+        $bookingIds = $user->workshopBookings()
+            ->where('status', 'confirmed')
+            ->pluck('workshop_id')
+            ->unique()
+            ->all();
+
+        $pivotIds = WorkshopUser::query()
+            ->where('user_id', $user->id)
+            ->where('has_recording_access', true)
+            ->pluck('workshop_id')
+            ->unique()
+            ->all();
+
+        return array_values(array_unique(array_merge($bookingIds, $pivotIds)));
     }
     
     /**

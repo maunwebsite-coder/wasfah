@@ -1,4 +1,4 @@
-@php
+﻿@php
     $formattedCode = implode(' ', str_split($code));
 @endphp
 
@@ -20,11 +20,11 @@
             background-color: #ffffff;
             border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 20px 60px rgba(15, 76, 115, 0.15);
-            border: 1px solid rgba(15, 76, 115, 0.12);
+            box-shadow: 0 20px 60px rgba(8, 25, 255, 0.15);
+            border: 1px solid rgba(8, 25, 255, 0.12);
         }
         .header {
-            background: linear-gradient(135deg, #0f4c73, #0fb39a);
+            background: linear-gradient(135deg, #0819ff, #16c3ff);
             color: #ffffff;
             padding: 2rem;
             text-align: center;
@@ -39,7 +39,7 @@
             letter-spacing: 0.5rem;
             font-weight: 800;
             text-align: center;
-            color: #0a8070;
+            color: #0f78ad;
         }
         .footer {
             padding: 1.5rem 2.5rem 2.5rem;
@@ -48,7 +48,7 @@
             line-height: 1.6;
         }
         .highlight {
-            color: #0a8070;
+            color: #0f78ad;
             font-weight: 700;
         }
     </style>
@@ -79,6 +79,8 @@
     </div>
 </body>
 </html>
+
+
 
 
 

@@ -173,6 +173,28 @@ return [
         'reference_unknown' => 'غير متوفر',
     ],
 
+    'reviews' => [
+        'title' => 'تقييم الورشة',
+        'rating_label' => 'تقييمك',
+        'comment_label' => 'ملاحظاتك',
+        'optional' => 'اختياري',
+        'comment_placeholder' => 'شارك تجربتك أو أي اقتراحات لتحسين الورشة.',
+        'submit' => 'إرسال التقييم',
+        'update' => 'تحديث التقييم',
+        'messages' => [
+            'wait_until_end' => 'يمكنك إضافة تقييم بعد مرور 15 دقيقة من بداية الورشة.',
+            'participant_only' => 'التقييم متاح للمشاركين الذين حجزوا هذه الورشة.',
+            'login_to_review' => 'سجّل الدخول لتتمكن من تقييم الورشة بعد مرور 15 دقيقة من البداية.',
+        ],
+        'flash' => [
+            'submitted' => 'تم حفظ تقييمك، شكراً لمشاركتك رأيك!',
+        ],
+        'errors' => [
+            'not_finished' => 'لا يمكن إضافة التقييم قبل مرور 15 دقيقة من بداية الورشة.',
+            'not_participant' => 'التقييم متاح فقط للمشاركين الذين حجزوا هذه الورشة.',
+        ],
+    ],
+
     'details' => [
         'title_suffix' => 'ورشة وصفة',
         'not_specified' => 'غير محدد',
@@ -193,6 +215,7 @@ return [
             'instructor_label' => 'المدرب',
             'duration_label' => 'المدة',
             'capacity_label' => 'السعة',
+            'rating_label' => 'تقييم الورشة',
             'reviews_count' => ':count تقييم',
         ],
         'sections' => [

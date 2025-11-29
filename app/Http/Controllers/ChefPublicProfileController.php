@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Recipe;
+use App\Models\Recording;
 use App\Models\User;
 use App\Models\Workshop;
 use App\Models\WorkshopBooking;
-use App\Services\GoogleDriveService;
+use App\Models\WorkshopReview;
+use App\Models\WorkshopUser;
+use App\Services\UserGoogleDriveService;
 use App\Support\BrandAssets;
 use App\Support\Concerns\ResolvesWorkshopRecordings;
 use Google\Service\Drive\DriveFile;
@@ -23,7 +26,7 @@ class ChefPublicProfileController extends Controller
 {
     use ResolvesWorkshopRecordings;
 
-    public function __construct(protected GoogleDriveService $googleDrive)
+    public function __construct(protected UserGoogleDriveService $userDriveService)
     {
     }
 
@@ -107,10 +110,22 @@ class ChefPublicProfileController extends Controller
             ->get();
 
         $recordedWorkshops = $recordingCandidates
-            ->map(function (Workshop $workshop) {
+            ->map(function (Workshop $workshop) use ($chef) {
                 $recordingUrl = $this->resolveRecordingUrl($workshop);
+                $previewFromUrl = $this->buildRecordingPreviewUrl($recordingUrl);
+
+                // If we only have a Meet link (non-embeddable) try to fetch the actual Drive recording
+                if (!$previewFromUrl && $workshop->meeting_code) {
+                    $driveUrl = $this->resolveDriveRecordingForWorkshop($workshop, $chef);
+
+                    if ($driveUrl) {
+                        $recordingUrl = $driveUrl;
+                        $previewFromUrl = $this->buildRecordingPreviewUrl($driveUrl);
+                    }
+                }
+
                 $workshop->setAttribute('recording_source_url', $recordingUrl);
-                $workshop->setAttribute('video_preview_url', $this->buildRecordingPreviewUrl($recordingUrl));
+                $workshop->setAttribute('video_preview_url', $previewFromUrl);
                 $workshop->setAttribute('is_direct_video', $this->isDirectVideoUrl($recordingUrl));
 
                 return $workshop;
@@ -125,13 +140,45 @@ class ChefPublicProfileController extends Controller
         $carbonLocale = $appLocale === 'ar' ? 'ar' : 'en';
         $workshopDateTimeFormat = __('chef.workshops.datetime_format');
 
+        $recordingsFromDb = Recording::query()
+            ->with('workshop')
+            ->where('user_id', $chef->id)
+            ->latest()
+            ->take(12)
+            ->get();
+
+        $relevantWorkshopIds = $recordedWorkshops->pluck('id')
+            ->merge($recordingsFromDb->pluck('workshop_id')->filter())
+            ->unique()
+            ->values()
+            ->all();
+
+        $viewerAllowedWorkshops = $viewer
+            ? $this->confirmedBookingsForViewer($viewer, $relevantWorkshopIds)
+            : [];
+
         $recordingEntries = $this->buildRecordingEntries(
             $recordedWorkshops,
             $carbonLocale,
             $workshopDateTimeFormat,
-            $viewer ? $this->confirmedBookingsForViewer($viewer, $recordedWorkshops->pluck('id')->all()) : [],
+            $viewerAllowedWorkshops,
+            $isOwner,
+            $chef
+        );
+
+        $dbRecordingEntries = $this->mapRecordingModelsToEntries(
+            $recordingsFromDb,
+            $carbonLocale,
+            $workshopDateTimeFormat,
+            $viewerAllowedWorkshops,
             $isOwner
         );
+
+        $recordingEntries = $dbRecordingEntries
+            ->merge($recordingEntries)
+            ->sortByDesc('sort_timestamp')
+            ->take(12)
+            ->values();
 
         if (!$visibilityColumnExists) {
             $recipes->each(function (Recipe $recipe) {
@@ -161,7 +208,7 @@ class ChefPublicProfileController extends Controller
             ->take(12)
             ->values();
 
-        $stats = $this->buildChefStats($recipes);
+        $stats = $this->buildChefStats($chef, $recipes);
 
         $viewName = collect([
             'chef.public-profile',
@@ -199,19 +246,38 @@ class ChefPublicProfileController extends Controller
     /**
      * Prepare aggregate stats for the chef's recipes.
      */
-    protected function buildChefStats(Collection $recipes): array
+    protected function buildChefStats(User $chef, Collection $recipes): array
     {
-        $averageRating = $recipes->pluck('interactions_avg_rating')
+        $averageRecipeRating = $recipes->pluck('interactions_avg_rating')
             ->filter()
             ->average();
+
+        $workshopReviewStats = WorkshopReview::query()
+            ->where('is_approved', true)
+            ->whereHas('workshop', function ($query) use ($chef) {
+                $query->where('user_id', $chef->id);
+            })
+            ->selectRaw('workshop_id, COUNT(*) as total_reviews, AVG(rating) as average_rating')
+            ->groupBy('workshop_id')
+            ->get();
+
+        $ratedWorkshopsCount = $workshopReviewStats->count();
+
+        $workshopAverageRating = $ratedWorkshopsCount > 0
+            ? round((float) $workshopReviewStats->avg('average_rating'), 1)
+            : null;
+
+        $totalWorkshopReviews = (int) $workshopReviewStats->sum('total_reviews');
 
         return [
             'recipes_count' => $recipes->count(),
             'total_saves' => (int) $recipes->sum('saved_count'),
             'total_made' => (int) $recipes->sum('made_count'),
-            'rating_count' => (int) $recipes->sum('rating_count'),
-            'average_rating' => $averageRating
-                ? round((float) $averageRating, 1)
+            'rating_count' => $totalWorkshopReviews,
+            'rated_workshops_count' => $ratedWorkshopsCount,
+            'average_rating' => $workshopAverageRating,
+            'recipes_average_rating' => $averageRecipeRating
+                ? round((float) $averageRecipeRating, 1)
                 : null,
         ];
     }
@@ -262,8 +328,10 @@ class ChefPublicProfileController extends Controller
         string $locale,
         string $dateTimeFormat,
         array $allowedWorkshopIds = [],
-        bool $isOwner = false
+        bool $isOwner = false,
+        ?User $chef = null
     ): Collection {
+        $userDriveEnabled = $chef?->hasGoogleDriveCredentials() ?? false;
         $workshopEntries = $recordedWorkshops
             ->map(function (Workshop $workshop) use ($locale, $dateTimeFormat, $allowedWorkshopIds, $isOwner): ?array {
                 $startDateLabel = $workshop->start_date
@@ -284,8 +352,14 @@ class ChefPublicProfileController extends Controller
                 $isHiddenPublic = (bool) ($workshop->hide_public_recording ?? false);
                 $isHiddenEverywhere = (bool) ($workshop->hide_recording_everywhere ?? false);
 
-                if (! $isOwner && ($isHiddenEverywhere || $isHiddenPublic || ! in_array($workshop->id, $allowedWorkshopIds, true))) {
-                    return null;
+                if (! $isOwner) {
+                    if ($isHiddenEverywhere) {
+                        return null;
+                    }
+
+                    if ($isHiddenPublic && ! in_array($workshop->id, $allowedWorkshopIds, true)) {
+                        return null;
+                    }
                 }
 
                 $description = $workshop->description
@@ -318,47 +392,125 @@ class ChefPublicProfileController extends Controller
             ->values()
             ->toBase();
 
-        $driveEntries = collect($this->googleDrive->listRecordings(null, 12))
-            ->filter(fn ($file) => $file instanceof DriveFile)
-            ->map(function (DriveFile $file) use ($locale, $dateTimeFormat): array {
-                $modifiedAt = $file->getModifiedTime()
-                    ? Carbon::parse($file->getModifiedTime())->locale($locale)
-                    : null;
+        $driveEntries = collect();
 
-                $fileId = $file->getId();
-                $previewUrl = $fileId
-                    ? sprintf('https://drive.google.com/file/d/%s/preview', $fileId)
-                    : null;
+        if ($isOwner && $userDriveEnabled) {
+            $files = $this->userDriveService->listRecordings($chef, 12);
 
-                $watchUrl = $file->getWebViewLink() ?: $previewUrl ?: $file->getWebContentLink();
-                $description = $file->getDescription();
+            $driveEntries = collect($files)
+                ->filter(fn ($file) => $file instanceof DriveFile)
+                ->map(function (DriveFile $file) use ($locale, $dateTimeFormat): array {
+                    $modifiedAt = $file->getModifiedTime()
+                        ? Carbon::parse($file->getModifiedTime())->locale($locale)
+                        : null;
 
-                return [
-                    'id' => 'drive-' . ($fileId ?: uniqid('drive-', true)),
-                    'title' => $file->getName() ?: __('chef.recordings.untitled'),
-                    'excerpt' => $description
-                        ? Str::limit($description, 130)
-                        : __('chef.recordings.drive_default_description'),
-                    'date_label' => $modifiedAt
-                        ? $modifiedAt->translatedFormat($dateTimeFormat)
-                        : __('chef.recordings.updated_unknown'),
-                    'location_label' => __('chef.recordings.library_label'),
-                    'watch_url' => $watchUrl,
-                    'preview_url' => $previewUrl,
-                    'details_url' => $watchUrl,
-                    'badge' => __('chef.recordings.badges.available'),
-                    'type' => 'drive',
-                    'sort_timestamp' => $modifiedAt ? $modifiedAt->getTimestamp() : 0,
-                    'poster' => $file->getIconLink(),
-                    'is_direct_video' => false,
-                ];
-            });
+                    $fileId = $file->getId();
+                    $previewUrl = $fileId
+                        ? sprintf('https://drive.google.com/file/d/%s/preview', $fileId)
+                        : null;
+
+                    $watchUrl = $file->getWebViewLink() ?: $previewUrl ?: $file->getWebContentLink();
+                    $description = $file->getDescription();
+
+                    return [
+                        'id' => 'drive-' . ($fileId ?: uniqid('drive-', true)),
+                        'title' => $file->getName() ?: __('chef.recordings.untitled'),
+                        'excerpt' => $description
+                            ? Str::limit($description, 130)
+                            : __('chef.recordings.drive_default_description'),
+                        'date_label' => $modifiedAt
+                            ? $modifiedAt->translatedFormat($dateTimeFormat)
+                            : __('chef.recordings.updated_unknown'),
+                        'location_label' => __('chef.recordings.library_label'),
+                        'watch_url' => $watchUrl,
+                        'preview_url' => $previewUrl,
+                        'details_url' => $watchUrl,
+                        'badge' => __('chef.recordings.badges.available'),
+                        'type' => 'drive',
+                        'sort_timestamp' => $modifiedAt ? $modifiedAt->getTimestamp() : 0,
+                        'poster' => $file->getIconLink(),
+                        'is_direct_video' => false,
+                    ];
+                });
+        }
 
         return $workshopEntries
             ->merge($driveEntries)
             ->sortByDesc('sort_timestamp')
             ->take(12)
             ->values();
+    }
+
+    /**
+     * Map stored recording rows to the rendering format with access checks.
+     */
+    protected function mapRecordingModelsToEntries(
+        Collection $recordings,
+        string $locale,
+        string $dateTimeFormat,
+        array $allowedWorkshopIds,
+        bool $isOwner = false
+    ): Collection {
+        return $recordings
+            ->map(function (Recording $recording) use ($locale, $dateTimeFormat, $allowedWorkshopIds, $isOwner): ?array {
+                $workshop = $recording->relationLoaded('workshop')
+                    ? $recording->workshop
+                    : $recording->workshop()->first();
+
+                $hasAccess = $isOwner
+                    || (bool) $recording->is_public
+                    || ($recording->workshop_id && in_array($recording->workshop_id, $allowedWorkshopIds, true));
+
+                if (! $hasAccess) {
+                    return null;
+                }
+
+                $recordingUrl = $recording->recording_url;
+                $previewUrl = $recording->preview_url ?: $this->buildRecordingPreviewUrl($recordingUrl);
+
+                $dateLabel = $workshop?->start_date
+                    ? $workshop->start_date->copy()->locale($locale)->translatedFormat($dateTimeFormat)
+                    : ($recording->created_at
+                        ? $recording->created_at->copy()->locale($locale)->translatedFormat($dateTimeFormat)
+                        : null);
+
+                $locationLabel = $workshop
+                    ? ($workshop->is_online
+                        ? __('chef.workshops.online_live')
+                        : ($workshop->location ?: __('chef.workshops.location_tbd')))
+                    : __('chef.recordings.library_label');
+
+                $description = $workshop?->description
+                    ? Str::limit(strip_tags($workshop->description), 130)
+                    : null;
+
+                return [
+                    'id' => 'recording-' . $recording->id,
+                    'title' => $recording->title ?: ($workshop?->title ?? __('chef.recordings.untitled')),
+                    'excerpt' => $description,
+                    'date_label' => $dateLabel,
+                    'location_label' => $locationLabel,
+                    'watch_url' => $recordingUrl,
+                    'preview_url' => $previewUrl,
+                    'details_url' => $workshop?->slug
+                        ? route('workshop.show', ['workshop' => $workshop->slug])
+                        : null,
+                    'badge' => $previewUrl
+                        ? __('chef.recordings.badges.available')
+                        : __('chef.recordings.badges.drive'),
+                    'type' => 'recording',
+                    'sort_timestamp' => (int) ($workshop?->start_date?->getTimestamp()
+                        ?? $recording->created_at?->getTimestamp()
+                        ?? 0),
+                    'poster' => $workshop?->image
+                        ? asset('storage/' . ltrim($workshop->image, '/'))
+                        : null,
+                    'is_direct_video' => $this->isDirectVideoUrl($recordingUrl),
+                ];
+            })
+            ->filter()
+            ->values()
+            ->toBase();
     }
 
     /**
@@ -370,13 +522,45 @@ class ChefPublicProfileController extends Controller
             return [];
         }
 
-        return WorkshopBooking::query()
+        $bookingIds = WorkshopBooking::query()
             ->where('user_id', $viewer->id)
             ->whereIn('workshop_id', $workshopIds)
-            ->where('status', 'confirmed')
+            ->where(function ($query) {
+                $query->whereIn('status', ['confirmed', 'pending', 'completed'])
+                    ->orWhere('payment_status', 'paid');
+            })
             ->pluck('workshop_id')
             ->unique()
             ->all();
+
+        $pivotIds = WorkshopUser::query()
+            ->where('user_id', $viewer->id)
+            ->whereIn('workshop_id', $workshopIds)
+            ->where('has_recording_access', true)
+            ->pluck('workshop_id')
+            ->unique()
+            ->all();
+
+        return array_values(array_unique(array_merge($bookingIds, $pivotIds)));
+    }
+
+    protected function resolveDriveRecordingForWorkshop(Workshop $workshop, User $chef): ?string
+    {
+        $meetingCode = $workshop->meeting_code ?: Workshop::extractMeetingCode($workshop->meeting_link);
+
+        if (! $meetingCode) {
+            return null;
+        }
+
+        if ($chef->hasGoogleDriveCredentials()) {
+            $url = $this->userDriveService->findRecordingUrl($chef, $meetingCode);
+
+            if ($url) {
+                return $url;
+            }
+        }
+
+        return null;
     }
 }
 

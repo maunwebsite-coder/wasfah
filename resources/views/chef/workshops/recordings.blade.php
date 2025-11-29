@@ -36,9 +36,18 @@
                         <span class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-amber-100 text-amber-600">
                             <i class="fas fa-info-circle"></i>
                         </span>
-                        <div>
-                            <p class="font-semibold">خدمة Google Drive غير مفعّلة</p>
-                            <p class="text-sm text-amber-700 mt-1">لن يتم جلب التسجيلات تلقائياً حتى يتم تفعيل إعدادات Google Drive.</p>
+                        <div class="space-y-2">
+                            <p class="font-semibold">{{ __('chef.recordings.drive_warning.title') }}</p>
+                            <p class="text-sm text-amber-700 mt-1">{{ __('chef.recordings.drive_warning.description') }}</p>
+                            <div class="flex flex-wrap gap-2">
+                                <a
+                                    href="{{ route('google.drive.redirect', ['redirect' => url()->current()]) }}"
+                                    class="inline-flex items-center gap-2 rounded-2xl border border-amber-200 bg-white px-4 py-2 text-sm font-semibold text-amber-700 transition hover:border-amber-300 hover:bg-amber-100"
+                                >
+                                    <i class="fab fa-google-drive"></i>
+                                    <span>ربط Google Drive</span>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -117,7 +126,7 @@
                                     </a>
                                 @else
                                     <div class="rounded-2xl border border-dashed border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-600">
-                                        لم يتم العثور على تسجيل حتى الآن. جرّب مزامنة الرابط من Google Drive.
+                                        {{ __('chef.recordings.missing_recording') }}
                                     </div>
                                 @endif
 
@@ -125,7 +134,7 @@
                                     @csrf
                                     <button type="submit" class="inline-flex w-full items-center justify-center gap-2 rounded-2xl border border-indigo-200 bg-white px-4 py-2 text-sm font-semibold text-indigo-600 transition hover:border-indigo-300 hover:text-indigo-700">
                                         <i class="fas fa-rotate"></i>
-                                        تحديث الرابط من Google Drive
+                                        {{ __('chef.recordings.sync_button') }}
                                     </button>
                                 </form>
                             </div>
@@ -133,12 +142,12 @@
                     </div>
                 @empty
                     <div class="p-10 text-center">
-                        <p class="text-lg font-semibold text-slate-800">لا توجد تسجيلات حتى الآن</p>
-                        <p class="mt-2 text-sm text-slate-500">بعد انتهاء الورشات ومزامنة التسجيل سيتم عرضه هنا.</p>
+                        <p class="text-lg font-semibold text-slate-800">{{ __('chef.recordings.empty.title') }}</p>
+                        <p class="mt-2 text-sm text-slate-500">{{ __('chef.recordings.empty.description') }}</p>
                         <a href="{{ route('chef.workshops.index') }}"
                            class="mt-4 inline-flex items-center gap-2 rounded-2xl bg-gradient-to-r from-orange-500 to-orange-600 px-5 py-3 text-white shadow hover:from-orange-600 hover:to-orange-700">
                             <i class="fas fa-arrow-right"></i>
-                            إدارة الورشات
+                            {{ __('chef.workshops.buttons.manage') }}
                         </a>
                     </div>
                 @endforelse
@@ -150,4 +159,3 @@
         </div>
     </div>
 @endsection
-

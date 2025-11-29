@@ -12,6 +12,9 @@
 @section('content')
     <div class="min-h-screen bg-gray-50 py-8">
         <div class="container mx-auto px-4">
+            @php
+                $canAccessRecordManagement = auth()->user()?->canAccessRecordManagement();
+            @endphp
             @if (session('success'))
                 <div class="mb-4 rounded-2xl border border-green-200 bg-green-50 px-4 py-3 text-green-700">
                     <i class="fas fa-check-circle ml-2"></i>
@@ -32,6 +35,7 @@
                 @include('profile.partials.nav', ['active' => 'overview'])
             </div>
 
+            @if (auth()->check())
             <section class="mt-6 rounded-3xl border border-gray-100 bg-white p-6 shadow-sm">
                 @php
     $limitedBookings = $bookedWorkshops->take(3);
@@ -166,6 +170,86 @@
                     </div>
                 @endif
             </section>
+
+            @if ($accessibleRecordings->isNotEmpty())
+                <section class="mt-6 rounded-3xl border border-indigo-100 bg-white p-6 shadow-sm">
+                    <div class="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+                        <div>
+                            <p class="text-xs font-semibold uppercase tracking-wide text-indigo-600">التسجيلات</p>
+                            <h2 class="text-xl font-bold text-slate-900">تسجيلات الدورات التي حضرتها</h2>
+                            <p class="text-sm text-slate-500">تشاهد هنا تسجيلات الورشات المتاحة لك سواء كانت عامة أو مرتبطة بحضورك.</p>
+                        </div>
+                        @if ($canAccessRecordManagement)
+                            <a href="{{ route('bookings.recordings') }}" class="inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-slate-300">
+                                <i class="fa-solid fa-video"></i>
+                                إدارة التسجيلات
+                            </a>
+                        @endif
+                    </div>
+                    <div class="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+                        @foreach ($accessibleRecordings as $recording)
+                            <article class="flex flex-col gap-3 rounded-2xl border border-gray-100 bg-gray-50/80 p-4 shadow-inner">
+                                <div class="aspect-video overflow-hidden rounded-xl bg-slate-900/80">
+                                    @if (!empty($recording['preview_url']))
+                                        <iframe
+                                            src="{{ $recording['preview_url'] }}"
+                                            class="h-full w-full"
+                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                            allowfullscreen
+                                            loading="lazy"
+                                        ></iframe>
+                                    @elseif (!empty($recording['is_direct_video']) && !empty($recording['watch_url']))
+                                        <video controls preload="metadata" playsinline class="h-full w-full object-cover bg-black">
+                                            <source src="{{ $recording['watch_url'] }}">
+                                        </video>
+                                    @elseif (!empty($recording['watch_url']))
+                                        <div class="flex h-full w-full flex-col items-center justify-center gap-2 text-sm font-semibold text-slate-200">
+                                            <i class="fa-solid fa-cloud-arrow-down text-lg"></i>
+                                            <span>رابط خارجي</span>
+                                        </div>
+                                    @else
+                                        <div class="flex h-full w-full items-center justify-center text-sm font-semibold text-slate-200">
+                                            —
+                                        </div>
+                                    @endif
+                                </div>
+                                <div class="flex flex-wrap items-center gap-2 text-[11px] font-semibold text-slate-600">
+                                    @if (!empty($recording['workshop_title']))
+                                        <span class="inline-flex items-center gap-1 rounded-full bg-white px-3 py-1">
+                                            <i class="fa-solid fa-graduation-cap text-orange-500"></i>
+                                            {{ $recording['workshop_title'] }}
+                                        </span>
+                                    @endif
+                                    <span class="inline-flex items-center gap-1 rounded-full bg-white px-3 py-1">
+                                        <i class="fa-solid {{ !empty($recording['is_public']) ? 'fa-globe text-emerald-500' : 'fa-lock text-slate-500' }}"></i>
+                                        {{ !empty($recording['is_public']) ? 'عام' : 'متاح لك' }}
+                                    </span>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-bold text-slate-900">{{ $recording['title'] }}</h3>
+                                    @if (!empty($recording['date_label']))
+                                        <p class="text-sm text-slate-500">{{ $recording['date_label'] }}</p>
+                                    @endif
+                                </div>
+                                <div class="flex flex-wrap gap-2">
+                                    @if (!empty($recording['watch_url']))
+                                        <a
+                                            href="{{ $recording['watch_url'] }}"
+                                            target="_blank"
+                                            rel="noopener"
+                                            class="inline-flex items-center gap-2 rounded-xl bg-orange-500 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-orange-600"
+                                        >
+                                            <i class="fa-solid fa-play"></i>
+                                            مشاهدة التسجيل
+                                        </a>
+                                    @endif
+                                </div>
+                            </article>
+                        @endforeach
+                    </div>
+                </section>
+            @endif
+            @endif
 
             <section class="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
                 <article class="rounded-2xl border border-orange-100 bg-white p-5 shadow-sm">
@@ -473,11 +557,7 @@
                             @endif
                         </div>
                     </div>
-                    <div class="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-                        <div class="rounded-2xl border border-orange-100 bg-orange-50/40 p-4">
-                            <p class="text-sm text-gray-500">Published recipes</p>
-                            <p class="mt-2 text-3xl font-extrabold text-gray-800">{{ number_format($chefOverview['public_recipes']) }}</p>
-                        </div>
+                    <div class="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
                         <div class="rounded-2xl border border-orange-100 bg-orange-50/40 p-4">
                             <p class="text-sm text-gray-500">Exclusive recipes</p>
                             <p class="mt-2 text-3xl font-extrabold text-gray-800">{{ number_format($chefOverview['exclusive_recipes']) }}</p>

@@ -9,8 +9,8 @@ use App\Models\User;
 use App\Models\Workshop;
 use App\Models\WorkshopBooking;
 use App\Services\EnhancedImageUploadService;
-use App\Services\GoogleDriveService;
 use App\Services\GoogleMeetService;
+use App\Services\UserGoogleDriveService;
 use App\Services\WorkshopMeetingAttendeeSyncService;
 use App\Support\Concerns\ResolvesWorkshopRecordings;
 use App\Support\ImageUploadConstraints;
@@ -38,7 +38,7 @@ class WorkshopController extends Controller
     public function __construct(
         protected GoogleMeetService $googleMeetService,
         protected WorkshopMeetingAttendeeSyncService $meetingAttendeeSync,
-        protected GoogleDriveService $googleDriveService
+        protected UserGoogleDriveService $userDriveService
     )
     {
     }
@@ -83,14 +83,16 @@ class WorkshopController extends Controller
             ->paginate(9)
             ->withQueryString();
 
-        $driveEnabled = $this->googleDriveService->isEnabled();
+        $chefUser = Auth::user();
+        $userDriveEnabled = $chefUser?->hasGoogleDriveCredentials() ?? false;
+        $driveEnabled = $userDriveEnabled;
 
         foreach ($workshops as $workshop) {
             $recordingUrl = $this->resolveRecordingUrl($workshop);
             $recordingPreview = $this->buildRecordingPreviewUrl($recordingUrl);
 
-            if (! $recordingUrl && $driveEnabled && $workshop->meeting_code) {
-                $recordingUrl = $this->googleDriveService->findRecordingUrl($workshop->meeting_code);
+            if (! $recordingUrl && $workshop->meeting_code && $driveEnabled) {
+                $recordingUrl = $this->findDriveRecordingForWorkshop($workshop, $chefUser);
                 $recordingPreview = $this->buildRecordingPreviewUrl($recordingUrl);
             }
 
@@ -517,7 +519,10 @@ class WorkshopController extends Controller
             );
         }
 
-        if (!$this->googleDriveService->isEnabled()) {
+        $user = Auth::user();
+        $userDriveEnabled = $user?->hasGoogleDriveCredentials() ?? false;
+
+        if (! $userDriveEnabled) {
             return $this->recordingJsonError(
                 __('chef.dashboard.workshops.host_room.recording.messages.disabled'),
                 503
@@ -533,7 +538,19 @@ class WorkshopController extends Controller
             );
         }
 
-        $recordingUrl = $this->googleDriveService->findRecordingUrl($meetingCode);
+        $attendeeEmails = $this->resolveAttendeeEmails($workshop);
+        $recordingUrl = null;
+        $file = null;
+
+        if ($userDriveEnabled) {
+            $file = $this->userDriveService->findRecordingByMeetingCode($user, $meetingCode);
+
+            if ($file) {
+                $this->userDriveService->shareWithEmails($user, $file, $attendeeEmails, true);
+                $recordingUrl = $file->getWebViewLink()
+                    ?: sprintf('https://drive.google.com/file/d/%s/preview', $file->getId());
+            }
+        }
 
         if (!$recordingUrl) {
             return $this->recordingJsonError(
@@ -560,6 +577,46 @@ class WorkshopController extends Controller
             'updated' => $updated,
             'message' => $message,
         ]);
+    }
+
+    protected function findDriveRecordingForWorkshop(Workshop $workshop, ?User $owner = null): ?string
+    {
+        $owner = $owner ?: $workshop->chef;
+        $meetingCode = $workshop->meeting_code ?: Workshop::extractMeetingCode($workshop->meeting_link);
+
+        if (! $meetingCode) {
+            return null;
+        }
+
+        if ($owner && $owner->hasGoogleDriveCredentials()) {
+            $url = $this->userDriveService->findRecordingUrl($owner, $meetingCode);
+
+            if ($url) {
+                return $url;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Resolve confirmed attendee emails for sharing a Drive file.
+     *
+     * @return array<int, string>
+     */
+    protected function resolveAttendeeEmails(Workshop $workshop): array
+    {
+        return $workshop->bookings()
+            ->where('status', 'confirmed')
+            ->with(['user:id,email,google_email,google_drive_email,google_calendar_email'])
+            ->get()
+            ->map(function (WorkshopBooking $booking) {
+                return $booking->user?->preferredGoogleDriveEmail() ?? $booking->user?->email;
+            })
+            ->filter()
+            ->unique()
+            ->values()
+            ->all();
     }
 
     protected function recordingJsonError(string $message, int $status = 422): JsonResponse

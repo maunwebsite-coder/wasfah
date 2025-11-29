@@ -42,12 +42,6 @@
                 </div>
 
                 <div class="flex flex-wrap justify-center md:justify-end gap-3">
-                    @if ($user->isChef())
-                        <a href="{{ route('bookings.index') }}" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-indigo-600 text-white font-medium shadow-md transition-all hover:bg-indigo-700 hover:shadow-lg">
-                            <i class="fas fa-calendar-check text-sm"></i>
-                            <span>ورش العمل المسجّلة</span>
-                        </a>
-                    @endif
                     <a href="#profile-settings" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-orange-500 text-white font-medium shadow-md transition-all hover:bg-orange-600 hover:shadow-lg">
                         <i class="fas fa-edit text-sm"></i>
                         <span>تعديل البيانات</span>
@@ -56,10 +50,6 @@
                         <a href="{{ route('chef.dashboard') }}" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-orange-200 bg-white text-orange-600 font-medium shadow-sm transition hover:border-orange-300 hover:bg-orange-50 hover:text-orange-700">
                             <i class="fas fa-tachometer-alt text-sm"></i>
                             <span>لوحة الشيف</span>
-                        </a>
-                        <a href="{{ route('chef.workshops.index') }}" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-indigo-200 bg-white text-indigo-600 font-medium shadow-sm transition hover:border-indigo-300 hover:bg-indigo-50 hover:text-indigo-700">
-                            <i class="fas fa-video text-sm"></i>
-                            <span>ورش العمل</span>
                         </a>
                         <a href="{{ route('chefs.show', ['chef' => $user->id]) }}" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-gray-200 bg-white text-gray-700 font-medium shadow-sm transition hover:border-gray-300 hover:bg-gray-50 hover:text-gray-900">
                             <i class="fas fa-external-link-alt text-sm"></i>

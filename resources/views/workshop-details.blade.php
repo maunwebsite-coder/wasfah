@@ -23,7 +23,7 @@
 @push('styles')
 <style>
     :root {
-        --primary-color: #0f4c73;
+        --primary-color: #0819ff;
         --primary-dark: #0b344f;
         --accent-color: #f59e0b;
         --text-main: #1e293b;
@@ -44,9 +44,9 @@
 
     /* Modern Hero Section */
     .workshop-hero-container {
-        padding: 2rem 1rem 0;
+        padding: 3rem 1.25rem 0;
         max-width: 1400px;
-        margin: 0 auto;
+        margin: 1.25rem auto 0;
     }
 
     .workshop-hero {
@@ -59,10 +59,10 @@
         background-position: center !important;
         color: white;
         box-shadow: var(--shadow-soft);
-        min-height: 500px;
+        min-height: 420px;
         display: flex;
         flex-wrap: wrap;
-        gap: 1.75rem;
+        gap: 1.25rem;
         align-items: stretch;
         padding: 0 !important;
     }
@@ -92,9 +92,9 @@
     .workshop-hero-content {
         position: relative;
         z-index: 10;
-        padding: 4rem;
+        padding: 2.75rem;
         width: 100%;
-        max-width: 800px;
+        max-width: 720px;
         flex: 1 1 520px;
         display: flex;
         flex-direction: column;
@@ -118,10 +118,10 @@
     }
 
     .workshop-title {
-        font-size: clamp(2rem, 3.5vw, 2.8rem);
+        font-size: clamp(1.85rem, 3vw, 2.35rem);
         font-weight: 800;
         line-height: 1.1;
-        margin-bottom: 1.5rem;
+        margin-bottom: 1.1rem;
         background: linear-gradient(to right, #ffffff, #e2e8f0);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
@@ -131,12 +131,12 @@
         display: flex;
         flex-direction: column;
         gap: 0.75rem;
-        margin-bottom: 2.5rem;
+        margin-bottom: 2rem;
         max-width: 600px;
     }
 
     .workshop-excerpt {
-        font-size: 1.05rem;
+        font-size: 1rem;
         line-height: 1.7;
         color: #cbd5e1;
         margin: 0;
@@ -184,65 +184,175 @@
         font-size: 0.85rem;
     }
 
+    .hero-instructor {
+        margin-bottom: 1.75rem;
+    }
+
+    .instructor-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.65rem;
+        padding: 0.65rem 1rem;
+        background: rgba(255, 255, 255, 0.12);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        border-radius: 999px;
+        color: #e2e8f0;
+        font-weight: 700;
+        text-decoration: none;
+        width: fit-content;
+        transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+        box-shadow: 0 18px 38px -28px rgba(0, 0, 0, 0.7);
+    }
+
+    .instructor-chip:hover {
+        background: rgba(255, 255, 255, 0.18);
+        border-color: rgba(255, 255, 255, 0.26);
+        transform: translateY(-1px);
+        box-shadow: 0 22px 46px -30px rgba(0, 0, 0, 0.8);
+    }
+
+    .instructor-chip .chip-icon {
+        width: 2.4rem;
+        height: 2.4rem;
+        border-radius: 999px;
+        background: radial-gradient(circle at 35% 35%, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.06)),
+                    linear-gradient(145deg, rgba(245, 158, 11, 0.4), rgba(56, 189, 248, 0.35));
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff7ed;
+    }
+
+    .instructor-chip .chip-text {
+        display: flex;
+        flex-direction: column;
+        line-height: 1.2;
+    }
+
+    .instructor-chip .chip-label {
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: #cbd5e1;
+    }
+
+    .instructor-chip .chip-name {
+        color: #ffffff;
+        font-weight: 800;
+    }
+
+    .instructor-chip .chip-arrow {
+        color: #f59e0b;
+        font-size: 0.9rem;
+    }
+
+    .hero-stat-link {
+        color: #0f172a;
+        text-decoration: none;
+        border-bottom: 1px dotted #cbd5e1;
+        padding-bottom: 2px;
+    }
+
+    .hero-stat-link:hover {
+        color: #0f172a;
+        border-bottom-color: #0f172a;
+    }
+
     .hero-stats {
         position: relative;
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-        gap: 1rem;
-        margin-bottom: 2.75rem;
-        padding: 1.25rem;
-        border-radius: 1.25rem;
-        background: linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.05));
-        border: 1px solid rgba(255, 255, 255, 0.18);
-        box-shadow: 0 24px 60px -30px rgba(0, 0, 0, 0.65);
+        margin-bottom: 1.6rem;
+        padding: 1rem 1.05rem;
+        border-radius: 1.1rem;
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 16px 32px -28px rgba(15, 23, 42, 0.35);
         overflow: hidden;
         isolation: isolate;
     }
 
     .hero-stats::before,
     .hero-stats::after {
-        content: '';
-        position: absolute;
-        width: 260px;
-        height: 260px;
-        border-radius: 50%;
-        filter: blur(40px);
-        opacity: 0.55;
-        z-index: 0;
+        content: none;
+        display: none;
     }
 
-    .hero-stats::before {
-        inset: -28% auto auto -18%;
-        background: radial-gradient(circle at 30% 30%, rgba(245, 158, 11, 0.32), transparent 60%);
+    .hero-stats-header {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        flex-wrap: wrap;
     }
 
-    .hero-stats::after {
-        inset: auto -24% -32% auto;
-        background: radial-gradient(circle at 70% 30%, rgba(56, 189, 248, 0.26), transparent 60%);
+    .hero-stats-title {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-weight: 800;
+        letter-spacing: 0.01em;
+        color: #0f172a;
+    }
+
+    .hero-stats-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 999px;
+        background: #0f172a;
+        border: 1px solid #0f172a;
+        box-shadow: 0 0 0 6px rgba(15, 23, 42, 0.05);
+    }
+
+    .hero-stats-subtitle {
+        margin: 0;
+        color: #475569;
+        font-size: 0.95rem;
+        max-width: 540px;
+    }
+
+    .hero-stats-grid {
+        position: relative;
+        z-index: 1;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+        gap: 0.65rem;
+        margin-top: 1rem;
     }
 
     .hero-stat-item {
+        --accent: #e2e8f0;
         position: relative;
         display: flex;
         align-items: center;
-        gap: 0.9rem;
-        padding: 0.9rem 1rem;
+        gap: 0.85rem;
+        padding: 0.75rem 0.9rem;
         border-radius: 1rem;
-        background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        box-shadow: 0 18px 38px -28px rgba(0, 0, 0, 0.75);
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 10px 24px -20px rgba(15, 23, 42, 0.25);
         overflow: hidden;
         z-index: 1;
+        transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .hero-stat-item:hover {
+        transform: translateY(-3px);
+        border-color: #cbd5e1;
+        box-shadow: 0 14px 28px -22px rgba(15, 23, 42, 0.3);
     }
 
     .hero-stat-item::after {
         content: '';
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(145deg, rgba(245, 158, 11, 0.08), rgba(56, 189, 248, 0.06));
-        opacity: 0.55;
-        pointer-events: none;
+        display: none;
     }
+
+    .hero-stat-item.accent-amber { --accent: #e2e8f0; }
+    .hero-stat-item.accent-cyan { --accent: #e2e8f0; }
+    .hero-stat-item.accent-emerald { --accent: #e2e8f0; }
+    .hero-stat-item.accent-indigo { --accent: #e2e8f0; }
+    .hero-stat-item.accent-rose { --accent: #e2e8f0; }
 
     .hero-stat-item > * {
         position: relative;
@@ -250,25 +360,53 @@
     }
 
     .hero-stat-icon {
-        width: 2.85rem;
-        height: 2.85rem;
-        border-radius: 999px;
-        background: radial-gradient(circle at 35% 35%, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.05)),
-                    linear-gradient(145deg, rgba(15, 76, 115, 0.9), rgba(13, 139, 118, 0.75));
-        border: 1px solid rgba(255, 255, 255, 0.22);
-        box-shadow:
-            0 10px 26px rgba(13, 139, 118, 0.45),
-            inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+        width: 2.25rem;
+        height: 2.25rem;
+        border-radius: 0.9rem;
+        border: 1px solid #e2e8f0;
+        background: #f8fafc;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 1.15rem;
-        color: #ffe082;
+        font-size: 0.95rem;
+        color: #0f172a;
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.8);
+    }
+
+    .hero-stat-item.accent-amber .hero-stat-icon {
+        color: #0f172a;
+        border-color: #e2e8f0;
+        background: #f8fafc;
+    }
+
+    .hero-stat-item.accent-cyan .hero-stat-icon {
+        color: #0f172a;
+        border-color: #e2e8f0;
+        background: #f8fafc;
+    }
+
+    .hero-stat-item.accent-emerald .hero-stat-icon {
+        color: #0f172a;
+        border-color: #e2e8f0;
+        background: #f8fafc;
+    }
+
+    .hero-stat-item.accent-indigo .hero-stat-icon {
+        color: #0f172a;
+        border-color: #e2e8f0;
+        background: #f8fafc;
+    }
+
+    .hero-stat-item.accent-rose .hero-stat-icon {
+        color: #0f172a;
+        border-color: #e2e8f0;
+        background: #f8fafc;
     }
 
     .hero-stat-text {
         display: flex;
         flex-direction: column;
+        gap: 0.1rem;
     }
 
     .hero-stat-label {
@@ -279,9 +417,33 @@
     }
 
     .hero-stat-value {
+        font-weight: 800;
+        font-size: 1.02rem;
+        color: #0f172a;
+        display: flex;
+        flex-direction: column;
+        gap: 0.35rem;
+        line-height: 1.35;
+    }
+
+    .hero-stat-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        width: fit-content;
+        padding: 0.35rem 0.7rem;
+        border-radius: 999px;
+        border: 1px solid #e2e8f0;
+        background: #f8fafc;
+        color: #0f172a;
+        font-size: 0.82rem;
         font-weight: 700;
-        font-size: 1rem;
-        color: white;
+        letter-spacing: 0.01em;
+    }
+
+    .hero-stat-chip i {
+        color: #0f172a;
+        font-size: 0.9rem;
     }
 
     .workshop-hero-visual {
@@ -292,7 +454,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 2.5rem 3rem;
+        padding: 2rem 2.5rem;
     }
 
     .hero-image-glow {
@@ -309,7 +471,7 @@
     .hero-image-card {
         position: relative;
         width: 100%;
-        max-width: 460px;
+        max-width: 420px;
         aspect-ratio: 4 / 5;
         border-radius: 1.5rem;
         overflow: hidden;
@@ -439,8 +601,8 @@
         background: white;
         border-radius: var(--radius-lg);
         overflow: hidden;
-        box-shadow: 0 20px 50px -10px rgba(15, 76, 115, 0.15);
-        border: 1px solid rgba(15, 76, 115, 0.1);
+        box-shadow: 0 20px 50px -10px rgba(8, 25, 255, 0.15);
+        border: 1px solid rgba(8, 25, 255, 0.1);
     }
 
     .booking-header {
@@ -520,12 +682,12 @@
     .btn-primary {
         background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
         color: white;
-        box-shadow: 0 10px 20px -5px rgba(15, 76, 115, 0.3);
+        box-shadow: 0 10px 20px -5px rgba(8, 25, 255, 0.3);
     }
 
     .btn-primary:hover {
         transform: translateY(-2px);
-        box-shadow: 0 15px 30px -5px rgba(15, 76, 115, 0.4);
+        box-shadow: 0 15px 30px -5px rgba(8, 25, 255, 0.4);
     }
 
     /* RTL Support */
@@ -558,13 +720,18 @@
     }
 
     @media (max-width: 768px) {
+        .workshop-hero-container {
+            padding-top: 3.25rem;
+            margin-top: 1rem;
+        }
+
         .workshop-hero {
-            min-height: 320px;
+            min-height: 280px;
             gap: 0;
         }
 
         .workshop-hero-content {
-            padding: 1rem 0.85rem 0.65rem;
+            padding: 0.85rem 0.75rem 0.5rem;
         }
 
         .hero-badge {
@@ -575,30 +742,30 @@
         }
 
         .workshop-hero-visual {
-            padding: 0 0.6rem 0.6rem;
-            margin-top: -0.8rem;
+            padding: 0 0.5rem 0.5rem;
+            margin-top: -0.5rem;
         }
 
         .hero-image-card {
-            max-width: 280px;
-            max-height: 280px;
+            max-width: 240px;
+            max-height: 240px;
         }
         
         .workshop-title {
-            font-size: 1.6rem;
-            margin-bottom: 0.35rem;
+            font-size: 1.45rem;
+            margin-bottom: 0.3rem;
             line-height: 1.2;
         }
 
         .workshop-excerpt-wrapper {
-            margin-bottom: 1.2rem;
-            gap: 0.5rem;
+            margin-bottom: 1rem;
+            gap: 0.45rem;
         }
 
         .workshop-excerpt {
-            margin-bottom: 0.4rem;
-            font-size: 0.95rem;
-            line-height: 1.45;
+            margin-bottom: 0.35rem;
+            font-size: 0.9rem;
+            line-height: 1.4;
         }
 
         .workshop-excerpt-toggle {
@@ -612,12 +779,28 @@
         }
         
         .hero-stats {
-            gap: 0.6rem;
-            margin-bottom: 0.8rem;
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
             padding: 0.9rem;
-            border-radius: 1rem;
+            margin-bottom: 0.85rem;
+        }
+
+        .hero-stats-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.35rem;
+        }
+
+        .hero-stats-title {
+            font-size: 0.95rem;
+        }
+
+        .hero-stats-subtitle {
+            font-size: 0.85rem;
+        }
+
+        .hero-stats-grid {
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 0.55rem;
+            margin-top: 0.75rem;
         }
 
         .hero-stat-item {
@@ -639,7 +822,7 @@
         }
 
         .hero-stat-value {
-            font-size: 0.92rem;
+            font-size: 0.95rem;
         }
 
         .hero-image-footer {
@@ -765,15 +948,15 @@
         align-items: center;
         justify-content: center;
         gap: 0.35rem;
-        background: linear-gradient(135deg, #0f4c73, #0d8b76);
+        background: linear-gradient(135deg, #0819ff, #1296d9);
         color: #fff;
-        box-shadow: 0 14px 32px rgba(15, 76, 115, 0.28);
+        box-shadow: 0 14px 32px rgba(8, 25, 255, 0.28);
         transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
 
     .floating-booking-bar .floating-btn:hover {
         transform: translateY(-2px);
-        box-shadow: 0 18px 40px rgba(15, 76, 115, 0.32);
+        box-shadow: 0 18px 40px rgba(8, 25, 255, 0.32);
     }
 
     .floating-booking-bar .floating-btn i {
@@ -833,12 +1016,12 @@
         width: 3rem;
         height: 3rem;
         border-radius: 1rem;
-        background: linear-gradient(140deg, var(--primary-color), #0d8b76);
+        background: linear-gradient(140deg, var(--primary-color), #1296d9);
         color: #ffffff;
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        box-shadow: 0 14px 30px rgba(15, 76, 115, 0.28);
+        box-shadow: 0 14px 30px rgba(8, 25, 255, 0.28);
     }
 
     .additional-details-title {
@@ -867,7 +1050,7 @@
         padding: 0.9rem 1rem;
         background: rgba(255, 255, 255, 0.92);
         border-radius: 1rem;
-        border: 1px solid rgba(15, 76, 115, 0.1);
+        border: 1px solid rgba(8, 25, 255, 0.1);
         box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
         backdrop-filter: blur(8px);
     }
@@ -879,9 +1062,9 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        background: linear-gradient(145deg, var(--primary-color), #0d8b76);
+        background: linear-gradient(145deg, var(--primary-color), #1296d9);
         color: #fff;
-        box-shadow: 0 12px 22px rgba(15, 76, 115, 0.24);
+        box-shadow: 0 12px 22px rgba(8, 25, 255, 0.24);
     }
 
     .additional-detail-label {
@@ -904,7 +1087,7 @@
     .related-workshop-card {
         border-radius: 1.25rem;
         overflow: hidden;
-        border: 1px solid rgba(15, 76, 115, 0.08);
+        border: 1px solid rgba(8, 25, 255, 0.08);
         box-shadow: 0 16px 32px rgba(15, 23, 42, 0.08);
         transition: transform 0.25s ease, box-shadow 0.25s ease;
         background: #ffffff;
@@ -918,7 +1101,7 @@
 
     .related-workshop-card:hover {
         transform: translateY(-6px);
-        box-shadow: 0 24px 52px rgba(15, 76, 115, 0.16);
+        box-shadow: 0 24px 52px rgba(8, 25, 255, 0.16);
     }
 
     .related-workshop-card .p-6 {
@@ -960,6 +1143,19 @@
         'registerUrl' => data_get($whatsappBookingConfig ?? [], 'registerUrl'),
         'user' => data_get($whatsappBookingConfig ?? [], 'user', []),
     ];
+    $instructorName = trim((string) ($workshop->chef?->name ?? $workshop->instructor ?? ''));
+    if ($instructorName === '') {
+        $instructorName = null;
+    }
+    $instructorPublicIdentifier = $workshop->chef?->username
+        ?? $workshop->chef?->slug
+        ?? $workshop->chef?->handle
+        ?? $workshop->chef?->referral_code
+        ?? $workshop->chef?->id;
+    $instructorPublicUrl = $instructorPublicIdentifier
+        ? route('chef.public.workshops', ['username' => $instructorPublicIdentifier])
+        : null;
+    $displayedInstructorName = $instructorName ?? $notSpecifiedLabel;
     $whatsappPriceLabel = trim($workshop->formatted_price ?? ($workshop->price.' '.$workshop->currency));
     $whatsappDateLabel = $workshop->start_date
         ? $workshop->start_date->format('d/m/Y h:i A')
@@ -967,7 +1163,7 @@
     $whatsappDeadlineLabel = $workshop->registration_deadline
         ? $workshop->registration_deadline->format('d/m/Y')
         : $notSpecifiedLabel;
-    $whatsappInstructorLabel = $workshop->instructor ?? $notSpecifiedLabel;
+    $whatsappInstructorLabel = $displayedInstructorName;
     $whatsappLocationLabel = $workshop->is_online
         ? __('workshops.labels.online_workshop')
         : ($workshop->location ?? $notSpecifiedLabel);
@@ -1112,48 +1308,110 @@
                     </div>
                 @endif
 
+                @if($instructorName)
+                    <div class="hero-instructor">
+                        @if($instructorPublicUrl)
+                            <a href="{{ $instructorPublicUrl }}" class="instructor-chip">
+                                <div class="chip-icon">
+                                    <i class="fas fa-chalkboard-teacher"></i>
+                                </div>
+                                <div class="chip-text">
+                                    <span class="chip-label">{{ __('workshops.details.hero.instructor_label') }}</span>
+                                    <span class="chip-name">{{ $displayedInstructorName }}</span>
+                                </div>
+                                <i class="fas {{ $arrowIcon }} chip-arrow" aria-hidden="true"></i>
+                            </a>
+                        @else
+                            <div class="instructor-chip" aria-disabled="true">
+                                <div class="chip-icon">
+                                    <i class="fas fa-chalkboard-teacher"></i>
+                                </div>
+                                <div class="chip-text">
+                                    <span class="chip-label">{{ __('workshops.details.hero.instructor_label') }}</span>
+                                    <span class="chip-name">{{ $displayedInstructorName }}</span>
+                                </div>
+                            </div>
+                        @endif
+                    </div>
+                @endif
+
                 <div class="hero-stats">
-                    <!-- Start -->
-                    <div class="hero-stat-item">
-                        <div class="hero-stat-icon">
-                            <i class="fas fa-play"></i>
+                    <div class="hero-stats-header">
+                        <div class="hero-stats-title">
+                            <span class="hero-stats-dot"></span>
+                            <span>{{ $isRtl ? 'نظرة سريعة' : 'Quick snapshot' }}</span>
                         </div>
-                        <div class="hero-stat-text">
-                            <span class="hero-stat-label">{{ __('workshops.details.hero.start_label') }}</span>
-                            <span class="hero-stat-value">{{ $workshopStartDateTimeLabel }}</span>
-                        </div>
+                        <p class="hero-stats-subtitle">
+                            {{ $isRtl ? 'مواعيد الورشة، المدرب والتقييم في لمحة واحدة.' : 'Workshop timing, instructor, and rating at a glance.' }}
+                        </p>
                     </div>
 
-                    <!-- End -->
-                    <div class="hero-stat-item">
-                        <div class="hero-stat-icon">
-                            <i class="fas fa-flag-checkered"></i>
+                    <div class="hero-stats-grid">
+                        <!-- Start -->
+                        <div class="hero-stat-item accent-amber">
+                            <div class="hero-stat-icon">
+                                <i class="fas fa-play"></i>
+                            </div>
+                            <div class="hero-stat-text">
+                                <span class="hero-stat-label">{{ __('workshops.details.hero.start_label') }}</span>
+                                <span class="hero-stat-value">{{ $workshopStartDateTimeLabel }}</span>
+                            </div>
                         </div>
-                        <div class="hero-stat-text">
-                            <span class="hero-stat-label">{{ __('workshops.details.hero.end_label') }}</span>
-                            <span class="hero-stat-value">{{ $workshopEndDateTimeLabel }}</span>
-                        </div>
-                    </div>
 
-                    <!-- Duration -->
-                    <div class="hero-stat-item">
-                        <div class="hero-stat-icon">
-                            <i class="fas fa-hourglass-half"></i>
+                        <!-- End -->
+                        <div class="hero-stat-item accent-cyan">
+                            <div class="hero-stat-icon">
+                                <i class="fas fa-flag-checkered"></i>
+                            </div>
+                            <div class="hero-stat-text">
+                                <span class="hero-stat-label">{{ __('workshops.details.hero.end_label') }}</span>
+                                <span class="hero-stat-value">{{ $workshopEndDateTimeLabel }}</span>
+                            </div>
                         </div>
-                        <div class="hero-stat-text">
-                            <span class="hero-stat-label">{{ __('workshops.details.hero.duration_label') }}</span>
-                            <span class="hero-stat-value">{{ $workshopDurationLabel }}</span>
-                        </div>
-                    </div>
 
-                    <!-- Instructor -->
-                    <div class="hero-stat-item">
-                        <div class="hero-stat-icon">
-                            <i class="fas fa-chalkboard-teacher"></i>
+                        <!-- Duration -->
+                        <div class="hero-stat-item accent-emerald">
+                            <div class="hero-stat-icon">
+                                <i class="fas fa-hourglass-half"></i>
+                            </div>
+                            <div class="hero-stat-text">
+                                <span class="hero-stat-label">{{ __('workshops.details.hero.duration_label') }}</span>
+                                <span class="hero-stat-value">{{ $workshopDurationLabel }}</span>
+                            </div>
                         </div>
-                        <div class="hero-stat-text">
-                            <span class="hero-stat-label">{{ __('workshops.details.hero.instructor_label') }}</span>
-                            <span class="hero-stat-value">{{ $workshop->instructor ?? $notSpecifiedLabel }}</span>
+
+                        <!-- Instructor -->
+                        <div class="hero-stat-item accent-indigo">
+                            <div class="hero-stat-icon">
+                                <i class="fas fa-chalkboard-teacher"></i>
+                            </div>
+                            <div class="hero-stat-text">
+                                <span class="hero-stat-label">{{ __('workshops.details.hero.instructor_label') }}</span>
+                                @if($instructorPublicUrl && $instructorName)
+                                    <a href="{{ $instructorPublicUrl }}" class="hero-stat-value hero-stat-link">
+                                        {{ $displayedInstructorName }}
+                                    </a>
+                                @else
+                                    <span class="hero-stat-value">{{ $displayedInstructorName }}</span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <!-- Rating -->
+                        <div class="hero-stat-item accent-rose">
+                            <div class="hero-stat-icon">
+                                <i class="fas fa-star text-amber-300"></i>
+                            </div>
+                            <div class="hero-stat-text">
+                                <span class="hero-stat-label">{{ __('workshops.details.hero.rating_label') }}</span>
+                                <span class="hero-stat-value">
+                                    {{ $reviewSummary['average'] ? number_format($reviewSummary['average'], 1) : '—' }}
+                                    <span class="hero-stat-chip">
+                                        <i class="fas fa-user-check" aria-hidden="true"></i>
+                                        {{ __('workshops.details.hero.reviews_count', ['count' => number_format($reviewSummary['count'])]) }}
+                                    </span>
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1483,6 +1741,98 @@
                     </div>
                 </div>
             </div>
+
+            @php
+                $ratingAverage = $reviewSummary['average'] ?? null;
+                $ratingCount = (int) ($reviewSummary['count'] ?? 0);
+            @endphp
+
+            @if($workshop->is_completed || $ratingCount > 0 || $canReview)
+            <div class="content-card mt-6">
+                <div class="flex items-start justify-between gap-3">
+                    <div>
+                        <p class="text-xs font-semibold uppercase tracking-[0.08em] text-amber-600">{{ __('workshops.reviews.title') }}</p>
+                        <p class="text-2xl font-bold text-gray-900">
+                            {{ $ratingAverage ? number_format($ratingAverage, 1) : '—' }}
+                        </p>
+                        <p class="text-sm text-gray-500">
+                            {{ __('workshops.details.hero.reviews_count', ['count' => number_format($ratingCount)]) }}
+                        </p>
+                    </div>
+                    <div class="flex items-center gap-1">
+                        @for($i = 1; $i <= 5; $i++)
+                            <i class="fas fa-star {{ $ratingAverage >= $i ? 'text-amber-400' : 'text-gray-300' }}"></i>
+                        @endfor
+                    </div>
+                </div>
+
+                @if (session('review_saved'))
+                    <div class="mt-4 rounded-lg border border-emerald-100 bg-emerald-50 px-3 py-2 text-sm text-emerald-700">
+                        {{ session('review_saved') }}
+                    </div>
+                @endif
+
+                @if($canReview)
+                    @php
+                        $selectedRating = (int) old('rating', optional($userReview)->rating ?? 5);
+                    @endphp
+                    <form method="POST" action="{{ route('workshops.reviews.store', ['workshop' => $workshop->slug]) }}" class="mt-4 space-y-3">
+                        @csrf
+                        <div>
+                            <label for="workshop-rating" class="block text-sm font-semibold text-gray-800">{{ __('workshops.reviews.rating_label') }}</label>
+                            <div class="mt-2 flex flex-wrap gap-2">
+                                @for($i = 5; $i >= 1; $i--)
+                                    @php
+                                        $isChecked = $selectedRating === $i;
+                                    @endphp
+                                    <label class="inline-flex cursor-pointer items-center gap-2 rounded-lg border {{ $isChecked ? 'border-amber-300 bg-amber-50' : 'border-gray-200 bg-gray-50' }} px-2.5 py-1.5 text-sm font-semibold text-gray-700 hover:border-amber-300 hover:bg-amber-50 rating-option" data-rating-option="{{ $i }}">
+                                        <input
+                                            type="radio"
+                                            name="rating"
+                                            value="{{ $i }}"
+                                            class="sr-only"
+                                            @checked($isChecked)
+                                        >
+                                        <span>{{ $i }}</span>
+                                        <i class="fas fa-star text-amber-400"></i>
+                                    </label>
+                                @endfor
+                            </div>
+                            @error('rating')
+                                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <div>
+                            <label for="workshop-comment" class="block text-sm font-semibold text-gray-800">
+                                {{ __('workshops.reviews.comment_label') }}
+                                <span class="text-xs font-normal text-gray-400">({{ __('workshops.reviews.optional') }})</span>
+                            </label>
+                            <textarea
+                                id="workshop-comment"
+                                name="comment"
+                                rows="3"
+                                class="mt-2 w-full rounded-xl border border-gray-200 bg-white p-3 text-sm text-gray-800 focus:border-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-100"
+                                placeholder="{{ __('workshops.reviews.comment_placeholder') }}">{{ old('comment', optional($userReview)->comment) }}</textarea>
+                            @error('comment')
+                                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <button type="submit" class="booking-btn btn-primary w-full justify-center">
+                            <i class="fas fa-paper-plane"></i>
+                            <span>{{ $userReview ? __('workshops.reviews.update') : __('workshops.reviews.submit') }}</span>
+                        </button>
+                    </form>
+                @elseif(! $reviewWindowOpen)
+                    <p class="mt-3 text-sm text-gray-500">{{ __('workshops.reviews.messages.wait_until_end') }}</p>
+                @elseif(auth()->check())
+                    <p class="mt-3 text-sm text-gray-500">{{ __('workshops.reviews.messages.participant_only') }}</p>
+                @else
+                    <p class="mt-3 text-sm text-gray-500">{{ __('workshops.reviews.messages.login_to_review') }}</p>
+                @endif
+            </div>
+            @endif
 
             <!-- Additional Details Card -->
             <div class="content-card additional-details-card mt-6">
@@ -2722,9 +3072,53 @@ function initFloatingBookingBarTabBarSync() {
     window.__floatingBookingBarTabBarSyncInitialized = true;
 }
 
+function initWorkshopReviewRating() {
+    const ratingOptions = Array.from(document.querySelectorAll('[data-rating-option]'));
+
+    if (!ratingOptions.length) {
+        return;
+    }
+
+    const updateRatingStyles = selectedValue => {
+        ratingOptions.forEach(label => {
+            const value = label.dataset.ratingOption;
+            const isSelected = value === String(selectedValue);
+
+            label.classList.toggle('border-amber-300', isSelected);
+            label.classList.toggle('bg-amber-50', isSelected);
+            label.classList.toggle('border-gray-200', !isSelected);
+            label.classList.toggle('bg-gray-50', !isSelected);
+        });
+    };
+
+    ratingOptions.forEach(label => {
+        const input = label.querySelector('input[type="radio"]');
+
+        if (!input) {
+            return;
+        }
+
+        label.addEventListener('click', () => {
+            input.checked = true;
+            updateRatingStyles(input.value);
+        });
+
+        input.addEventListener('change', () => {
+            updateRatingStyles(input.value);
+        });
+    });
+
+    const initialChecked = document.querySelector('input[name="rating"]:checked');
+
+    if (initialChecked) {
+        updateRatingStyles(initialChecked.value);
+    }
+}
+
 function bootWorkshopDetailsScripts() {
     initHeroExcerptToggle();
     initWorkshopDetailsBooking();
+    initWorkshopReviewRating();
     initFloatingBookingBarScroll();
     initFloatingBookingBarFooterObserver();
     initFloatingBookingBarTabBarSync();
@@ -2759,6 +3153,8 @@ if (document.readyState === 'loading') {
         </script>
     @endpush
 @endif
+
+
 
 
 

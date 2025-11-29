@@ -1,11 +1,11 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('title', 'تعديل الورشة - ' . $workshop->title)
 
 @push('styles')
 <style>
     body {
-        background: linear-gradient(135deg, #f8fafc 0%, #e0f2fe 40%, #eaf3f6 100%);
+        background: linear-gradient(135deg, #f8fafc 0%, #e0f2fe 40%, #f4f6ff 100%);
         min-height: 100vh;
     }
 
@@ -39,7 +39,7 @@
     }
 
     .notification.warning {
-        background: linear-gradient(135deg, #0d8b76, #0a344f);
+        background: linear-gradient(135deg, #1296d9, #050f9f);
     }
 
     .image-upload-area.has-image {
@@ -48,9 +48,9 @@
     }
 
     .recipe-item.selected {
-        border-color: rgba(15, 76, 115, 0.65);
-        background-color: #eaf3f6;
-        box-shadow: 0 20px 35px -25px rgba(15, 76, 115, 0.6);
+        border-color: rgba(8, 25, 255, 0.65);
+        background-color: #f4f6ff;
+        box-shadow: 0 20px 35px -25px rgba(8, 25, 255, 0.6);
     }
 
     .online-meeting-tools {
@@ -97,7 +97,7 @@
     }
 
     .meeting-status[data-state="manual"] {
-        background: #c8ede3;
+        background: #e3ecff;
         color: #92400e;
     }
 
@@ -1142,6 +1142,8 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 @endpush
+
+
 
 
 

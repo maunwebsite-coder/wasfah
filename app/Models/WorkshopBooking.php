@@ -10,8 +10,10 @@ use App\Services\ReferralProgramService;
 use App\Services\BookingFinancialService;
 use App\Services\FinanceInvoiceService;
 use App\Services\WorkshopMeetingAttendeeSyncService;
+use App\Services\WorkshopRecordingAccessService;
 use App\Support\Currency;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Facades\Log;
 
 class WorkshopBooking extends Model
 {
@@ -39,6 +41,8 @@ class WorkshopBooking extends Model
         static::created(function ($booking) {
             if ($booking->status === 'confirmed') {
                 $booking->workshop->increment('bookings_count');
+                static::grantRecordingAccess($booking);
+                static::dispatchRecordingAccessShare($booking);
             }
 
             app(FinanceInvoiceService::class)->syncFromBooking($booking);
@@ -95,6 +99,14 @@ class WorkshopBooking extends Model
                 $booking->wasChanged('user_id')
             ) {
                 static::dispatchGoogleMeetSync($booking);
+            }
+
+            $statusBecameConfirmed = $originalStatus !== 'confirmed' && $newStatus === 'confirmed';
+            $userChangedWhileConfirmed = $booking->wasChanged('user_id') && $newStatus === 'confirmed';
+
+            if ($statusBecameConfirmed || $userChangedWhileConfirmed) {
+                static::grantRecordingAccess($booking);
+                static::dispatchRecordingAccessShare($booking);
             }
         });
 
@@ -308,5 +320,42 @@ class WorkshopBooking extends Model
         }
 
         app(WorkshopMeetingAttendeeSyncService::class)->sync($workshop);
+    }
+
+    /**
+     * Ensure the attendee has recording access once their booking is confirmed.
+     */
+    protected static function grantRecordingAccess(self $booking): void
+    {
+        if ($booking->status !== 'confirmed' || ! $booking->workshop_id || ! $booking->user_id) {
+            return;
+        }
+
+        $pivot = WorkshopUser::firstOrNew([
+            'workshop_id' => $booking->workshop_id,
+            'user_id' => $booking->user_id,
+        ]);
+
+        $pivot->status = $booking->status ?: ($pivot->status ?: 'confirmed');
+        $pivot->has_recording_access = true;
+
+        if (! $pivot->recording_unlocked_at) {
+            $pivot->recording_unlocked_at = now();
+        }
+
+        $pivot->save();
+    }
+
+    protected static function dispatchRecordingAccessShare(self $booking): void
+    {
+        try {
+            app(WorkshopRecordingAccessService::class)->shareWithAttendee($booking);
+        } catch (\Throwable $exception) {
+            Log::warning('Failed to share Drive access for workshop booking.', [
+                'booking_id' => $booking->id,
+                'workshop_id' => $booking->workshop_id,
+                'error' => $exception->getMessage(),
+            ]);
+        }
     }
 }

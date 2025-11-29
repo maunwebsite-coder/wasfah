@@ -69,7 +69,7 @@ class LinkPageController extends Controller
             'items' => $page->items,
             'heroImageUrl' => $heroImageUrl,
             'publicUrl' => route('links.chef', $page),
-            'accentColor' => $page->accent_color ?? '#0f4c73',
+            'accentColor' => $page->accent_color ?? '#0819ff',
             'linkPresets' => $linkPresets,
             'upcomingWorkshop' => $upcomingWorkshop,
         ]);

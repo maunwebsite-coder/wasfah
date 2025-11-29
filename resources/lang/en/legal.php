@@ -61,32 +61,53 @@ return [
         'hero' => [
             'eyebrow' => 'Privacy Policy',
             'title' => 'Privacy Policy – Peahskill',
-            'description' => 'We protect your personal data and outline below how it is collected, used, and stored when you interact with Peahskill.',
+            'description' => 'Welcome to Peahskill. We value your privacy and explain how Google sign-in data is collected, used, and protected when you use the app.',
         ],
         'sections' => [
             [
-                'title' => '1. Data we collect',
-                'body' => 'We collect basic registration info, encrypted payment details, and usage preferences to enhance the experience and provide services.',
+                'title' => '1. Information we collect',
+                'body' => 'When you sign in with Google OAuth we only receive your name, email address, profile photo, and Google user ID. We do not collect anything else without your permission.',
             ],
             [
-                'title' => '2. How we use it',
-                'body' => 'We use your data to manage accounts, process payments, send notifications, and improve guides, tools, and experiences.',
+                'title' => '2. Why we collect this data',
+                'body' => 'We use the Google-provided data to create your Peahskill account, verify your identity for login, improve your in-app experience, and contact you when necessary. We do not sell or share your data with third parties.',
             ],
             [
-                'title' => '3. Data sharing',
-                'body' => 'We never share your information with third parties unless legally required or with vetted payment/service providers under strict data agreements.',
+                'title' => '3. How we use your data',
+                'body' => 'Your data enables login, personalizes your account, and lets us send account-only notifications. We do not use it for advertising or marketing.',
             ],
             [
-                'title' => '4. Cookies',
-                'body' => 'We rely on functional and analytical cookies to personalize the experience. You can adjust preferences through your browser settings.',
+                'title' => '4. Sharing information',
+                'body' => 'We do not share your personal data with external parties. Only Google OAuth is allowed to access it for authentication.',
             ],
             [
-                'title' => '5. Your rights',
-                'body' => 'You may request corrections, download a copy of your data, or ask us to delete it by contacting the team via the email below.',
+                'title' => '5. Data protection',
+                'body' => 'We apply standard security controls including HTTPS encryption, secure storage, and access controls. No electronic system can guarantee 100% security.',
+            ],
+            [
+                'title' => '6. Data deletion',
+                'body' => 'You can request deletion anytime at peahskill@gmail.com. Your data will be deleted within 7 business days of your request.',
+            ],
+            [
+                'title' => '7. Use of Google services',
+                'body' => 'We may use Google OAuth, Google APIs, and Google Identity Services. These services follow Google\'s privacy policy: https://policies.google.com/privacy.',
+            ],
+            [
+                'title' => '8. Your rights',
+                'body' => 'You can access, edit, or delete your data, and you may revoke Google sign-in authorization. Revoking it may limit your ability to use parts of the app.',
+            ],
+            [
+                'title' => '9. Changes to this policy',
+                'body' => 'We may update this policy from time to time. Changes will be posted on this page immediately.',
+            ],
+            [
+                'title' => '10. Contact',
+                'body' => 'For privacy questions, email peahskill@gmail.com or visit https://peahskill.com.',
             ],
         ],
         'updated_label' => 'Last updated',
-        'contact_label' => 'Privacy requests',
-        'contact_email' => 'privacy@peahskill.com',
+        'updated_value' => '2025',
+        'contact_label' => 'Privacy questions',
+        'contact_email' => 'peahskill@gmail.com',
     ],
 ];

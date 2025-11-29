@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('title', 'لوحة التحكم - الإدارة')
 
@@ -1187,8 +1187,8 @@ if (periodCanvas && periodStatsData.length) {
                 type: 'line',
                 label: 'الإيرادات ({{ $defaultCurrency }})',
                 data: periodRevenue,
-                borderColor: 'rgb(15, 76, 115)',
-                backgroundColor: 'rgba(15, 76, 115, 0.15)',
+                borderColor: 'rgb(8, 25, 255)',
+                backgroundColor: 'rgba(8, 25, 255, 0.15)',
                 tension: 0.35,
                 fill: true,
                 yAxisID: 'y1',
@@ -1290,5 +1290,6 @@ setInterval(function() {
 }, 300000);
 </script>
 @endsection
+
 
 

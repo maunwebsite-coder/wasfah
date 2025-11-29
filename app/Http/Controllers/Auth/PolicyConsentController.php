@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Workshop;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class PolicyConsentController extends Controller
@@ -107,9 +108,15 @@ class PolicyConsentController extends Controller
         $configuredUrl = trim((string) config($configKey));
 
         if ($configuredUrl !== '') {
-            return $configuredUrl;
+            // Allow relative paths in config while still producing a full, base-aware URL
+            if (Str::startsWith($configuredUrl, ['http://', 'https://'])) {
+                return $configuredUrl;
+            }
+
+            return url($configuredUrl);
         }
 
-        return route($routeName, [], false);
+        // Use absolute route to respect app URL/base path in all environments
+        return route($routeName);
     }
 }

@@ -68,45 +68,57 @@
 
 <div class="min-h-screen bg-gray-50 py-10">
     <div class="container mx-auto px-4">
-        <div class="mb-8 flex flex-wrap items-center justify-between gap-4">
+        <div class="mb-8 flex flex-wrap items-start justify-between gap-4">
             <div>
                 <p class="text-sm uppercase tracking-wider text-orange-500 font-semibold mb-2">{{ __('chef.hero.badge') }}</p>
                 <h1 class="text-3xl font-bold text-gray-900">{{ __('chef.hero.heading', ['name' => $chefName]) }}</h1>
                 <p class="text-gray-600 mt-1">{{ __('chef.hero.description') }}</p>
             </div>
-            <div class="grid w-full grid-cols-2 gap-3 sm:flex sm:w-auto sm:flex-row sm:items-stretch sm:justify-end">
-                @if ($canManageRecipes)
-                    <a href="{{ route('chef.recipes.create') }}" class="order-1 sm:order-5 col-span-2 sm:col-span-1 group flex w-full sm:w-auto items-center gap-3 rounded-full bg-gradient-to-r from-orange-500 to-orange-600 px-6 py-3 text-white font-semibold shadow-[0_12px_30px_rgba(249,115,22,0.35)] transition-[transform,box-shadow] hover:-translate-y-0.5 hover:shadow-[0_18px_45px_rgba(234,88,12,0.4)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/70">
+            <div class="flex w-full flex-col gap-3 sm:w-auto sm:items-end">
+                <div class="grid w-full grid-cols-2 gap-3 sm:flex sm:w-auto sm:flex-row sm:flex-wrap sm:items-stretch sm:justify-end">
+                    @if ($canManageRecipes)
+                        <a href="{{ route('chef.recipes.create') }}" class="order-1 sm:order-5 col-span-2 sm:col-span-1 group flex w-full sm:w-auto items-center gap-3 rounded-full bg-gradient-to-r from-orange-500 to-orange-600 px-6 py-3 text-white font-semibold shadow-[0_12px_30px_rgba(249,115,22,0.35)] transition-[transform,box-shadow] hover:-translate-y-0.5 hover:shadow-[0_18px_45px_rgba(234,88,12,0.4)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/70">
+                            <span class="flex h-11 w-11 sm:h-10 sm:w-10 flex-shrink-0 items-center justify-center rounded-full bg-white/20 text-lg text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.3)]">
+                                <i class="fas fa-plus" aria-hidden="true"></i>
+                            </span>
+                            <span class="flex flex-col text-left leading-tight">
+                                <span>{{ __('chef.hero.actions.new_recipe') }}</span>
+                            </span>
+                        </a>
+                    @endif
+                    <a href="{{ route('chef.workshops.create') }}" class="order-2 sm:order-4 col-span-2 sm:col-span-1 group flex w-full sm:w-auto items-center gap-3 rounded-full bg-gradient-to-r from-blue-700 via-blue-600 to-blue-500 px-6 py-3 text-white font-semibold shadow-[0_12px_30px_rgba(37,99,235,0.32)] transition-[transform,box-shadow] hover:-translate-y-0.5 hover:shadow-[0_18px_42px_rgba(37,99,235,0.45)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/70">
                         <span class="flex h-11 w-11 sm:h-10 sm:w-10 flex-shrink-0 items-center justify-center rounded-full bg-white/20 text-lg text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.3)]">
-                            <i class="fas fa-plus" aria-hidden="true"></i>
+                            <i class="fas fa-calendar-plus" aria-hidden="true"></i>
                         </span>
                         <span class="flex flex-col text-left leading-tight">
-                            <span>{{ __('chef.hero.actions.new_recipe') }}</span>
+                            <span>{{ __('chef.hero.actions.new_workshop') }}</span>
                         </span>
                     </a>
-                @endif
-                <a href="{{ route('chef.workshops.create') }}" class="order-2 sm:order-4 col-span-2 sm:col-span-1 group flex w-full sm:w-auto items-center gap-3 rounded-full bg-gradient-to-r from-blue-700 via-blue-600 to-blue-500 px-6 py-3 text-white font-semibold shadow-[0_12px_30px_rgba(37,99,235,0.32)] transition-[transform,box-shadow] hover:-translate-y-0.5 hover:shadow-[0_18px_42px_rgba(37,99,235,0.45)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/70">
-                    <span class="flex h-11 w-11 sm:h-10 sm:w-10 flex-shrink-0 items-center justify-center rounded-full bg-white/20 text-lg text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.3)]">
-                        <i class="fas fa-calendar-plus" aria-hidden="true"></i>
-                    </span>
-                    <span class="flex flex-col text-left leading-tight">
-                        <span>{{ __('chef.hero.actions.new_workshop') }}</span>
-                    </span>
-                </a>
-                <a href="{{ route('chef.workshops.index') }}" class="order-3 sm:order-3 inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-xl border border-indigo-200 bg-white px-5 py-3 text-indigo-600 font-semibold shadow-sm hover:border-indigo-300 hover:bg-indigo-50 transition">
-                    <i class="fas fa-video"></i>
-                    {{ __('chef.hero.actions.workshops') }}
-                </a>
-                <a href="{{ route('chef.workshops.earnings') }}" class="order-4 sm:order-2 inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-xl border border-emerald-200 bg-white px-5 py-3 text-emerald-600 font-semibold shadow-sm hover:border-emerald-300 hover:bg-emerald-50 transition">
-                    <i class="fas fa-wallet"></i>
-                    {{ __('chef.hero.actions.earnings') }}
-                </a>
-                @if ($publicProfileUrl)
-                    <a href="{{ $publicProfileUrl }}" target="_blank" rel="noopener" class="order-5 sm:order-1 inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-xl border border-orange-200 bg-white px-5 py-3 text-orange-600 font-semibold shadow-sm hover:bg-orange-50 hover:border-orange-300 transition">
-                        <i class="fas fa-eye"></i>
-                        {{ __('chef.hero.actions.public_profile') }}
+                    <a href="{{ route('chef.workshops.earnings') }}" class="order-3 sm:order-2 inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-xl border border-emerald-200 bg-white px-5 py-3 text-emerald-600 font-semibold shadow-sm hover:border-emerald-300 hover:bg-emerald-50 transition">
+                        <i class="fas fa-wallet"></i>
+                        {{ __('chef.hero.actions.earnings') }}
                     </a>
-                @endif
+                    @if ($publicProfileUrl)
+                        <a href="{{ $publicProfileUrl }}" target="_blank" rel="noopener" class="order-4 sm:order-1 inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-xl border border-orange-200 bg-white px-5 py-3 text-orange-600 font-semibold shadow-sm hover:bg-orange-50 hover:border-orange-300 transition">
+                            <i class="fas fa-eye"></i>
+                            {{ __('chef.hero.actions.public_profile') }}
+                        </a>
+                    @endif
+                </div>
+                <div class="flex flex-wrap items-center gap-3 sm:justify-end">
+                    <a href="{{ url('/record-management') }}" class="inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-5 py-3 text-white font-semibold shadow hover:bg-indigo-700">
+                        <i class="fas fa-calendar-check text-sm"></i>
+                        <span>ورش العمل المسجّلة</span>
+                    </a>
+                    <a href="{{ route('google.drive.redirect', ['redirect' => route('chef.dashboard')]) }}" class="inline-flex items-center justify-center gap-2 rounded-xl border border-purple-200 bg-white px-5 py-3 text-purple-700 font-semibold shadow-sm transition hover:border-purple-300 hover:bg-purple-50">
+                        <i class="fa-brands fa-google-drive text-sm"></i>
+                        <span>ربط Google Drive</span>
+                    </a>
+                    <a href="{{ route('chef.workshops.index') }}" class="inline-flex items-center justify-center gap-2 rounded-xl border border-indigo-200 bg-white px-5 py-3 text-indigo-600 font-semibold shadow-sm hover:border-indigo-300 hover:bg-indigo-50 transition">
+                        <i class="fas fa-video text-sm"></i>
+                        <span>ورش العمل</span>
+                    </a>
+                </div>
             </div>
         </div>
 

@@ -1,4 +1,4 @@
-/* تحسينات لوحة التحكم */
+﻿/* تحسينات لوحة التحكم */
 
 /* تأثيرات الحركة */
 .dashboard-card {
@@ -13,19 +13,19 @@
 
 /* تحسين الألوان المتدرجة */
 .gradient-blue {
-    background: linear-gradient(135deg, #0f4c73 0%, #0a344f 100%);
+    background: linear-gradient(135deg, #0819ff 0%, #050f9f 100%);
 }
 
 .gradient-green {
-    background: linear-gradient(135deg, #0fa289 0%, #0b705f 100%);
+    background: linear-gradient(135deg, #1ab8ff 0%, #0f78ad 100%);
 }
 
 .gradient-purple {
-    background: linear-gradient(135deg, #0c3f61 0%, #0fa289 100%);
+    background: linear-gradient(135deg, #0614d3 0%, #1ab8ff 100%);
 }
 
 .gradient-orange {
-    background: linear-gradient(135deg, #0a2f46 0%, #0fa289 100%);
+    background: linear-gradient(135deg, #030b52 0%, #1ab8ff 100%);
 }
 
 /* تحسين الأيقونات */
@@ -155,12 +155,12 @@
 
 .status-pending {
     background-color: #e6f7f2;
-    color: #0a344f;
+    color: #050f9f;
 }
 
 .status-cancelled {
-    background-color: #eaf3f6;
-    color: #0c3f61;
+    background-color: #f4f6ff;
+    color: #0614d3;
 }
 
 .status-cancelled {
@@ -222,9 +222,9 @@
 }
 
 .dashboard-alert-warning {
-    background-color: #eaf3f6;
-    border-color: #0fa289;
-    color: #0a344f;
+    background-color: #f4f6ff;
+    border-color: #1ab8ff;
+    color: #050f9f;
 }
 
 .dashboard-alert-error {
@@ -488,5 +488,6 @@
         min-width: 100%;
     }
 }
+
 
 

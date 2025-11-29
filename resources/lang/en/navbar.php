@@ -23,7 +23,7 @@ return [
         'manage' => 'Manage your account',
         'links' => [
             'profile' => 'My profile',
-            'bookings' => 'Record management',
+            'bookings' => 'Bookings',
             'admin' => 'Admin area',
             'finance' => 'Finance console',
             'logout' => 'Sign out',
@@ -75,7 +75,7 @@ return [
                 'subtitle' => 'Manage account and address details',
             ],
             'bookings_card' => [
-                'title' => 'Record management',
+                'title' => 'Bookings',
                 'subtitle' => 'Review every experience request and recording status',
             ],
             'chef_card' => [
@@ -139,7 +139,7 @@ return [
         'loading_hint' => 'Give us a moment while we refresh this view.',
         'home' => 'Home',
         'recipes' => 'Skills',
-        'bookings' => 'Record management',
+        'bookings' => 'Bookings',
         'workshops' => 'Experiences',
         'profile' => 'My page',
         'chef' => 'Expert hub',

@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\OnboardingController;
 use App\Http\Controllers\Auth\PolicyConsentController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\SocialiteController;
+use App\Http\Controllers\GoogleDriveAuthController;
 use App\Http\Controllers\Chef\LinkItemController as ChefLinkItemController;
 use App\Http\Controllers\Chef\LinkPageController as ChefLinkPageController;
 use App\Http\Controllers\Chef\RecipeController as ChefRecipeController;
@@ -26,6 +27,8 @@ use App\Http\Controllers\Admin\ReferralController as AdminReferralController;
 use App\Http\Controllers\Admin\UserManagementController as AdminUserManagementController;
 use App\Http\Controllers\Admin\FinanceController;
 use App\Http\Controllers\Payments\StripeBookingController;
+use App\Http\Controllers\RecordingController;
+use App\Http\Controllers\WorkshopReviewController;
 use App\Models\Recipe;
 use App\Models\Workshop;
 use Illuminate\Http\Request;
@@ -35,6 +38,10 @@ use Illuminate\Support\Facades\Route;
 // مسارات المصادقة عبر Google
 Route::get('/auth/google/redirect', [SocialiteController::class, 'redirect'])->name('google.redirect');
 Route::get('/auth/google/callback', [SocialiteController::class, 'callback'])->name('google.callback');
+Route::middleware('auth')->group(function () {
+    Route::get('/auth/google/drive', [GoogleDriveAuthController::class, 'redirect'])->name('google.drive.redirect');
+    Route::get('/auth/google/drive/callback', [GoogleDriveAuthController::class, 'callback'])->name('google.drive.callback');
+});
 
 // المسار الرئيسي لعرض الصفحة الرئيسية
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -278,6 +285,7 @@ Route::middleware(['auth'])->group(function () {
 // منطقة الشيف - إدارة الوصفات الخاصة
 Route::middleware(['auth', 'chef'])->prefix('expert')->name('chef.')->group(function () {
     Route::get('/', [ChefRecipeController::class, 'index'])->name('dashboard');
+    Route::get('recipes', [ChefRecipeController::class, 'index'])->name('recipes.index');
     Route::get('google/calendar/connect', [ChefGoogleCalendarController::class, 'redirect'])->name('google.calendar.connect');
     Route::get('google/calendar/callback', [ChefGoogleCalendarController::class, 'callback'])->name('google.calendar.callback');
     Route::get('links', [ChefLinkPageController::class, 'edit'])->name('links.edit');
@@ -286,14 +294,13 @@ Route::middleware(['auth', 'chef'])->prefix('expert')->name('chef.')->group(func
     Route::put('links/items/{item}', [ChefLinkItemController::class, 'update'])->name('links.items.update');
     Route::delete('links/items/{item}', [ChefLinkItemController::class, 'destroy'])->name('links.items.destroy');
     Route::post('recipes/{recipe}/submit', [ChefRecipeController::class, 'submit'])->name('recipes.submit');
-    Route::resource('recipes', ChefRecipeController::class)->except(['show']);
+    Route::resource('recipes', ChefRecipeController::class)->except(['show', 'index']);
     Route::get('workshops/{workshop}/join', [ChefWorkshopController::class, 'join'])->name('workshops.join');
     Route::post('workshops/{workshop}/start', [ChefWorkshopController::class, 'startMeeting'])->name('workshops.start');
     Route::post('workshops/{workshop}/recording', [ChefWorkshopController::class, 'syncRecording'])->name('workshops.recording');
     Route::post('workshops/{workshop}/presence', [ChefWorkshopController::class, 'updatePresence'])->name('workshops.presence');
     Route::post('workshops/{workshop}/reset-device', [ChefWorkshopController::class, 'resetHostDeviceLock'])->name('workshops.reset-device');
     Route::post('workshops/generate-meeting-link', [ChefWorkshopController::class, 'generateMeetingLink'])->name('workshops.generate-link');
-    Route::get('workshops/recordings', [ChefWorkshopController::class, 'recordings'])->name('workshops.recordings');
     Route::get('workshops/earnings', [ChefWorkshopController::class, 'earnings'])->name('workshops.earnings');
     Route::resource('workshops', ChefWorkshopController::class)->except(['show']);
 });
@@ -342,14 +349,24 @@ Route::middleware(['auth', 'admin'])->group(function () {
 // مسارات الحجوزات - محمية بـ middleware المصادقة (باستثناء الانضمام الذي يسمح للضيوف)
 Route::middleware('auth')->group(function () {
     Route::get('/meetings', [UserMeetingController::class, 'index'])->name('meetings.index');
+    Route::post('/workshops/{workshop:slug}/reviews', [WorkshopReviewController::class, 'store'])->name('workshops.reviews.store');
     Route::post('/record-management', [App\Http\Controllers\WorkshopBookingController::class, 'store'])->name('bookings.store');
-    Route::get('/record-management', [App\Http\Controllers\WorkshopBookingController::class, 'index'])->name('bookings.index');
+    Route::get('/bookings', [App\Http\Controllers\WorkshopBookingController::class, 'index'])
+        ->name('bookings.index');
+    Route::get('/record-management', [App\Http\Controllers\WorkshopBookingController::class, 'recordings'])
+        ->middleware('chef')
+        ->name('bookings.recordings');
     Route::get('/record-management/{booking}', [App\Http\Controllers\WorkshopBookingController::class, 'show'])->name('bookings.show');
     Route::post('/record-management/{booking}/cancel', [App\Http\Controllers\WorkshopBookingController::class, 'cancel'])->name('bookings.cancel');
     Route::post('/record-management/recordings/{workshop}/visibility', [App\Http\Controllers\WorkshopBookingController::class, 'toggleRecordingVisibility'])->name('bookings.recordings.visibility');
 
     Route::post('/payments/stripe/intent', [StripeBookingController::class, 'createIntent'])->name('payments.stripe.intent');
     Route::post('/payments/stripe/confirm', [StripeBookingController::class, 'confirm'])->name('payments.stripe.confirm');
+
+    Route::prefix('recordings')->name('recordings.')->group(function () {
+        Route::get('/drive', [RecordingController::class, 'listDrive'])->name('drive');
+        Route::post('/from-drive', [RecordingController::class, 'storeFromDrive'])->name('store-from-drive');
+    });
 });
 
 Route::get('/record-management/{booking:public_code}/status', [App\Http\Controllers\WorkshopBookingController::class, 'status'])
@@ -517,13 +534,5 @@ Route::post('/test-amazon-extraction', [App\Http\Controllers\Admin\AdminToolsCon
 Route::get('/contact', [App\Http\Controllers\ContactController::class, 'index'])->name('contact');
 Route::post('/contact/send', [App\Http\Controllers\ContactController::class, 'sendMessage'])->name('contact.send');
 
-// إعادة توجيه المسارات القديمة للورشات المسجلة إلى المسار الجديد
-Route::get('/bookings/{any?}', function ($any = null) {
-    $suffix = $any ? '/' . ltrim($any, '/') : '';
-    return redirect('/record-management' . $suffix, 301);
-})->where('any', '.*');
-
-
-
-
+// ملاحظة: تم تخصيص صفحة /bookings لعرض حجوزات المستخدمين
 

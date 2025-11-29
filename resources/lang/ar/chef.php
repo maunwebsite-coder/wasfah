@@ -4,7 +4,7 @@ return [
     'title' => 'لوحة تحكم الشيف',
 
     'meta' => [
-        'title' => 'ملف الشيف :name',
+        'title' => 'ملف :name',
     ],
 
     'defaults' => [
@@ -47,14 +47,14 @@ return [
 
     'hero' => [
         'badge' => 'أدوات الشيف',
-        'heading' => 'الشيف :name',
+        'heading' => ':name',
         'description' => 'أدر وصفاتك وورشاتك وأرباحك من مكان واحد.',
-        'avatar_alt' => 'صورة الشيف :name',
+        'avatar_alt' => 'صورة :name',
         'stats' => [
             'wasfah_followers' => 'عدد المشتركين',
             'other_platform_followers' => 'مشتركو المنصات الأخرى',
             'recipes' => 'عدد الوصفات',
-            'average_rating' => 'متوسط التقييم',
+            'average_rating' => 'متوسط تقييم الورش',
         ],
         'buttons' => [
             'follow' => 'متابعة',
@@ -161,6 +161,16 @@ return [
                     'last_update' => 'آخر تحديث: :time',
                     'empty' => 'لا يوجد مشاركون مؤكدون بعد. بمجرد تأكيد الحجوزات سيظهرون هنا.',
                 ],
+                'recording' => [
+                    'messages' => [
+                        'offline' => 'لا يمكن مزامنة تسجيل لورشة غير أونلاين.',
+                        'missing_code' => 'لا يوجد رمز لاجتماع Google Meet للبحث عن التسجيل.',
+                        'disabled' => 'خدمة Google Drive غير مفعّلة. لن يتم جلب التسجيلات تلقائياً حتى يتم تفعيل إعدادات Google Drive.',
+                        'not_found' => 'لم يتم العثور على تسجيل مرتبط بهذا الاجتماع بعد.',
+                        'synced' => 'تم تحديث رابط التسجيل من Google Drive.',
+                        'already_synced' => 'تمت مزامنة التسجيل مسبقاً.',
+                    ],
+                ],
             ],
             'stats' => [
                 'total' => 'إجمالي الورش',
@@ -207,7 +217,7 @@ return [
 
     'workshops' => [
         'eyebrow' => 'مركز الورشات',
-        'title' => 'ورشات الشيف',
+        'title' => 'ورشات :name',
         'description' => 'اكتشف التجارب التعليمية التي يقدمها :name وتعرّف على الورشات القادمة والماضية التي شارك فيها عشاق الطهي.',
         'view_all' => 'استعراض كل الورشات',
         'upcoming' => 'ورشات قادمة',
@@ -325,9 +335,19 @@ return [
             'watch' => 'مشاهدة التسجيل',
         ],
         'library_label' => 'مكتبة Google Drive',
-        'drive_default_description' => 'تسجيل متاح ضمن مكتبة الشيف.',
+        'drive_default_description' => 'تسجيل متاح ضمن مكتبة التسجيلات.',
         'updated_unknown' => 'آخر تحديث غير معروف',
         'untitled' => 'تسجيل بدون عنوان',
+        'drive_warning' => [
+            'title' => 'خدمة Google Drive غير مفعّلة',
+            'description' => 'لن يتم جلب التسجيلات تلقائياً حتى يتم تفعيل إعدادات Google Drive.',
+        ],
+        'missing_recording' => 'لم يتم العثور على تسجيل حتى الآن. جرّب مزامنة الرابط من Google Drive.',
+        'sync_button' => 'تحديث الرابط من Google Drive',
+        'empty' => [
+            'title' => 'لا توجد تسجيلات حتى الآن',
+            'description' => 'بعد انتهاء الورشات ومزامنة التسجيل سيتم عرضه هنا.',
+        ],
     ],
 
     'workshops_earnings' => [
@@ -688,6 +708,9 @@ return [
         'no_rating' => 'لا يوجد تقييم بعد',
         'saves' => ':count حفظ',
         'likes' => ':count إعجاب',
+        'made' => ':count جرّبوا الوصفة',
+        'ratings' => ':count تقييم للورش',
+        'rated_workshops_average' => 'متوسط :value من :count ورشة تم تقييمها',
         'private_tag' => 'وصفة خاصة',
         'private_details' => 'خطوات تفصيلية مميزة',
         'private_access' => 'مشاهدة خاصة',

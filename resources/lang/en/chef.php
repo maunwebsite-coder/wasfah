@@ -54,7 +54,7 @@ return [
             'wasfah_followers' => 'Peahskill subscribers',
             'other_platform_followers' => 'Other platform followers',
             'recipes' => 'Published recipes',
-            'average_rating' => 'Average rating',
+            'average_rating' => 'Average workshop rating',
         ],
         'buttons' => [
             'follow' => 'Follow',
@@ -160,6 +160,16 @@ return [
                     'fallback_email' => 'Email not provided',
                     'last_update' => 'Last update: :time',
                     'empty' => 'No confirmed attendees yet. Once bookings are confirmed they will appear here.',
+                ],
+                'recording' => [
+                    'messages' => [
+                        'offline' => 'Cannot sync a recording for an offline workshop.',
+                        'missing_code' => 'No Google Meet code is available to locate the recording.',
+                        'disabled' => 'Google Drive is not enabled. Recordings cannot be fetched automatically until Drive is configured.',
+                        'not_found' => 'No recording was found on Google Drive for this meeting yet.',
+                        'synced' => 'Recording link updated from Google Drive.',
+                        'already_synced' => 'Recording was already synced.',
+                    ],
                 ],
             ],
             'stats' => [
@@ -328,6 +338,16 @@ return [
         'drive_default_description' => 'A recorded workshop available in the archive.',
         'updated_unknown' => 'Last update unknown',
         'untitled' => 'Untitled recording',
+        'drive_warning' => [
+            'title' => 'Google Drive not enabled',
+            'description' => 'Recordings will not be fetched automatically until Google Drive settings are enabled.',
+        ],
+        'missing_recording' => 'No recording found yet. Try syncing the link from Google Drive.',
+        'sync_button' => 'Refresh link from Google Drive',
+        'empty' => [
+            'title' => 'No recordings yet',
+            'description' => 'Once workshops end and recordings are synced, they will appear here.',
+        ],
     ],
 
     'workshops_create' => [
@@ -688,6 +708,9 @@ return [
         'no_rating' => 'No rating yet',
         'saves' => ':count saves',
         'likes' => ':count likes',
+        'made' => ':count tried it',
+        'ratings' => ':count workshop reviews',
+        'rated_workshops_average' => ':value average rating from :count rated workshops',
         'private_tag' => 'Exclusive recipe',
         'private_details' => 'Detailed step-by-step guidance',
         'private_access' => 'Exclusive view',

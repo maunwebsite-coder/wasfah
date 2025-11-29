@@ -5,6 +5,7 @@ namespace App\Services;
 use Google\Client;
 use Google\Service\Drive;
 use Google\Service\Drive\DriveFile;
+use Google\Service\Drive\Permission;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
 
@@ -48,6 +49,7 @@ class GoogleDriveService
     public function findRecordingUrl(?string $meetingCode): ?string
     {
         $file = $this->findRecordingByMeetingCode($meetingCode);
+        $file = $this->ensurePublicReaderPermission($file);
 
         if (! $file instanceof DriveFile) {
             return null;
@@ -66,6 +68,83 @@ class GoogleDriveService
         }
 
         return sprintf('https://drive.google.com/file/d/%s/preview', $fileId);
+    }
+
+    /**
+     * Ensure specific emails have viewer access to a Drive file.
+     *
+     * @param DriveFile|string|null $fileOrId
+     * @param array<int, string|null> $emails
+     */
+    public function shareWithEmails(DriveFile|string|null $fileOrId, array $emails, bool $makePublic = false): void
+    {
+        if (! $this->enabled || ! $this->drive) {
+            return;
+        }
+
+        $fileId = $fileOrId instanceof DriveFile
+            ? $fileOrId->getId()
+            : (is_string($fileOrId) ? trim($fileOrId) : null);
+
+        if (! $fileId) {
+            return;
+        }
+
+        $normalizedEmails = collect($emails)
+            ->map(function ($email) {
+                if (! is_string($email)) {
+                    return null;
+                }
+
+                $normalized = strtolower(trim($email));
+
+                return filter_var($normalized, FILTER_VALIDATE_EMAIL) ? $normalized : null;
+            })
+            ->filter()
+            ->unique()
+            ->values();
+
+        if ($normalizedEmails->isEmpty() && ! $makePublic) {
+            return;
+        }
+
+        try {
+            $permissions = $this->drive->permissions->listPermissions($fileId, [
+                'fields' => 'permissions(id,type,role,emailAddress)',
+                'supportsAllDrives' => true,
+                'includePermissionsFromAllDrives' => true,
+            ])->getPermissions() ?? [];
+
+            $existingEmails = collect($permissions)
+                ->map(fn ($permission) => strtolower((string) ($permission->getEmailAddress() ?? '')))
+                ->filter()
+                ->unique();
+
+            if ($makePublic) {
+                $this->ensurePublicReaderPermission($fileId);
+            }
+
+            foreach ($normalizedEmails as $email) {
+                if ($existingEmails->contains($email)) {
+                    continue;
+                }
+
+                $permission = new Permission();
+                $permission->setType('user');
+                $permission->setRole('reader');
+                $permission->setEmailAddress($email);
+
+                $this->drive->permissions->create($fileId, $permission, [
+                    'supportsAllDrives' => true,
+                    'sendNotificationEmail' => false,
+                ]);
+            }
+        } catch (\Throwable $exception) {
+            Log::warning('Failed to share Drive file with attendees.', [
+                'file_id' => $fileId,
+                'error' => $exception->getMessage(),
+            ]);
+        }
     }
 
     public function findRecordingByMeetingCode(?string $meetingCode): ?DriveFile
@@ -184,7 +263,7 @@ class GoogleDriveService
         $googleClient->setAccessType('offline');
         $googleClient->setPrompt('consent');
         $googleClient->setIncludeGrantedScopes(true);
-        $googleClient->setScopes([Drive::DRIVE_READONLY]);
+        $googleClient->setScopes([Drive::DRIVE_FILE]);
 
         $token = $googleClient->fetchAccessTokenWithRefreshToken($refreshToken);
 
@@ -271,6 +350,54 @@ class GoogleDriveService
         return array_values(array_filter(array_unique($normalized)));
     }
 
+    /**
+     * Ensure the Drive file is accessible via "anyone with the link" (reader).
+     */
+    protected function ensurePublicReaderPermission(DriveFile|string|null $file): ?DriveFile
+    {
+        if (! $this->enabled || ! $this->drive) {
+            return $file instanceof DriveFile ? $file : null;
+        }
+
+        $fileId = $file instanceof DriveFile
+            ? $file->getId()
+            : (is_string($file) ? trim($file) : null);
+
+        if (! $fileId) {
+            return $file instanceof DriveFile ? $file : null;
+        }
+
+        try {
+            $permissions = $this->drive->permissions->listPermissions($fileId, [
+                'fields' => 'permissions(id,type,role)',
+                'supportsAllDrives' => true,
+                'includePermissionsFromAllDrives' => true,
+            ])->getPermissions() ?? [];
+
+            $hasAnyoneReader = collect($permissions)->contains(function ($permission) {
+                return $permission->getType() === 'anyone' && $permission->getRole() === 'reader';
+            });
+
+            if (! $hasAnyoneReader) {
+                $permission = new Permission();
+                $permission->setType('anyone');
+                $permission->setRole('reader');
+
+                $this->drive->permissions->create($fileId, $permission, [
+                    'supportsAllDrives' => true,
+                    'sendNotificationEmail' => false,
+                ]);
+            }
+        } catch (\Throwable $exception) {
+            Log::warning('Failed to ensure public Drive permission.', [
+                'error' => $exception->getMessage(),
+                'file_id' => $fileId,
+            ]);
+        }
+
+        return $file instanceof DriveFile ? $file : null;
+    }
+
     protected function resolveCredentialPath(?string $path): ?string
     {
         if (! is_string($path) || trim($path) === '') {
@@ -293,7 +420,7 @@ class GoogleDriveService
         try {
             $googleClient = $client ?: new Client();
             $googleClient->setAuthConfig($jsonPath);
-            $googleClient->setScopes([Drive::DRIVE_READONLY]);
+            $googleClient->setScopes([Drive::DRIVE_FILE]);
             $googleClient->setApplicationName(config('app.name') . ' Drive Sync');
 
             return new Drive($googleClient);

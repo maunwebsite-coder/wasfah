@@ -27,6 +27,7 @@ return [
             'links' => 'روابط Wasfah',
             'recipes' => 'وصفاتي',
             'workshops' => 'ورش Peahskill',
+            'public' => 'Public',
         ],
         'links' => [
             'edit' => 'تعديل صفحة الروابط',

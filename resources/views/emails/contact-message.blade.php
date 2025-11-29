@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
@@ -16,11 +16,11 @@
             background-color: #ffffff;
             border-radius: 20px;
             overflow: hidden;
-            box-shadow: 0 25px 70px rgba(15, 76, 115, 0.12);
+            box-shadow: 0 25px 70px rgba(8, 25, 255, 0.12);
             border: 1px solid rgba(15, 23, 42, 0.05);
         }
         .header {
-            background: linear-gradient(135deg, #0f4c73, #0fb39a);
+            background: linear-gradient(135deg, #0819ff, #16c3ff);
             color: #fff;
             padding: 2.5rem;
             text-align: center;
@@ -38,7 +38,7 @@
         }
         .label {
             font-weight: 700;
-            color: #0a8070;
+            color: #0f78ad;
             font-size: 0.95rem;
         }
         .value {
@@ -49,8 +49,8 @@
         .message-block {
             margin-top: 2rem;
             padding: 1.5rem;
-            background-color: #eaf3f6;
-            border: 1px solid rgba(15, 76, 115, 0.2);
+            background-color: #f4f6ff;
+            border: 1px solid rgba(8, 25, 255, 0.2);
             border-radius: 16px;
             line-height: 1.8;
             color: #0f172a;
@@ -110,6 +110,8 @@
     </div>
 </body>
 </html>
+
+
 
 
 

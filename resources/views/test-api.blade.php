@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('title', 'Test API Response')
 
@@ -19,7 +19,7 @@
         margin: 10px 0;
     }
     .test-error {
-        background: #eaf3f6;
+        background: #f4f6ff;
         border: 1px solid #f44336;
         padding: 15px;
         border-radius: 5px;
@@ -137,4 +137,5 @@
     });
 </script>
 @endpush
+
 

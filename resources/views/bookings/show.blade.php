@@ -10,6 +10,8 @@
         'confirmed' => 'Confirmed',
         'cancelled' => 'Cancelled',
     ];
+    $backUrl = route('bookings.index');
+    $backLabel = 'Back to bookings';
 @endphp
 
 <div class="min-h-screen bg-gray-50 py-10">
@@ -20,10 +22,10 @@
                 <h1 class="text-3xl font-bold text-slate-900">Booking details #{{ $booking->id }}</h1>
                 <p class="text-slate-500 mt-1">Review the workshop details, booking status, and the available join links.</p>
             </div>
-            <a href="{{ route('bookings.index') }}"
+            <a href="{{ $backUrl }}"
                class="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-5 py-2.5 text-slate-600 font-semibold shadow-sm hover:border-slate-300 hover:text-slate-900">
                 <i class="fas fa-arrow-right"></i>
-                Back to bookings
+                {{ $backLabel }}
             </a>
         </div>
 

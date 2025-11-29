@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('title', 'غرفة الإدارة - ' . $workshop->title)
 
@@ -51,7 +51,7 @@
     }
 
     .action-btn.primary {
-        background: linear-gradient(120deg, #0f4c73, #fb7185);
+        background: linear-gradient(120deg, #0819ff, #fb7185);
         color: #0f172a;
         box-shadow: 0 12px 30px rgba(251, 113, 133, 0.35);
     }
@@ -90,7 +90,7 @@
 
     .status-badge[data-state="pending"] {
         background: rgba(251, 191, 36, 0.15);
-        color: #0fa289;
+        color: #1ab8ff;
         border: 1px solid rgba(251, 191, 36, 0.35);
     }
 
@@ -252,6 +252,7 @@
     });
 </script>
 @endpush
+
 
 
 

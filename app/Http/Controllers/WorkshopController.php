@@ -140,7 +140,7 @@ class WorkshopController extends Controller
     public function show(string $slug)
     {
         $workshop = Workshop::active()
-            ->with('recipes')
+            ->with(['recipes', 'chef'])
             ->where('slug', $slug)
             ->first();
 
@@ -194,9 +194,49 @@ class WorkshopController extends Controller
                 ->first();
         }
 
+        $reviewSummary = [
+            'average' => $workshop->rating ? round((float) $workshop->rating, 1) : null,
+            'count' => (int) ($workshop->reviews_count ?? 0),
+        ];
+
+        $approvedStats = $workshop->reviews()
+            ->approved()
+            ->selectRaw('COUNT(*) as total_reviews, AVG(rating) as average_rating')
+            ->first();
+
+        if ($approvedStats) {
+            $reviewSummary['count'] = (int) ($approvedStats->total_reviews ?? $reviewSummary['count']);
+            $reviewSummary['average'] = $approvedStats->average_rating !== null
+                ? round((float) $approvedStats->average_rating, 1)
+                : $reviewSummary['average'];
+        }
+
+        $userReview = null;
+        $canReview = false;
+        $reviewWindowOpen = $workshop->reviewWindowOpen();
+
+        if (auth()->check()) {
+            $userId = auth()->id();
+
+            $userReview = $workshop->reviews()
+                ->where('user_id', $userId)
+                ->first();
+
+            $canReview = $workshop->canBeReviewedBy($userId);
+        }
+
         $whatsappBookingConfig = $this->buildWhatsappBookingConfig();
 
-        return view('workshop-details', compact('workshop', 'relatedWorkshops', 'userBooking', 'whatsappBookingConfig'));
+        return view('workshop-details', compact(
+            'workshop',
+            'relatedWorkshops',
+            'userBooking',
+            'whatsappBookingConfig',
+            'reviewSummary',
+            'userReview',
+            'canReview',
+            'reviewWindowOpen'
+        ));
     }
 
     /**

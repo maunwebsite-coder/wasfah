@@ -12,21 +12,21 @@
 @push('styles')
 <style>
 :root {
-    --auth-bg: #eaf3f6;
+    --auth-bg: #f4f6ff;
     --auth-card: #ffffff;
-    --auth-primary: #0f4c73;
-    --auth-primary-dark: #0b705f;
-    --auth-primary-soft: #e6f7f2;
-    --auth-accent: #0fa289;
+    --auth-primary: #0819ff;
+    --auth-primary-dark: #050f9f;
+    --auth-primary-soft: #e3ecff;
+    --auth-accent: #1ab8ff;
     --auth-text: #1f2937;
-    --auth-muted: #6b7280;
-    --auth-border: rgba(15, 76, 115, 0.14);
+    --auth-muted: #5c6fe0;
+    --auth-border: rgba(8, 25, 255, 0.14);
 }
 
 .auth-shell {
     min-height: 100vh;
-    background: radial-gradient(circle at top right, rgba(15, 76, 115, 0.18), transparent 55%),
-        radial-gradient(circle at bottom left, rgba(12, 139, 118, 0.16), transparent 45%),
+    background: radial-gradient(circle at top right, rgba(8, 25, 255, 0.16), transparent 55%),
+        radial-gradient(circle at bottom left, rgba(26, 184, 255, 0.18), transparent 45%),
         var(--auth-bg);
     padding: clamp(1.5rem, 4vw, 4rem);
     display: flex;
@@ -46,12 +46,12 @@
     width: 100%;
     background: var(--auth-card);
     border-radius: 28px;
-    box-shadow: 0 45px 120px rgba(15, 23, 42, 0.14);
+    box-shadow: 0 45px 120px rgba(8, 25, 255, 0.12);
     padding: clamp(1.75rem, 3vw, 3.5rem);
     display: flex;
     flex-direction: column;
     gap: 1.75rem;
-    border: 1px solid rgba(15, 76, 115, 0.15);
+    border: 1px solid rgba(8, 25, 255, 0.16);
 }
 
 .auth-brand {
@@ -70,7 +70,7 @@
     height: 92px;
     border-radius: 999px;
     background: #fff;
-    box-shadow: inset 0 0 0 1px rgba(15, 76, 115, 0.15), 0 15px 30px rgba(15, 76, 115, 0.15);
+    box-shadow: inset 0 0 0 1px rgba(8, 25, 255, 0.14), 0 15px 30px rgba(8, 25, 255, 0.18);
     flex-shrink: 0;
 }
 
@@ -117,10 +117,10 @@
 }
 
 .info-card {
-    background: linear-gradient(135deg, #eaf3f6, #e6f7f2);
+    background: linear-gradient(135deg, #eef2ff, #e3ecff);
     border-radius: 22px;
     padding: 1.75rem;
-    border: 1px solid rgba(15, 76, 115, 0.2);
+    border: 1px solid rgba(8, 25, 255, 0.2);
     display: grid;
     gap: 1rem;
 }
@@ -162,7 +162,7 @@
 
 .google-btn {
     border-radius: 18px;
-    border: 1px solid rgba(15, 76, 115, 0.18);
+    border: 1px solid rgba(8, 25, 255, 0.18);
     padding: 0.95rem 1.2rem;
     font-weight: 700;
     font-size: 1rem;
@@ -171,15 +171,15 @@
     justify-content: center;
     gap: 0.7rem;
     cursor: pointer;
-    background: linear-gradient(135deg, #ffffff, #eaf3f6);
+    background: linear-gradient(135deg, #ffffff, #eef2ff);
     color: var(--auth-text);
-    box-shadow: 0 22px 45px rgba(15, 76, 115, 0.15);
+    box-shadow: 0 22px 45px rgba(8, 25, 255, 0.15);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .google-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 30px 55px rgba(15, 76, 115, 0.25);
+    box-shadow: 0 30px 55px rgba(8, 25, 255, 0.22);
 }
 
 .google-btn img {
@@ -197,7 +197,7 @@
     font-size: 0.8rem;
     padding: 0.35rem 0.8rem;
     border-radius: 999px;
-    background: rgba(15, 76, 115, 0.12);
+    background: rgba(8, 25, 255, 0.12);
     color: var(--auth-primary-dark);
     font-weight: 600;
 }
@@ -216,7 +216,7 @@
     content: "";
     flex: 1;
     height: 1px;
-    background: rgba(15, 76, 115, 0.15);
+    background: rgba(8, 25, 255, 0.15);
 }
 
 .auth-form {
@@ -250,7 +250,7 @@
 .input-control:focus {
     outline: none;
     border-color: var(--auth-primary);
-    box-shadow: 0 0 0 3px rgba(15, 76, 115, 0.2);
+    box-shadow: 0 0 0 3px rgba(8, 25, 255, 0.18);
 }
 
 .field-hint {
@@ -312,8 +312,8 @@
 }
 
 .intent-pill {
-    border: 1px solid rgba(15, 76, 115, 0.25);
-    background: #eaf3f6;
+    border: 1px solid rgba(8, 25, 255, 0.25);
+    background: var(--auth-primary-soft);
     padding: 0.45rem 1.2rem;
     border-radius: 999px;
     font-weight: 600;
@@ -325,14 +325,14 @@
 .intent-pill.is-active {
     background: #fff;
     color: var(--auth-primary-dark);
-    box-shadow: 0 12px 20px rgba(15, 76, 115, 0.18);
-    border-color: rgba(15, 76, 115, 0.45);
+    box-shadow: 0 12px 20px rgba(8, 25, 255, 0.18);
+    border-color: rgba(8, 25, 255, 0.45);
 }
 
 .intent-pill[data-role="chef"].is-active {
-    background: #eaf3f6;
-    border-color: rgba(15, 162, 137, 0.35);
-    color: #0b705f;
+    background: #e8f6ff;
+    border-color: rgba(26, 184, 255, 0.35);
+    color: #0f78ad;
 }
 
 .inline-alerts {
@@ -367,9 +367,9 @@
 }
 
 .inline-alert--warning {
-    background: #eaf3f6;
-    border-color: #a1dfd1;
-    color: #0a344f;
+    background: #eef2ff;
+    border-color: #c8d6ff;
+    color: #050f9f;
 }
 
 .inline-alert--info {
@@ -379,24 +379,24 @@
 }
 
 [data-intent-state="chef"] .google-btn {
-    background: linear-gradient(135deg, #c8ede3, #a1dfd1);
-    color: #0a344f;
+    background: linear-gradient(135deg, #d9f2ff, #b6e5ff);
+    color: #0f78ad;
 }
 
 [data-intent-state="chef"] .google-btn img {
-    filter: drop-shadow(0 2px 4px rgba(10, 52, 79, 0.18));
+    filter: drop-shadow(0 2px 4px rgba(15, 120, 173, 0.2));
 }
 
 [data-intent-state="chef"] .divider {
-    color: #0a344f;
+    color: #0f78ad;
 }
 
 [data-intent-state="chef"] .field-hint {
-    color: #0a344f;
+    color: #0f78ad;
 }
 
 [data-intent-state="chef"] .ghost-link {
-    color: #0a344f;
+    color: #0f78ad;
 }
 
 @media (max-width: 640px) {

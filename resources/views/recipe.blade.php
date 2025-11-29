@@ -1,11 +1,11 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('title', $recipe->title)
 
 @push('styles')
     <style>
       .serving-size-btn.bg-orange-500 {
-        background-color: #0f4c73 !important;
+        background-color: #0819ff !important;
       }
       .serving-size-btn.text-white {
         color: #fff !important;
@@ -41,7 +41,7 @@
         position: relative;
         border-radius: 1.5rem;
         overflow: hidden;
-        background: radial-gradient(circle at 20% 20%, rgba(15, 76, 115, 0.12), transparent 45%), #0b1c2d;
+        background: radial-gradient(circle at 20% 20%, rgba(8, 25, 255, 0.12), transparent 45%), #0b1c2d;
         box-shadow: 0 30px 60px rgba(0, 0, 0, 0.25);
         border: 1px solid rgba(255, 255, 255, 0.08);
       }
@@ -65,23 +65,23 @@
       
       /* Selected stars */
       .star-rating input:checked ~ label .star {
-        color: #0fa289 !important;
+        color: #1ab8ff !important;
         transform: scale(1.1);
-        text-shadow: 0 2px 4px rgba(15, 162, 137, 0.3);
+        text-shadow: 0 2px 4px rgba(26, 184, 255, 0.3);
       }
       
       /* Hover effect: highlight the hovered star and the ones after it */
       .star-rating label:hover .star {
-        color: #0fa289 !important;
+        color: #1ab8ff !important;
         transform: scale(1.1);
-        text-shadow: 0 2px 4px rgba(15, 162, 137, 0.3);
+        text-shadow: 0 2px 4px rgba(26, 184, 255, 0.3);
       }
       
       /* Highlight stars that follow the hovered one (RTL order) */
       .star-rating label:hover ~ label .star {
-        color: #0fa289 !important;
+        color: #1ab8ff !important;
         transform: scale(1.1);
-        text-shadow: 0 2px 4px rgba(15, 162, 137, 0.3);
+        text-shadow: 0 2px 4px rgba(26, 184, 255, 0.3);
       }
       
       /* Reset stars that come before the hovered one */
@@ -99,9 +99,9 @@
       
       /* Keep selected stars highlighted */
       .star-rating input:checked ~ label .star {
-        color: #0fa289 !important;
+        color: #1ab8ff !important;
         transform: scale(1.1);
-        text-shadow: 0 2px 4px rgba(15, 162, 137, 0.3);
+        text-shadow: 0 2px 4px rgba(26, 184, 255, 0.3);
       }
       .btn {
         display: flex;
@@ -125,11 +125,11 @@
       }
   
       .btn.save-recipe-btn.bg-orange-500 {
-        background-color: #0f4c73 !important; /* bg-orange-500 */
+        background-color: #0819ff !important; /* bg-orange-500 */
       }
   
       .btn.save-recipe-btn.bg-orange-500:hover {
-        background-color: #0a8070 !important; /* hover:bg-orange-600 */
+        background-color: #0f78ad !important; /* hover:bg-orange-600 */
       }
       
       .btn.save-recipe-btn.bg-green-500 {
@@ -142,8 +142,8 @@
 
       .recipe-hero {
         position: relative;
-        background: linear-gradient(135deg, rgba(230, 247, 242, 0.85) 0%, rgba(234, 243, 246, 0.92) 45%, #ffffff 100%);
-        border: 1px solid rgba(15, 76, 115, 0.08);
+        background: linear-gradient(135deg, rgba(232, 242, 255, 0.85) 0%, rgba(244, 246, 255, 0.92) 45%, #ffffff 100%);
+        border: 1px solid rgba(8, 25, 255, 0.08);
         box-shadow: 0 25px 55px rgba(15, 23, 42, 0.07);
         overflow: hidden;
       }
@@ -153,7 +153,7 @@
         content: "";
         position: absolute;
         border-radius: 9999px;
-        background: radial-gradient(circle at center, rgba(15, 76, 115, 0.18), transparent 65%);
+        background: radial-gradient(circle at center, rgba(8, 25, 255, 0.18), transparent 65%);
         pointer-events: none;
         transition: transform 0.5s ease;
       }
@@ -186,8 +186,8 @@
         padding: 0.5rem 1.25rem;
         border-radius: 9999px;
         background: rgba(255, 255, 255, 0.85);
-        border: 1px solid rgba(15, 76, 115, 0.25);
-        color: #0a8070;
+        border: 1px solid rgba(8, 25, 255, 0.25);
+        color: #0f78ad;
         font-weight: 600;
         font-size: 0.95rem;
         backdrop-filter: blur(6px);
@@ -215,8 +215,8 @@
         padding: 1rem 1.25rem;
         border-radius: 1.5rem;
         background: rgba(255, 255, 255, 0.9);
-        border: 1px solid rgba(15, 76, 115, 0.12);
-        box-shadow: 0 12px 30px rgba(15, 76, 115, 0.08);
+        border: 1px solid rgba(8, 25, 255, 0.12);
+        box-shadow: 0 12px 30px rgba(8, 25, 255, 0.08);
       }
       .hero-stat.hero-stat--compact {
         padding: 0.8rem 1rem;
@@ -230,8 +230,8 @@
         width: 3rem;
         height: 3rem;
         border-radius: 9999px;
-        background: rgba(15, 76, 115, 0.12);
-        color: #0f4c73;
+        background: rgba(8, 25, 255, 0.12);
+        color: #0819ff;
         font-size: 1.25rem;
       }
 
@@ -262,7 +262,7 @@
         font-weight: 600;
       }
       .hero-stat-link {
-        color: #0a8070;
+        color: #0f78ad;
         font-weight: 700;
         text-decoration: none;
         display: inline-flex;
@@ -284,7 +284,7 @@
 
       .hero-panel {
         background: rgba(255, 255, 255, 0.88);
-        border: 1px solid rgba(15, 76, 115, 0.15);
+        border: 1px solid rgba(8, 25, 255, 0.15);
         border-radius: 1.5rem;
         box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
         backdrop-filter: blur(8px);
@@ -312,7 +312,7 @@
         background: #ffffff;
         border-radius: 1.5rem;
         overflow: hidden;
-        border: 1px solid rgba(15, 76, 115, 0.12);
+        border: 1px solid rgba(8, 25, 255, 0.12);
         box-shadow: 0 20px 45px rgba(15, 23, 42, 0.08);
       }
 
@@ -324,7 +324,7 @@
 
       .media-card .thumbnail.active,
       .media-card .thumbnail:hover {
-        border-color: #0f4c73;
+        border-color: #0819ff;
         opacity: 1;
       }
 
@@ -338,10 +338,10 @@
 
       .section-card {
         position: relative;
-        background: linear-gradient(160deg, rgba(255, 255, 255, 0.96) 0%, rgba(234, 243, 246, 0.75) 80%, #ffffff 100%);
+        background: linear-gradient(160deg, rgba(255, 255, 255, 0.96) 0%, rgba(244, 246, 255, 0.75) 80%, #ffffff 100%);
         border-radius: 1.5rem;
         padding: 2rem;
-        border: 1px solid rgba(15, 76, 115, 0.12);
+        border: 1px solid rgba(8, 25, 255, 0.12);
         box-shadow: 0 22px 48px rgba(15, 23, 42, 0.07);
         transition: transform 0.25s ease, box-shadow 0.25s ease;
       }
@@ -362,7 +362,7 @@
       }
 
       .section-title i {
-        color: #0f4c73;
+        color: #0819ff;
         font-size: 1.4rem;
       }
 
@@ -389,8 +389,8 @@
         width: 3rem;
         height: 3rem;
         border-radius: 1rem;
-        background: rgba(15, 76, 115, 0.12);
-        color: #0f4c73;
+        background: rgba(8, 25, 255, 0.12);
+        color: #0819ff;
         font-size: 1.3rem;
       }
 
@@ -426,15 +426,15 @@
         padding: 0.65rem 1.25rem;
         border-radius: 9999px;
         font-weight: 600;
-        border: 1px solid rgba(15, 76, 115, 0.25);
+        border: 1px solid rgba(8, 25, 255, 0.25);
         background: rgba(255, 255, 255, 0.95);
-        color: #0f4c73;
+        color: #0819ff;
         transition: all 0.2s ease;
       }
 
       .serving-size-btn:hover {
         transform: translateY(-2px);
-        box-shadow: 0 10px 24px rgba(15, 76, 115, 0.15);
+        box-shadow: 0 10px 24px rgba(8, 25, 255, 0.15);
       }
 
       .serving-size-hint {
@@ -445,7 +445,7 @@
         padding: 0.85rem 1.1rem;
         border-radius: 1rem;
         background: rgba(255, 255, 255, 0.9);
-        border: 1px dashed rgba(15, 76, 115, 0.3);
+        border: 1px dashed rgba(8, 25, 255, 0.3);
       }
 
       .ingredient-list {
@@ -478,8 +478,8 @@
         width: 2.25rem;
         height: 2.25rem;
         border-radius: 0.9rem;
-        background: rgba(15, 76, 115, 0.12);
-        color: #0f4c73;
+        background: rgba(8, 25, 255, 0.12);
+        color: #0819ff;
         font-size: 1rem;
       }
 
@@ -522,12 +522,12 @@
         width: 2.5rem;
         height: 2.5rem;
         border-radius: 9999px;
-        background: linear-gradient(135deg, #0f4c73, #0fb39a);
+        background: linear-gradient(135deg, #0819ff, #16c3ff);
         color: #ffffff;
         font-weight: 700;
         font-size: 1.1rem;
         flex-shrink: 0;
-        box-shadow: 0 12px 24px rgba(15, 76, 115, 0.3);
+        box-shadow: 0 12px 24px rgba(8, 25, 255, 0.3);
       }
 
       .step-text {
@@ -538,8 +538,8 @@
         display: flex;
         flex-direction: column;
         gap: 1.5rem;
-        background: linear-gradient(140deg, rgba(15, 76, 115, 0.12) 0%, rgba(15, 162, 137, 0.08) 45%, rgba(255, 255, 255, 0.85) 100%);
-        border: 1px solid rgba(15, 76, 115, 0.14);
+        background: linear-gradient(140deg, rgba(8, 25, 255, 0.12) 0%, rgba(26, 184, 255, 0.08) 45%, rgba(255, 255, 255, 0.85) 100%);
+        border: 1px solid rgba(8, 25, 255, 0.14);
       }
 
       .origin-badges {
@@ -556,9 +556,9 @@
         padding: 0.45rem 0.8rem;
         border-radius: 12px;
         background: #f8fafc;
-        border: 1px solid rgba(15, 76, 115, 0.16);
+        border: 1px solid rgba(8, 25, 255, 0.16);
         font-weight: 800;
-        color: #0f4c73;
+        color: #0819ff;
       }
 
       .origin-badge small {
@@ -566,18 +566,18 @@
         font-weight: 700;
       }
 
-      .origin-badge.origin-creator { background: rgba(15, 179, 154, 0.12); border-color: rgba(15, 179, 154, 0.28); color: #0a8f78; }
+      .origin-badge.origin-creator { background: rgba(26, 184, 255, 0.12); border-color: rgba(26, 184, 255, 0.28); color: #0a8f78; }
       .origin-badge.origin-partner { background: rgba(247, 201, 72, 0.12); border-color: rgba(247, 201, 72, 0.28); color: #c47a00; }
-      .origin-badge.origin-peah { background: rgba(15, 76, 115, 0.1); border-color: rgba(15, 76, 115, 0.28); color: #0f4c73; }
+      .origin-badge.origin-peah { background: rgba(8, 25, 255, 0.1); border-color: rgba(8, 25, 255, 0.28); color: #0819ff; }
       .origin-badge.origin-community { background: rgba(148, 163, 184, 0.14); border-color: rgba(148, 163, 184, 0.3); color: #334155; }
 
       .workshop-cta {
         margin: 1rem 0 2rem;
         padding: 1.4rem 1.6rem;
         border-radius: 1.5rem;
-        background: linear-gradient(120deg, rgba(15, 76, 115, 0.12), rgba(15, 179, 154, 0.12));
-        border: 1px solid rgba(15, 76, 115, 0.12);
-        box-shadow: 0 18px 40px rgba(15, 76, 115, 0.08);
+        background: linear-gradient(120deg, rgba(8, 25, 255, 0.12), rgba(26, 184, 255, 0.12));
+        border: 1px solid rgba(8, 25, 255, 0.12);
+        box-shadow: 0 18px 40px rgba(8, 25, 255, 0.08);
         display: grid;
         grid-template-columns: 1.2fr 1fr;
         gap: 1rem;
@@ -587,7 +587,7 @@
       .workshop-cta h3 {
         font-size: 1.4rem;
         font-weight: 900;
-        color: #0f4c73;
+        color: #0819ff;
         margin-bottom: 0.35rem;
       }
 
@@ -603,7 +603,7 @@
         gap: 0.35rem;
         padding: 0.35rem 0.75rem;
         border-radius: 999px;
-        background: rgba(15, 179, 154, 0.14);
+        background: rgba(26, 184, 255, 0.14);
         color: #0b8c78;
         font-weight: 800;
         margin-bottom: 0.35rem;
@@ -617,7 +617,7 @@
       }
 
       .workshop-primary {
-        background: linear-gradient(135deg, #0f4c73, #0fb39a);
+        background: linear-gradient(135deg, #0819ff, #16c3ff);
         color: #fff;
         padding: 0.7rem 1rem;
         border-radius: 12px;
@@ -628,12 +628,12 @@
       }
 
       .workshop-secondary {
-        background: rgba(15, 76, 115, 0.06);
-        color: #0f4c73;
+        background: rgba(8, 25, 255, 0.06);
+        color: #0819ff;
         padding: 0.65rem 0.9rem;
         border-radius: 12px;
         font-weight: 800;
-        border: 1px solid rgba(15, 76, 115, 0.14);
+        border: 1px solid rgba(8, 25, 255, 0.14);
         display: inline-flex;
         align-items: center;
         gap: 0.35rem;
@@ -651,8 +651,8 @@
         padding: 0.55rem 0.8rem;
         border-radius: 12px;
         background: #fff;
-        border: 1px solid rgba(15, 76, 115, 0.1);
-        color: #0f4c73;
+        border: 1px solid rgba(8, 25, 255, 0.1);
+        color: #0819ff;
         font-weight: 800;
       }
 
@@ -677,8 +677,8 @@
         padding: 0.45rem 1.1rem;
         border-radius: 9999px;
         background: rgba(255, 255, 255, 0.9);
-        border: 1px solid rgba(15, 76, 115, 0.3);
-        color: #0f4c73;
+        border: 1px solid rgba(8, 25, 255, 0.3);
+        color: #0819ff;
         font-weight: 700;
         font-size: 0.9rem;
       }
@@ -710,7 +710,7 @@
 
       .rating-card {
         background: linear-gradient(160deg, rgba(255, 255, 255, 0.96) 0%, rgba(254, 215, 170, 0.4) 100%);
-        border: 1px solid rgba(15, 76, 115, 0.15);
+        border: 1px solid rgba(8, 25, 255, 0.15);
       }
 
       .rating-card .section-title {
@@ -1042,7 +1042,7 @@
         }
         
         .text-orange-500 {
-          color: #0f4c73 !important;
+          color: #0819ff !important;
         }
         
         .shadow-lg {
@@ -1079,7 +1079,7 @@
         
         h1, h2, h3 {
           page-break-after: avoid;
-          color: #0f4c73 !important;
+          color: #0819ff !important;
           font-weight: bold;
         }
         
@@ -1087,14 +1087,14 @@
           font-size: 2.2em;
           text-align: center;
           margin-bottom: 20px;
-          border-bottom: 3px solid #0f4c73;
+          border-bottom: 3px solid #0819ff;
           padding-bottom: 15px;
         }
         
         h2 {
           font-size: 1.8em;
           margin-bottom: 15px;
-          border-bottom: 2px solid #0f4c73;
+          border-bottom: 2px solid #0819ff;
           padding-bottom: 8px;
           text-align: center;
         }
@@ -1135,7 +1135,7 @@
         }
         
         .print-info-item i {
-          color: #0f4c73;
+          color: #0819ff;
           margin-left: 8px;
           font-size: 1.2em;
         }
@@ -1155,7 +1155,7 @@
         
         ul li:before {
           content: "•";
-          color: #0f4c73;
+          color: #0819ff;
           font-weight: bold;
           position: absolute;
           right: 0;
@@ -1176,7 +1176,7 @@
           position: absolute;
           right: -25px;
           top: 10px;
-          background: #0f4c73;
+          background: #0819ff;
           color: white;
           width: 22px;
           height: 22px;
@@ -1196,7 +1196,7 @@
           text-align: center;
           margin-top: 40px;
           padding-top: 20px;
-          border-top: 2px solid #0f4c73;
+          border-top: 2px solid #0819ff;
           font-size: 11pt;
           color: #666;
           background: #f8f9fa;
@@ -1210,8 +1210,8 @@
       
       /* Equipment card styles */
       .tool-card {
-        background: linear-gradient(135deg, #eaf3f6 0%, #a1dfd1 100%);
-        border: 1px solid #0fb39a;
+        background: linear-gradient(135deg, #f4f6ff 0%, #c8d6ff 100%);
+        border: 1px solid #16c3ff;
         border-radius: 12px;
         padding: 1.5rem;
         transition: all 0.3s ease;
@@ -1226,25 +1226,25 @@
         left: 0;
         right: 0;
         height: 3px;
-        background: linear-gradient(90deg, #0f4c73, #0fb39a, #0fa289);
+        background: linear-gradient(90deg, #0819ff, #16c3ff, #1ab8ff);
       }
       
       .tool-card:hover {
         transform: translateY(-2px);
-        box-shadow: 0 10px 25px rgba(15, 76, 115, 0.15);
-        border-color: #0f4c73;
+        box-shadow: 0 10px 25px rgba(8, 25, 255, 0.15);
+        border-color: #0819ff;
       }
       
       .tool-icon {
         width: 3rem;
         height: 3rem;
-        background: linear-gradient(135deg, #0f4c73, #0fb39a);
+        background: linear-gradient(135deg, #0819ff, #16c3ff);
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
         margin: 0 auto 1rem;
-        box-shadow: 0 4px 12px rgba(15, 76, 115, 0.3);
+        box-shadow: 0 4px 12px rgba(8, 25, 255, 0.3);
       }
       
       .tool-name {
@@ -1258,7 +1258,7 @@
       .tool-divider {
         width: 2rem;
         height: 3px;
-        background: linear-gradient(90deg, #0f4c73, #0fb39a);
+        background: linear-gradient(90deg, #0819ff, #16c3ff);
         border-radius: 2px;
         margin: 0 auto;
       }
@@ -1284,7 +1284,7 @@
       #tools-container .tool-card:hover {
         transform: translateY(-4px);
         box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-        border-color: #0f4c73;
+        border-color: #0819ff;
       }
       
       #tools-container .tool-card .p-3,
@@ -1309,7 +1309,7 @@
       }
       
       #tools-container .tool-card .rating-stars {
-        color: #0fa289;
+        color: #1ab8ff;
       }
       
       #tools-container .tool-card .empty-rating {
@@ -1392,7 +1392,7 @@
       /* Badge improvements */
       #tools-container .category-badge {
         backdrop-filter: blur(10px);
-        background: rgba(15, 76, 115, 0.9);
+        background: rgba(8, 25, 255, 0.9);
       }
       
       /* ضمان التناسق على الهواتف */
@@ -1435,7 +1435,7 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background: linear-gradient(45deg, transparent 0%, rgba(15, 76, 115, 0.1) 100%);
+        background: linear-gradient(45deg, transparent 0%, rgba(8, 25, 255, 0.1) 100%);
         opacity: 0;
         transition: opacity 0.3s ease;
       }
@@ -1455,15 +1455,15 @@
       }
       
       .related-recipe-card .category-badge {
-        background: linear-gradient(135deg, #a1dfd1 0%, #0fb39a 100%);
-        color: #0a344f;
+        background: linear-gradient(135deg, #c8d6ff 0%, #16c3ff 100%);
+        color: #050f9f;
         font-weight: 600;
         text-shadow: 0 1px 2px rgba(255, 255, 255, 0.3);
-        box-shadow: 0 2px 4px rgba(15, 76, 115, 0.2);
+        box-shadow: 0 2px 4px rgba(8, 25, 255, 0.2);
       }
       
       .related-recipe-card .rating-stars {
-        color: #0fa289;
+        color: #1ab8ff;
         text-shadow: 0 1px 2px rgba(251, 191, 36, 0.3);
       }
       
@@ -1608,7 +1608,7 @@
             'cooking' => [
                 'label' => 'Cooking Skills',
                 'subtitle' => 'وصفات، وجبات سريعة، وحيل المطبخ',
-                'accent' => '#0fb39a',
+                'accent' => '#16c3ff',
             ],
             'content' => [
                 'label' => 'Content Creation',
@@ -3010,7 +3010,7 @@
                         
                         // Add a subtle highlight effect to the rating section
                         ratingSection.style.transition = 'box-shadow 0.3s ease';
-                        ratingSection.style.boxShadow = '0 0 20px rgba(15, 76, 115, 0.3)';
+                        ratingSection.style.boxShadow = '0 0 20px rgba(8, 25, 255, 0.3)';
                         
                         // Remove highlight after 2 seconds
                         setTimeout(() => {
@@ -3126,6 +3126,10 @@
         </script>
     @endpush
 @endsection
+
+
+
+
 
 
 

@@ -32,7 +32,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="application-name" content="Peahskill">
-    <meta name="theme-color" content="#0f4c73">
+    <meta name="theme-color" content="#0819ff">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="manifest" href="{{ asset('manifest.webmanifest') }}">
@@ -116,8 +116,12 @@
         $hideBreadcrumbs = (bool) ($hideBreadcrumbs ?? false);
     @endphp
     @unless($hideNavbar)
-        @include('partials.navbar', ['showNavbarSearch' => $showNavbarSearch])
+        @include('partials.navbar', ['showNavbarSearch' => $showNavbarSearch, 'showBreadcrumbs' => !$hideBreadcrumbs])
     @endunless
+
+    @if(!$hideNavbar && !$hideBreadcrumbs)
+        @include('components.breadcrumbs', ['inNavbar' => true])
+    @endif
 
     <!-- Main Navigation Bar -->
     <!-- <nav class="bg-white border-t border-gray-200 shadow-sm ">
@@ -134,9 +138,9 @@
 
     <!-- Page Content -->
     <main>
-        @unless($hideBreadcrumbs)
+        @if($hideNavbar && !$hideBreadcrumbs)
             @include('components.breadcrumbs')
-        @endunless
+        @endif
         @yield('content')
     </main>
 

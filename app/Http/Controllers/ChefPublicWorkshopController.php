@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ChefLinkPage;
 use App\Models\User;
 use App\Models\Workshop;
-use App\Services\GoogleDriveService;
+use App\Services\UserGoogleDriveService;
 use App\Support\BrandAssets;
 use App\Support\Concerns\ResolvesWorkshopRecordings;
 use Google\Service\Drive\DriveFile;
@@ -20,7 +20,7 @@ class ChefPublicWorkshopController extends Controller
 {
     use ResolvesWorkshopRecordings;
 
-    public function __construct(protected GoogleDriveService $googleDrive)
+    public function __construct(protected UserGoogleDriveService $userDriveService)
     {
     }
 
@@ -43,9 +43,20 @@ class ChefPublicWorkshopController extends Controller
         $workshops = $chef->workshops()
             ->orderByDesc('start_date')
             ->get()
-            ->map(function (Workshop $workshop) {
+            ->map(function (Workshop $workshop) use ($chef) {
                 $recordingUrl = $this->resolveRecordingUrl($workshop);
                 $previewUrl = $this->buildRecordingPreviewUrl($recordingUrl);
+
+                if (! $previewUrl && ($workshop->meeting_code || $workshop->meeting_link)) {
+                    $driveUrl = $this->resolveDriveRecordingForWorkshop($workshop, $chef);
+
+                    if ($driveUrl) {
+                        $recordingUrl = $driveUrl;
+                        $previewUrl = $this->buildRecordingPreviewUrl($driveUrl);
+                        $workshop->setAttribute('recording_from_drive', true);
+                    }
+                }
+
                 $isDirectVideo = $this->isDirectVideoUrl($recordingUrl);
 
                 $workshop->setAttribute('recording_source_url', $recordingUrl);
@@ -59,23 +70,28 @@ class ChefPublicWorkshopController extends Controller
         $appLocale = app()->getLocale();
         $carbonLocale = $appLocale === 'ar' ? 'ar' : 'en';
         $dateTimeFormat = __('chef.workshops.datetime_format');
-        $driveRecordings = $this->resolveDriveRecordings($workshops, $carbonLocale, $dateTimeFormat);
+        $driveRecordings = $this->resolveDriveRecordings($workshops, $carbonLocale, $dateTimeFormat, $chef);
         $workshops = $this->attachDriveRecordingsToWorkshops($workshops, $driveRecordings);
+        $recordingStats = $this->summarizeRecordingCounts($workshops, $driveRecordings);
 
         return view('chef.public-workshops', [
             'chef' => $chef,
             'avatarUrl' => $this->resolveAvatarUrl($chef->avatar),
             'workshops' => $workshops,
             'driveRecordings' => $driveRecordings,
+            'recordingStats' => $recordingStats,
         ]);
     }
 
     /**
      * Build a normalized list of Drive recordings so the view can render them.
      */
-    protected function resolveDriveRecordings(Collection $workshops, string $locale, string $dateTimeFormat): Collection
+    protected function resolveDriveRecordings(Collection $workshops, string $locale, string $dateTimeFormat, User $chef): Collection
     {
-        if (! $this->googleDrive->isEnabled()) {
+        $userDriveEnabled = $chef->hasGoogleDriveCredentials();
+        $driveEnabled = $userDriveEnabled;
+
+        if (! $driveEnabled) {
             return collect();
         }
 
@@ -85,7 +101,9 @@ class ChefPublicWorkshopController extends Controller
             return collect();
         }
 
-        return collect($this->googleDrive->listRecordings(null, 100))
+        $files = $this->userDriveService->listRecordings($chef, 100);
+
+        return collect($files)
             ->filter(fn ($file) => $file instanceof DriveFile)
             ->map(function (DriveFile $file) use ($matchIndex, $locale, $dateTimeFormat): ?array {
                 $name = strtolower($file->getName() ?? '');
@@ -180,6 +198,94 @@ class ChefPublicWorkshopController extends Controller
 
             return $workshop;
         });
+    }
+
+    /**
+     * Build consistent recording statistics so the header chips stay logical.
+     */
+    protected function summarizeRecordingCounts(Collection $workshops, Collection $driveRecordings): array
+    {
+        $recordedWorkshops = $workshops->filter(fn (Workshop $workshop) => $this->hasRecordingAttached($workshop));
+
+        $standaloneDriveCount = $driveRecordings
+            ->filter(fn (array $recording) => empty($recording['matched_workshop_id']))
+            ->count();
+
+        $inlineCount = $recordedWorkshops
+            ->filter(fn (Workshop $workshop) => $this->isInlinePlayable($workshop))
+            ->count();
+
+        $driveBackedCount = $recordedWorkshops
+            ->filter(fn (Workshop $workshop) => $this->isDriveSource($workshop))
+            ->count();
+
+        $totalCount = $recordedWorkshops->count() + $standaloneDriveCount;
+        $driveTotal = $driveBackedCount + $standaloneDriveCount;
+
+        return [
+            'total' => $totalCount,
+            'inline' => min($inlineCount, $totalCount),
+            'drive' => min($driveTotal, $totalCount),
+        ];
+    }
+
+    /**
+     * Check if a workshop already has any recording attached.
+     */
+    protected function hasRecordingAttached(Workshop $workshop): bool
+    {
+        return (bool) (
+            $workshop->getAttribute('recording_source_url')
+            || $workshop->getAttribute('video_preview_url')
+            || $workshop->getAttribute('is_direct_video')
+        );
+    }
+
+    /**
+     * Check if the workshop can play inline (preview iframe or direct video).
+     */
+    protected function isInlinePlayable(Workshop $workshop): bool
+    {
+        return (bool) (
+            $workshop->getAttribute('video_preview_url')
+            || $workshop->getAttribute('is_direct_video')
+        );
+    }
+
+    /**
+     * Determine whether the recording source comes from Google Drive.
+     */
+    protected function isDriveSource(Workshop $workshop): bool
+    {
+        if ($workshop->getAttribute('recording_from_drive')) {
+            return true;
+        }
+
+        $sourceUrl = $workshop->getAttribute('recording_source_url');
+
+        return is_string($sourceUrl) && $sourceUrl !== '' && $this->isGoogleDriveUrl($sourceUrl);
+    }
+
+    /**
+     * Try to fetch a Drive recording URL using the workshop meeting code.
+     */
+    protected function resolveDriveRecordingForWorkshop(Workshop $workshop, User $chef): ?string
+    {
+        $meetingCode = $workshop->meeting_code ?: Workshop::extractMeetingCode($workshop->meeting_link);
+
+        if (! $meetingCode) {
+            return null;
+        }
+
+        if ($chef->hasGoogleDriveCredentials()) {
+            $url = $this->userDriveService->findRecordingUrl($chef, $meetingCode);
+
+            if ($url) {
+                return $url;
+            }
+        }
+
+        return null;
     }
 
     /**

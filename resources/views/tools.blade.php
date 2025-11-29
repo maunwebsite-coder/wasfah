@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('title', __('tools.meta.title'))
 
@@ -62,7 +62,7 @@
     }
     .tools-hero-actions .intro-primary {
         background: #fff;
-        color: #0f4c73;
+        color: #0819ff;
         box-shadow: 0 18px 32px rgba(15, 23, 42, 0.18);
     }
     .tools-hero-actions .intro-primary:hover {
@@ -85,7 +85,7 @@
         height: 100%;
         border-radius: 1.125rem;
         border: 1px solid #f1f5f9;
-        background: linear-gradient(180deg, #ffffff 0%, #eaf3f6 100%);
+        background: linear-gradient(180deg, #ffffff 0%, #f4f6ff 100%);
         box-shadow: 0 18px 28px rgba(15, 23, 42, 0.08);
         transition: transform 0.35s ease, box-shadow 0.35s ease;
         overflow: hidden;
@@ -157,11 +157,11 @@
     .why-slider .swiper-pagination-bullet {
         width: 10px;
         height: 10px;
-        background: rgba(15, 76, 115, 0.3);
+        background: rgba(8, 25, 255, 0.3);
         opacity: 1;
     }
     .why-slider .swiper-pagination-bullet-active {
-        background: #0f4c73;
+        background: #0819ff;
     }
     .tool-card__image {
         max-width: 100%;
@@ -180,13 +180,13 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        background: rgba(15, 76, 115, 0.92);
+        background: rgba(8, 25, 255, 0.92);
         color: #fff;
         font-size: 0.75rem;
         font-weight: 600;
         padding: 0.35rem 0.85rem;
         border-radius: 9999px;
-        box-shadow: 0 10px 20px rgba(15, 76, 115, 0.2);
+        box-shadow: 0 10px 20px rgba(8, 25, 255, 0.2);
     }
     .tool-card__content {
         display: flex;
@@ -209,12 +209,12 @@
         overflow: hidden;
     }
     .tool-card__price {
-        color: #0f4c73;
+        color: #0819ff;
         font-weight: 700;
         font-size: 1.125rem;
     }
     .tool-card .rating-stars {
-        color: #0fa289;
+        color: #1ab8ff;
         font-size: 0.875rem;
     }
     .tool-card .empty-rating {
@@ -274,13 +274,13 @@
         font-weight: bold;
     }
     .tool-slider .swiper-pagination-bullet {
-        background-color: rgba(15, 76, 115, 0.85);
+        background-color: rgba(8, 25, 255, 0.85);
         opacity: 1;
         width: 6px;
         height: 6px;
     }
     .tool-slider .swiper-pagination-bullet-active {
-        background-color: #0f4c73;
+        background-color: #0819ff;
     }
     .tool-slider .swiper-button-disabled {
         opacity: 0.35 !important;
@@ -293,21 +293,21 @@
         content: '';
         position: absolute;
         inset: 0;
-        background: radial-gradient(circle at top, rgba(15, 162, 137, 0.25), transparent 65%);
+        background: radial-gradient(circle at top, rgba(26, 184, 255, 0.25), transparent 65%);
         z-index: -1;
         opacity: 0.7;
     }
     .tools-filter {
         background: #fff;
         border-radius: 1.75rem;
-        border: 1px solid rgba(15, 76, 115, 0.2);
+        border: 1px solid rgba(8, 25, 255, 0.2);
         box-shadow: 0 24px 48px rgba(15, 23, 42, 0.12);
     }
     .category-filter-btn {
         transition: all 0.3s ease;
     }
     .category-filter-btn.active {
-        box-shadow: 0 10px 20px rgba(15, 76, 115, 0.25);
+        box-shadow: 0 10px 20px rgba(8, 25, 255, 0.25);
     }
     .save-for-later-btn:disabled {
         opacity: 0.85;
@@ -950,6 +950,8 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 @endpush
+
+
 
 
 

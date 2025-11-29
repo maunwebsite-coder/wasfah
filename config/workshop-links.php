@@ -57,4 +57,15 @@ return [
     |
     */
     'allow_host_meeting_link_override' => env('WORKSHOP_ALLOW_HOST_MEETING_OVERRIDE', true),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Participant Meeting Access Grace Period (hours)
+    |--------------------------------------------------------------------------
+    |
+    | After this many hours past the scheduled workshop end time, the join
+    | controls will be disabled and launch links will be blocked.
+    |
+    */
+    'participant_meeting_grace_hours' => env('WORKSHOP_LINK_MEETING_GRACE_HOURS', 6),
 ];

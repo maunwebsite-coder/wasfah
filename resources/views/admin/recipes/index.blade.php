@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('title', 'إدارة الفيديوهات القصيرة - موقع وصفة')
 
@@ -99,13 +99,13 @@
         position: absolute;
         top: -0.35rem;
         right: -0.35rem;
-        background: linear-gradient(135deg, #0f4c73 0%, #0a8070 100%);
+        background: linear-gradient(135deg, #0819ff 0%, #0f78ad 100%);
         color: white;
         font-size: 0.6875rem;
         font-weight: 600;
         padding: 0.3rem 0.65rem;
         border-radius: 9999px;
-        box-shadow: 0 2px 6px rgba(15, 76, 115, 0.35);
+        box-shadow: 0 2px 6px rgba(8, 25, 255, 0.35);
     }
     .btn-sm {
         padding: 0.45rem 0.9rem;
@@ -115,7 +115,7 @@
         font-size: 0.8125rem;
     }
     .btn-primary {
-        background: linear-gradient(135deg, #0f4c73 0%, #0a8070 100%);
+        background: linear-gradient(135deg, #0819ff 0%, #0f78ad 100%);
         border: none;
         color: white;
         padding: 0.75rem 1.5rem;
@@ -124,9 +124,9 @@
         transition: all 0.2s ease;
     }
     .btn-primary:hover {
-        background: linear-gradient(135deg, #0a8070 0%, #0b344f 100%);
+        background: linear-gradient(135deg, #0f78ad 0%, #0b344f 100%);
         transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(15, 76, 115, 0.4);
+        box-shadow: 0 4px 12px rgba(8, 25, 255, 0.4);
     }
     .btn-danger {
         background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
@@ -186,7 +186,7 @@
         background-color: currentColor;
     }
     .pending-row {
-        background: #eaf3f6;
+        background: #f4f6ff;
     }
 </style>
 @endpush
@@ -416,6 +416,8 @@
     </div>
 </div>
 @endsection
+
+
 
 
 

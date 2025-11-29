@@ -1,5 +1,6 @@
-@php
+﻿@php
     use App\Support\Timezones;
+    use Illuminate\Support\Carbon;
     use Illuminate\Support\Facades\Storage;
     use Illuminate\Support\Str;
 
@@ -34,6 +35,12 @@
     if (! Timezones::isAllowedHostTimezone($hostTimezoneValue)) {
         $hostTimezoneValue = Timezones::defaultHostTimezone();
     }
+    $durationMinutes = (int) old('duration', $workshop->duration ?? 90);
+    if ($durationMinutes <= 0) {
+        $durationMinutes = 90;
+    }
+    $locale = app()->getLocale();
+    $isArabic = $locale === 'ar';
     $coverImageUrl = null;
     if ($workshop && $workshop->image) {
         $coverImageUrl = Str::startsWith($workshop->image, ['http://', 'https://'])
@@ -54,6 +61,44 @@
     if ($forceAutoMeetingLinks || !$canManageMeetingLinks) {
         $autoGenerateMeeting = 1;
     }
+
+    $smartSuggestionTitle = $isArabic ? 'مواعيد مقترحة للخبير' : 'Suggested expert slots';
+    $smartSuggestionSub = $isArabic
+        ? 'اختر وقتاً جاهزاً وسيتم ملء البداية والنهاية بناءً على مدة الورشة.'
+        : 'Pick a ready time and we’ll fill start & end based on your workshop duration.';
+    $smartSuggestionHint = $isArabic
+        ? 'توقيت المضيف سيتم احترامه، مع عرض توقيت متصفحك عند إدخال الحجز.'
+        : 'We respect the host timezone and mirror it with your browser time.';
+    $smartSuggestionTimezoneLabel = $isArabic ? 'توقيت المضيف' : 'Host timezone';
+    $baseNow = Carbon::now($hostTimezoneValue);
+    $smartSuggestions = collect([
+        [
+            'label' => $isArabic ? 'غداً في المساء' : 'Tomorrow evening',
+            'start' => $baseNow->copy()->addDay()->setTime(19, 0),
+        ],
+        [
+            'label' => $isArabic ? 'بعد 3 أيام • صباحاً' : 'In 3 days • Morning',
+            'start' => $baseNow->copy()->addDays(3)->setTime(11, 0),
+        ],
+        [
+            'label' => $isArabic ? 'نهاية الأسبوع القادمة' : 'Next weekend',
+            'start' => $baseNow->copy()->next(Carbon::SATURDAY)->setTime(16, 0),
+        ],
+        [
+            'label' => $isArabic ? 'خيار مرن • مساء' : 'Flexible • Evening',
+            'start' => $baseNow->copy()->addDays(5)->setTime(20, 0),
+        ],
+    ])
+        ->filter(fn ($slot) => $slot['start']->gt($baseNow))
+        ->map(function ($slot) use ($locale, $isArabic) {
+            $label = $slot['label'] . ' • ' . $slot['start']->copy()->locale($locale)->translatedFormat($isArabic ? 'j F • h:i a' : 'D, M j • h:i a');
+
+            return [
+                'label' => $label,
+                'value' => $slot['start']->format('Y-m-d\TH:i'),
+            ];
+        })
+        ->values();
 @endphp
 
 @push('styles')
@@ -69,7 +114,7 @@
         border-radius: 1.5rem;
         overflow: hidden;
         isolation: isolate;
-        background: linear-gradient(135deg, #0b344f 0%, #0f4c73 60%, #0f172a 100%);
+        background: linear-gradient(135deg, #0b344f 0%, #0819ff 60%, #0f172a 100%);
         box-shadow: 0 18px 46px -28px rgba(0, 0, 0, 0.6);
     }
 
@@ -119,7 +164,7 @@
         gap: 0.5rem;
         height: 100%;
         width: 100%;
-        background: linear-gradient(135deg, rgba(15, 76, 115, 0.6), rgba(15, 23, 42, 0.8));
+        background: linear-gradient(135deg, rgba(8, 25, 255, 0.6), rgba(15, 23, 42, 0.8));
         color: #e2e8f0;
         font-weight: 600;
         text-align: center;
@@ -215,7 +260,7 @@
             </div>
             <div class="space-y-3">
                 <label for="duration" class="text-sm font-semibold text-slate-700">{{ __('chef.workshop_form.fields.duration.label') }}</label>
-                <input type="number" id="duration" name="duration" required min="30" max="180" step="15"
+                <input type="number" id="duration" name="duration" required min="30" max="180" step="1"
                        value="{{ old('duration', $workshop->duration ?? 45) }}"
                        class="w-full rounded-2xl border border-slate-200/80 bg-slate-50 px-4 py-3 text-slate-900 shadow-inner focus:border-orange-400 focus:bg-white focus:ring-4 focus:ring-orange-100 @error('duration') border-red-400 focus:ring-red-200 @enderror">
                 @error('duration')
@@ -340,6 +385,34 @@
             @error('host_timezone')
                 <p class="text-sm text-red-600">{{ $message }}</p>
             @enderror
+        </div>
+        <div class="mb-5 rounded-2xl border border-slate-200/80 bg-slate-50 p-4 shadow-inner">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+                <div>
+                    <p class="text-xs font-semibold uppercase tracking-wide text-orange-500">{{ $smartSuggestionTitle }}</p>
+                    <p class="text-sm text-slate-600">{{ $smartSuggestionSub }}</p>
+                </div>
+                <span class="inline-flex items-center gap-2 rounded-full bg-white px-3 py-1 text-xs font-semibold text-slate-700 shadow-sm">
+                    <i class="fas fa-globe"></i>
+                    {{ $smartSuggestionTimezoneLabel }}: {{ $hostTimezoneValue }}
+                </span>
+            </div>
+            <div class="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+                @foreach($smartSuggestions as $slot)
+                    <button
+                        type="button"
+                        class="flex items-center gap-3 rounded-xl border border-orange-100 bg-white px-3 py-3 text-start text-sm font-semibold text-slate-800 shadow-sm transition hover:-translate-y-[1px] hover:border-orange-200 hover:shadow"
+                        data-suggest-start="{{ $slot['value'] }}"
+                        data-suggest-duration="{{ $durationMinutes }}"
+                    >
+                        <span class="flex h-9 w-9 items-center justify-center rounded-full bg-orange-100 text-orange-600">
+                            <i class="fas fa-wand-magic-sparkles"></i>
+                        </span>
+                        <span class="leading-snug">{{ $slot['label'] }}</span>
+                    </button>
+                @endforeach
+            </div>
+            <p class="mt-2 text-xs text-slate-500">{{ $smartSuggestionHint }}</p>
         </div>
         <div class="grid gap-5 md:grid-cols-3">
             <div class="space-y-3">
@@ -638,6 +711,9 @@
         const androidMeetLink = document.getElementById('androidMeetDeepLink');
         const iosMeetLink = document.getElementById('iosMeetDeepLink');
         const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+        const startInput = document.getElementById('start_date');
+        const endInput = document.getElementById('end_date');
+        const durationInput = document.getElementById('duration');
         const meetingHints = {
             auto: @json(__('chef.workshop_form.messages.meeting_hint_auto')),
             manual: @json(__('chef.workshop_form.messages.meeting_hint_manual')),
@@ -780,6 +856,74 @@
             meetingAppLinks.classList.remove('hidden');
         }
 
+        function formatDateTimeLocal(date) {
+            const pad = (value) => String(value).padStart(2, '0');
+            return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
+        }
+
+        function resolveDurationMinutes(fallback = 90) {
+            if (!durationInput) {
+                return fallback;
+            }
+            const parsed = parseInt(durationInput.value, 10);
+            return Number.isFinite(parsed) && parsed > 0 ? parsed : fallback;
+        }
+
+        function computeDurationFromDates() {
+            if (!startInput || !endInput) {
+                return null;
+            }
+            const startDate = new Date(startInput.value);
+            const endDate = new Date(endInput.value);
+            if (Number.isNaN(startDate.getTime()) || Number.isNaN(endDate.getTime())) {
+                return null;
+            }
+            const diffMs = endDate.getTime() - startDate.getTime();
+            if (diffMs <= 0) {
+                return null;
+            }
+            return Math.round(diffMs / 60000);
+        }
+
+        function syncDurationFromDates() {
+            const minutes = computeDurationFromDates();
+            if (!durationInput || minutes === null) {
+                return;
+            }
+            durationInput.value = minutes;
+        }
+
+        function syncEndFromDuration() {
+            if (!startInput || !endInput) {
+                return;
+            }
+            const startDate = new Date(startInput.value);
+            if (Number.isNaN(startDate.getTime())) {
+                return;
+            }
+            const minutes = resolveDurationMinutes();
+            const endDate = new Date(startDate.getTime() + minutes * 60000);
+            endInput.value = formatDateTimeLocal(endDate);
+            endInput.dispatchEvent(new Event('change'));
+        }
+
+        function applySuggestedSlot(startValue, suggestedDuration) {
+            if (!startInput) return;
+            const minutes = Number.isFinite(suggestedDuration) && suggestedDuration > 0
+                ? suggestedDuration
+                : resolveDurationMinutes();
+
+            startInput.value = startValue;
+
+            const startDate = new Date(startValue);
+            if (endInput && !Number.isNaN(startDate.getTime())) {
+                const endDate = new Date(startDate.getTime() + minutes * 60000);
+                endInput.value = formatDateTimeLocal(endDate);
+                endInput.dispatchEvent(new Event('change'));
+            }
+            startInput.dispatchEvent(new Event('change'));
+        }
+
         isOnlineInput?.addEventListener('change', toggleModeFields);
         autoGenerateInput?.addEventListener('change', () => {
             toggleMeetingInputState();
@@ -799,7 +943,28 @@
         }
         toggleModeFields();
         toggleMeetingInputState();
-        refreshMeetAppLinks();
+            refreshMeetAppLinks();
+
+        document.querySelectorAll('[data-suggest-start]').forEach((button) => {
+            button.addEventListener('click', () => {
+                applySuggestedSlot(
+                    button.dataset.suggestStart,
+                    parseInt(button.dataset.suggestDuration, 10)
+                );
+            });
+        });
+
+        startInput?.addEventListener('change', () => {
+            syncDurationFromDates();
+        });
+
+        endInput?.addEventListener('change', () => {
+            syncDurationFromDates();
+        });
+
+        durationInput?.addEventListener('input', () => {
+            syncEndFromDuration();
+        });
 
         generateBtn?.addEventListener('click', async () => {
             if (!csrfToken) return;
@@ -860,6 +1025,8 @@
     });
 </script>
 @endpush
+
+
 
 
 

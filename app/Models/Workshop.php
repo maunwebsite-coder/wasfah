@@ -253,6 +253,35 @@ class Workshop extends Model
         return $this->hasMany(WorkshopBooking::class);
     }
 
+    public function confirmedBookings()
+    {
+        return $this->bookings()->where('status', 'confirmed');
+    }
+
+    public function recordings()
+    {
+        return $this->hasMany(Recording::class);
+    }
+
+    public function participants()
+    {
+        return $this->belongsToMany(User::class, 'workshop_user')
+            ->withPivot([
+                'status',
+                'attendance_status',
+                'has_recording_access',
+                'attended_at',
+                'recording_unlocked_at',
+                'notes',
+            ])
+            ->withTimestamps();
+    }
+
+    public function participantsWithRecordingAccess()
+    {
+        return $this->participants()->wherePivot('has_recording_access', true);
+    }
+
     public function reviews()
     {
         return $this->hasMany(WorkshopReview::class);
@@ -432,6 +461,50 @@ class Workshop extends Model
     public function getIsCompletedAttribute()
     {
         return $this->end_date && $this->end_date < now();
+    }
+
+    public function reviewUnlockAt(): ?Carbon
+    {
+        if (! $this->start_date) {
+            return null;
+        }
+
+        return $this->start_date->copy()->addMinutes(15);
+    }
+
+    public function reviewWindowOpen(): bool
+    {
+        if ($this->is_completed) {
+            return true;
+        }
+
+        $unlockAt = $this->reviewUnlockAt();
+
+        return $unlockAt !== null && now()->greaterThanOrEqualTo($unlockAt);
+    }
+
+    public function hasEligibleBookingForReview(int $userId): bool
+    {
+        return $this->bookings()
+            ->where('user_id', $userId)
+            ->where(function ($query) {
+                $query->whereIn('status', ['confirmed', 'completed'])
+                    ->orWhere('payment_status', 'paid');
+            })
+            ->exists();
+    }
+
+    public function canBeReviewedBy(?int $userId): bool
+    {
+        if (! $userId) {
+            return false;
+        }
+
+        if (! $this->hasEligibleBookingForReview($userId)) {
+            return false;
+        }
+
+        return $this->reviewWindowOpen();
     }
 
     /**

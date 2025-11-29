@@ -3,7 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Models\Workshop;
-use App\Services\GoogleDriveService;
+use App\Services\UserGoogleDriveService;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Log;
@@ -26,7 +26,7 @@ class SyncWorkshopRecordings extends Command
      */
     protected $description = 'جلب تسجيلات Google Meet من Google Drive وتحديث رابط التسجيل للورشة.';
 
-    public function __construct(protected GoogleDriveService $googleDriveService)
+    public function __construct(protected UserGoogleDriveService $userGoogleDriveService)
     {
         parent::__construct();
     }
@@ -36,12 +36,6 @@ class SyncWorkshopRecordings extends Command
      */
     public function handle(): int
     {
-        if (! $this->googleDriveService->isEnabled()) {
-            $this->warn('تكامل Google Drive غير مُفعّل، سيتم تخطي مزامنة التسجيلات.');
-
-            return Command::SUCCESS;
-        }
-
         $query = $this->buildEligibleWorkshopsQuery();
         $this->applyWorkshopFilter($query);
 
@@ -61,7 +55,13 @@ class SyncWorkshopRecordings extends Command
 
         foreach ($query->lazyById(25) as $workshop) {
             ++$processed;
-            $recordingUrl = $this->googleDriveService->findRecordingUrl($workshop->meeting_code);
+            $workshop->loadMissing('chef');
+            $chef = $workshop->chef;
+            $recordingUrl = null;
+
+            if ($chef && $chef->hasGoogleDriveCredentials()) {
+                $recordingUrl = $this->userGoogleDriveService->findRecordingUrl($chef, $workshop->meeting_code);
+            }
 
             if (! $recordingUrl) {
                 $progressBar->advance();
@@ -107,6 +107,7 @@ class SyncWorkshopRecordings extends Command
         $cutoff = now()->subMinutes(30);
 
         return Workshop::query()
+            ->with('chef')
             ->where('is_online', true)
             ->whereNotNull('meeting_code')
             ->where('meeting_code', '!=', '')
