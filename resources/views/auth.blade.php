@@ -66,17 +66,17 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 92px;
-    height: 92px;
-    border-radius: 999px;
-    background: #fff;
-    box-shadow: inset 0 0 0 1px rgba(8, 25, 255, 0.14), 0 15px 30px rgba(8, 25, 255, 0.18);
+    width: clamp(140px, 18vw, 200px);
+    padding: 0;
+    background: transparent;
+    border-radius: 0;
+    box-shadow: none;
     flex-shrink: 0;
 }
 
 .brand-logo img {
-    width: 64px;
-    height: 64px;
+    width: 100%;
+    height: auto;
     object-fit: contain;
 }
 

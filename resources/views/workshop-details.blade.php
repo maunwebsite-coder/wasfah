@@ -53,7 +53,9 @@
         position: relative;
         border-radius: var(--radius-lg);
         overflow: hidden;
-        background: var(--primary-dark);
+        background:
+            radial-gradient(circle at 20% 20%, rgba(147, 197, 253, 0.28), transparent 32%),
+            linear-gradient(135deg, #0b3b5a 0%, #0a3f73 36%, #0c5ad5 78%, #0f172a 100%);
         background-size: cover !important;
         background-repeat: no-repeat !important;
         background-position: center !important;
@@ -86,7 +88,12 @@
         content: '';
         position: absolute;
         inset: 0;
-        background: linear-gradient(to right, rgba(11, 52, 79, 0.95) 30%, rgba(11, 52, 79, 0.7) 100%);
+        background: linear-gradient(
+            to right,
+            rgba(8, 47, 73, 0.9) 22%,
+            rgba(14, 116, 144, 0.82) 58%,
+            rgba(12, 90, 213, 0.78) 100%
+        );
     }
 
     .workshop-hero-content {
@@ -122,7 +129,7 @@
         font-weight: 800;
         line-height: 1.1;
         margin-bottom: 1.1rem;
-        background: linear-gradient(to right, #ffffff, #e2e8f0);
+        background: linear-gradient(90deg, #ffffff 0%, #ecf2ff 45%, #c7d2fe 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
     }
@@ -138,7 +145,7 @@
     .workshop-excerpt {
         font-size: 1rem;
         line-height: 1.7;
-        color: #cbd5e1;
+        color: #f8fafc;
         margin: 0;
     }
 
@@ -155,7 +162,7 @@
         position: absolute;
         inset: auto 0 0 0;
         height: 40%;
-        background: linear-gradient(180deg, transparent, rgba(11, 52, 79, 0.65));
+        background: linear-gradient(180deg, transparent, rgba(8, 47, 73, 0.62));
         pointer-events: none;
     }
 
@@ -164,9 +171,9 @@
         align-items: center;
         gap: 0.4rem;
         padding: 0.5rem 0.85rem;
-        background: rgba(255, 255, 255, 0.12);
-        border: 1px solid rgba(255, 255, 255, 0.18);
-        color: #e2e8f0;
+        background: rgba(255, 255, 255, 0.18);
+        border: 1px solid rgba(255, 255, 255, 0.28);
+        color: #fff7ed;
         font-weight: 700;
         font-size: 0.9rem;
         border-radius: 999px;
@@ -175,8 +182,8 @@
     }
 
     .workshop-excerpt-toggle:hover {
-        background: rgba(255, 255, 255, 0.18);
-        border-color: rgba(255, 255, 255, 0.28);
+        background: rgba(255, 255, 255, 0.24);
+        border-color: rgba(255, 255, 255, 0.35);
         transform: translateY(-1px);
     }
 
@@ -185,43 +192,45 @@
     }
 
     .hero-instructor {
-        margin-bottom: 1.75rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
     }
 
     .instructor-chip {
         display: inline-flex;
         align-items: center;
-        gap: 0.65rem;
-        padding: 0.65rem 1rem;
-        background: rgba(255, 255, 255, 0.12);
-        border: 1px solid rgba(255, 255, 255, 0.18);
-        border-radius: 999px;
-        color: #e2e8f0;
+        gap: 0.45rem;
+        padding: 0.45rem 0.8rem;
+        background: #e8f1ff;
+        border: 1px solid #c7d2fe;
+        border-radius: 14px;
+        color: #0b1f4a;
         font-weight: 700;
+        font-size: 0.9rem;
         text-decoration: none;
         width: fit-content;
-        transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
-        box-shadow: 0 18px 38px -28px rgba(0, 0, 0, 0.7);
+        transition: transform 0.15s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+        box-shadow: 0 10px 22px -18px rgba(12, 74, 110, 0.45);
     }
 
     .instructor-chip:hover {
-        background: rgba(255, 255, 255, 0.18);
-        border-color: rgba(255, 255, 255, 0.26);
+        border-color: #93c5fd;
         transform: translateY(-1px);
-        box-shadow: 0 22px 46px -30px rgba(0, 0, 0, 0.8);
+        box-shadow: 0 14px 28px -18px rgba(12, 74, 110, 0.55);
     }
 
     .instructor-chip .chip-icon {
-        width: 2.4rem;
-        height: 2.4rem;
+        width: 1.85rem;
+        height: 1.85rem;
         border-radius: 999px;
-        background: radial-gradient(circle at 35% 35%, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.06)),
-                    linear-gradient(145deg, rgba(245, 158, 11, 0.4), rgba(56, 189, 248, 0.35));
-        border: 1px solid rgba(255, 255, 255, 0.2);
+        background: #dbeafe;
+        border: 1px solid #bfdbfe;
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        color: #fff7ed;
+        color: #0b1f4a;
+        font-size: 0.95rem;
     }
 
     .instructor-chip .chip-text {
@@ -231,20 +240,21 @@
     }
 
     .instructor-chip .chip-label {
-        font-size: 0.75rem;
+        font-size: 0.68rem;
         text-transform: uppercase;
         letter-spacing: 0.05em;
-        color: #cbd5e1;
+        color: #2563eb;
     }
 
     .instructor-chip .chip-name {
-        color: #ffffff;
+        color: #0b1f4a;
         font-weight: 800;
+        font-size: 0.92rem;
     }
 
     .instructor-chip .chip-arrow {
-        color: #f59e0b;
-        font-size: 0.9rem;
+        color: #2563eb;
+        font-size: 0.85rem;
     }
 
     .hero-stat-link {
@@ -264,9 +274,9 @@
         margin-bottom: 1.6rem;
         padding: 1rem 1.05rem;
         border-radius: 1.1rem;
-        background: #ffffff;
+        background: linear-gradient(135deg, #ffffff, #f8fafc);
         border: 1px solid #e2e8f0;
-        box-shadow: 0 16px 32px -28px rgba(15, 23, 42, 0.35);
+        box-shadow: 0 18px 36px -26px rgba(15, 23, 42, 0.32);
         overflow: hidden;
         isolation: isolate;
     }
@@ -281,9 +291,18 @@
         position: relative;
         z-index: 1;
         display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.65rem;
+        flex-wrap: wrap;
+    }
+
+    .hero-stats-headline {
+        display: flex;
         align-items: center;
         justify-content: space-between;
-        gap: 1rem;
+        gap: 0.75rem;
+        width: 100%;
         flex-wrap: wrap;
     }
 
@@ -300,9 +319,9 @@
         width: 10px;
         height: 10px;
         border-radius: 999px;
-        background: #0f172a;
-        border: 1px solid #0f172a;
-        box-shadow: 0 0 0 6px rgba(15, 23, 42, 0.05);
+        background: #2563eb;
+        border: 1px solid #93c5fd;
+        box-shadow: 0 0 0 6px rgba(147, 197, 253, 0.18);
     }
 
     .hero-stats-subtitle {
@@ -322,25 +341,32 @@
     }
 
     .hero-stat-item {
-        --accent: #e2e8f0;
+        --accent-bg: #f5f8ff;
+        --accent-border: #d6e4ff;
+        --accent-ink: #0b1f4a;
         position: relative;
         display: flex;
         align-items: center;
         gap: 0.85rem;
-        padding: 0.75rem 0.9rem;
-        border-radius: 1rem;
-        background: #ffffff;
-        border: 1px solid #e2e8f0;
-        box-shadow: 0 10px 24px -20px rgba(15, 23, 42, 0.25);
+        padding: 0.9rem 1.05rem;
+        border-radius: 1.1rem;
+        background: linear-gradient(140deg, #ffffff, var(--accent-bg));
+        border: 1px solid var(--accent-border);
+        box-shadow:
+            0 0 0 1px rgba(214, 228, 255, 0.6),
+            0 12px 30px -20px rgba(11, 31, 74, 0.25);
         overflow: hidden;
         z-index: 1;
-        transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+        transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
     }
 
     .hero-stat-item:hover {
-        transform: translateY(-3px);
-        border-color: #cbd5e1;
-        box-shadow: 0 14px 28px -22px rgba(15, 23, 42, 0.3);
+        transform: translateY(-2px);
+        border-color: #c5d8ff;
+        box-shadow:
+            0 0 0 1px rgba(197, 216, 255, 0.8),
+            0 16px 36px -18px rgba(11, 31, 74, 0.35);
+        background: linear-gradient(140deg, #ffffff, #f0f5ff);
     }
 
     .hero-stat-item::after {
@@ -348,11 +374,15 @@
         display: none;
     }
 
-    .hero-stat-item.accent-amber { --accent: #e2e8f0; }
-    .hero-stat-item.accent-cyan { --accent: #e2e8f0; }
-    .hero-stat-item.accent-emerald { --accent: #e2e8f0; }
-    .hero-stat-item.accent-indigo { --accent: #e2e8f0; }
-    .hero-stat-item.accent-rose { --accent: #e2e8f0; }
+    .hero-stat-item.accent-amber,
+    .hero-stat-item.accent-cyan,
+    .hero-stat-item.accent-emerald,
+    .hero-stat-item.accent-indigo,
+    .hero-stat-item.accent-rose {
+        --accent-bg: #f5f8ff;
+        --accent-border: #d6e4ff;
+        --accent-ink: #0b1f4a;
+    }
 
     .hero-stat-item > * {
         position: relative;
@@ -363,44 +393,16 @@
         width: 2.25rem;
         height: 2.25rem;
         border-radius: 0.9rem;
-        border: 1px solid #e2e8f0;
-        background: #f8fafc;
+        border: 1px solid var(--accent-border);
+        background: linear-gradient(145deg, #ffffff, #eef4ff);
         display: flex;
         align-items: center;
         justify-content: center;
         font-size: 0.95rem;
-        color: #0f172a;
-        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.8);
-    }
-
-    .hero-stat-item.accent-amber .hero-stat-icon {
-        color: #0f172a;
-        border-color: #e2e8f0;
-        background: #f8fafc;
-    }
-
-    .hero-stat-item.accent-cyan .hero-stat-icon {
-        color: #0f172a;
-        border-color: #e2e8f0;
-        background: #f8fafc;
-    }
-
-    .hero-stat-item.accent-emerald .hero-stat-icon {
-        color: #0f172a;
-        border-color: #e2e8f0;
-        background: #f8fafc;
-    }
-
-    .hero-stat-item.accent-indigo .hero-stat-icon {
-        color: #0f172a;
-        border-color: #e2e8f0;
-        background: #f8fafc;
-    }
-
-    .hero-stat-item.accent-rose .hero-stat-icon {
-        color: #0f172a;
-        border-color: #e2e8f0;
-        background: #f8fafc;
+        color: #0b1f4a;
+        box-shadow:
+            inset 0 0 0 1px rgba(255, 255, 255, 0.82),
+            0 12px 18px -16px rgba(15, 23, 42, 0.35);
     }
 
     .hero-stat-text {
@@ -413,13 +415,13 @@
         font-size: 0.75rem;
         text-transform: uppercase;
         letter-spacing: 0.05em;
-        color: #94a3b8;
+        color: #475569;
     }
 
     .hero-stat-value {
         font-weight: 800;
         font-size: 1.02rem;
-        color: #0f172a;
+        color: var(--accent-ink);
         display: flex;
         flex-direction: column;
         gap: 0.35rem;
@@ -433,16 +435,16 @@
         width: fit-content;
         padding: 0.35rem 0.7rem;
         border-radius: 999px;
-        border: 1px solid #e2e8f0;
-        background: #f8fafc;
-        color: #0f172a;
+        border: 1px solid var(--accent-border);
+        background: var(--accent-bg);
+        color: var(--accent-ink);
         font-size: 0.82rem;
         font-weight: 700;
         letter-spacing: 0.01em;
     }
 
     .hero-stat-chip i {
-        color: #0f172a;
+        color: var(--accent-ink);
         font-size: 0.9rem;
     }
 
@@ -460,9 +462,9 @@
     .hero-image-glow {
         position: absolute;
         inset: 18%;
-        background: radial-gradient(circle at 20% 20%, rgba(245, 158, 11, 0.45), transparent 45%),
-                    radial-gradient(circle at 85% 30%, rgba(56, 189, 248, 0.4), transparent 45%),
-                    radial-gradient(circle at 40% 80%, rgba(16, 185, 129, 0.35), transparent 50%);
+        background: radial-gradient(circle at 20% 20%, rgba(147, 197, 253, 0.45), transparent 45%),
+                    radial-gradient(circle at 85% 30%, rgba(59, 130, 246, 0.38), transparent 45%),
+                    radial-gradient(circle at 40% 80%, rgba(14, 165, 233, 0.35), transparent 50%);
         filter: blur(40px);
         opacity: 0.85;
         z-index: 0;
@@ -471,8 +473,8 @@
     .hero-image-card {
         position: relative;
         width: 100%;
-        max-width: 420px;
-        aspect-ratio: 4 / 5;
+        max-width: 680px;
+        aspect-ratio: 16 / 10;
         border-radius: 1.5rem;
         overflow: hidden;
         background: linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.04));
@@ -692,7 +694,12 @@
 
     /* RTL Support */
     html[dir="rtl"] .workshop-hero-bg::after {
-        background: linear-gradient(to left, rgba(11, 52, 79, 0.95) 30%, rgba(11, 52, 79, 0.7) 100%);
+        background: linear-gradient(
+            to left,
+            rgba(8, 47, 73, 0.9) 22%,
+            rgba(14, 116, 144, 0.82) 58%,
+            rgba(12, 90, 213, 0.78) 100%
+        );
     }
 
     html[dir="rtl"] .booking-feature:hover {
@@ -723,15 +730,17 @@
         .workshop-hero-container {
             padding-top: 3.25rem;
             margin-top: 1rem;
+            padding-inline: 0.9rem;
         }
 
         .workshop-hero {
-            min-height: 280px;
+            min-height: 260px;
             gap: 0;
+            border-radius: 1.5rem;
         }
 
         .workshop-hero-content {
-            padding: 0.85rem 0.75rem 0.5rem;
+            padding: 0.85rem 0.75rem 0.35rem;
         }
 
         .hero-badge {
@@ -747,12 +756,12 @@
         }
 
         .hero-image-card {
-            max-width: 240px;
-            max-height: 240px;
+            max-width: 380px;
+            max-height: 380px;
         }
         
         .workshop-title {
-            font-size: 1.45rem;
+            font-size: 1.35rem;
             margin-bottom: 0.3rem;
             line-height: 1.2;
         }
@@ -764,7 +773,7 @@
 
         .workshop-excerpt {
             margin-bottom: 0.35rem;
-            font-size: 0.9rem;
+            font-size: 0.88rem;
             line-height: 1.4;
         }
 
@@ -779,8 +788,8 @@
         }
         
         .hero-stats {
-            padding: 0.9rem;
-            margin-bottom: 0.85rem;
+            padding: 0.75rem 0.8rem;
+            margin-bottom: 0.7rem;
         }
 
         .hero-stats-header {
@@ -798,35 +807,93 @@
         }
 
         .hero-stats-grid {
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-            gap: 0.55rem;
-            margin-top: 0.75rem;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 0.5rem;
+            margin-top: 0.65rem;
         }
 
         .hero-stat-item {
             gap: 0.55rem;
-            padding: 0.75rem 0.8rem;
-            border-radius: 0.95rem;
-            background: rgba(15, 23, 42, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 0.7rem 0.8rem;
+            border-radius: 0.9rem;
+            background: linear-gradient(140deg, #ffffff, #f5f8ff);
+            border: 1px solid var(--accent-border);
         }
 
         .hero-stat-icon {
-            width: 2.25rem;
-            height: 2.25rem;
-            font-size: 0.98rem;
+            width: 2rem;
+            height: 2rem;
+            font-size: 0.9rem;
         }
 
         .hero-stat-label {
-            font-size: 0.7rem;
+            font-size: 0.68rem;
         }
 
         .hero-stat-value {
-            font-size: 0.95rem;
+            font-size: 0.92rem;
         }
 
         .hero-image-footer {
             grid-template-columns: 1fr;
+        }
+
+        .hero-instructor {
+            margin-inline-start: 0;
+            width: 100%;
+            justify-content: flex-start;
+            order: 3;
+        }
+    }
+
+    @media (max-width: 640px) {
+        .workshop-hero-container {
+            padding-top: 2.4rem;
+        }
+
+        .workshop-hero {
+            min-height: 240px;
+        }
+
+        .workshop-hero-content {
+            padding: 0.65rem 0.65rem 0.25rem;
+        }
+
+        .workshop-excerpt-wrapper {
+            margin-bottom: 0.8rem;
+        }
+
+        .hero-stats {
+            padding: 0.7rem;
+        }
+
+        .hero-stats-grid {
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        }
+
+        .hero-stat-item {
+            padding: 0.65rem 0.75rem;
+            background: linear-gradient(140deg, #ffffff, #f5f8ff);
+            border: 1px solid var(--accent-border);
+        }
+
+        .hero-stat-icon {
+            width: 1.9rem;
+            height: 1.9rem;
+            font-size: 0.85rem;
+        }
+
+        .instructor-chip {
+            padding: 0.6rem 0.9rem;
+        }
+
+        .workshop-title {
+            font-size: 1.28rem;
+        }
+
+        .hero-image-card {
+            max-width: 380px;
+            max-height: 380px;
         }
     }
     
@@ -1308,38 +1375,39 @@
                     </div>
                 @endif
 
-                @if($instructorName)
-                    <div class="hero-instructor">
-                        @if($instructorPublicUrl)
-                            <a href="{{ $instructorPublicUrl }}" class="instructor-chip">
-                                <div class="chip-icon">
-                                    <i class="fas fa-chalkboard-teacher"></i>
-                                </div>
-                                <div class="chip-text">
-                                    <span class="chip-label">{{ __('workshops.details.hero.instructor_label') }}</span>
-                                    <span class="chip-name">{{ $displayedInstructorName }}</span>
-                                </div>
-                                <i class="fas {{ $arrowIcon }} chip-arrow" aria-hidden="true"></i>
-                            </a>
-                        @else
-                            <div class="instructor-chip" aria-disabled="true">
-                                <div class="chip-icon">
-                                    <i class="fas fa-chalkboard-teacher"></i>
-                                </div>
-                                <div class="chip-text">
-                                    <span class="chip-label">{{ __('workshops.details.hero.instructor_label') }}</span>
-                                    <span class="chip-name">{{ $displayedInstructorName }}</span>
-                                </div>
-                            </div>
-                        @endif
-                    </div>
-                @endif
-
                 <div class="hero-stats">
                     <div class="hero-stats-header">
-                        <div class="hero-stats-title">
-                            <span class="hero-stats-dot"></span>
-                            <span>{{ $isRtl ? 'نظرة سريعة' : 'Quick snapshot' }}</span>
+                        <div class="hero-stats-headline">
+                            <div class="hero-stats-title">
+                                <span class="hero-stats-dot"></span>
+                                <span>{{ $isRtl ? 'نظرة سريعة' : 'Quick snapshot' }}</span>
+                            </div>
+                            @if($instructorName)
+                                <div class="hero-instructor">
+                                    @if($instructorPublicUrl)
+                                        <a href="{{ $instructorPublicUrl }}" class="instructor-chip">
+                                            <div class="chip-icon">
+                                                <i class="fas fa-chalkboard-teacher"></i>
+                                            </div>
+                                            <div class="chip-text">
+                                                <span class="chip-label">{{ __('workshops.details.hero.instructor_label') }}</span>
+                                                <span class="chip-name">{{ $displayedInstructorName }}</span>
+                                            </div>
+                                            <i class="fas {{ $arrowIcon }} chip-arrow" aria-hidden="true"></i>
+                                        </a>
+                                    @else
+                                        <div class="instructor-chip" aria-disabled="true">
+                                            <div class="chip-icon">
+                                                <i class="fas fa-chalkboard-teacher"></i>
+                                            </div>
+                                            <div class="chip-text">
+                                                <span class="chip-label">{{ __('workshops.details.hero.instructor_label') }}</span>
+                                                <span class="chip-name">{{ $displayedInstructorName }}</span>
+                                            </div>
+                                        </div>
+                                    @endif
+                                </div>
+                            @endif
                         </div>
                         <p class="hero-stats-subtitle">
                             {{ $isRtl ? 'مواعيد الورشة، المدرب والتقييم في لمحة واحدة.' : 'Workshop timing, instructor, and rating at a glance.' }}
@@ -1377,23 +1445,6 @@
                             <div class="hero-stat-text">
                                 <span class="hero-stat-label">{{ __('workshops.details.hero.duration_label') }}</span>
                                 <span class="hero-stat-value">{{ $workshopDurationLabel }}</span>
-                            </div>
-                        </div>
-
-                        <!-- Instructor -->
-                        <div class="hero-stat-item accent-indigo">
-                            <div class="hero-stat-icon">
-                                <i class="fas fa-chalkboard-teacher"></i>
-                            </div>
-                            <div class="hero-stat-text">
-                                <span class="hero-stat-label">{{ __('workshops.details.hero.instructor_label') }}</span>
-                                @if($instructorPublicUrl && $instructorName)
-                                    <a href="{{ $instructorPublicUrl }}" class="hero-stat-value hero-stat-link">
-                                        {{ $displayedInstructorName }}
-                                    </a>
-                                @else
-                                    <span class="hero-stat-value">{{ $displayedInstructorName }}</span>
-                                @endif
                             </div>
                         </div>
 
