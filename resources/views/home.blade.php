@@ -211,7 +211,7 @@
         $featuredDescriptionIsTrimmed = $featuredDescriptionPreview !== $featuredDescriptionFull;
     @endphp
     <section class="container mx-auto px-4 py-8 sm:py-12 featured-workshop-section">
-        <div class="bg-gradient-to-r from-amber-500 to-orange-600 rounded-3xl overflow-hidden shadow-xl featured-workshop-card">
+        <div class="bg-gradient-to-r from-amber-500 to-orange-600 rounded-3xl overflow-hidden featured-workshop-card">
             <div class="grid grid-cols-1 lg:grid-cols-[1.1fr_1.4fr] gap-0">
                 <!-- المحتوى النصي -->
                 <div class="p-5 sm:p-6 lg:p-9 text-white flex flex-col justify-center">
