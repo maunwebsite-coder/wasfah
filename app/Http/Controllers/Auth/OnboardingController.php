@@ -55,11 +55,35 @@ class OnboardingController extends Controller
                 ->with($messageType, $messageText);
         }
 
-        return view('auth.onboarding', [
-            'user' => $user,
-            'pendingWorkshopId' => session('pending_workshop_booking'),
-            'countries' => $this->availableCountries(),
-        ]);
+        // Issue a fresh CSRF token + cookie to avoid stale tokens (419 errors) and prevent caching.
+        $request->session()->regenerateToken();
+
+        $response = response()
+            ->view('auth.onboarding', [
+                'user' => $user,
+                'pendingWorkshopId' => session('pending_workshop_booking'),
+                'countries' => $this->availableCountries(),
+            ])
+            ->header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
+            ->header('Pragma', 'no-cache')
+            ->header('Expires', 'Fri, 01 Jan 1990 00:00:00 GMT');
+
+        $response->withCookie(
+            cookie(
+                'XSRF-TOKEN',
+                csrf_token(),
+                config('session.lifetime'),
+                '/',
+                config('session.domain'),
+                (bool) config('session.secure', false),
+                false,
+                false,
+                config('session.same_site', 'lax'),
+                config('session.partitioned', false)
+            )
+        );
+
+        return $response;
     }
 
     /**
