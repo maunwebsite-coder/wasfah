@@ -49,6 +49,7 @@
     @php
         $showAdminMetrics = auth()->check() && auth()->user()->isAdmin();
         $showToolsForAdmin = $showToolsForAdmin ?? false;
+        $canAccessRecordManagement = auth()->user()?->canAccessRecordManagement() ?? false;
         $defaultAppTimezone = config('app.timezone', 'UTC');
 
         $normalizeTimezone = function (?string $timezone, ?string $fallback = null) use ($defaultAppTimezone) {

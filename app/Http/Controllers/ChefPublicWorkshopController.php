@@ -123,10 +123,7 @@ class ChefPublicWorkshopController extends Controller
                     : null;
 
                 $fileId = $file->getId();
-                // Ensure public read access so visitors can view without login.
-                if ($fileId) {
-                    $this->userDriveService->shareWithEmails($chef, $fileId, [], true);
-                }
+                $this->ensureDriveFileIsPublic($chef, $fileId, $file->getWebViewLink(), $file->getWebContentLink());
                 $previewUrl = $fileId
                     ? sprintf('https://drive.google.com/file/d/%s/preview', $fileId)
                     : null;
@@ -180,6 +177,12 @@ class ChefPublicWorkshopController extends Controller
 
             $currentSource = $workshop->getAttribute('recording_source_url');
             $currentPreview = $workshop->getAttribute('video_preview_url');
+            $this->ensureDriveFileIsPublic(
+                $workshop->chef,
+                $recording['id'] ?? null,
+                $recording['watch_url'] ?? null,
+                $recording['preview_url'] ?? null
+            );
 
             if (! $currentSource && ! empty($recording['watch_url'])) {
                 $workshop->setAttribute('recording_source_url', $recording['watch_url']);
@@ -476,6 +479,30 @@ class ChefPublicWorkshopController extends Controller
         }
 
         abort(404);
+    }
+
+    /**
+     * Ensure a Drive file is shared publicly so visitors can view without requesting access.
+     */
+    protected function ensureDriveFileIsPublic(?User $chef, ?string $fileId, ?string $watchUrl = null, ?string $previewUrl = null): void
+    {
+        if (! $chef) {
+            return;
+        }
+
+        if (! $fileId) {
+            $fileId = $this->extractDriveFileId($previewUrl ?? $watchUrl ?? '');
+        }
+
+        if (! $fileId) {
+            return;
+        }
+
+        try {
+            $this->userDriveService->shareWithEmails($chef, $fileId, [], true);
+        } catch (\Throwable $exception) {
+            // Ignore silently; worst case the viewer sees Drive access prompt.
+        }
     }
 
     /**
