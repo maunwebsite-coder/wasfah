@@ -10,6 +10,8 @@ use App\Support\NotificationCopy;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Google\Service\Calendar;
+use Google\Service\Drive;
 use Laravel\Socialite\Facades\Socialite;
 use Exception;
 
@@ -58,7 +60,17 @@ class SocialiteController extends Controller
             'auth_login_flow' => $flow,
         ]);
         
-        return Socialite::driver('google')->redirect();
+        $redirectUrl = $this->googleRedirectUrl();
+
+        return Socialite::driver('google')
+            ->scopes($this->googleAuthScopes())
+            ->with([
+                'access_type' => 'offline',
+                'prompt' => 'consent',
+                'include_granted_scopes' => 'true',
+            ])
+            ->redirectUrl($redirectUrl)
+            ->redirect();
     }
 
     /**
@@ -68,10 +80,13 @@ class SocialiteController extends Controller
     {
         $stage = 'start';
         $socialUser = null;
+        $redirectUrl = $this->googleRedirectUrl();
 
         try {
             $stage = 'fetch-social-user';
-            $socialUser = Socialite::driver('google')->user();
+            $socialUser = Socialite::driver('google')
+                ->redirectUrl($redirectUrl)
+                ->user();
             $normalizedSocialEmail = strtolower((string) $socialUser->getEmail());
 
             $stage = 'resolve-flow-and-intent';
@@ -98,6 +113,7 @@ class SocialiteController extends Controller
             $stage = 'find-existing-user';
             $existingUser = User::where('email', $socialUser->getEmail())->first();
             $isNewUser = false;
+            $tokenPayload = $this->googleTokenPayload($socialUser, $existingUser);
             
             if ($existingUser) {
                 // User exists, update their social login info
@@ -129,7 +145,7 @@ class SocialiteController extends Controller
                     $updates['chef_status'] = $existingUser->chef_status ?? User::CHEF_STATUS_NEEDS_PROFILE;
                 }
 
-                $existingUser->update($updates);
+                $existingUser->update(array_merge($updates, $tokenPayload));
                 $user = $existingUser;
             } else {
                 if ($flow === 'login') {
@@ -156,7 +172,7 @@ class SocialiteController extends Controller
                 }
 
                 $stage = 'create-new-user:' . $flow;
-                $user = User::create($newUserData);
+                $user = User::create(array_merge($newUserData, $tokenPayload));
                 $isNewUser = true;
 
                 $this->assignReferralPartner($request, $user);
@@ -315,6 +331,80 @@ class SocialiteController extends Controller
         if ($referrer) {
             $this->referrals->assignReferrerIfNeeded($user, $referrer);
         }
+    }
+
+    private function googleAuthScopes(): array
+    {
+        return [
+            Drive::DRIVE_FILE,
+            Calendar::CALENDAR_EVENTS,
+            'openid',
+            'email',
+            'profile',
+        ];
+    }
+
+    private function googleRedirectUrl(): string
+    {
+        return config('services.google.redirect') ?: route('google.callback');
+    }
+
+    private function googleTokenPayload($googleUser, ?User $existingUser = null): array
+    {
+        $accessToken = $googleUser->token ?? ($googleUser->accessTokenResponseBody['access_token'] ?? null);
+        $refreshToken = $googleUser->refreshToken
+            ?? ($googleUser->accessTokenResponseBody['refresh_token'] ?? null);
+        $idToken = $googleUser->accessTokenResponseBody['id_token'] ?? null;
+        $expiresIn = $googleUser->expiresIn ?? ($googleUser->accessTokenResponseBody['expires_in'] ?? null);
+        $tokenExpiresAt = $expiresIn ? now()->addSeconds((int) $expiresIn) : null;
+        $scopes = $googleUser->accessTokenResponseBody['scope'] ?? null;
+
+        $normalizedScopes = null;
+        if (is_array($scopes)) {
+            $normalizedScopes = implode(' ', $scopes);
+        } elseif (is_string($scopes) && trim($scopes) !== '') {
+            $normalizedScopes = trim($scopes);
+        }
+
+        $email = $googleUser->getEmail()
+            ?: ($existingUser?->google_email ?? $existingUser?->email);
+        $calendarEmail = $existingUser?->google_calendar_email ?: $email;
+
+        $payload = [
+            'google_drive_email' => $existingUser?->google_drive_email ?: $email,
+        ];
+
+        if ($accessToken) {
+            $payload['google_access_token'] = $accessToken;
+            $payload['google_calendar_access_token'] = $accessToken;
+            $payload['provider_token'] = $accessToken;
+        }
+
+        if ($refreshToken) {
+            $payload['google_refresh_token'] = $refreshToken;
+            $payload['google_calendar_refresh_token'] = $refreshToken;
+        }
+
+        if ($tokenExpiresAt) {
+            $payload['google_expires_at'] = $tokenExpiresAt;
+            $payload['google_calendar_token_expires_at'] = $tokenExpiresAt;
+        }
+
+        if ($normalizedScopes) {
+            $payload['google_drive_scopes'] = $normalizedScopes;
+            $payload['google_calendar_scopes'] = $normalizedScopes;
+        }
+
+        if ($idToken) {
+            $payload['google_id_token'] = $idToken;
+        }
+
+        if ($calendarEmail) {
+            $payload['google_calendar_email'] = $calendarEmail;
+            $payload['google_calendar_id'] = $existingUser?->google_calendar_id ?: $calendarEmail;
+        }
+
+        return $payload;
     }
 }
 

@@ -35,7 +35,6 @@
     <meta name="theme-color" content="#0819ff">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="manifest" href="{{ asset('manifest.webmanifest') }}">
     <link rel="apple-touch-icon" href="{{ asset('icons/icon-192x192.png') }}">
     <link rel="icon" type="image/png" href="{{ asset($brandLogoBase . '.png') }}">
     <link rel="shortcut icon" href="{{ asset($brandLogoBase . '.png') }}">

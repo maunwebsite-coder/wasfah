@@ -46,6 +46,7 @@ class User extends Authenticatable
         'google_refresh_token',
         'google_expires_at',
         'google_drive_scopes',
+        'google_id_token',
         'password',
         'phone',
         'timezone',
@@ -95,6 +96,7 @@ class User extends Authenticatable
         'google_calendar_refresh_token',
         'google_access_token',
         'google_refresh_token',
+        'google_id_token',
     ];
 
     /**
@@ -303,7 +305,7 @@ class User extends Authenticatable
      */
     public function hasGoogleDriveCredentials(): bool
     {
-        return (bool) ($this->google_refresh_token ?? $this->google_access_token);
+        return (bool) ($this->google_refresh_token ?? $this->google_calendar_refresh_token ?? $this->google_access_token);
     }
 
     /**
@@ -329,7 +331,9 @@ class User extends Authenticatable
      */
     public function hasGoogleCalendarCredentials(): bool
     {
-        return !empty($this->google_calendar_refresh_token)
+        $refreshToken = $this->google_calendar_refresh_token ?: $this->google_refresh_token;
+
+        return !empty($refreshToken)
             && (bool) ($this->google_calendar_email ?? $this->google_calendar_id ?? $this->google_email ?? $this->email);
     }
 
@@ -358,11 +362,12 @@ class User extends Authenticatable
         // Use the same client ID/Secret that Socialite uses for the user flow
         $clientId = config('services.google.client_id') ?? config('services.google_meet.client_id');
         $clientSecret = config('services.google.client_secret') ?? config('services.google_meet.client_secret');
+        $refreshToken = $this->google_calendar_refresh_token ?: $this->google_refresh_token;
 
         return [
             'client_id' => $clientId,
             'client_secret' => $clientSecret,
-            'refresh_token' => $this->google_calendar_refresh_token,
+            'refresh_token' => $refreshToken,
             'calendar_id' => $resolvedCalendarId,
             'organizer_email' => $organizerEmail,
             'timezone' => $this->timezone ?: config('services.google_meet.timezone'),

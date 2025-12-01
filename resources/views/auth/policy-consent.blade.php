@@ -68,7 +68,7 @@
                         </label>
                         <div class="mt-3 flex flex-wrap items-center gap-3 text-xs font-semibold text-orange-700">
                             <a
-                                href="{{ $termsUrl }}"
+                                href="{{ $privacyUrl }}"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 class="inline-flex items-center gap-2 rounded-full border border-orange-100 bg-white px-3 py-1 hover:bg-orange-50 hover:border-orange-200"

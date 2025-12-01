@@ -1,14 +1,8 @@
-import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { createRequire } from 'node:module';
 import { constants as zlibConstants } from 'node:zlib';
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
-import { VitePWA } from 'vite-plugin-pwa';
-
-const pwaManifest = JSON.parse(
-    readFileSync(new URL('./public/manifest.webmanifest', import.meta.url), 'utf-8'),
-);
 
 const require = createRequire(path.join(process.cwd(), 'package.json'));
 let viteCompression;
@@ -54,50 +48,6 @@ export default defineConfig({
                 'resources/js/app.js',
             ],
             refresh: true,
-        }),
-        VitePWA({
-            registerType: 'autoUpdate',
-            devOptions: {
-                enabled: true,
-            },
-            includeAssets: [
-                'icons/icon-192x192.png',
-                'icons/icon-512x512.png',
-                'robots.txt',
-                'favicon.ico',
-            ],
-            manifest: pwaManifest,
-            workbox: {
-                globPatterns: ['**/*.{js,css,html,ico,png,svg,webp,json,woff2}'],
-                runtimeCaching: [
-                    {
-                        urlPattern: ({ request }) => request.destination === 'document',
-                        handler: 'NetworkFirst',
-                        options: {
-                            cacheName: 'html-cache',
-                        },
-                    },
-                    {
-                        urlPattern: ({ request }) => request.destination === 'image',
-                        handler: 'CacheFirst',
-                        options: {
-                            cacheName: 'image-cache',
-                            expiration: {
-                                maxEntries: 60,
-                                maxAgeSeconds: 7 * 24 * 60 * 60,
-                            },
-                        },
-                    },
-                    {
-                        urlPattern: ({ url }) => url.pathname.startsWith('/api/'),
-                        handler: 'NetworkFirst',
-                        options: {
-                            cacheName: 'api-cache',
-                            networkTimeoutSeconds: 5,
-                        },
-                    },
-                ],
-            },
         }),
         ...buildCompressionPlugins(),
     ],

@@ -60,13 +60,14 @@
     gap: clamp(1rem, 2vw, 2.25rem);
     padding-bottom: clamp(1.25rem, 2vw, 1.75rem);
     border-bottom: 1px solid var(--auth-border);
+    justify-content: center;
 }
 
 .brand-logo {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: clamp(140px, 18vw, 200px);
+    width: clamp(180px, 22vw, 260px);
     padding: 0;
     background: transparent;
     border-radius: 0;
@@ -428,20 +429,15 @@
         <div class="auth-card">
             <div class="auth-flow" data-intent-state="customer">
                 <div class="auth-brand">
-                    <div class="brand-logo">
-                            <x-optimized-picture
-                                :base="\App\Support\BrandAssets::logoBase()"
-                            :widths="[96, 192, 384]"
+                    <a href="{{ route('home') }}" class="brand-logo" aria-label="{{ __('auth.logo_alt') }}">
+                        <x-optimized-picture
+                            :base="\App\Support\BrandAssets::logoBase()"
+                            :widths="[128, 256, 384, 512]"
                             alt="{{ __('auth.logo_alt') }}"
                             :lazy="false"
-                            sizes="96px"
+                            sizes="(max-width: 480px) 200px, (max-width: 768px) 240px, 260px"
                         />
-                    </div>
-                    <div class="auth-brand__copy">
-                        <p class="auth-brand__eyebrow">{{ __('auth.brand.eyebrow') }}</p>
-                        <h1 class="auth-brand__headline">{{ __('auth.brand.headline') }}</h1>
-                        <p class="auth-brand__subcopy">{{ __('auth.brand.subcopy') }}</p>
-                    </div>
+                    </a>
                 </div>
 
                 <div class="inline-alerts" aria-live="polite" data-copy-switch>
@@ -476,8 +472,6 @@
                 </div>
 
                 <div class="google-stack">
-                    <p data-text-switch="intro-default">{{ __('auth.intro.default') }}</p>
-                    <p class="hidden" data-text-switch="intro-chef">{{ __('auth.intro.chef') }}</p>
                     <div class="intent-switch" data-intent-switch="login">
                         <button type="button" class="intent-pill is-active" data-role="customer">{{ __('auth.intent.customer') }}</button>
                         <button type="button" class="intent-pill" data-role="chef">{{ __('auth.intent.chef') }}</button>
@@ -541,7 +535,7 @@
                                 {{ (old('form_source') === 'login' && old('remember')) ? 'checked' : '' }}>
                             {{ __('auth.form.remember') }}
                         </label>
-                        <a href="{{ route('login') }}#support" class="ghost-link">{{ __('auth.form.help') }}</a>
+                        <a href="{{ route('contact') }}" class="ghost-link">{{ __('auth.form.help') }}</a>
                     </div>
 
                     <button type="submit" class="primary-action">{{ __('auth.form.submit') }}</button>

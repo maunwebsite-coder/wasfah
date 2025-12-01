@@ -1,5 +1,4 @@
 import './bootstrap';
-import { registerSW } from 'virtual:pwa-register';
 
 const hasDOM = typeof document !== 'undefined';
 const hasWindow = typeof window !== 'undefined';
@@ -233,6 +232,21 @@ const bootstrapLazyModules = () => {
     lazyModules.forEach((entry) => tryLoadModule(entry));
 };
 
+const unregisterServiceWorkers = () => {
+    if (!('serviceWorker' in navigator)) {
+        return;
+    }
+
+    navigator.serviceWorker
+        .getRegistrations()
+        .then((registrations) => {
+            registrations.forEach((registration) => {
+                registration.unregister().catch(() => {});
+            });
+        })
+        .catch(() => {});
+};
+
 if (hasDOM) {
     persistUserTimezone();
 }
@@ -252,9 +266,5 @@ if (hasWindow) {
 }
 
 if (hasWindow) {
-    idle(() => {
-        registerSW({
-            immediate: false,
-        });
-    }, 1500);
+    idle(unregisterServiceWorkers, 500);
 }

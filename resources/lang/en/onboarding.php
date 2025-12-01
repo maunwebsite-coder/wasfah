@@ -31,7 +31,6 @@ return [
         'title' => 'Quick check',
         'items' => [
             'Phone reachable.',
-            'Optional: add a public link.',
         ],
     ],
     'sections' => [

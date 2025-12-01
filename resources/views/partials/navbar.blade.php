@@ -68,8 +68,8 @@
     <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between gap-4 py-3 md:py-4 header-container">
             <div class="flex items-center gap-4 min-w-0">
-                <a href="{{ route('home') }}" class="flex items-center gap-3 text-slate-800">
-                    <img src="{{ \App\Support\BrandAssets::logoAsset('png') }}" alt="Logo" class="h-14 w-auto inline header-logo">
+                <a href="{{ route('home') }}" class="flex items-center gap-3 text-slate-800 header-logo-link" aria-label="{{ $navCopy['links']['home'] }}">
+                    <img src="{{ \App\Support\BrandAssets::logoAsset('png') }}" alt="Logo" class="h-16 w-auto inline header-logo">
                     <span class="hidden md:inline text-xl font-bold tracking-tight"></span>
                 </a>
 

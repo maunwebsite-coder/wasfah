@@ -284,7 +284,6 @@
         }
     }
     $steps = (array) trans('onboarding.steps');
-    $checklistItems = (array) trans('onboarding.checklist.items');
     $specialtyOptions = (array) trans('onboarding.sections.bio.specialty_options');
     $stepKeys = ['contact', 'social', 'bio'];
     $stepFieldMap = [
@@ -303,69 +302,15 @@
     }
     $totalSteps = count($stepKeys);
 @endphp
-<div class="min-h-screen bg-gradient-to-br from-orange-50 via-white to-orange-100 py-10">
-    <div class="container mx-auto px-4 max-w-5xl">
-        <div class="onboarding-card" dir="{{ $isRtl ? 'rtl' : 'ltr' }}" data-initial-step="{{ $initialStepKey }}">
-            <div class="onboarding-header">
-                <h1 class="text-3xl font-bold mb-3">{{ __('onboarding.header.title') }}</h1>
-                <p class="text-base md:text-lg text-orange-50/90 max-w-2xl leading-relaxed">
-                    {{ __('onboarding.header.subtitle') }}
-                </p>
-                <div class="onboarding-chips">
-                    <span class="onboarding-chip">
-                        <i class="fas fa-bolt"></i>
-                        {{ __('onboarding.header.chips.instant') }}
-                    </span>
-                    <span class="onboarding-chip">
-                        <i class="fas fa-shield-alt"></i>
-                        {{ __('onboarding.header.chips.secure') }}
-                    </span>
-                    <span class="onboarding-chip">
-                        <i class="fas fa-users"></i>
-                        {{ __('onboarding.header.chips.spotlight') }}
-                    </span>
-                </div>
-            </div>
+    <div class="min-h-screen bg-gradient-to-br from-orange-50 via-white to-orange-100 py-10">
+        <div class="container mx-auto px-4 max-w-5xl">
+            <div class="onboarding-card" dir="{{ $isRtl ? 'rtl' : 'ltr' }}" data-initial-step="{{ $initialStepKey }}">
             <div class="onboarding-content">
                 @if (session('error'))
                     <div class="mb-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600">
                         {{ session('error') }}
                     </div>
                 @endif
-                <div class="flex flex-wrap items-center justify-between gap-3 mb-6">
-                    <div class="badge-tip">
-                        <i class="fas fa-check-circle"></i>
-                        {{ __('onboarding.header.badge_tip') }}
-                    </div>
-                    <div class="text-sm text-gray-500">
-                        {{ __('onboarding.header.signed_in_as', ['email' => $user->email]) }}
-                    </div>
-                </div>
-
-                <div class="stepper" data-stepper>
-                    @foreach($stepKeys as $index => $key)
-                        @php $step = $steps[$index] ?? []; @endphp
-                        <div class="step-pill {{ $key === $initialStepKey ? 'is-active' : '' }}" data-step-pill="{{ $key }}">
-                            <div class="step-pill__index">{{ $index + 1 }}</div>
-                            <div class="step-pill__body">
-                                <p class="font-semibold text-sm">{{ $step['title'] ?? '' }}</p>
-                                <p class="text-xs opacity-80">{{ $step['body'] ?? '' }}</p>
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
-
-                <div class="helper-checklist mb-10">
-                    <h3 class="text-base font-semibold text-orange-900 mb-2">{{ __('onboarding.checklist.title') }}</h3>
-                    <ul>
-                        @foreach($checklistItems as $item)
-                            <li class="checklist-item" @if($isRtl) dir="rtl" @endif>
-                                <span class="checklist-icon"><i class="fas fa-check"></i></span>
-                                {{ $item }}
-                            </li>
-                        @endforeach
-                    </ul>
-                </div>
 
                 <form method="POST" action="{{ route('onboarding.store') }}" class="space-y-8" id="onboarding-form">
                     @csrf
@@ -550,9 +495,6 @@
                                 {{ __('onboarding.navigation.back') }}
                             </button>
                             <div class="flex items-center gap-3">
-                                <button type="submit" class="ghost-btn" name="skip_bio" value="1" formnovalidate>
-                                    {{ __('onboarding.navigation.skip_bio') }}
-                                </button>
                                 <button type="submit" class="submit-btn">
                                     {{ __('onboarding.submit.cta') }}
                                 </button>

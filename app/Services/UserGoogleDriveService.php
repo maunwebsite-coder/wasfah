@@ -436,7 +436,7 @@ class UserGoogleDriveService
     protected function buildAccessToken(User $user, Client $client): ?array
     {
         $token = [
-            'access_token' => $user->google_access_token,
+            'access_token' => $user->google_access_token ?: $user->google_calendar_access_token,
             'refresh_token' => $user->google_refresh_token ?: $user->google_calendar_refresh_token,
         ];
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Chef;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Google\Service\Calendar;
+use Google\Service\Drive;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -21,7 +22,7 @@ class GoogleCalendarController extends Controller
         session(['google_calendar_redirect' => $redirectTo]);
 
         return Socialite::driver('google')
-            ->scopes([Calendar::CALENDAR_EVENTS, 'openid', 'profile', 'email'])
+            ->scopes([Calendar::CALENDAR_EVENTS, Drive::DRIVE_FILE, 'openid', 'profile', 'email'])
             ->with([
                 'access_type' => 'offline',
                 'prompt' => 'consent',
@@ -51,7 +52,7 @@ class GoogleCalendarController extends Controller
         }
 
         $refreshToken = $googleUser->refreshToken
-            ?? ($googleUser->accessTokenResponseBody['refresh_token'] ?? null);
+            ?? ($googleUser->accessTokenResponseBody['refresh_token'] ?? $user->google_calendar_refresh_token ?? $user->google_refresh_token);
 
         if (!$refreshToken) {
             return redirect()
@@ -62,15 +63,30 @@ class GoogleCalendarController extends Controller
         $expiresIn = $googleUser->expiresIn ?? null;
         $tokenExpiresAt = $expiresIn ? now()->addSeconds((int) $expiresIn) : null;
         $scopes = $googleUser->accessTokenResponseBody['scope'] ?? null;
+        $idToken = $googleUser->accessTokenResponseBody['id_token'] ?? null;
+        $normalizedScopes = null;
+
+        if (is_array($scopes)) {
+            $normalizedScopes = implode(' ', $scopes);
+        } elseif (is_string($scopes) && trim($scopes) !== '') {
+            $normalizedScopes = trim($scopes);
+        }
 
         $user->forceFill([
             'google_email' => $user->google_email ?: $googleUser->getEmail(),
-            'google_calendar_email' => $googleUser->getEmail(),
-            'google_calendar_id' => $googleUser->getEmail(),
-            'google_calendar_access_token' => $googleUser->token,
-            'google_calendar_refresh_token' => $refreshToken,
-            'google_calendar_token_expires_at' => $tokenExpiresAt,
-            'google_calendar_scopes' => is_array($scopes) ? implode(' ', $scopes) : (string) $scopes,
+            'google_drive_email' => $user->google_drive_email ?: $googleUser->getEmail(),
+            'google_calendar_email' => $user->google_calendar_email ?: $googleUser->getEmail(),
+            'google_calendar_id' => $user->google_calendar_id ?: $googleUser->getEmail(),
+            'google_calendar_access_token' => $googleUser->token ?: $user->google_calendar_access_token,
+            'google_access_token' => $googleUser->token ?: $user->google_access_token,
+            'provider_token' => $googleUser->token ?: $user->provider_token,
+            'google_calendar_refresh_token' => $refreshToken ?: $user->google_calendar_refresh_token,
+            'google_refresh_token' => $refreshToken ?: $user->google_refresh_token,
+            'google_calendar_token_expires_at' => $tokenExpiresAt ?: $user->google_calendar_token_expires_at,
+            'google_expires_at' => $tokenExpiresAt ?: $user->google_expires_at,
+            'google_calendar_scopes' => $normalizedScopes ?: $user->google_calendar_scopes,
+            'google_drive_scopes' => $normalizedScopes ?: $user->google_drive_scopes,
+            'google_id_token' => $idToken ?: $user->google_id_token,
         ])->save();
 
         session()->forget('google_calendar_redirect');
