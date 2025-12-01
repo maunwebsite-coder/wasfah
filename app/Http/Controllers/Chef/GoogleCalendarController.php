@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Chef;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Google\Service\Calendar;
-use Google\Service\Drive;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -22,7 +21,7 @@ class GoogleCalendarController extends Controller
         session(['google_calendar_redirect' => $redirectTo]);
 
         return Socialite::driver('google')
-            ->scopes([Calendar::CALENDAR_EVENTS, Drive::DRIVE_FILE, 'openid', 'profile', 'email'])
+            ->scopes([Calendar::CALENDAR_EVENTS, 'openid', 'profile', 'email'])
             ->with([
                 'access_type' => 'offline',
                 'prompt' => 'consent',

@@ -10,8 +10,6 @@ use App\Support\NotificationCopy;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Google\Service\Calendar;
-use Google\Service\Drive;
 use Laravel\Socialite\Facades\Socialite;
 use Exception;
 
@@ -336,8 +334,6 @@ class SocialiteController extends Controller
     private function googleAuthScopes(): array
     {
         return [
-            Drive::DRIVE_FILE,
-            Calendar::CALENDAR_EVENTS,
             'openid',
             'email',
             'profile',
