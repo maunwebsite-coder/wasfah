@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ChefLinkPage;
 use App\Models\User;
 use App\Models\Workshop;
+use App\Services\GoogleDriveService;
 use App\Services\UserGoogleDriveService;
 use App\Support\BrandAssets;
 use App\Support\Concerns\ResolvesWorkshopRecordings;
@@ -20,7 +21,10 @@ class ChefPublicWorkshopController extends Controller
 {
     use ResolvesWorkshopRecordings;
 
-    public function __construct(protected UserGoogleDriveService $userDriveService)
+    public function __construct(
+        protected UserGoogleDriveService $userDriveService,
+        protected GoogleDriveService $driveService
+    )
     {
     }
 
@@ -61,6 +65,7 @@ class ChefPublicWorkshopController extends Controller
                 $this->ensureDriveFileIsPublic(
                     $chef,
                     $this->extractDriveFileId($recordingUrl ?? $previewUrl ?? ''),
+                    $workshop,
                     $recordingUrl,
                     $previewUrl
                 );
@@ -131,7 +136,7 @@ class ChefPublicWorkshopController extends Controller
                     : null;
 
                 $fileId = $file->getId();
-                $this->ensureDriveFileIsPublic($chef, $fileId, $file->getWebViewLink(), $file->getWebContentLink());
+                $this->ensureDriveFileIsPublic($chef, $fileId, null, $file->getWebViewLink(), $file->getWebContentLink());
                 $previewUrl = $fileId
                     ? sprintf('https://drive.google.com/file/d/%s/preview', $fileId)
                     : null;
@@ -188,6 +193,7 @@ class ChefPublicWorkshopController extends Controller
             $this->ensureDriveFileIsPublic(
                 $workshop->chef,
                 $recording['id'] ?? null,
+                $workshop,
                 $recording['watch_url'] ?? null,
                 $recording['preview_url'] ?? null
             );
@@ -492,12 +498,8 @@ class ChefPublicWorkshopController extends Controller
     /**
      * Ensure a Drive file is shared publicly so visitors can view without requesting access.
      */
-    protected function ensureDriveFileIsPublic(?User $chef, ?string $fileId, ?string $watchUrl = null, ?string $previewUrl = null): void
+    protected function ensureDriveFileIsPublic(?User $chef, ?string $fileId, ?Workshop $workshop = null, ?string $watchUrl = null, ?string $previewUrl = null): void
     {
-        if (! $chef) {
-            return;
-        }
-
         if (! $fileId) {
             $fileId = $this->extractDriveFileId($previewUrl ?? $watchUrl ?? '');
         }
@@ -506,11 +508,46 @@ class ChefPublicWorkshopController extends Controller
             return;
         }
 
+        $recipientEmails = $workshop ? $this->recordingRecipientEmails($workshop) : [];
+
         try {
-            $this->userDriveService->shareWithEmails($chef, $fileId, [], true);
+            if ($chef) {
+                $this->userDriveService->shareWithEmails($chef, $fileId, $recipientEmails, true);
+            }
+
+            $this->driveService->shareWithEmails($fileId, $recipientEmails, true);
         } catch (\Throwable $exception) {
             // Ignore silently; worst case the viewer sees Drive access prompt.
         }
+    }
+
+    /**
+     * Gather attendee emails who should have recording access.
+     *
+     * @return array<int, string>
+     */
+    protected function recordingRecipientEmails(Workshop $workshop): array
+    {
+        $workshop->loadMissing([
+            'participantsWithRecordingAccess' => fn ($query) => $query->select('users.id', 'users.email', 'users.google_email', 'users.google_drive_email'),
+        ]);
+
+        return $workshop->participantsWithRecordingAccess
+            ->map(function (User $user) {
+                $email = $user->preferredGoogleDriveEmail() ?? $user->email;
+
+                if (! is_string($email)) {
+                    return null;
+                }
+
+                $normalized = strtolower(trim($email));
+
+                return filter_var($normalized, FILTER_VALIDATE_EMAIL) ? $normalized : null;
+            })
+            ->filter()
+            ->unique()
+            ->values()
+            ->all();
     }
 
     /**

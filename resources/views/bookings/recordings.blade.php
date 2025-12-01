@@ -17,10 +17,83 @@
     $hiddenEntries = $entries->filter(fn ($entry) => !empty($entry['hidden']) || !empty($entry['hidden_global']));
     $visibleCount = max($entries->count() - $hiddenEntries->count(), 0);
     $driveConnected = $viewer?->hasGoogleDriveCredentials() ?? false;
+    $canAccessRecordManagement = $viewer?->canAccessRecordManagement() ?? false;
 @endphp
 
 @section('content')
     <div class="min-h-screen bg-gray-50 py-8">
+        @if ($canAccessRecordManagement)
+            <section class="container mx-auto mb-6 px-4 sm:mb-8">
+                <div class="relative overflow-hidden rounded-3xl bg-slate-900 text-white shadow-2xl">
+                    <div class="absolute inset-0 bg-gradient-to-l from-orange-600 via-amber-500/80 to-slate-900 opacity-90"></div>
+                    <div class="absolute -left-10 -top-10 h-32 w-32 rounded-full bg-white/10 blur-3xl"></div>
+                    <div class="absolute -right-10 -bottom-10 h-40 w-40 rounded-full bg-amber-200/20 blur-3xl"></div>
+                    <div class="relative flex flex-col gap-6 p-6 sm:p-8 lg:flex-row lg:items-center lg:justify-between">
+                        <div class="space-y-4 max-w-2xl">
+                            <div class="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-amber-100 ring-1 ring-white/15">
+                                <i class="fa-solid fa-shield-halved text-amber-200"></i>
+                                لوحة تحكم التسجيلات
+                            </div>
+                            <div class="space-y-2">
+                                <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold leading-tight">إدارة التسجيلات باحترافية وسرعة</h2>
+                                <p class="text-sm sm:text-base text-amber-50/90">
+                                    تحكم بالتسجيلات، شاركها مع المستخدمين المصرح لهم فقط، وراقب الوصول في مكان واحد بتصميم واضح ومتدرج الألوان.
+                                </p>
+                            </div>
+                            <div class="flex flex-wrap gap-2 text-xs font-semibold text-amber-100">
+                                <span class="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 ring-1 ring-white/15">
+                                    <i class="fa-solid fa-lock-open"></i> تحكم بالصلاحيات
+                                </span>
+                                <span class="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 ring-1 ring-white/15">
+                                    <i class="fa-solid fa-user-shield"></i> مشاركة آمنة
+                                </span>
+                                <span class="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 ring-1 ring-white/15">
+                                    <i class="fa-solid fa-gauge-high"></i> واجهة سريعة
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="w-full max-w-xl space-y-3">
+                            <div class="grid grid-cols-2 gap-3 sm:grid-cols-3">
+                                <div class="rounded-2xl bg-white/10 p-4 ring-1 ring-white/15">
+                                    <p class="text-xs text-amber-100 font-semibold">التسجيلات المميزة</p>
+                                    <div class="mt-2 flex items-end gap-2">
+                                        <span class="text-3xl font-extrabold">{{ max($entries->count(), 0) }}</span>
+                                        <span class="text-sm text-amber-100">المتاحة الآن</span>
+                                    </div>
+                                </div>
+                                <div class="rounded-2xl bg-white/10 p-4 ring-1 ring-white/15">
+                                    <p class="text-xs text-amber-100 font-semibold">ورش محدثة</p>
+                                    <div class="mt-2 flex items-end gap-2">
+                                        <span class="text-3xl font-extrabold">{{ $bookingEntries->count() }}</span>
+                                        <span class="text-sm text-amber-100">آخر الإضافات</span>
+                                    </div>
+                                </div>
+                                <div class="rounded-2xl bg-white/10 p-4 ring-1 ring-white/15 sm:col-span-1">
+                                    <p class="text-xs text-amber-100 font-semibold">رضا المستخدمين</p>
+                                    <div class="mt-2 flex items-center gap-2">
+                                        <span class="text-3xl font-extrabold">4.9</span>
+                                        <i class="fa-solid fa-star text-amber-300"></i>
+                                    </div>
+                                    <p class="text-[11px] text-amber-100/90">تجربة مشاهدة متكاملة</p>
+                                </div>
+                            </div>
+                            <div class="flex flex-wrap gap-3">
+                                <a href="{{ route('bookings.recordings') }}" class="inline-flex items-center justify-center gap-2 rounded-2xl bg-white text-slate-900 px-5 py-3 text-sm font-bold shadow-lg shadow-amber-500/30 transition hover:-translate-y-0.5 hover:shadow-xl">
+                                    <i class="fa-solid fa-display"></i>
+                                    إدارة التسجيلات الآن
+                                </a>
+                                <a href="{{ route('workshops') }}" class="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/25 bg-white/10 px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/20">
+                                    <i class="fa-solid fa-calendar-check"></i>
+                                    اكتشف الورش القادمة
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        @endif
+
         <div class="container mx-auto px-4">
             <div class="rounded-3xl border border-orange-100 bg-gradient-to-br from-orange-50 via-white to-white p-6 md:p-8 shadow-sm relative overflow-hidden">
                 <div class="absolute top-0 left-0 w-32 h-32 bg-orange-200/25 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
