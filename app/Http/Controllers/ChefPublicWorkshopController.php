@@ -167,7 +167,8 @@ class ChefPublicWorkshopController extends Controller
         }
 
         return $workshops->map(function (Workshop $workshop) use ($recordingsByWorkshop) {
-            $recording = $recordingsByWorkshop->get($workshop->getKey())->first();
+            $grouped = $recordingsByWorkshop->get($workshop->getKey());
+            $recording = $grouped instanceof Collection ? $grouped->first() : null;
 
             if (! $recording) {
                 return $workshop;
