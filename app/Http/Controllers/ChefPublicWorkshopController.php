@@ -57,6 +57,14 @@ class ChefPublicWorkshopController extends Controller
                     }
                 }
 
+                // Ensure Drive files are public if this is a Drive link.
+                $this->ensureDriveFileIsPublic(
+                    $chef,
+                    $this->extractDriveFileId($recordingUrl ?? $previewUrl ?? ''),
+                    $recordingUrl,
+                    $previewUrl
+                );
+
                 $isDirectVideo = $this->isDirectVideoUrl($recordingUrl);
 
                 $workshop->setAttribute('recording_source_url', $recordingUrl);
