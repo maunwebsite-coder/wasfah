@@ -105,7 +105,7 @@ class ChefPublicWorkshopController extends Controller
 
         return collect($files)
             ->filter(fn ($file) => $file instanceof DriveFile)
-            ->map(function (DriveFile $file) use ($matchIndex, $locale, $dateTimeFormat): ?array {
+            ->map(function (DriveFile $file) use ($matchIndex, $locale, $dateTimeFormat, $chef): ?array {
                 $name = strtolower($file->getName() ?? '');
 
                 if ($name === '') {
@@ -123,6 +123,10 @@ class ChefPublicWorkshopController extends Controller
                     : null;
 
                 $fileId = $file->getId();
+                // Ensure public read access so visitors can view without login.
+                if ($fileId) {
+                    $this->userDriveService->shareWithEmails($chef, $fileId, [], true);
+                }
                 $previewUrl = $fileId
                     ? sprintf('https://drive.google.com/file/d/%s/preview', $fileId)
                     : null;
