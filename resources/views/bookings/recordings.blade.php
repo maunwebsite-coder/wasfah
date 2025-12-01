@@ -410,41 +410,91 @@
                                             @endif
                                         </div>
 
-                                        @if (!empty($entry['viewer_names']))
-                                            <div class="text-xs text-slate-500">
-                                                <i class="fa-solid fa-user-check text-emerald-500"></i>
-                                                {{ __('bookings.recordings.viewer_list') }}: {{ implode(', ', $entry['viewer_names']) }}
+                                        @php
+                                            $viewerNames = $entry['viewer_names'] ?? [];
+                                            $visibleViewers = array_slice($viewerNames, 0, 5);
+                                            $extraViewers = max(count($viewerNames) - count($visibleViewers), 0);
+                                        @endphp
+
+                                        @if (!empty($viewerNames))
+                                            <div class="rounded-xl border border-emerald-100 bg-emerald-50/70 p-3">
+                                                <div class="flex items-center justify-between text-[11px] font-semibold text-emerald-800">
+                                                    <span class="inline-flex items-center gap-2">
+                                                        <i class="fa-solid fa-shield-halved"></i>
+                                                        {{ __('bookings.recordings.access_label') }}
+                                                    </span>
+                                                    <span class="inline-flex items-center gap-1 text-emerald-700">
+                                                        <i class="fa-solid fa-user-check"></i>
+                                                        {{ __('bookings.recordings.viewer_list') }}
+                                                    </span>
+                                                </div>
+                                                <div class="mt-2 flex flex-wrap gap-2">
+                                                    @foreach ($visibleViewers as $viewerName)
+                                                        <span class="inline-flex items-center gap-2 rounded-full bg-white px-3 py-1 text-[11px] font-semibold text-slate-700 shadow-sm">
+                                                            <span class="flex h-7 w-7 items-center justify-center rounded-full bg-emerald-100 text-emerald-700 text-[11px] font-bold uppercase">
+                                                                {{ Str::substr(trim($viewerName), 0, 1) ?: '•' }}
+                                                            </span>
+                                                            <span class="whitespace-nowrap">{{ $viewerName }}</span>
+                                                        </span>
+                                                    @endforeach
+                                                    @if ($extraViewers > 0)
+                                                        <span class="inline-flex items-center gap-2 rounded-full bg-slate-900/90 px-3 py-1 text-[11px] font-semibold text-white shadow-sm">
+                                                            +{{ $extraViewers }}
+                                                            <span class="text-[10px]">{{ __('bookings.recordings.viewers', ['count' => $extraViewers]) }}</span>
+                                                        </span>
+                                                    @endif
+                                                </div>
                                             </div>
                                         @endif
 
-                                        <div class="flex flex-wrap gap-2">
-                                            @if (!empty($entry['watch_url']))
-                                                <button
-                                                    type="button"
-                                                    class="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 transition hover:border-slate-300"
-                                                    data-copy-link="{{ $entry['watch_url'] }}"
-                                                >
-                                                    <i class="fa-solid fa-link"></i>
-                                                    <span data-copy-label>{{ __('bookings.recordings.copy_link') }}</span>
-                                                </button>
-                                                <a
-                                                    href="{{ $entry['watch_url'] }}"
-                                                    target="_blank"
-                                                    rel="noopener"
-                                                    class="inline-flex items-center gap-2 rounded-xl bg-orange-500 px-3 py-2 text-xs font-semibold text-white shadow-sm transition hover:bg-orange-600"
-                                                >
-                                                    <i class="fa-solid fa-play"></i>
-                                                    {{ __('chef.recordings.cta.watch') }}
-                                                </a>
-                                            @endif
-                                            @if (!empty($entry['details_url']))
-                                                <a
-                                                    href="{{ $entry['details_url'] }}"
-                                                    class="inline-flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 transition hover:border-gray-300"
-                                                >
-                                                    {{ $entry['type'] === 'booking' ? __('bookings.history.actions.details') : __('chef.workshops.view_details') }}
-                                                    <i class="fa-solid {{ $arrowIcon }}"></i>
-                                                </a>
+                                        <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                                            <div class="flex flex-wrap gap-2">
+                                                @if (!empty($entry['watch_url']))
+                                                    <button
+                                                        type="button"
+                                                        class="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 transition hover:border-slate-300"
+                                                        data-copy-link="{{ $entry['watch_url'] }}"
+                                                    >
+                                                        <i class="fa-solid fa-link"></i>
+                                                        <span data-copy-label>{{ __('bookings.recordings.copy_link') }}</span>
+                                                    </button>
+                                                    <a
+                                                        href="{{ $entry['watch_url'] }}"
+                                                        target="_blank"
+                                                        rel="noopener"
+                                                        class="inline-flex items-center gap-2 rounded-xl bg-gradient-to-l from-orange-600 to-amber-500 px-3 py-2 text-xs font-semibold text-white shadow-sm transition hover:from-orange-500 hover:to-amber-400"
+                                                    >
+                                                        <i class="fa-solid fa-play"></i>
+                                                        {{ __('chef.recordings.cta.watch') }}
+                                                    </a>
+                                                @endif
+                                                @if (!empty($entry['details_url']))
+                                                    <a
+                                                        href="{{ $entry['details_url'] }}"
+                                                        class="inline-flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 transition hover:border-gray-300"
+                                                    >
+                                                        {{ $entry['type'] === 'booking' ? __('bookings.history.actions.details') : __('chef.workshops.view_details') }}
+                                                        <i class="fa-solid {{ $arrowIcon }}"></i>
+                                                    </a>
+                                                @endif
+                                            </div>
+                                            @if (!empty($viewerNames))
+                                                <div class="inline-flex items-center gap-2 rounded-full border border-slate-100 bg-slate-50 px-3 py-2 text-[11px] font-semibold text-slate-700 shadow-sm">
+                                                    <i class="fa-solid fa-user-lock text-orange-500"></i>
+                                                    <span>{{ __('bookings.recordings.viewer_list') }}</span>
+                                                    <div class="flex -space-x-2 rtl:space-x-reverse">
+                                                        @foreach ($visibleViewers as $viewerName)
+                                                            <span class="flex h-8 w-8 items-center justify-center rounded-full border-2 border-white bg-emerald-100 text-[11px] font-bold uppercase text-emerald-700 shadow-sm">
+                                                                {{ Str::substr(trim($viewerName), 0, 1) ?: '•' }}
+                                                            </span>
+                                                        @endforeach
+                                                        @if ($extraViewers > 0)
+                                                            <span class="flex h-8 w-8 items-center justify-center rounded-full border-2 border-white bg-slate-800 text-[10px] font-semibold text-white shadow-sm">
+                                                                +{{ $extraViewers }}
+                                                            </span>
+                                                        @endif
+                                                    </div>
+                                                </div>
                                             @endif
                                         </div>
 

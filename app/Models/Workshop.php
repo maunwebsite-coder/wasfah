@@ -139,14 +139,24 @@ class Workshop extends Model
             return null;
         }
 
-        if ($value instanceof Carbon) {
-            $date = $value->copy();
-        } elseif ($value instanceof \DateTimeInterface) {
-            $date = Carbon::instance($value);
-        } elseif (is_numeric($value)) {
-            $date = Carbon::createFromTimestamp((int) $value, 'UTC');
-        } else {
-            $date = $this->asDateTime($value);
+        try {
+            if ($value instanceof Carbon) {
+                $date = $value->copy();
+            } elseif ($value instanceof \DateTimeInterface) {
+                $date = Carbon::instance($value);
+            } elseif (is_numeric($value)) {
+                $date = Carbon::createFromTimestamp((int) $value, 'UTC');
+            } else {
+                $date = $this->asDateTime($value);
+            }
+        } catch (\Throwable $exception) {
+            Log::warning('Invalid workshop datetime encountered.', [
+                'workshop_id' => $this->getKey(),
+                'raw_value' => $value,
+                'error' => $exception->getMessage(),
+            ]);
+
+            return null;
         }
 
         $timezone = $this->resolveHostTimezone();

@@ -49,6 +49,38 @@
     @php
         $showAdminMetrics = auth()->check() && auth()->user()->isAdmin();
         $showToolsForAdmin = $showToolsForAdmin ?? false;
+        $defaultAppTimezone = config('app.timezone', 'UTC');
+
+        $normalizeTimezone = function (?string $timezone, ?string $fallback = null) use ($defaultAppTimezone) {
+            $fallbackTz = $fallback ?: $defaultAppTimezone;
+
+            return \App\Support\Timezones::isValid($timezone) ? $timezone : $fallbackTz;
+        };
+
+        $viewerPreferredTimezone = auth()->user()->timezone ?? request()->cookie('user_timezone') ?? null;
+
+        $formatWorkshopSchedule = function (\App\Models\Workshop $workshop) use ($normalizeTimezone, $viewerPreferredTimezone) {
+            $eventTimezone = $normalizeTimezone($workshop->host_timezone);
+            $viewerTimezone = $normalizeTimezone($viewerPreferredTimezone, $eventTimezone);
+            $startUtc = $workshop->start_date_utc;
+            $endUtc = $workshop->end_date_utc;
+            $format = 'd F Y • h:i a T';
+
+            $eventStart = $startUtc ? $startUtc->copy()->setTimezone($eventTimezone)->translatedFormat($format) : null;
+            $eventEnd = $endUtc ? $endUtc->copy()->setTimezone($eventTimezone)->translatedFormat($format) : null;
+            $viewerStart = $startUtc ? $startUtc->copy()->setTimezone($viewerTimezone)->translatedFormat($format) : null;
+            $viewerEnd = $endUtc ? $endUtc->copy()->setTimezone($viewerTimezone)->translatedFormat($format) : null;
+
+            return [
+                'event_timezone' => $eventTimezone,
+                'viewer_timezone' => $viewerTimezone,
+                'event_start' => $eventStart,
+                'event_end' => $eventEnd,
+                'viewer_start' => $viewerStart,
+                'viewer_end' => $viewerEnd,
+                'has_viewer_diff' => ($eventStart && $viewerStart) && ($eventStart !== $viewerStart || $eventTimezone !== $viewerTimezone),
+            ];
+        };
     @endphp
     <!-- قسم المحتوى الرئيسي -->
     <main class="container mx-auto px-4 pt-0 pb-6 lg:pt-0 lg:pb-8">
@@ -193,13 +225,87 @@
         </div>
     </main>
 
+    <!-- شريط احترافي لإدارة التسجيلات -->
+    @php
+        $heroSlidesCount = isset($heroSlides) && is_iterable($heroSlides) ? count($heroSlides) : 0;
+        $latestWorkshopsCount = isset($latestWorkshops) && is_iterable($latestWorkshops) ? count($latestWorkshops) : 0;
+    @endphp
+    <section class="container mx-auto px-4 pb-4 sm:pb-6 lg:pb-8">
+        <div class="relative overflow-hidden rounded-3xl bg-slate-900 text-white shadow-2xl">
+            <div class="absolute inset-0 bg-gradient-to-l from-orange-600 via-amber-500/80 to-slate-900 opacity-90"></div>
+            <div class="absolute -left-10 -top-10 h-32 w-32 rounded-full bg-white/10 blur-3xl"></div>
+            <div class="absolute -right-10 -bottom-10 h-40 w-40 rounded-full bg-amber-200/20 blur-3xl"></div>
+            <div class="relative flex flex-col gap-6 p-6 sm:p-8 lg:flex-row lg:items-center lg:justify-between">
+                <div class="space-y-4 max-w-2xl">
+                    <div class="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-amber-100 ring-1 ring-white/15">
+                        <i class="fa-solid fa-shield-halved text-amber-200"></i>
+                        لوحة تحكم التسجيلات
+                    </div>
+                    <div class="space-y-2">
+                        <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold leading-tight">إدارة التسجيلات باحترافية وسرعة</h2>
+                        <p class="text-sm sm:text-base text-amber-50/90">
+                            تحكم بالتسجيلات، شاركها مع المستخدمين المصرح لهم فقط، وراقب الوصول في مكان واحد بتصميم واضح ومتدرج الألوان.
+                        </p>
+                    </div>
+                    <div class="flex flex-wrap gap-2 text-xs font-semibold text-amber-100">
+                        <span class="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 ring-1 ring-white/15">
+                            <i class="fa-solid fa-lock-open"></i> تحكم بالصلاحيات
+                        </span>
+                        <span class="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 ring-1 ring-white/15">
+                            <i class="fa-solid fa-user-shield"></i> مشاركة آمنة
+                        </span>
+                        <span class="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 ring-1 ring-white/15">
+                            <i class="fa-solid fa-gauge-high"></i> واجهة سريعة
+                        </span>
+                    </div>
+                </div>
+
+                <div class="w-full max-w-xl space-y-3">
+                    <div class="grid grid-cols-2 gap-3 sm:grid-cols-3">
+                        <div class="rounded-2xl bg-white/10 p-4 ring-1 ring-white/15">
+                            <p class="text-xs text-amber-100 font-semibold">التسجيلات المميزة</p>
+                            <div class="mt-2 flex items-end gap-2">
+                                <span class="text-3xl font-extrabold">{{ max($heroSlidesCount, 1) }}</span>
+                                <span class="text-sm text-amber-100">عرض رئيسي</span>
+                            </div>
+                        </div>
+                        <div class="rounded-2xl bg-white/10 p-4 ring-1 ring-white/15">
+                            <p class="text-xs text-amber-100 font-semibold">ورش محدثة</p>
+                            <div class="mt-2 flex items-end gap-2">
+                                <span class="text-3xl font-extrabold">{{ $latestWorkshopsCount }}</span>
+                                <span class="text-sm text-amber-100">آخر الإضافات</span>
+                            </div>
+                        </div>
+                        <div class="rounded-2xl bg-white/10 p-4 ring-1 ring-white/15 sm:col-span-1">
+                            <p class="text-xs text-amber-100 font-semibold">رضا المستخدمين</p>
+                            <div class="mt-2 flex items-center gap-2">
+                                <span class="text-3xl font-extrabold">4.9</span>
+                                <i class="fa-solid fa-star text-amber-300"></i>
+                            </div>
+                            <p class="text-[11px] text-amber-100/90">تجربة مشاهدة متكاملة</p>
+                        </div>
+                    </div>
+                    <div class="flex flex-wrap gap-3">
+                        <a href="{{ route('bookings.recordings') }}" class="inline-flex items-center justify-center gap-2 rounded-2xl bg-white text-slate-900 px-5 py-3 text-sm font-bold shadow-lg shadow-amber-500/30 transition hover:-translate-y-0.5 hover:shadow-xl">
+                            <i class="fa-solid fa-display"></i>
+                            إدارة التسجيلات الآن
+                        </a>
+                        <a href="{{ route('workshops') }}" class="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/25 bg-white/10 px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/20">
+                            <i class="fa-solid fa-calendar-check"></i>
+                            اكتشف الورش القادمة
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- قسم الورشة المميزة (الورشة القادمة) -->
     @if($featuredWorkshop)
     @php 
         $featuredIsFull = $featuredWorkshop->bookings_count >= $featuredWorkshop->max_participants; 
         $featuredIsRegistrationClosed = !$featuredWorkshop->is_registration_open;
         $featuredIsCompleted = $featuredWorkshop->is_completed;
-        $featuredStartDateLabel = $featuredWorkshop->start_date ? $featuredWorkshop->start_date->format('d/m/Y') : __('home.labels.unspecified');
         $featuredLocationLabel = $featuredWorkshop->is_online
             ? __('home.labels.online_workshop')
             : ($featuredWorkshop->location ?? __('home.labels.offline_workshop'));
@@ -209,6 +315,7 @@
         $featuredDescriptionFull = $featuredWorkshop->featured_description ?: $featuredWorkshop->description;
         $featuredDescriptionPreview = \Illuminate\Support\Str::limit($featuredDescriptionFull, 180, '…');
         $featuredDescriptionIsTrimmed = $featuredDescriptionPreview !== $featuredDescriptionFull;
+        $featuredSchedule = $formatWorkshopSchedule($featuredWorkshop);
     @endphp
     <section class="container mx-auto px-4 py-8 sm:py-12 featured-workshop-section">
         <div class="bg-gradient-to-r from-amber-500 to-orange-600 rounded-3xl overflow-hidden featured-workshop-card">
@@ -242,9 +349,31 @@
                     
                     <!-- تفاصيل الورشة -->
                     <div class="space-y-2 sm:space-y-3 mb-4 sm:mb-5">
-                        <div class="flex items-center gap-3 text-amber-100">
-                            <i class="fas fa-calendar-alt w-5 text-center"></i>
-                            <span class="font-medium text-sm sm:text-base">{{ $featuredStartDateLabel }}</span>
+                        <div class="flex items-start gap-3 text-amber-100">
+                            <i class="fas fa-calendar-alt w-5 text-center mt-0.5"></i>
+                            <div class="space-y-1">
+                                <div class="font-semibold text-sm sm:text-base">
+                                    وقت الحدث ({{ $featuredSchedule['event_timezone'] }}):
+                                </div>
+                                <div class="font-medium text-sm sm:text-base">
+                                    {{ $featuredSchedule['event_start'] ?? __('home.labels.unspecified') }}
+                                </div>
+                                @if($featuredSchedule['event_end'])
+                                    <div class="text-xs sm:text-sm text-amber-50/90">
+                                        ينتهي عند: {{ $featuredSchedule['event_end'] }}
+                                    </div>
+                                @endif
+                                @if($featuredSchedule['has_viewer_diff'])
+                                    <div class="text-xs sm:text-sm text-amber-50/90">
+                                        وقتك المحلي ({{ $featuredSchedule['viewer_timezone'] }}): {{ $featuredSchedule['viewer_start'] }}
+                                    </div>
+                                    @if($featuredSchedule['viewer_end'])
+                                        <div class="text-[11px] sm:text-xs text-amber-50/80">
+                                            ينتهي (وقتك): {{ $featuredSchedule['viewer_end'] }}
+                                        </div>
+                                    @endif
+                                @endif
+                            </div>
                         </div>
                         <div class="flex items-center gap-3 text-amber-100">
                             <i class="fas {{ $featuredWorkshop->is_online ? 'fa-video' : 'fa-map-marker-alt' }} w-5 text-center"></i>
@@ -484,7 +613,6 @@
                             $isRegistrationClosed = !$workshop->is_registration_open;
                             $isCompleted = $workshop->is_completed;
                             $isBooked = !empty($bookedWorkshopIds) && in_array($workshop->id, $bookedWorkshopIds, true);
-                            $startDateLabel = $workshop->start_date ? $workshop->start_date->format('d/m/Y') : __('home.labels.unspecified');
                             $bookingLocationLabel = $workshop->is_online
                                 ? __('home.labels.online_workshop')
                                 : ($workshop->location ?? __('home.labels.offline_workshop'));
@@ -513,6 +641,7 @@
                             //         DEBUG: Registration is closed for {{ $workshop->title }}
                             //     </div>
                             // @endif
+                            $workshopSchedule = $formatWorkshopSchedule($workshop);
                         @endphp
                         <div class="flex">
                             <div class="workshop-card bg-white rounded-xl shadow-lg overflow-hidden flex flex-col h-full w-full">
@@ -546,8 +675,21 @@
                                             </div>
                                             <h3 class="text-xl font-bold text-gray-800 mb-2">{{ $workshop->title }}</h3>
                                             <p class="text-gray-600 mb-4">{{ __('home.labels.with') }} {{ $bookingInstructor }}</p>
-                                            <div class="flex items-center text-gray-500 text-sm mb-4">
-                                                <i class="fas fa-calendar-alt mr-2 rtl:ml-2"></i> {{ $startDateLabel }}
+                                            <div class="flex items-start text-gray-700 text-sm mb-4 gap-3">
+                                                <i class="fas fa-calendar-alt text-gray-500 mt-0.5 mr-2 rtl:ml-2"></i>
+                                                <div class="space-y-1">
+                                                    <div class="font-semibold text-gray-800 text-sm sm:text-base">
+                                                        وقت الحدث ({{ $workshopSchedule['event_timezone'] }}):
+                                                    </div>
+                                                    <div class="text-gray-700">
+                                                        {{ $workshopSchedule['event_start'] ?? __('home.labels.unspecified') }}
+                                                    </div>
+                                                    @if($workshopSchedule['has_viewer_diff'])
+                                                        <div class="text-gray-500 text-xs sm:text-sm">
+                                                            وقتك المحلي ({{ $workshopSchedule['viewer_timezone'] }}): {{ $workshopSchedule['viewer_start'] }}
+                                                        </div>
+                                                    @endif
+                                                </div>
                                             </div>
                                             <div class="flex items-center text-gray-500 text-sm mb-4">
                                                 <i class="fas fa-map-marker-alt mr-2 rtl:ml-2"></i> {{ $workshop->is_online ? __('home.labels.live_online') : ($workshop->location ?? __('home.labels.unspecified')) }}

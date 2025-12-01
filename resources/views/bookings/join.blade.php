@@ -390,6 +390,7 @@
         let meetingExpiresAt = @json($meetingExpiresAtIso);
         let reviewUnlockAt = @json($reviewUnlockAtIso);
         let expiryTimerId = null;
+        let reviewCountdownIntervalId = null;
         const reviewWaitLabel = @json(__('workshops.reviews.messages.wait_until_end'));
         const reviewReadyLabel = @json(__('workshops.reviews.submit'));
 
@@ -441,6 +442,13 @@
             const minutes = Math.floor(diff / 60000);
             const seconds = Math.floor((diff % 60000) / 1000);
             return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+        };
+
+        const stopReviewCountdownTicker = () => {
+            if (reviewCountdownIntervalId) {
+                clearInterval(reviewCountdownIntervalId);
+                reviewCountdownIntervalId = null;
+            }
         };
 
         const updateUI = () => {
@@ -516,6 +524,7 @@
 
         const updateReviewCountdown = () => {
             if (!reviewCountdown || !reviewUnlockAt) {
+                stopReviewCountdownTicker();
                 return;
             }
             const remaining = formatReviewCountdown();
@@ -524,11 +533,27 @@
                 reviewCountdown.classList.add('text-emerald-700', 'font-semibold');
                 reviewLockedContainer?.classList.add('hidden');
                 reviewFormContainer?.classList.remove('hidden');
+                reviewUnlockAt = null;
+                stopReviewCountdownTicker();
                 return;
             }
+            reviewCountdown.classList.remove('text-emerald-700', 'font-semibold');
             reviewCountdown.textContent = `${reviewWaitLabel} • ${remaining}`;
             reviewLockedContainer?.classList.remove('hidden');
             reviewFormContainer?.classList.add('hidden');
+        };
+
+        const ensureReviewCountdownTicker = () => {
+            if (!reviewCountdown || !reviewUnlockAt) {
+                stopReviewCountdownTicker();
+                return;
+            }
+
+            if (reviewCountdownIntervalId) {
+                return;
+            }
+
+            reviewCountdownIntervalId = setInterval(updateReviewCountdown, 1000);
         };
 
         const updateRatingStyles = (selectedValue) => {
@@ -572,6 +597,7 @@
 
                 if (reviewWindowOpen) {
                     reviewUnlockAt = null;
+                    stopReviewCountdownTicker();
                     if (reviewCountdown) {
                         reviewCountdown.textContent = reviewReadyLabel;
                         reviewCountdown.classList.add('text-emerald-700', 'font-semibold');
@@ -583,6 +609,7 @@
                 scheduleExpiryEnforcement();
                 updateUI();
                 updateReviewCountdown();
+                ensureReviewCountdownTicker();
             } catch (error) {
                 console.warn('Failed to poll meeting status', error);
             }
@@ -638,6 +665,7 @@
         updateUI();
         scheduleExpiryEnforcement();
         updateReviewCountdown();
+        ensureReviewCountdownTicker();
 
         if (statusUrl && !meetingLocked && !meetingExpired) {
             setInterval(pollStatus, 7000);

@@ -249,6 +249,25 @@ class WorkshopBookingController extends Controller
         $bookingWorkshopMap = $bookings->keyBy('workshop_id');
         $bookingWorkshopIds = $bookingWorkshopMap->keys()->filter()->values();
         $normalizedExistingUrls = collect();
+        $resolveRecordingViewers = static function (?Workshop $workshop): array {
+            if (! $workshop) {
+                return [0, []];
+            }
+
+            $viewerNames = $workshop->participantsWithRecordingAccess()
+                ->select('users.id', 'users.name')
+                ->orderByDesc('workshop_user.recording_unlocked_at')
+                ->orderByDesc('workshop_user.updated_at')
+                ->take(6)
+                ->pluck('users.name')
+                ->filter()
+                ->values()
+                ->all();
+
+            $viewerCount = $workshop->participantsWithRecordingAccess()->count();
+
+            return [$viewerCount, $viewerNames];
+        };
 
         foreach ($bookings as $booking) {
             $workshop = $booking->workshop;
@@ -297,6 +316,7 @@ class WorkshopBookingController extends Controller
             $locationLabel = $workshop->is_online
                 ? __('chef.workshops.online_live')
                 : ($workshop->location ?? __('chef.workshops.location_tbd'));
+            [$viewerCount, $viewerNames] = $resolveRecordingViewers($workshop);
 
             $recordingEntries->push([
                 'id' => 'booking-' . $booking->id,
@@ -320,15 +340,8 @@ class WorkshopBookingController extends Controller
                 'is_owner' => $isOwner,
                 'hidden' => (bool) ($workshop->hide_public_recording ?? false),
                 'hidden_global' => $isHiddenEverywhere,
-                'viewer_count' => $workshop->confirmedBookings()->count(),
-                'viewer_names' => $workshop->confirmedBookings()
-                    ->with('user:id,name')
-                    ->take(6)
-                    ->get()
-                    ->pluck('user.name')
-                    ->filter()
-                    ->values()
-                    ->all(),
+                'viewer_count' => $viewerCount,
+                'viewer_names' => $viewerNames,
                 'workshop_id' => $workshop->id,
             ]);
 
@@ -362,6 +375,7 @@ class WorkshopBookingController extends Controller
                 $startDateLabel = $workshop->start_date
                     ? $workshop->start_date->copy()->locale($locale)->translatedFormat($dateFormat)
                     : __('chef.workshops.unscheduled_time');
+                [$viewerCount, $viewerNames] = $resolveRecordingViewers($workshop);
 
                 $recordingEntries->push([
                     'id' => 'owner-workshop-' . $workshop->id,
@@ -387,15 +401,8 @@ class WorkshopBookingController extends Controller
                     'is_owner' => true,
                     'hidden' => (bool) ($workshop->hide_public_recording ?? false),
                     'hidden_global' => (bool) ($workshop->hide_recording_everywhere ?? false),
-                    'viewer_count' => $workshop->confirmedBookings()->count(),
-                    'viewer_names' => $workshop->confirmedBookings()
-                        ->with('user:id,name')
-                        ->take(6)
-                        ->get()
-                        ->pluck('user.name')
-                        ->filter()
-                        ->values()
-                        ->all(),
+                    'viewer_count' => $viewerCount,
+                    'viewer_names' => $viewerNames,
                     'workshop_id' => $workshop->id,
                 ]);
 
@@ -489,6 +496,7 @@ class WorkshopBookingController extends Controller
             $detailsUrl = $booking
                 ? route('bookings.show', $booking)
                 : ($workshop ? route('workshop.show', $workshop) : null);
+            [$viewerCount, $viewerNames] = $resolveRecordingViewers($workshop);
 
             $recordingEntries->push([
                 'id' => 'saved-recording-' . $recording->id,
@@ -514,17 +522,8 @@ class WorkshopBookingController extends Controller
                 'is_owner' => $isChefOwner && $workshop && $workshop->user_id === $viewer->id,
                 'hidden' => (bool) ($workshop->hide_public_recording ?? false),
                 'hidden_global' => (bool) ($workshop->hide_recording_everywhere ?? false),
-                'viewer_count' => $workshop?->confirmedBookings()->count(),
-                'viewer_names' => $workshop
-                    ? $workshop->confirmedBookings()
-                        ->with('user:id,name')
-                        ->take(6)
-                        ->get()
-                        ->pluck('user.name')
-                        ->filter()
-                        ->values()
-                        ->all()
-                    : [],
+                'viewer_count' => $viewerCount,
+                'viewer_names' => $viewerNames,
                 'workshop_id' => $recording->workshop_id,
             ]);
 

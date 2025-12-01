@@ -3,6 +3,8 @@
 namespace App\Support\Concerns;
 
 use App\Models\Workshop;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Carbon;
 
 trait ResolvesWorkshopRecordings
 {
@@ -305,10 +307,30 @@ trait ResolvesWorkshopRecordings
      */
     protected function formatWorkshopDate(Workshop $workshop, string $format = 'd F Y • h:i A'): ?string
     {
-        if (! $workshop->start_date) {
+        try {
+            $startDate = $workshop->start_date;
+        } catch (\Throwable $exception) {
+            Log::warning('Failed to read workshop start date for formatting.', [
+                'workshop_id' => $workshop->getKey(),
+                'error' => $exception->getMessage(),
+            ]);
+
             return null;
         }
 
-        return $workshop->start_date->translatedFormat($format);
+        if (! $startDate instanceof Carbon) {
+            return null;
+        }
+
+        try {
+            return $startDate->translatedFormat($format);
+        } catch (\Throwable $exception) {
+            Log::warning('Failed to format workshop start date.', [
+                'workshop_id' => $workshop->getKey(),
+                'error' => $exception->getMessage(),
+            ]);
+
+            return $startDate->format('Y-m-d H:i');
+        }
     }
 }
