@@ -506,7 +506,7 @@ class WorkshopController extends Controller
         $workshop->delete();
 
         return redirect()->route('admin.workshops.index')
-            ->with('success', 'تم حذف الورشة بنجاح!');
+            ->with('success', __('workshops.flash.deleted'));
     }
 
     /**

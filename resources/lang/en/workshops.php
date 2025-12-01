@@ -125,6 +125,7 @@ return [
 
     'flash' => [
         'updated' => 'Workshop updated successfully!',
+        'deleted' => 'Workshop deleted successfully!',
     ],
 
     'booking_modal' => [

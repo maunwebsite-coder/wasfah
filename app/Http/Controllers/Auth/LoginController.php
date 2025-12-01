@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Workshop;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Validation\ValidationException;
 
 class LoginController extends Controller
@@ -45,10 +46,7 @@ class LoginController extends Controller
         /** @var User $user */
         $user = $request->user();
 
-        $user->forceFill([
-            'last_login_at' => now(),
-            'last_login_ip' => $request->ip(),
-        ])->save();
+        $this->updateLoginMetadata($user, $request);
 
         if ($this->shouldRedirectToOnboarding($user)) {
             return redirect()->route('onboarding.show');
@@ -90,5 +88,32 @@ class LoginController extends Controller
             User::CHEF_STATUS_NEEDS_PROFILE,
             User::CHEF_STATUS_REJECTED,
         ], true);
+    }
+
+    /**
+     * Persist login metadata only when the underlying columns exist.
+     */
+    private function updateLoginMetadata(User $user, Request $request): void
+    {
+        static $userColumns;
+
+        if ($userColumns === null) {
+            $userColumns = Schema::connection($user->getConnectionName())
+                ->getColumnListing($user->getTable());
+        }
+
+        $data = [];
+
+        if (in_array('last_login_at', $userColumns, true)) {
+            $data['last_login_at'] = now();
+        }
+
+        if (in_array('last_login_ip', $userColumns, true)) {
+            $data['last_login_ip'] = $request->ip();
+        }
+
+        if (!empty($data)) {
+            $user->forceFill($data)->save();
+        }
     }
 }

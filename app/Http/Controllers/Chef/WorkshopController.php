@@ -275,7 +275,7 @@ class WorkshopController extends Controller
 
         return redirect()
             ->route('chef.workshops.index')
-            ->with('success', 'تم حذف الورشة بنجاح.');
+            ->with('success', __('workshops.flash.deleted'));
     }
 
     public function join(Request $request, Workshop $workshop)

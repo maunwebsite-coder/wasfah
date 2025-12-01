@@ -125,6 +125,7 @@ return [
 
     'flash' => [
         'updated' => 'تم تحديث الورشة بنجاح!',
+        'deleted' => 'تم حذف الورشة بنجاح!',
     ],
 
     'booking_modal' => [
