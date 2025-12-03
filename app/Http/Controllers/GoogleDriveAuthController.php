@@ -27,7 +27,6 @@ class GoogleDriveAuthController extends Controller
             ->with([
                 'access_type' => 'offline',
                 'prompt' => 'consent',
-                'include_granted_scopes' => 'true',
             ])
             ->redirectUrl($redirectUrl)
             ->redirect();

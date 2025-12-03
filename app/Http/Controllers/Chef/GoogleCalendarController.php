@@ -30,7 +30,6 @@ class GoogleCalendarController extends Controller
             ->with([
                 'access_type' => 'offline', // Access type to get refresh token
                 'prompt' => 'consent', // Always ask for consent
-                'include_granted_scopes' => 'true', // Include previously granted scopes
             ])
             ->redirectUrl(route('chef.google.calendar.callback'))  // Callback URL after authentication
             ->redirect();

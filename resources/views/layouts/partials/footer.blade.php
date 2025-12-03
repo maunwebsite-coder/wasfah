@@ -11,9 +11,13 @@
         ['route' => 'about', 'label' => __('footer.bottom.links.about')],
         ['route' => 'contact', 'label' => __('footer.bottom.links.contact')],
         ['route' => 'legal.terms', 'label' => __('footer.bottom.links.legal')],
+        ['url' => 'https://peahskill.com/privacy', 'label' => __('footer.bottom.links.privacy')],
     ];
     if (! $showAdminTools) {
-        $footerLinks = array_values(array_filter($footerLinks, fn ($link) => $link['route'] !== 'tools'));
+        $footerLinks = array_values(array_filter(
+            $footerLinks,
+            fn ($link) => ($link['route'] ?? null) !== 'tools'
+        ));
     }
 @endphp
 <footer class="border-t border-gray-200 bg-white py-8">
@@ -37,7 +41,10 @@
                     @if (! $loop->first)
                         <span class="text-gray-300">•</span>
                     @endif
-                    <a href="{{ route($link['route']) }}" class="font-medium transition-colors hover:text-orange-500">
+                    @php
+                        $href = isset($link['route']) ? route($link['route']) : $link['url'];
+                    @endphp
+                    <a href="{{ $href }}" class="font-medium transition-colors hover:text-orange-500">
                         {{ $link['label'] }}
                     </a>
                 @endforeach
