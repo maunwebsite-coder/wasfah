@@ -115,7 +115,7 @@
                     @endif
                 </div>
 
-                @if (!empty($workshop->recording_url))
+                @if (!empty($workshop->recording_url) && $booking->status === 'confirmed')
                     <div class="rounded-3xl border border-indigo-100 bg-indigo-50 p-6 shadow-sm">
                         <p class="text-xs uppercase tracking-wider text-indigo-600 font-semibold">Recorded workshop</p>
                         <h3 class="mt-2 text-lg font-semibold text-slate-900">
