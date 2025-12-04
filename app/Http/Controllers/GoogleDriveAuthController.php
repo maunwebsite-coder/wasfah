@@ -21,9 +21,9 @@ class GoogleDriveAuthController extends Controller
         $redirectUrl = config('services.google_drive.redirect')
             ?: route('google.drive.callback');
 
-        // نطلب صلاحية Drive الكاملة لقراءة/مشاركة كل الملفات التي يختارها المستخدم
+        // نطلب صلاحية قراءة Drive فقط للاطلاع على ملفات التسجيلات التي يختارها المستخدم
         return Socialite::driver('google')
-            ->scopes([Drive::DRIVE]) // للوصول إلى جميع ملفات Drive عند الاختيار من الموقع
+            ->scopes([Drive::DRIVE_READONLY]) // صلاحية قراءة فقط
             ->with([
                 'access_type' => 'offline',
                 'prompt' => 'consent',

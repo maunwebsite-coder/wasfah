@@ -420,7 +420,7 @@ class UserGoogleDriveService
         $client->setAccessType('offline');
         $client->setPrompt('consent');
         $client->setIncludeGrantedScopes(true);
-        $client->setScopes([Drive::DRIVE]);
+        $client->setScopes([Drive::DRIVE_READONLY]);
 
         $accessToken = $this->buildAccessToken($user, $client);
 

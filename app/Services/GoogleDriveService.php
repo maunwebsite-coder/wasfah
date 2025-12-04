@@ -263,7 +263,7 @@ class GoogleDriveService
         $googleClient->setAccessType('offline');
         $googleClient->setPrompt('consent');
         $googleClient->setIncludeGrantedScopes(true);
-        $googleClient->setScopes([Drive::DRIVE]);
+        $googleClient->setScopes([Drive::DRIVE_READONLY]);
 
         $token = $googleClient->fetchAccessTokenWithRefreshToken($refreshToken);
 
@@ -420,7 +420,7 @@ class GoogleDriveService
         try {
             $googleClient = $client ?: new Client();
             $googleClient->setAuthConfig($jsonPath);
-            $googleClient->setScopes([Drive::DRIVE]);
+            $googleClient->setScopes([Drive::DRIVE_READONLY]);
             $googleClient->setApplicationName(config('app.name') . ' Drive Sync');
 
             return new Drive($googleClient);
