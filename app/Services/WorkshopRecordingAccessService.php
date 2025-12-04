@@ -55,10 +55,50 @@ class WorkshopRecordingAccessService
     protected function shareWithEmail(string $fileOrFolderId, string $email, ?User $host): void
     {
         if ($host && $host->hasGoogleDriveCredentials()) {
-            $this->userDriveService->shareWithEmails($host, $fileOrFolderId, [$email]);
+            $this->userDriveService->shareWithEmails($host, $fileOrFolderId, [$email], true);
         }
 
-        $this->driveService->shareWithEmails($fileOrFolderId, [$email]);
+        $this->driveService->shareWithEmails($fileOrFolderId, [$email], true);
+    }
+
+    /**
+     * Share the workshop recording with all confirmed attendees.
+     * Call this when the recording_url is added or updated.
+     */
+    public function shareRecordingWithAllAttendees(Workshop $workshop): void
+    {
+        $workshop->loadMissing([
+            'chef:id,email,google_email,google_drive_email,google_access_token,google_refresh_token',
+            'confirmedBookings.user:id,email,google_email,google_drive_email',
+        ]);
+
+        $recordingUrl = $this->resolveRecordingUrl($workshop);
+        $recordingId = $recordingUrl ? $this->extractDriveFileId($recordingUrl) : null;
+
+        if (! $recordingId) {
+            return;
+        }
+
+        $host = $workshop->chef;
+
+        // Collect all attendee emails
+        $emails = $workshop->confirmedBookings
+            ->map(fn ($booking) => $this->resolveAttendeeEmail($booking))
+            ->filter()
+            ->unique()
+            ->values()
+            ->all();
+
+        if (empty($emails)) {
+            return;
+        }
+
+        // Share with all emails at once
+        if ($host && $host->hasGoogleDriveCredentials()) {
+            $this->userDriveService->shareWithEmails($host, $recordingId, $emails, true);
+        }
+
+        $this->driveService->shareWithEmails($recordingId, $emails, true);
     }
 
     protected function resolveAttendeeEmail(WorkshopBooking $booking): ?string

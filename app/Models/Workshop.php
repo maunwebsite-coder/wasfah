@@ -696,6 +696,21 @@ class Workshop extends Model
 
             $workshop->meeting_code = static::extractMeetingCode($workshop->meeting_link);
         });
+
+        // Share recording with all confirmed attendees when recording_url is added/updated
+        static::updated(function (self $workshop) {
+            if ($workshop->wasChanged('recording_url') && !empty($workshop->recording_url)) {
+                try {
+                    app(\App\Services\WorkshopRecordingAccessService::class)
+                        ->shareRecordingWithAllAttendees($workshop);
+                } catch (\Throwable $exception) {
+                    \Illuminate\Support\Facades\Log::warning('Failed to share recording with attendees on update.', [
+                        'workshop_id' => $workshop->id,
+                        'error' => $exception->getMessage(),
+                    ]);
+                }
+            }
+        });
     }
 
     /**
