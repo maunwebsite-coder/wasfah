@@ -1165,6 +1165,7 @@ class WorkshopController extends Controller
 
         if ($autoGenerate) {
             $hostAttendee = $workshop->hostAttendeePayload();
+            $durationMinutes = is_numeric($workshop->duration) ? (int) $workshop->duration : null;
 
             if (!$hasHostCredentials) {
                 throw ValidationException::withMessages([
@@ -1179,7 +1180,7 @@ class WorkshopController extends Controller
                     $workshop->start_date instanceof Carbon
                         ? $workshop->start_date
                         : Carbon::parse($workshop->start_date),
-                    null,
+                    $durationMinutes,
                     null,
                     $hostAttendee ? [$hostAttendee] : [],
                     $hostAttendee,

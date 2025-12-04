@@ -681,6 +681,7 @@ class WorkshopController extends Controller
     protected function generateAdminGoogleMeetMeeting(Workshop $workshop): array
     {
         $startsAt = null;
+        $durationMinutes = is_numeric($workshop->duration) ? (int) $workshop->duration : null;
 
         if ($workshop->start_date instanceof Carbon) {
             $startsAt = $workshop->start_date;
@@ -705,7 +706,7 @@ class WorkshopController extends Controller
                 $workshop->title ?: 'ورشة جديدة',
                 Auth::id() ?? 0,
                 $startsAt,
-                null,
+                $durationMinutes,
                 null,
                 $attendees,
                 $hostAttendee
