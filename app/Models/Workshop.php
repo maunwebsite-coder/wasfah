@@ -518,6 +518,50 @@ class Workshop extends Model
     }
 
     /**
+     * Check if a user can view this workshop's recording.
+     */
+    public function userCanViewRecording(?User $user): bool
+    {
+        if (!$user) {
+            return false;
+        }
+        
+        // Host can always view
+        if ($this->user_id === $user->id) {
+            return true;
+        }
+        
+        // Check if user has confirmed booking
+        return $this->confirmedBookings()
+            ->where('user_id', $user->id)
+            ->exists();
+    }
+
+    /**
+     * Get the recording URL if it exists and is accessible by the user.
+     */
+    public function getAccessibleRecordingUrl(?User $user): ?string
+    {
+        if (!$this->recording_url) {
+            return null;
+        }
+        
+        if (!$this->userCanViewRecording($user)) {
+            return null;
+        }
+        
+        return $this->recording_url;
+    }
+
+    /**
+     * Check if recording is available for this workshop.
+     */
+    public function hasRecording(): bool
+    {
+        return !empty($this->recording_url);
+    }
+
+    /**
      * الحصول على عدد المشاهدات الفريدة (من IPs مختلفة)
      */
     public function getUniqueViewsCountAttribute()

@@ -108,6 +108,11 @@ class WorkshopBooking extends Model
                 static::grantRecordingAccess($booking);
                 static::dispatchRecordingAccessShare($booking);
             }
+
+            // Revoke recording access if booking was cancelled
+            if ($booking->wasChanged('status') && $newStatus === 'cancelled') {
+                static::revokeRecordingAccess($booking);
+            }
         });
 
         // عند حذف حجز
@@ -357,5 +362,30 @@ class WorkshopBooking extends Model
                 'error' => $exception->getMessage(),
             ]);
         }
+    }
+
+    /**
+     * Revoke recording access when booking is cancelled.
+     */
+    protected static function revokeRecordingAccess(self $booking): void
+    {
+        if (! $booking->workshop_id || ! $booking->user_id) {
+            return;
+        }
+
+        // Update pivot table to revoke access
+        $pivot = WorkshopUser::where([
+            'workshop_id' => $booking->workshop_id,
+            'user_id' => $booking->user_id,
+        ])->first();
+
+        if ($pivot) {
+            $pivot->has_recording_access = false;
+            $pivot->save();
+        }
+
+        // Note: Google Drive permission revocation would be handled here
+        // For now, we're just updating the local database
+        // Future enhancement: Call WorkshopRecordingAccessService to revoke Drive permissions
     }
 }

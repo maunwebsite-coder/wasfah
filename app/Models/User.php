@@ -707,6 +707,26 @@ class User extends Authenticatable
                     ->wherePivot('status', 'confirmed');
     }
 
+    /**
+     * Check if user can access a specific workshop recording.
+     */
+    public function canAccessWorkshopRecording(Workshop $workshop): bool
+    {
+        return $workshop->userCanViewRecording($this);
+    }
+
+    /**
+     * Get all workshops this user can view recordings for.
+     */
+    public function workshopsWithRecordingAccess()
+    {
+        return Workshop::whereHas('confirmedBookings', function ($query) {
+            $query->where('user_id', $this->id);
+        })
+        ->orWhere('user_id', $this->id)
+        ->whereNotNull('recording_url');
+    }
+
     // الإشعارات
     public function notifications()
     {
