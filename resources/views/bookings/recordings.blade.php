@@ -18,6 +18,8 @@
     $visibleCount = max($entries->count() - $hiddenEntries->count(), 0);
     $driveConnected = $viewer?->hasGoogleDriveCredentials() ?? false;
     $canAccessRecordManagement = $viewer?->canAccessRecordManagement() ?? false;
+    $withViewerEntries = $entries->filter(fn ($entry) => !empty($entry['viewer_names']) || !empty($entry['viewer_count']));
+    $totalViewerCount = $entries->sum(fn ($entry) => (int) ($entry['viewer_count'] ?? 0));
 @endphp
 
 @section('content')
@@ -70,12 +72,12 @@
                                     </div>
                                 </div>
                                 <div class="rounded-2xl bg-white/10 p-4 ring-1 ring-white/15 sm:col-span-1">
-                                    <p class="text-xs text-amber-100 font-semibold">رضا المستخدمين</p>
-                                    <div class="mt-2 flex items-center gap-2">
-                                        <span class="text-3xl font-extrabold">4.9</span>
-                                        <i class="fa-solid fa-star text-amber-300"></i>
+                                    <p class="text-xs text-amber-100 font-semibold">المشاهدون المصرح لهم</p>
+                                    <div class="mt-2 flex items-end gap-2">
+                                        <span class="text-3xl font-extrabold">{{ $totalViewerCount }}</span>
+                                        <span class="text-sm text-amber-100">أشخاص يمكنهم المشاهدة</span>
                                     </div>
-                                    <p class="text-[11px] text-amber-100/90">تجربة مشاهدة متكاملة</p>
+                                    <p class="text-[11px] text-amber-100/90">يتوزعون على {{ $withViewerEntries->count() }} تسجيلات محددة</p>
                                 </div>
                             </div>
                             <div class="flex flex-wrap gap-3">
@@ -122,6 +124,10 @@
                             <span class="inline-flex items-center gap-2 rounded-xl bg-white/70 px-4 py-2 text-xs font-semibold text-slate-700 border border-slate-200">
                                 <i class="fa-solid fa-eye-slash text-rose-500"></i>
                                 {{ __('bookings.recordings.hidden_count', ['count' => $hiddenEntries->count()]) }}
+                            </span>
+                            <span class="inline-flex items-center gap-2 rounded-xl bg-white/70 px-4 py-2 text-xs font-semibold text-slate-700 border border-slate-200">
+                                <i class="fa-solid fa-users-gear text-indigo-500"></i>
+                                صلاحيات مشاهدة: {{ $withViewerEntries->count() }}
                             </span>
                         </div>
                         <div class="flex flex-wrap gap-2">
@@ -340,6 +346,10 @@
                                 <i class="fab fa-google-drive text-[11px] text-orange-500"></i>
                                 {{ __('bookings.recordings.filters.drive') }}
                             </button>
+                            <button data-filter-btn data-filter="with-viewers" type="button" class="filter-pill inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2 text-xs font-semibold text-slate-700 transition hover:border-slate-300">
+                                <i class="fa-solid fa-user-shield text-[11px] text-indigo-500"></i>
+                                تسجيلات بصلاحيات
+                            </button>
                             <button data-filter-btn data-filter="hidden" type="button" class="filter-pill inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2 text-xs font-semibold text-slate-700 transition hover:border-slate-300">
                                 <i class="fa-solid fa-eye-slash text-[11px] text-rose-500"></i>
                                 {{ __('bookings.recordings.filters.hidden') }}
@@ -354,6 +364,34 @@
                                 data-filter-search
                             >
                         </label>
+                    </div>
+
+                    <div class="mt-3 rounded-2xl border border-slate-100 bg-slate-50/60 p-3">
+                        <div class="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
+                            <div class="inline-flex items-center gap-2 text-sm font-semibold text-slate-800">
+                                <i class="fa-solid fa-sliders"></i>
+                                لوحة تحكم سريعة
+                            </div>
+                            <p class="text-xs text-slate-600">اضبط ترتيب العرض واذهب مباشرةً للتسجيلات المخفية أو ذات الصلاحيات.</p>
+                        </div>
+                        <div class="mt-3 flex flex-wrap gap-2 text-xs font-semibold text-slate-700">
+                            <button data-sort-btn data-sort-direction="desc" type="button" class="inline-flex items-center gap-2 rounded-xl border border-slate-900 bg-slate-900 px-4 py-2 text-white shadow transition hover:-translate-y-0.5 hover:shadow-md">
+                                <i class="fa-solid fa-arrow-down-short-wide"></i>
+                                الأحدث أولاً
+                            </button>
+                            <button data-sort-btn data-sort-direction="asc" type="button" class="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2 text-slate-700 transition hover:border-slate-300">
+                                <i class="fa-solid fa-arrow-up-short-wide"></i>
+                                الأقدم أولاً
+                            </button>
+                            <button data-activate-filter="hidden" type="button" class="inline-flex items-center gap-2 rounded-full border border-rose-100 bg-white px-4 py-2 text-rose-600 transition hover:border-rose-200">
+                                <i class="fa-solid fa-eye-slash"></i>
+                                ركز على المخفية
+                            </button>
+                            <button data-activate-filter="with-viewers" type="button" class="inline-flex items-center gap-2 rounded-full border border-emerald-100 bg-white px-4 py-2 text-emerald-700 transition hover:border-emerald-200">
+                                <i class="fa-solid fa-user-check"></i>
+                                تسجيلات بصلاحيات
+                            </button>
+                        </div>
                     </div>
 
                     <div class="mt-3 flex flex-wrap gap-2 text-[11px] text-slate-600">
@@ -394,6 +432,7 @@
                                 data-filter-type="{{ $type }}"
                                 data-filter-owned="{{ !empty($entry['is_owner']) ? '1' : '0' }}"
                                 data-filter-hidden="{{ $isHidden ? '1' : '0' }}"
+                                data-filter-viewers="{{ (!empty($entry['viewer_count']) || !empty($entry['viewer_names'])) ? '1' : '0' }}"
                                 data-filter-title="{{ e($searchable) }}"
                                 data-sort="{{ $entry['sort_timestamp'] ?? 0 }}"
                                 class="group relative flex flex-col overflow-hidden rounded-2xl border {{ $isHidden ? 'border-rose-100 bg-rose-50/60' : 'border-slate-100 bg-white' }} shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
@@ -487,20 +526,21 @@
                                             $viewerNames = $entry['viewer_names'] ?? [];
                                             $visibleViewers = array_slice($viewerNames, 0, 5);
                                             $extraViewers = max(count($viewerNames) - count($visibleViewers), 0);
+                                            $viewerCount = max((int) ($entry['viewer_count'] ?? 0), count($viewerNames));
                                         @endphp
 
-                                        @if (!empty($viewerNames))
-                                            <div class="rounded-xl border border-emerald-100 bg-emerald-50/70 p-3">
-                                                <div class="flex items-center justify-between text-[11px] font-semibold text-emerald-800">
-                                                    <span class="inline-flex items-center gap-2">
-                                                        <i class="fa-solid fa-shield-halved"></i>
-                                                        {{ __('bookings.recordings.access_label') }}
-                                                    </span>
-                                                    <span class="inline-flex items-center gap-1 text-emerald-700">
-                                                        <i class="fa-solid fa-user-check"></i>
-                                                        {{ __('bookings.recordings.viewer_list') }}
-                                                    </span>
-                                                </div>
+                                        <div class="rounded-xl border border-emerald-100 bg-emerald-50/70 p-3">
+                                            <div class="flex items-center justify-between text-[11px] font-semibold text-emerald-800">
+                                                <span class="inline-flex items-center gap-2">
+                                                    <i class="fa-solid fa-shield-halved"></i>
+                                                    {{ __('bookings.recordings.access_label') }}
+                                                </span>
+                                                <span class="inline-flex items-center gap-2 rounded-full bg-white/80 px-3 py-1 text-[11px] font-bold text-emerald-700 shadow-sm">
+                                                    <i class="fa-solid fa-user-check"></i>
+                                                    {{ $viewerCount }} مصرح لهم
+                                                </span>
+                                            </div>
+                                            @if (!empty($viewerNames))
                                                 <div class="mt-2 flex flex-wrap gap-2">
                                                     @foreach ($visibleViewers as $viewerName)
                                                         <span class="inline-flex items-center gap-2 rounded-full bg-white px-3 py-1 text-[11px] font-semibold text-slate-700 shadow-sm">
@@ -517,8 +557,19 @@
                                                         </span>
                                                     @endif
                                                 </div>
-                                            </div>
-                                        @endif
+                                            @else
+                                                <div class="mt-2 rounded-lg border border-dashed border-emerald-200 bg-white/80 px-3 py-2 text-[11px] text-slate-700">
+                                                    <p class="font-semibold text-emerald-800">لا يوجد أشخاص لديهم صلاحية مشاهدة بعد.</p>
+                                                    <p class="mt-1 text-[11px] text-slate-600">شارك رابط التسجيل أو أضف المشاهدين من صفحة التفاصيل.</p>
+                                                    @if (!empty($entry['details_url']) && !empty($entry['is_owner']))
+                                                        <a href="{{ $entry['details_url'] }}" class="mt-2 inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-600 px-3 py-1 font-semibold text-white shadow-sm transition hover:bg-emerald-700">
+                                                            <i class="fa-solid fa-plus"></i>
+                                                            إدارة الوصول
+                                                        </a>
+                                                    @endif
+                                                </div>
+                                            @endif
+                                        </div>
 
                                         <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                                             <div class="flex flex-wrap gap-2">
@@ -649,10 +700,39 @@
             });
 
             const cards = Array.from(document.querySelectorAll('[data-recording-card]'));
+            const cardGrid = document.getElementById('recording-card-grid');
             const filterButtons = document.querySelectorAll('[data-filter-btn]');
+            const quickFilterButtons = document.querySelectorAll('[data-activate-filter]');
+            const sortButtons = document.querySelectorAll('[data-sort-btn]');
             const searchInput = document.querySelector('[data-filter-search]');
             const emptyState = document.querySelector('[data-recording-empty]');
             let activeFilter = 'all';
+            let activeSort = 'desc';
+
+            const updateFilterButtonState = () => {
+                filterButtons.forEach((button) => {
+                    const isActive = (button.dataset.filter || 'all') === activeFilter;
+                    button.classList.toggle('bg-orange-600', isActive);
+                    button.classList.toggle('text-white', isActive);
+                    button.classList.toggle('border-orange-200', isActive);
+                    button.classList.toggle('shadow', isActive);
+                    button.classList.toggle('bg-white', !isActive);
+                    button.classList.toggle('border-slate-200', !isActive);
+                    button.classList.toggle('text-slate-700', !isActive);
+                });
+            };
+
+            const applySort = () => {
+                if (!cardGrid || cards.length === 0) return;
+
+                const sortedCards = [...cards].sort((a, b) => {
+                    const aValue = Number(a.dataset.sort || 0);
+                    const bValue = Number(b.dataset.sort || 0);
+                    return activeSort === 'asc' ? aValue - bValue : bValue - aValue;
+                });
+
+                sortedCards.forEach((card) => cardGrid.appendChild(card));
+            };
 
             const applyFilters = () => {
                 const term = (searchInput?.value || '').toLowerCase().trim();
@@ -664,6 +744,7 @@
                         (activeFilter === 'bookings' && card.dataset.filterType === 'booking') ||
                         (activeFilter === 'owned' && card.dataset.filterOwned === '1') ||
                         (activeFilter === 'drive' && card.dataset.filterType === 'drive') ||
+                        (activeFilter === 'with-viewers' && card.dataset.filterViewers === '1') ||
                         (activeFilter === 'hidden' && card.dataset.filterHidden === '1');
 
                     const matchesSearch = !term || (card.dataset.filterTitle || '').includes(term);
@@ -680,24 +761,43 @@
                 }
             };
 
-            filterButtons.forEach((btn) => {
-                btn.addEventListener('click', () => {
-                    activeFilter = btn.dataset.filter || 'all';
+            const setFilter = (value) => {
+                activeFilter = value || 'all';
+                updateFilterButtonState();
+                applyFilters();
+            };
 
-                    filterButtons.forEach((button) => {
-                        button.classList.remove('bg-orange-600', 'text-white', 'border-orange-200', 'shadow');
-                        button.classList.add('bg-white', 'border-slate-200', 'text-slate-700');
-                    });
-
-                    btn.classList.remove('bg-white', 'border-slate-200', 'text-slate-700');
-                    btn.classList.add('bg-orange-600', 'text-white', 'border-orange-200', 'shadow');
-
-                    applyFilters();
+            const setSort = (direction) => {
+                activeSort = direction === 'asc' ? 'asc' : 'desc';
+                sortButtons.forEach((button) => {
+                    const isActive = (button.dataset.sortDirection || 'desc') === activeSort;
+                    button.classList.toggle('bg-slate-900', isActive);
+                    button.classList.toggle('text-white', isActive);
+                    button.classList.toggle('border-slate-900', isActive);
+                    button.classList.toggle('shadow', isActive);
+                    button.classList.toggle('bg-white', !isActive);
+                    button.classList.toggle('text-slate-700', !isActive);
+                    button.classList.toggle('border-slate-200', !isActive);
                 });
+                applySort();
+            };
+
+            filterButtons.forEach((btn) => {
+                btn.addEventListener('click', () => setFilter(btn.dataset.filter));
+            });
+
+            quickFilterButtons.forEach((btn) => {
+                btn.addEventListener('click', () => setFilter(btn.dataset.activateFilter));
+            });
+
+            sortButtons.forEach((btn) => {
+                btn.addEventListener('click', () => setSort(btn.dataset.sortDirection));
             });
 
             searchInput?.addEventListener('input', applyFilters);
-            applyFilters();
+
+            setSort(activeSort);
+            setFilter(activeFilter);
         })();
     </script>
 @endpush

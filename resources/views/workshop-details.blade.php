@@ -2896,24 +2896,25 @@ function closeLoginRequiredModal(event) {
     }
 }
 
+function buildAuthRedirect(baseUrl, workshopId) {
+    const url = new URL(baseUrl, window.location.origin);
+    if (workshopId) {
+        url.searchParams.set('pending_workshop_booking', workshopId);
+    }
+    url.searchParams.set('return_to', window.location.href);
+    return url.toString();
+}
+
 // Redirect helper when the user wants to sign in
 function redirectToLoginWithWorkshop() {
     const workshopId = localStorage.getItem('pending_workshop_booking');
-    if (workshopId) {
-        window.location.href = `{{ route('login') }}?pending_workshop_booking=${workshopId}`;
-    } else {
-        window.location.href = '{{ route('login') }}';
-    }
+    window.location.href = buildAuthRedirect('{{ route('login') }}', workshopId);
 }
 
 // Redirect helper when the user wants to register
 function redirectToRegisterWithWorkshop() {
     const workshopId = localStorage.getItem('pending_workshop_booking');
-    if (workshopId) {
-        window.location.href = `{{ route('register') }}?pending_workshop_booking=${workshopId}`;
-    } else {
-        window.location.href = '{{ route('register') }}';
-    }
+    window.location.href = buildAuthRedirect('{{ route('register') }}', workshopId);
 }
 
 // Expose helpers globally for inline handlers

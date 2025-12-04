@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\Notification;
+use App\Support\IntendedUrl;
 use App\Services\ReferralProgramService;
 use App\Support\NotificationCopy;
 use Illuminate\Http\Request;
@@ -31,6 +32,8 @@ class SocialiteController extends Controller
      */
     public function redirect(Request $request)
     {
+        IntendedUrl::rememberFromRequest($request);
+
         // تخزين معرف الورشة في session إذا كان موجوداً
         $pendingWorkshopId = $request->input('pending_workshop_booking');
         if ($pendingWorkshopId) {
@@ -238,7 +241,7 @@ class SocialiteController extends Controller
             }
 
             // Redirect with appropriate message based on whether it's a new user or existing user
-            return redirect('/')->with('success', $successMessage);
+            return redirect()->intended('/')->with('success', $successMessage);
 
         } catch (Exception $e) {
             // Log the error for debugging

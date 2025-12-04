@@ -31,6 +31,7 @@ use App\Http\Controllers\RecordingController;
 use App\Http\Controllers\WorkshopReviewController;
 use App\Models\Recipe;
 use App\Models\Workshop;
+use App\Support\IntendedUrl;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -186,12 +187,13 @@ Route::middleware('auth')->group(function () {
 });
 
 // مسار صفحة المصادقة الموحدة (تسجيل الدخول + إنشاء حساب)
-Route::get('/login', function () {
+Route::get('/login', function (Request $request) {
     // إذا كان المستخدم مسجل دخول، أعد توجيهه للصفحة الرئيسية
     if (Auth::check()) {
         return redirect('/')->with('info', 'أنت مسجل دخول بالفعل');
     }
-    request()->session()->regenerateToken();
+    IntendedUrl::rememberFromRequest($request);
+    $request->session()->regenerateToken();
 
     $response = response()
         ->view('auth')
@@ -231,12 +233,13 @@ Route::prefix('saved')->middleware(['web'])->group(function () {
 
 
 // مسار صفحة إنشاء الحساب (يوجه لنفس الصفحة)
-Route::get('/register', function () {
+Route::get('/register', function (Request $request) {
     // إذا كان المستخدم مسجل دخول، أعد توجيهه للصفحة الرئيسية
     if (Auth::check()) {
         return redirect('/')->with('info', 'أنت مسجل دخول بالفعل');
     }
-    request()->session()->regenerateToken();
+    IntendedUrl::rememberFromRequest($request);
+    $request->session()->regenerateToken();
 
     $response = response()
         ->view('auth')

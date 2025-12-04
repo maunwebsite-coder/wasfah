@@ -552,6 +552,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     const params = new URLSearchParams(window.location.search);
     const pendingWorkshop = params.get('pending_workshop_booking');
+    const returnTo = params.get('return_to');
     const intentContainer = document.querySelector('[data-intent-state]');
     const introDefault = document.querySelector('[data-text-switch="intro-default"]');
     const introChef = document.querySelector('[data-text-switch="intro-chef"]');
@@ -571,6 +572,9 @@ document.addEventListener('DOMContentLoaded', function () {
         const url = new URL('{{ route('google.redirect') }}', window.location.origin);
         if (pendingWorkshop) {
             url.searchParams.set('pending_workshop_booking', pendingWorkshop);
+        }
+        if (returnTo) {
+            url.searchParams.set('return_to', returnTo);
         }
         if (flow) {
             url.searchParams.set('flow', flow);

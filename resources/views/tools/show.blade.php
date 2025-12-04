@@ -856,7 +856,9 @@ document.addEventListener('DOMContentLoaded', function () {
     function handleUnauthenticated() {
         showToast('Please sign in to save tools', 'warning');
         setTimeout(() => {
-            window.location.href = '{{ route('login') }}';
+            const loginUrl = new URL('{{ route('login') }}', window.location.origin);
+            loginUrl.searchParams.set('return_to', window.location.href);
+            window.location.href = loginUrl.toString();
         }, 1200);
     }
 
