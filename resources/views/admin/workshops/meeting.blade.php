@@ -35,7 +35,7 @@
         border-radius: 1.5rem;
         border: 1px dashed rgba(125, 211, 252, 0.6);
         background: rgba(15, 118, 110, 0.08);
-        color: #e0f2fe;
+        color: #f9eff1;
         padding: 2rem;
     }
 
@@ -51,7 +51,7 @@
     }
 
     .action-btn.primary {
-        background: linear-gradient(120deg, #0819ff, #fb7185);
+        background: linear-gradient(120deg, #6b2e30, #fb7185);
         color: #0f172a;
         box-shadow: 0 12px 30px rgba(251, 113, 133, 0.35);
     }
@@ -90,7 +90,7 @@
 
     .status-badge[data-state="pending"] {
         background: rgba(251, 191, 36, 0.15);
-        color: #1ab8ff;
+        color: #9f5e63;
         border: 1px solid rgba(251, 191, 36, 0.35);
     }
 

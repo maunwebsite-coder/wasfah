@@ -351,14 +351,14 @@ class RecipeController extends Controller
                 'type' => 'required|in:article,photo,video',
                 'title' => 'nullable|string|max:255',
                 'description' => 'nullable|string',
-                'image' => 'nullable|image|max:10240', // 10MB max
+                'image' => 'nullable|image|max:25600', // 25MB max
                 'video_url' => 'nullable|url',
             ];
 
             if ($type === 'article') {
                 $rules['description'] = 'required|string';
             } elseif ($type === 'photo') {
-                $rules['image'] = 'required|image|max:10240';
+                $rules['image'] = 'required|image|max:25600';
             } elseif ($type === 'video') {
                 $rules['video_url'] = 'required|url';
                 $rules['description'] = 'required|string';

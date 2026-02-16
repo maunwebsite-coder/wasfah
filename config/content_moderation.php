@@ -72,7 +72,7 @@ return [
     |--------------------------------------------------------------------------
     */
     'image' => [
-        'max_kilobytes' => (int) env('IMAGE_UPLOAD_MAX_KB', 5120),
+        'max_kilobytes' => (int) env('IMAGE_UPLOAD_MAX_KB', 25600),
 
         'allowed_mime_types' => [
             'image/jpeg',

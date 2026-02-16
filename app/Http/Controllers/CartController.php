@@ -50,7 +50,7 @@ class CartController extends Controller
             if ($existingItem->price != $tool->price) {
                 $existingItem->update(['price' => $tool->price]);
             }
-            $message = 'تم تحديث الكمية في السلة';
+            $message = 'ØªÙ… ØªØ­Ø¯ÙŠØ« Ø§Ù„ÙƒÙ…ÙŠØ© ÙÙŠ Ø§Ù„Ø³Ù„Ø©';
         } else {
             Cart::create([
                 'user_id' => $userId,
@@ -61,7 +61,7 @@ class CartController extends Controller
                 'amazon_url' => $tool->amazon_url,
                 'affiliate_url' => $tool->affiliate_url
             ]);
-            $message = 'تم إضافة المنتج إلى السلة';
+            $message = 'ØªÙ… Ø¥Ø¶Ø§ÙØ© Ø§Ù„Ù…Ù†ØªØ¬ Ø¥Ù„Ù‰ Ø§Ù„Ø³Ù„Ø©';
         }
 
         $cartCount = $this->getCartCount();
@@ -95,7 +95,7 @@ class CartController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'تم تحديث الكمية',
+            'message' => 'ØªÙ… ØªØ­Ø¯ÙŠØ« Ø§Ù„ÙƒÙ…ÙŠØ©',
             'cart_count' => $cartCount,
             'item_total' => round($cart->total_price, 2),
             'cart_total' => $total
@@ -114,7 +114,7 @@ class CartController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'تم حذف المنتج من السلة',
+            'message' => 'ØªÙ… Ø­Ø°Ù Ø§Ù„Ù…Ù†ØªØ¬ Ù…Ù† Ø§Ù„Ø³Ù„Ø©',
             'cart_count' => $cartCount,
             'cart_total' => $total
         ]);
@@ -139,7 +139,7 @@ class CartController extends Controller
         if (!$cartItem) {
             return response()->json([
                 'success' => false,
-                'message' => 'المنتج غير موجود في السلة'
+                'message' => 'Ø§Ù„Ù…Ù†ØªØ¬ ØºÙŠØ± Ù…ÙˆØ¬ÙˆØ¯ ÙÙŠ Ø§Ù„Ø³Ù„Ø©'
             ], 404);
         }
 
@@ -150,7 +150,7 @@ class CartController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'تم حذف المنتج من السلة',
+            'message' => 'ØªÙ… Ø­Ø°Ù Ø§Ù„Ù…Ù†ØªØ¬ Ù…Ù† Ø§Ù„Ø³Ù„Ø©',
             'cart_count' => $cartCount,
             'cart_total' => $total
         ]);
@@ -168,7 +168,7 @@ class CartController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'تم مسح السلة بالكامل',
+            'message' => 'ØªÙ… Ù…Ø³Ø­ Ø§Ù„Ø³Ù„Ø© Ø¨Ø§Ù„ÙƒØ§Ù…Ù„',
             'cart_count' => 0
         ]);
     }
@@ -244,14 +244,14 @@ class CartController extends Controller
         $cartItems = $this->getCartItems();
         
         if ($cartItems->isEmpty()) {
-            return redirect()->back()->with('error', 'السلة فارغة');
+            return redirect()->back()->with('error', 'Ø§Ù„Ø³Ù„Ø© ÙØ§Ø±ØºØ©');
         }
 
         // Get Amazon URLs from cart items
         $amazonUrls = $cartItems->pluck('amazon_url')->filter()->unique();
         
         if ($amazonUrls->isEmpty()) {
-            return redirect()->back()->with('error', 'لا توجد منتجات Amazon في السلة');
+            return redirect()->back()->with('error', 'Ù„Ø§ ØªÙˆØ¬Ø¯ Ù…Ù†ØªØ¬Ø§Øª Amazon ÙÙŠ Ø§Ù„Ø³Ù„Ø©');
         }
 
         // If there's only one product, redirect directly to it
@@ -401,7 +401,7 @@ class CartController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => "تم إصلاح {$fixedCount} منتج في السلة",
+            'message' => "ØªÙ… Ø¥ØµÙ„Ø§Ø­ {$fixedCount} Ù…Ù†ØªØ¬ ÙÙŠ Ø§Ù„Ø³Ù„Ø©",
             'fixed_count' => $fixedCount,
             'fixed_items' => $fixedItems
         ]);
@@ -436,7 +436,7 @@ class CartController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => "تم إصلاح {$fixedCount} عنصر في قاعدة البيانات",
+            'message' => "ØªÙ… Ø¥ØµÙ„Ø§Ø­ {$fixedCount} Ø¹Ù†ØµØ± ÙÙŠ Ù‚Ø§Ø¹Ø¯Ø© Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª",
             'fixed_count' => $fixedCount,
             'fixed_items' => $fixedItems
         ]);
@@ -451,8 +451,8 @@ class CartController extends Controller
         
         if ($cartItems->isEmpty()) {
             return response()->json([
-                'error' => 'السلة فارغة',
-                'message' => 'أضف بعض المنتجات إلى السلة أولاً لاختبار وظيفة Amazon Cart'
+                'error' => 'Ø§Ù„Ø³Ù„Ø© ÙØ§Ø±ØºØ©',
+                'message' => 'Ø£Ø¶Ù Ø¨Ø¹Ø¶ Ø§Ù„Ù…Ù†ØªØ¬Ø§Øª Ø¥Ù„Ù‰ Ø§Ù„Ø³Ù„Ø© Ø£ÙˆÙ„Ø§Ù‹ Ù„Ø§Ø®ØªØ¨Ø§Ø± ÙˆØ¸ÙŠÙØ© Amazon Cart'
             ]);
         }
 
@@ -480,11 +480,11 @@ class CartController extends Controller
             'amazon_cart_url' => $amazonCartUrl,
             'affiliate_tag' => config('services.amazon.affiliate_tag', 'wasfah-21'),
             'commission_info' => [
-                'commission_rate' => '1% - 10% حسب فئة المنتج',
-                'tracking_period' => '24 ساعة من النقر على الرابط',
-                'payment_method' => 'تحويل بنكي أو شيك',
-                'minimum_payment' => '100 درهم إماراتي',
-                'note' => 'ستحصل على عمولة عند شراء المستخدمين للمنتجات'
+                'commission_rate' => '1% - 10% Ø­Ø³Ø¨ ÙØ¦Ø© Ø§Ù„Ù…Ù†ØªØ¬',
+                'tracking_period' => '24 Ø³Ø§Ø¹Ø© Ù…Ù† Ø§Ù„Ù†Ù‚Ø± Ø¹Ù„Ù‰ Ø§Ù„Ø±Ø§Ø¨Ø·',
+                'payment_method' => 'ØªØ­ÙˆÙŠÙ„ Ø¨Ù†ÙƒÙŠ Ø£Ùˆ Ø´ÙŠÙƒ',
+                'minimum_payment' => '100 Ø¯Ø±Ù‡Ù… Ø¥Ù…Ø§Ø±Ø§ØªÙŠ',
+                'note' => 'Ø³ØªØ­ØµÙ„ Ø¹Ù„Ù‰ Ø¹Ù…ÙˆÙ„Ø© Ø¹Ù†Ø¯ Ø´Ø±Ø§Ø¡ Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù…ÙŠÙ† Ù„Ù„Ù…Ù†ØªØ¬Ø§Øª'
             ]
         ]);
     }

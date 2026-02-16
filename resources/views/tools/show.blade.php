@@ -9,9 +9,9 @@
 @push('styles')
 <style>
     :root {
-        --tool-cream: var(--brand-cream, #f4f6ff);
-        --tool-gold-rgb: var(--brand-gold-rgb, 26, 184, 255);
-        --tool-teal-rgb: var(--brand-teal-rgb, 26, 184, 255);
+        --tool-cream: var(--brand-cream, #ffffff);
+        --tool-gold-rgb: var(--brand-gold-rgb, 143, 74, 80);
+        --tool-teal-rgb: var(--brand-teal-rgb, 143, 74, 80);
     }
     .tool-detail-hero {
         position: relative;
@@ -171,7 +171,7 @@
         padding: 0.5rem 1.1rem;
         border-radius: 999px;
         background: rgba(var(--tool-teal-rgb), 0.12);
-        color: #0819ff;
+        color: #6b2e30;
         font-weight: 600;
         font-size: 0.9rem;
     }
@@ -188,10 +188,10 @@
         display: flex;
         flex-direction: column;
         gap: 0.4rem;
-        box-shadow: 0 18px 34px rgba(8, 25, 255, 0.14);
+        box-shadow: 0 18px 34px rgba(107, 46, 48, 0.14);
     }
     .tool-overview-card i {
-        color: #0819ff;
+        color: #6b2e30;
         font-size: 1.1rem;
     }
     .tool-overview-label {
@@ -216,10 +216,10 @@
     }
     .tool-price-card {
         border-radius: 1.75rem;
-        border: 1px solid rgba(8, 25, 255, 0.28);
+        border: 1px solid rgba(107, 46, 48, 0.28);
         background: linear-gradient(135deg, rgba(var(--tool-gold-rgb), 0.2) 0%, rgba(246, 242, 228, 0.92) 100%);
         padding: 1.5rem;
-        box-shadow: 0 26px 40px rgba(8, 25, 255, 0.18);
+        box-shadow: 0 26px 40px rgba(107, 46, 48, 0.18);
     }
     .tool-price-note {
         font-size: 0.8rem;
@@ -499,7 +499,7 @@
                             <span class="tool-overview-value text-orange-500">
                                 @if(!is_null($tool->price))
                                     {{ number_format($tool->price, 2) }}
-                                    <span class="text-sm font-semibold text-slate-500">AED</span>
+                                    <span class="text-sm font-semibold text-slate-500">JOD</span>
                                 @else
                                     <span class="text-sm font-semibold text-slate-500">Not available right now</span>
                                 @endif
@@ -532,7 +532,7 @@
                             </div>
                             <div class="text-sm text-slate-600 font-semibold">
                                 @if(!is_null($tool->price))
-                                    Current price: {{ number_format($tool->price, 2) }} AED
+                                    Current price: {{ number_format($tool->price, 2) }} JOD
                                 @else
                                     Price varies by retailer
                                 @endif
@@ -560,7 +560,7 @@
                     <div class="tool-cta-group">
                         @if($tool->amazon_url)
                             <a href="{{ $tool->amazon_url }}" target="_blank" rel="noopener"
-                               class="w-full inline-flex items-center justify-center gap-2 px-6 py-3 text-sm font-semibold text-white bg-[#0819ff] hover:bg-[#0f78ad] transition-colors shadow-md rounded-xl">
+                               class="w-full inline-flex items-center justify-center gap-2 px-6 py-3 text-sm font-semibold text-white bg-[#6b2e30] hover:bg-[#7f3a3d] transition-colors shadow-md rounded-xl">
                                 <i class="fab fa-amazon text-lg"></i>
                                 <span>Continue on Amazon</span>
                                 <i class="fas fa-external-link-alt text-xs"></i>
@@ -632,7 +632,7 @@
                                 <div class="flex items-center justify-between text-sm text-slate-500">
                                     <span class="font-bold text-orange-500">
                                         @if(!is_null($relatedTool->price))
-                                            {{ number_format($relatedTool->price, 2) }} AED
+                                            {{ number_format($relatedTool->price, 2) }} JOD
                                         @else
                                             Unavailable
                                         @endif
@@ -981,6 +981,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 </script>
 @endpush
+
 
 
 

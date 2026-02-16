@@ -23,7 +23,7 @@ return new class extends Migration
                 ->nullOnDelete();
             $table->decimal('percentage', 5, 2)->default(0);
             $table->decimal('amount', 10, 2)->default(0);
-            $table->string('currency', 3)->default(config('finance.default_currency', 'USD'));
+            $table->string('currency', 3)->default(config('finance.default_currency', 'JOD'));
             $table->enum('status', ['pending', 'distributed', 'cancelled'])->default('pending');
             $table->timestamp('distributed_at')->nullable();
             $table->timestamp('cancelled_at')->nullable();
@@ -45,3 +45,4 @@ return new class extends Migration
         Schema::dropIfExists('booking_revenue_shares');
     }
 };
+

@@ -43,19 +43,19 @@ class StripeBookingController extends Controller
 
         if ($existingBooking && $existingBooking->status === 'confirmed' && $existingBooking->payment_status === 'paid') {
             throw ValidationException::withMessages([
-                'workshop_id' => __('لقد أكملت حجز هذه الورشة بالفعل.'),
+                'workshop_id' => __('Ù„Ù‚Ø¯ Ø£ÙƒÙ…Ù„Øª Ø­Ø¬Ø² Ù‡Ø°Ù‡ Ø§Ù„ÙˆØ±Ø´Ø© Ø¨Ø§Ù„ÙØ¹Ù„.'),
             ]);
         }
 
         try {
             $intent = $this->client->createPaymentIntent(
                 amount: (float) $workshop->price,
-                currency: $workshop->currency ?? config('finance.default_currency', 'USD'),
+                currency: $workshop->currency ?? config('finance.default_currency', 'JOD'),
                 metadata: [
                     'reference_id' => 'workshop_' . $workshop->id,
                     'user_id' => (string) $user->id,
                     'workshop_id' => (string) $workshop->id,
-                    'description' => sprintf('حجز ورشة: %s', $workshop->title),
+                    'description' => sprintf('Ø­Ø¬Ø² ÙˆØ±Ø´Ø©: %s', $workshop->title),
                 ],
             );
         } catch (Throwable $exception) {
@@ -66,7 +66,7 @@ class StripeBookingController extends Controller
             ]);
 
             return response()->json([
-                'message' => 'تعذر تجهيز عملية الدفع. يرجى المحاولة لاحقاً.',
+                'message' => 'ØªØ¹Ø°Ø± ØªØ¬Ù‡ÙŠØ² Ø¹Ù…Ù„ÙŠØ© Ø§Ù„Ø¯ÙØ¹. ÙŠØ±Ø¬Ù‰ Ø§Ù„Ù…Ø­Ø§ÙˆÙ„Ø© Ù„Ø§Ø­Ù‚Ø§Ù‹.',
             ], 422);
         }
 
@@ -102,7 +102,7 @@ class StripeBookingController extends Controller
             ->first();
 
         if ($existingBooking && $existingBooking->status === 'confirmed' && $existingBooking->payment_status === 'paid') {
-            return $this->successResponse($existingBooking, 'تم تأكيد حجزك مسبقاً.');
+            return $this->successResponse($existingBooking, 'ØªÙ… ØªØ£ÙƒÙŠØ¯ Ø­Ø¬Ø²Ùƒ Ù…Ø³Ø¨Ù‚Ø§Ù‹.');
         }
 
         try {
@@ -116,7 +116,7 @@ class StripeBookingController extends Controller
             ]);
 
             return response()->json([
-                'message' => 'تعذر التحقق من عملية الدفع. يرجى المحاولة مرة أخرى.',
+                'message' => 'ØªØ¹Ø°Ø± Ø§Ù„ØªØ­Ù‚Ù‚ Ù…Ù† Ø¹Ù…Ù„ÙŠØ© Ø§Ù„Ø¯ÙØ¹. ÙŠØ±Ø¬Ù‰ Ø§Ù„Ù…Ø­Ø§ÙˆÙ„Ø© Ù…Ø±Ø© Ø£Ø®Ø±Ù‰.',
             ], 422);
         }
 
@@ -124,11 +124,11 @@ class StripeBookingController extends Controller
 
         if ($status !== 'succeeded') {
             return response()->json([
-                'message' => 'لم يتم تأكيد عملية الدفع بعد. يرجى المحاولة مجدداً.',
+                'message' => 'Ù„Ù… ÙŠØªÙ… ØªØ£ÙƒÙŠØ¯ Ø¹Ù…Ù„ÙŠØ© Ø§Ù„Ø¯ÙØ¹ Ø¨Ø¹Ø¯. ÙŠØ±Ø¬Ù‰ Ø§Ù„Ù…Ø­Ø§ÙˆÙ„Ø© Ù…Ø¬Ø¯Ø¯Ø§Ù‹.',
             ], 422);
         }
 
-        $currency = strtoupper($intent['currency'] ?? ($workshop->currency ?? config('finance.default_currency', 'USD')));
+        $currency = strtoupper($intent['currency'] ?? ($workshop->currency ?? config('finance.default_currency', 'JOD')));
         $amountReceived = $intent['amount_received'] ?? $intent['amount'];
 
         if ($amountReceived === null) {
@@ -137,7 +137,7 @@ class StripeBookingController extends Controller
             ]);
 
             return response()->json([
-                'message' => 'لم نتمكن من التحقق من قيمة الدفع. تواصل مع الدعم.',
+                'message' => 'Ù„Ù… Ù†ØªÙ…ÙƒÙ† Ù…Ù† Ø§Ù„ØªØ­Ù‚Ù‚ Ù…Ù† Ù‚ÙŠÙ…Ø© Ø§Ù„Ø¯ÙØ¹. ØªÙˆØ§ØµÙ„ Ù…Ø¹ Ø§Ù„Ø¯Ø¹Ù….',
             ], 422);
         }
 
@@ -152,7 +152,7 @@ class StripeBookingController extends Controller
             ]);
 
             return response()->json([
-                'message' => 'قيمة الدفع لا تطابق سعر الورشة. تم إلغاء العملية تلقائياً.',
+                'message' => 'Ù‚ÙŠÙ…Ø© Ø§Ù„Ø¯ÙØ¹ Ù„Ø§ ØªØ·Ø§Ø¨Ù‚ Ø³Ø¹Ø± Ø§Ù„ÙˆØ±Ø´Ø©. ØªÙ… Ø¥Ù„ØºØ§Ø¡ Ø§Ù„Ø¹Ù…Ù„ÙŠØ© ØªÙ„Ù‚Ø§Ø¦ÙŠØ§Ù‹.',
             ], 422);
         }
 
@@ -169,7 +169,7 @@ class StripeBookingController extends Controller
                     'payment_method' => 'stripe',
                     'payment_amount' => $capturedAmount,
                     'payment_currency' => $currency,
-                    'notes' => 'تم إنشاء الحجز بعد الدفع الإلكتروني.',
+                    'notes' => 'ØªÙ… Ø¥Ù†Ø´Ø§Ø¡ Ø§Ù„Ø­Ø¬Ø² Ø¨Ø¹Ø¯ Ø§Ù„Ø¯ÙØ¹ Ø§Ù„Ø¥Ù„ÙƒØªØ±ÙˆÙ†ÙŠ.',
                 ]);
             }
 
@@ -183,7 +183,7 @@ class StripeBookingController extends Controller
                 'payment_currency' => $currency,
                 'confirmed_at' => now(),
                 'booking_date' => $booking->booking_date ?? now(),
-                'notes' => $booking->notes ?: 'تم الدفع إلكترونياً عبر Stripe.',
+                'notes' => $booking->notes ?: 'ØªÙ… Ø§Ù„Ø¯ÙØ¹ Ø¥Ù„ÙƒØªØ±ÙˆÙ†ÙŠØ§Ù‹ Ø¹Ø¨Ø± Stripe.',
             ])->save();
 
             return $booking->fresh();
@@ -191,13 +191,13 @@ class StripeBookingController extends Controller
 
         $this->notifyParticipant($booking, $workshop);
 
-        return $this->successResponse($booking, 'تم تأكيد حجزك بنجاح بعد الدفع عبر Stripe.');
+        return $this->successResponse($booking, 'ØªÙ… ØªØ£ÙƒÙŠØ¯ Ø­Ø¬Ø²Ùƒ Ø¨Ù†Ø¬Ø§Ø­ Ø¨Ø¹Ø¯ Ø§Ù„Ø¯ÙØ¹ Ø¹Ø¨Ø± Stripe.');
     }
 
     protected function ensureGatewayIsReady(): void
     {
         if (! $this->client->isEnabled()) {
-            abort(503, 'الدفع عبر Stripe غير مفعل حالياً.');
+            abort(503, 'Ø§Ù„Ø¯ÙØ¹ Ø¹Ø¨Ø± Stripe ØºÙŠØ± Ù…ÙØ¹Ù„ Ø­Ø§Ù„ÙŠØ§Ù‹.');
         }
     }
 
@@ -208,25 +208,25 @@ class StripeBookingController extends Controller
     {
         if (! $workshop->is_active) {
             throw ValidationException::withMessages([
-                'workshop_id' => 'هذه الورشة غير متاحة للحجز حالياً.',
+                'workshop_id' => 'Ù‡Ø°Ù‡ Ø§Ù„ÙˆØ±Ø´Ø© ØºÙŠØ± Ù…ØªØ§Ø­Ø© Ù„Ù„Ø­Ø¬Ø² Ø­Ø§Ù„ÙŠØ§Ù‹.',
             ]);
         }
 
         if ($workshop->is_completed) {
             throw ValidationException::withMessages([
-                'workshop_id' => 'انتهت هذه الورشة بالفعل.',
+                'workshop_id' => 'Ø§Ù†ØªÙ‡Øª Ù‡Ø°Ù‡ Ø§Ù„ÙˆØ±Ø´Ø© Ø¨Ø§Ù„ÙØ¹Ù„.',
             ]);
         }
 
         if ($workshop->is_fully_booked) {
             throw ValidationException::withMessages([
-                'workshop_id' => 'عذراً، تم اكتمال العدد في هذه الورشة.',
+                'workshop_id' => 'Ø¹Ø°Ø±Ø§Ù‹ØŒ ØªÙ… Ø§ÙƒØªÙ…Ø§Ù„ Ø§Ù„Ø¹Ø¯Ø¯ ÙÙŠ Ù‡Ø°Ù‡ Ø§Ù„ÙˆØ±Ø´Ø©.',
             ]);
         }
 
         if (! $workshop->is_registration_open) {
             throw ValidationException::withMessages([
-                'workshop_id' => 'انتهى موعد التسجيل لهذه الورشة.',
+                'workshop_id' => 'Ø§Ù†ØªÙ‡Ù‰ Ù…ÙˆØ¹Ø¯ Ø§Ù„ØªØ³Ø¬ÙŠÙ„ Ù„Ù‡Ø°Ù‡ Ø§Ù„ÙˆØ±Ø´Ø©.',
             ]);
         }
     }
@@ -238,7 +238,7 @@ class StripeBookingController extends Controller
     {
         if ((float) $workshop->price <= 0) {
             throw ValidationException::withMessages([
-                'workshop_id' => 'لا يمكن تفعيل الدفع الإلكتروني لورشة مجانية.',
+                'workshop_id' => 'Ù„Ø§ ÙŠÙ…ÙƒÙ† ØªÙØ¹ÙŠÙ„ Ø§Ù„Ø¯ÙØ¹ Ø§Ù„Ø¥Ù„ÙƒØªØ±ÙˆÙ†ÙŠ Ù„ÙˆØ±Ø´Ø© Ù…Ø¬Ø§Ù†ÙŠØ©.',
             ]);
         }
     }
@@ -281,3 +281,4 @@ class StripeBookingController extends Controller
         ]);
     }
 }
+

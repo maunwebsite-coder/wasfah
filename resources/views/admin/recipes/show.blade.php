@@ -32,7 +32,7 @@
         border: 1px solid #f3f4f6;
     }
     .btn-primary {
-        background: linear-gradient(135deg, #0819ff 0%, #0f78ad 100%);
+        background: linear-gradient(135deg, #6b2e30 0%, #7f3a3d 100%);
         border: none;
         color: white;
         padding: 0.75rem 1.5rem;
@@ -43,9 +43,9 @@
         display: inline-block;
     }
     .btn-primary:hover {
-        background: linear-gradient(135deg, #0f78ad 0%, #0b344f 100%);
+        background: linear-gradient(135deg, #7f3a3d 0%, #4d1f22 100%);
         transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(8, 25, 255, 0.4);
+        box-shadow: 0 4px 12px rgba(107, 46, 48, 0.4);
     }
     .btn-secondary {
         background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
@@ -124,11 +124,11 @@
     }
     .info-icon {
         width: 1.5rem;
-        color: #0819ff;
+        color: #6b2e30;
         margin-left: 1rem;
     }
     .step-number {
-        background: #0819ff;
+        background: #6b2e30;
         color: white;
         width: 2rem;
         height: 2rem;

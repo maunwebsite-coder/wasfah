@@ -1,0 +1,2094 @@
+:root {
+    --dolci-cream: #f8f3ec;
+    --dolci-beige: #efe4d6;
+    --dolci-cocoa: #6b2e30;
+    --dolci-espresso: #6b2e30;
+    --dolci-espresso-deep: #6b2e30;
+    --dolci-gold: #c7a66a;
+    --dolci-white: #fffdf8;
+    --dolci-text: #6b2e30;
+    --dolci-muted: #6b2e30;
+    --dolci-border: #dfcfbc;
+    --dolci-success: #2f7a4a;
+    --dolci-error: #9f3a30;
+    --dolci-shadow: 0 16px 40px rgba(107, 46, 48, 0.12);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body.dolci-body {
+    margin: 0;
+    font-family: 'Manrope', sans-serif;
+    color: var(--dolci-text);
+    background:
+        radial-gradient(circle at top left, rgba(199, 166, 106, 0.16), transparent 40%),
+        radial-gradient(circle at bottom right, rgba(107, 46, 48, 0.08), transparent 50%),
+        var(--dolci-cream);
+    line-height: 1.6;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+    margin: 0 0 0.8rem;
+    font-family: 'Cormorant Garamond', serif;
+    letter-spacing: 0.2px;
+    color: var(--dolci-espresso-deep);
+}
+
+h1 {
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    line-height: 1.1;
+}
+
+h2 {
+    font-size: clamp(1.6rem, 3vw, 2.4rem);
+}
+
+p {
+    margin: 0 0 1rem;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+img {
+    max-width: 100%;
+    display: block;
+}
+
+.dolci-main {
+    min-height: 58vh;
+}
+
+.dolci-container {
+    width: min(1200px, calc(100% - 2rem));
+    margin-inline: auto;
+}
+
+.dolci-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    backdrop-filter: blur(8px);
+    background: rgba(248, 243, 236, 0.9);
+    border-bottom: 1px solid var(--dolci-border);
+}
+
+.dolci-header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.85rem 0;
+}
+
+.dolci-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+}
+
+.dolci-nav {
+    display: none;
+    align-items: center;
+    gap: 1rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+.dolci-nav a:hover,
+.dolci-link-muted:hover {
+    color: var(--dolci-cocoa);
+}
+
+.dolci-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.dolci-cart-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.45rem 0.9rem;
+    border-radius: 999px;
+    border: 1px solid var(--dolci-border);
+    background: var(--dolci-white);
+    font-weight: 700;
+}
+
+.dolci-cart-count {
+    min-width: 1.45rem;
+    height: 1.45rem;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--dolci-espresso);
+    color: #fff;
+    font-size: 0.76rem;
+}
+
+.dolci-link-muted {
+    font-size: 0.86rem;
+    color: var(--dolci-muted);
+}
+
+.dolci-alert {
+    width: min(1200px, calc(100% - 2rem));
+    margin: 1rem auto 0;
+    padding: 0.9rem 1rem;
+    border-radius: 12px;
+    border: 1px solid transparent;
+    font-size: 0.92rem;
+}
+
+.dolci-alert ul {
+    margin: 0;
+    padding-left: 1rem;
+}
+
+.dolci-alert-success {
+    color: var(--dolci-success);
+    background: #ecf9f1;
+    border-color: #b9e8ca;
+}
+
+.dolci-alert-error {
+    color: var(--dolci-error);
+    background: #fcedeb;
+    border-color: #f4c7c1;
+}
+
+.dolci-section {
+    padding: 3.5rem 0;
+}
+
+.dolci-section-tight {
+    padding-top: 2rem;
+}
+
+.dolci-kicker {
+    margin-bottom: 0.5rem;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--dolci-cocoa);
+    font-weight: 700;
+}
+
+.dolci-hero {
+    padding: 3rem 0 1.5rem;
+}
+
+.dolci-hero-grid {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.dolci-hero-copy {
+    background: linear-gradient(140deg, rgba(255, 253, 248, 0.96), rgba(239, 228, 214, 0.76));
+    border: 1px solid var(--dolci-border);
+    border-radius: 26px;
+    padding: 2rem;
+    box-shadow: var(--dolci-shadow);
+}
+
+.dolci-hero-copy p {
+    color: var(--dolci-muted);
+}
+
+.dolci-hero-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    min-height: 320px;
+    border-radius: 26px;
+    box-shadow: var(--dolci-shadow);
+}
+
+.dolci-hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7rem;
+    margin-top: 1.25rem;
+}
+
+.dolci-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    border-radius: 12px;
+    border: 1px solid transparent;
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    font-weight: 700;
+    transition: transform 0.2s ease, opacity 0.2s ease, background-color 0.2s ease;
+}
+
+.dolci-btn:hover {
+    transform: translateY(-1px);
+}
+
+.dolci-btn-primary {
+    background: var(--dolci-espresso);
+    color: #fff;
+}
+
+.dolci-btn-primary:hover {
+    background: var(--dolci-cocoa);
+}
+
+.dolci-btn-secondary {
+    background: transparent;
+    color: var(--dolci-cocoa);
+    border-color: var(--dolci-cocoa);
+}
+
+.dolci-btn-compact {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
+    background: var(--dolci-espresso);
+    color: #fff;
+}
+
+.dolci-btn-link {
+    background: transparent;
+    color: var(--dolci-error);
+    border: 0;
+    padding: 0;
+}
+
+.dolci-btn-block {
+    width: 100%;
+}
+
+.dolci-badge,
+.dolci-pill {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 999px;
+    font-size: 0.76rem;
+    font-weight: 700;
+    padding: 0.3rem 0.6rem;
+    background: rgba(255, 255, 255, 0.8);
+    border: 1px solid var(--dolci-border);
+}
+
+.dolci-seasonal-banner {
+    background: linear-gradient(160deg, #fffaf3, #f2dfc6);
+    border: 1px solid var(--dolci-border);
+    border-radius: 20px;
+    padding: 1.2rem;
+    display: grid;
+    gap: 1rem;
+    align-items: center;
+}
+
+.dolci-seasonal-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.dolci-countdown strong {
+    display: block;
+    margin: 0.35rem 0 0.8rem;
+    font-size: 1.15rem;
+}
+
+.dolci-section-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.2rem;
+    flex-wrap: wrap;
+}
+
+.dolci-product-grid {
+    display: grid;
+    gap: 1rem;
+}
+
+.dolci-product-card {
+    background: var(--dolci-white);
+    border: 1px solid var(--dolci-border);
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 8px 22px rgba(107, 46, 48, 0.07);
+}
+
+.dolci-product-card img {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+}
+
+.dolci-product-card-body {
+    padding: 1rem;
+}
+
+.dolci-product-card-body p {
+    color: var(--dolci-muted);
+    font-size: 0.92rem;
+}
+
+.dolci-product-card-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.6rem;
+}
+
+.dolci-product-tags {
+    display: flex;
+    gap: 0.45rem;
+    margin-bottom: 0.4rem;
+}
+
+.dolci-product-tags span {
+    font-size: 0.72rem;
+    border: 1px solid var(--dolci-border);
+    border-radius: 999px;
+    padding: 0.2rem 0.55rem;
+    color: var(--dolci-cocoa);
+    background: #fff7ec;
+}
+
+.dolci-trust-row {
+    display: grid;
+    gap: 0.8rem;
+}
+
+.dolci-trust-row > div {
+    background: rgba(255, 253, 248, 0.9);
+    border: 1px solid var(--dolci-border);
+    border-radius: 14px;
+    padding: 0.9rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.dolci-trust-row strong {
+    color: var(--dolci-espresso);
+}
+
+.dolci-trust-row span {
+    color: var(--dolci-muted);
+    font-size: 0.86rem;
+}
+
+.dolci-review-grid,
+.dolci-instagram-grid,
+.dolci-three-cols,
+.dolci-thumb-grid,
+.dolci-faq-list {
+    display: grid;
+    gap: 1rem;
+}
+
+.dolci-review-card,
+.dolci-card-note,
+.dolci-faq-list article,
+.dolci-order-status-card {
+    border-radius: 16px;
+    border: 1px solid var(--dolci-border);
+    background: var(--dolci-white);
+    padding: 1rem;
+}
+
+.dolci-stars {
+    color: #c28b34;
+    letter-spacing: 1px;
+    margin-bottom: 0.4rem;
+}
+
+.dolci-instagram-item img {
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 14px;
+}
+
+.dolci-popup {
+    position: fixed;
+    inset: 0;
+    background: rgba(20, 12, 8, 0.55);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    z-index: 100;
+}
+
+.dolci-popup.show {
+    display: flex;
+}
+
+.dolci-popup-card {
+    width: min(460px, 100%);
+    border-radius: 18px;
+    background: var(--dolci-white);
+    padding: 1.4rem;
+    border: 1px solid var(--dolci-border);
+    position: relative;
+}
+
+.dolci-popup-close {
+    position: absolute;
+    right: 0.8rem;
+    top: 0.45rem;
+    background: transparent;
+    border: 0;
+    font-size: 1.6rem;
+    cursor: pointer;
+}
+
+.dolci-breadcrumbs {
+    margin-bottom: 1rem;
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+    font-size: 0.9rem;
+    color: var(--dolci-muted);
+}
+
+.dolci-product-layout,
+.dolci-checkout-layout,
+.dolci-cart-layout,
+.dolci-split,
+.dolci-order-meta-grid,
+.dolci-success-grid,
+.dolci-admin-metrics,
+.dolci-form-grid-2,
+.dolci-form-grid-4 {
+    display: grid;
+    gap: 1rem;
+}
+
+.dolci-product-main-image img,
+.dolci-rounded-img {
+    border-radius: 18px;
+    min-height: 240px;
+    object-fit: cover;
+    width: 100%;
+}
+
+.dolci-thumb {
+    border: 1px solid var(--dolci-border);
+    border-radius: 12px;
+    padding: 0;
+    overflow: hidden;
+    background: #fff;
+    cursor: pointer;
+}
+
+.dolci-thumb img {
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+}
+
+.dolci-form-card,
+.dolci-order-summary,
+.dolci-success-box,
+.dolci-empty-state,
+.dolci-admin-table-wrap {
+    border: 1px solid var(--dolci-border);
+    background: var(--dolci-white);
+    border-radius: 18px;
+    padding: 1rem;
+}
+
+.dolci-form-card label {
+    display: block;
+    margin-bottom: 0.4rem;
+    font-weight: 700;
+    font-size: 0.9rem;
+}
+
+.dolci-form-card input,
+.dolci-form-card select,
+.dolci-form-card textarea,
+.dolci-coupon-form input {
+    width: 100%;
+    border: 1px solid var(--dolci-border);
+    border-radius: 12px;
+    padding: 0.65rem 0.75rem;
+    margin-bottom: 0.85rem;
+    font: inherit;
+    color: var(--dolci-text);
+    background: #fffcf7;
+}
+
+.dolci-size-grid,
+.dolci-inline-options,
+.dolci-inline-badges,
+.dolci-summary-line-item,
+.dolci-summary-row,
+.dolci-cart-item,
+.dolci-cart-actions,
+.dolci-coupon-form,
+.dolci-filter-row,
+.dolci-admin-head-actions,
+.dolci-admin-actions,
+.dolci-form-inline,
+.dolci-check-stack {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.dolci-size-option {
+    flex: 1 1 160px;
+    border: 1px solid var(--dolci-border);
+    border-radius: 12px;
+    padding: 0.5rem 0.65rem;
+    background: #fffcf7;
+}
+
+.dolci-size-option input {
+    width: auto;
+    margin: 0 0.4rem 0 0;
+}
+
+.dolci-form-grid-4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.dolci-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.dolci-price-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.8rem;
+    margin-top: 0.8rem;
+}
+
+.dolci-trust-mini {
+    margin-top: 1rem;
+    color: var(--dolci-muted);
+    font-size: 0.9rem;
+}
+
+.dolci-cart-item img {
+    width: 90px;
+    height: 90px;
+    border-radius: 12px;
+    object-fit: cover;
+}
+
+.dolci-cart-item {
+    align-items: flex-start;
+    border-bottom: 1px solid var(--dolci-border);
+    padding: 0.9rem 0;
+}
+
+.dolci-cart-item:last-child {
+    border-bottom: 0;
+}
+
+.dolci-cart-actions {
+    margin-left: auto;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.dolci-order-summary h3,
+.dolci-form-card h3 {
+    margin-top: 0;
+}
+
+.dolci-summary-row,
+.dolci-summary-line-item {
+    justify-content: space-between;
+    font-size: 0.9rem;
+}
+
+.dolci-summary-total {
+    font-weight: 800;
+    border-top: 1px solid var(--dolci-border);
+    padding-top: 0.8rem;
+    margin-top: 0.6rem;
+}
+
+.dolci-secure-note,
+.dolci-limited {
+    color: var(--dolci-muted);
+    font-size: 0.9rem;
+}
+
+.dolci-footer {
+    margin-top: 2rem;
+    border-top: 1px solid var(--dolci-border);
+    background: rgba(239, 228, 214, 0.45);
+}
+
+.dolci-footer-grid {
+    display: grid;
+    gap: 1.2rem;
+    padding: 2rem 0;
+}
+
+.dolci-footer-links {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.dolci-footer-links li {
+    margin-bottom: 0.4rem;
+}
+
+.dolci-subscribe-form {
+    display: flex;
+    gap: 0.55rem;
+}
+
+.dolci-subscribe-form input {
+    flex: 1;
+    border: 1px solid var(--dolci-border);
+    border-radius: 10px;
+    padding: 0.6rem 0.7rem;
+}
+
+.dolci-subscribe-form button {
+    border: 0;
+    border-radius: 10px;
+    padding: 0.6rem 0.9rem;
+    background: var(--dolci-espresso);
+    color: #fff;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.dolci-footer-bottom {
+    text-align: center;
+    font-size: 0.84rem;
+    color: var(--dolci-muted);
+    padding: 0.8rem 0 1.4rem;
+}
+
+.dolci-filter-row a {
+    border: 1px solid var(--dolci-border);
+    border-radius: 999px;
+    padding: 0.35rem 0.8rem;
+    font-size: 0.86rem;
+}
+
+.dolci-filter-row a.active {
+    background: var(--dolci-espresso);
+    color: #fff;
+    border-color: var(--dolci-espresso);
+}
+
+.dolci-faq-list article h3,
+.dolci-order-meta-grid h3,
+.dolci-admin-metrics h3 {
+    margin-bottom: 0.3rem;
+}
+
+.dolci-success-box {
+    text-align: center;
+}
+
+.dolci-success-grid {
+    margin: 1.2rem 0;
+    text-align: left;
+}
+
+.dolci-contact-list {
+    margin: 0;
+    padding-left: 1rem;
+}
+
+.dolci-track-form {
+    margin-bottom: 1rem;
+}
+
+.dolci-admin-body {
+    background: #f4ece0;
+}
+
+.dolci-admin-head-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.8rem 0;
+}
+
+.dolci-admin-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+.dolci-admin-main {
+    padding-bottom: 3rem;
+}
+
+.dolci-admin-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin: 1.2rem 0;
+}
+
+.dolci-admin-metrics article {
+    border: 1px solid var(--dolci-border);
+    border-radius: 14px;
+    background: var(--dolci-white);
+    padding: 0.8rem;
+}
+
+.dolci-admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+.dolci-admin-table th,
+.dolci-admin-table td {
+    border-bottom: 1px solid var(--dolci-border);
+    padding: 0.65rem 0.55rem;
+    text-align: left;
+    vertical-align: top;
+}
+
+.dolci-admin-actions form {
+    margin: 0;
+}
+
+.dolci-admin-actions button {
+    border: 0;
+    background: transparent;
+    color: var(--dolci-error);
+    cursor: pointer;
+    padding: 0;
+}
+
+.dolci-pagination-wrap {
+    margin-top: 1rem;
+}
+
+@media (min-width: 640px) {
+    .dolci-product-grid,
+    .dolci-review-grid,
+    .dolci-instagram-grid,
+    .dolci-three-cols,
+    .dolci-thumb-grid,
+    .dolci-faq-list,
+    .dolci-trust-row,
+    .dolci-success-grid,
+    .dolci-order-meta-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .dolci-form-grid-2,
+    .dolci-hero-grid,
+    .dolci-cart-layout,
+    .dolci-checkout-layout,
+    .dolci-split {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .dolci-footer-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (min-width: 900px) {
+    .dolci-nav {
+        display: flex;
+    }
+
+    .dolci-product-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .dolci-review-grid,
+    .dolci-three-cols,
+    .dolci-admin-metrics {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .dolci-instagram-grid {
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+    }
+
+    .dolci-thumb-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .dolci-trust-row {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .dolci-product-layout {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .dolci-cart-layout {
+        grid-template-columns: 1.8fr 1fr;
+        align-items: start;
+    }
+
+    .dolci-checkout-layout {
+        grid-template-columns: 1.5fr 1fr;
+        align-items: start;
+    }
+
+    .dolci-seasonal-banner {
+        grid-template-columns: 2fr 1fr;
+        padding: 1.5rem;
+    }
+
+    .dolci-form-grid-4 {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+}
+
+/* Modern storefront refresh */
+:root {
+    --dolci-glass: linear-gradient(145deg, rgba(255, 255, 255, 0.82), rgba(255, 255, 255, 0.62));
+    --dolci-glass-border: rgba(255, 255, 255, 0.72);
+    --dolci-shadow-soft: 0 18px 42px rgba(107, 46, 48, 0.14);
+    --dolci-shadow-strong: 0 28px 64px rgba(107, 46, 48, 0.2);
+    --dolci-accent: #6b2e30;
+    --dolci-accent-strong: #6b2e30;
+}
+
+body.dolci-body:not(.dolci-admin-body) {
+    background:
+        radial-gradient(circle at 12% 10%, rgba(199, 166, 106, 0.2), transparent 32%),
+        radial-gradient(circle at 86% 8%, rgba(107, 46, 48, 0.16), transparent 36%),
+        radial-gradient(circle at 72% 84%, rgba(199, 166, 106, 0.1), transparent 40%),
+        var(--dolci-cream);
+}
+
+.dolci-main {
+    position: relative;
+    isolation: isolate;
+    padding-bottom: 2rem;
+}
+
+.dolci-main::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+        repeating-linear-gradient(
+            115deg,
+            rgba(255, 255, 255, 0.14) 0px,
+            rgba(255, 255, 255, 0.14) 1px,
+            transparent 1px,
+            transparent 24px
+        );
+    opacity: 0.3;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.dolci-container {
+    width: min(1240px, calc(100% - 2rem));
+}
+
+.dolci-header {
+    border-bottom: 0;
+    background: linear-gradient(180deg, rgba(248, 243, 236, 0.86), rgba(248, 243, 236, 0.32));
+    backdrop-filter: blur(14px) saturate(130%);
+    -webkit-backdrop-filter: blur(14px) saturate(130%);
+    box-shadow: 0 10px 30px rgba(107, 46, 48, 0.1);
+}
+
+.dolci-header::after {
+    content: "";
+    display: block;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(107, 46, 48, 0.22), transparent);
+}
+
+.dolci-header-inner {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 0.85rem;
+    margin-top: 0.58rem;
+    margin-bottom: 0.4rem;
+    padding: 0.56rem 0.78rem;
+    border-radius: 1.4rem;
+    border: 1px solid rgba(255, 255, 255, 0.72);
+    background: linear-gradient(128deg, rgba(255, 255, 255, 0.86), rgba(255, 255, 255, 0.62));
+    box-shadow: 0 14px 34px rgba(107, 46, 48, 0.14);
+}
+
+.dolci-logo {
+    letter-spacing: 0.9px;
+    color: #6b2e30;
+    line-height: 1;
+    padding: 0.15rem 0.35rem;
+    white-space: nowrap;
+}
+
+.dolci-nav {
+    justify-content: center;
+    gap: 0.35rem;
+    padding: 0.3rem;
+    border-radius: 999px;
+    border: 1px solid rgba(107, 46, 48, 0.16);
+    background: rgba(255, 255, 255, 0.56);
+}
+
+.dolci-nav a,
+.dolci-mobile-nav a {
+    padding: 0.46rem 0.8rem;
+    border-radius: 999px;
+    border: 1px solid transparent;
+    font-weight: 700;
+    font-size: 0.92rem;
+    line-height: 1;
+    color: #6b2e30;
+    transition: transform 0.2s ease, border-color 0.2s ease, color 0.2s ease, background-color 0.2s ease;
+}
+
+.dolci-nav a:hover,
+.dolci-mobile-nav a:hover {
+    transform: translateY(-1px);
+    border-color: rgba(107, 46, 48, 0.22);
+    color: var(--dolci-accent-strong);
+    background: rgba(255, 255, 255, 0.58);
+}
+
+.dolci-nav a.is-active,
+.dolci-mobile-nav a.is-active {
+    background: linear-gradient(135deg, #6b2e30, #7f3a3d);
+    color: #fff;
+    border-color: transparent;
+    box-shadow: 0 10px 22px rgba(107, 46, 48, 0.24);
+}
+
+.dolci-header-actions {
+    display: flex;
+    align-items: center;
+    justify-self: end;
+    gap: 0.55rem;
+    padding: 0.3rem 0.35rem 0.3rem 0.75rem;
+    border: 1px solid rgba(107, 46, 48, 0.15);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.62);
+}
+
+.dolci-link-muted {
+    font-size: 0.88rem;
+    font-weight: 700;
+    line-height: 1;
+    color: #6b2e30;
+}
+
+.dolci-mobile-nav {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    overflow-x: auto;
+    margin-bottom: 0.62rem;
+    padding: 0.38rem;
+    border-radius: 1rem;
+    border: 1px solid rgba(107, 46, 48, 0.14);
+    background: rgba(255, 255, 255, 0.52);
+    box-shadow: 0 10px 22px rgba(107, 46, 48, 0.1);
+    scrollbar-width: none;
+}
+
+.dolci-mobile-nav::-webkit-scrollbar {
+    display: none;
+}
+
+.dolci-mobile-nav a {
+    flex: 0 0 auto;
+}
+
+.dolci-mobile-nav a.is-highlight {
+    border-color: rgba(107, 46, 48, 0.22);
+    background: rgba(255, 255, 255, 0.72);
+    padding-inline: 0.74rem;
+}
+
+.dolci-mobile-nav a.is-highlight .dolci-cart-count {
+    margin-inline-start: 0.3rem;
+}
+
+.dolci-cart-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.48rem;
+    padding: 0.4rem 0.82rem 0.4rem 0.9rem;
+    border-radius: 999px;
+    font-weight: 800;
+    border-color: rgba(107, 46, 48, 0.2);
+    background: linear-gradient(130deg, rgba(255, 255, 255, 0.86), rgba(255, 255, 255, 0.64));
+    box-shadow: 0 12px 26px rgba(107, 46, 48, 0.16);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+}
+
+.dolci-cart-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 14px 28px rgba(107, 46, 48, 0.2);
+}
+
+.dolci-cart-btn.is-active {
+    background: linear-gradient(135deg, #6b2e30, #7f3a3d);
+    color: #fff;
+    border-color: transparent;
+}
+
+.dolci-cart-btn.is-active .dolci-cart-count {
+    background: #fff;
+    color: #6b2e30;
+    box-shadow: inset 0 0 0 1px rgba(107, 46, 48, 0.2);
+}
+
+.dolci-cart-count {
+    min-width: 1.42rem;
+    height: 1.42rem;
+    font-size: 0.75rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #6b2e30, #6b2e30);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.22);
+}
+
+.dolci-section {
+    padding: clamp(2.5rem, 5vw, 4.1rem) 0;
+}
+
+.dolci-kicker {
+    width: fit-content;
+    border: 1px solid rgba(107, 46, 48, 0.2);
+    border-radius: 999px;
+    padding: 0.25rem 0.65rem;
+    background: rgba(255, 255, 255, 0.62);
+}
+
+.dolci-page-intro,
+.dolci-panel {
+    background: var(--dolci-glass);
+    border: 1px solid var(--dolci-glass-border);
+    border-radius: 1.25rem;
+    box-shadow: var(--dolci-shadow-soft);
+    backdrop-filter: blur(10px) saturate(125%);
+    -webkit-backdrop-filter: blur(10px) saturate(125%);
+}
+
+.dolci-page-intro {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+    justify-items: start;
+    gap: 0.5rem;
+    padding: 1.1rem 1.2rem;
+}
+
+.dolci-page-intro p {
+    margin: 0;
+    color: #6b2e30;
+}
+
+.dolci-hero-home .dolci-hero-grid {
+    align-items: stretch;
+    gap: 1.25rem;
+}
+
+.dolci-hero-copy {
+    border-radius: 1.5rem;
+    box-shadow: var(--dolci-shadow-strong);
+}
+
+.dolci-hero-copy h1 {
+    font-size: clamp(2.3rem, 5vw, 3.8rem);
+}
+
+.dolci-hero-copy p {
+    font-size: 1.02rem;
+}
+
+.dolci-hero-media img {
+    border-radius: 1.5rem;
+    min-height: 360px;
+    box-shadow: var(--dolci-shadow-strong);
+}
+
+.dolci-hero-metrics,
+.dolci-shop-hero-stats,
+.dolci-seasonal-hero-stats,
+.dolci-reviews-hero-stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.6rem;
+    margin-top: 1rem;
+}
+
+.dolci-hero-metrics article,
+.dolci-shop-hero-stats article,
+.dolci-seasonal-hero-stats article,
+.dolci-reviews-hero-stats article {
+    border: 1px solid rgba(107, 46, 48, 0.2);
+    border-radius: 0.95rem;
+    background: rgba(255, 255, 255, 0.62);
+    padding: 0.58rem 0.65rem;
+    display: grid;
+    gap: 0.15rem;
+}
+
+.dolci-hero-metrics strong,
+.dolci-shop-hero-stats strong,
+.dolci-seasonal-hero-stats strong,
+.dolci-reviews-hero-stats strong {
+    color: #6b2e30;
+    font-size: 0.93rem;
+}
+
+.dolci-hero-metrics span,
+.dolci-shop-hero-stats span,
+.dolci-seasonal-hero-stats span,
+.dolci-reviews-hero-stats span {
+    color: #6b2e30;
+    font-size: 0.76rem;
+    font-weight: 600;
+}
+
+.dolci-shop-hero,
+.dolci-seasonal-hero,
+.dolci-reviews-hero {
+    border: 1px solid rgba(255, 255, 255, 0.74);
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.84), rgba(255, 247, 237, 0.74));
+    box-shadow: var(--dolci-shadow-soft);
+    border-radius: 1.2rem;
+    padding: 1.15rem 1.2rem;
+    margin-bottom: 1rem;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.dolci-shop-hero p,
+.dolci-seasonal-hero p,
+.dolci-reviews-hero p {
+    margin-bottom: 0;
+    color: #6b2e30;
+}
+
+.dolci-btn {
+    border-radius: 0.9rem;
+    font-weight: 800;
+    letter-spacing: 0.01em;
+    padding: 0.72rem 1.05rem;
+}
+
+.dolci-btn-primary {
+    background: linear-gradient(135deg, #6b2e30, #6b2e30);
+    box-shadow: 0 14px 26px rgba(107, 46, 48, 0.24);
+}
+
+.dolci-btn-secondary {
+    border-color: rgba(107, 46, 48, 0.28);
+    background: rgba(255, 255, 255, 0.62);
+    color: #6b2e30;
+}
+
+.dolci-btn-compact {
+    background: linear-gradient(135deg, #6b2e30, #6b2e30);
+    border-radius: 0.72rem;
+    padding: 0.52rem 0.82rem;
+}
+
+.dolci-section-head {
+    margin-bottom: 1.35rem;
+}
+
+.dolci-section-head h1,
+.dolci-section-head h2 {
+    margin-bottom: 0.35rem;
+}
+
+.dolci-section-head > a {
+    padding: 0.36rem 0.72rem;
+    border-radius: 999px;
+    border: 1px solid rgba(107, 46, 48, 0.22);
+    background: rgba(255, 255, 255, 0.7);
+    font-size: 0.88rem;
+    font-weight: 700;
+}
+
+.dolci-filter-row {
+    gap: 0.55rem;
+}
+
+.dolci-filter-row a {
+    border: 1px solid rgba(107, 46, 48, 0.2);
+    background: rgba(255, 255, 255, 0.68);
+    color: #6b2e30;
+    font-weight: 700;
+    box-shadow: 0 8px 18px rgba(107, 46, 48, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.dolci-filter-row a:hover {
+    transform: translateY(-1px);
+    border-color: rgba(107, 46, 48, 0.34);
+}
+
+.dolci-filter-row a.active {
+    background: linear-gradient(135deg, #6b2e30, #6b2e30);
+    box-shadow: 0 12px 24px rgba(107, 46, 48, 0.22);
+}
+
+.dolci-product-grid {
+    gap: 1.2rem;
+}
+
+.dolci-product-card {
+    position: relative;
+    border: 1px solid rgba(255, 255, 255, 0.78);
+    background: linear-gradient(150deg, rgba(255, 255, 255, 0.9), rgba(255, 249, 242, 0.82));
+    box-shadow: var(--dolci-shadow-soft);
+    backdrop-filter: blur(9px);
+    -webkit-backdrop-filter: blur(9px);
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.dolci-product-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(140deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0));
+    pointer-events: none;
+}
+
+.dolci-product-card:hover {
+    transform: translateY(-8px);
+    border-color: rgba(107, 46, 48, 0.28);
+    box-shadow: var(--dolci-shadow-strong);
+}
+
+.dolci-product-card img {
+    transition: transform 0.35s ease;
+}
+
+.dolci-product-card:hover img {
+    transform: scale(1.04);
+}
+
+.dolci-product-card-body {
+    padding: 1.05rem;
+}
+
+.dolci-product-card-body p {
+    font-size: 0.9rem;
+    min-height: 2.9rem;
+}
+
+.dolci-product-card-bottom span {
+    font-weight: 800;
+    color: #6b2e30;
+}
+
+.dolci-product-tags span {
+    background: rgba(255, 247, 236, 0.82);
+    border-color: rgba(107, 46, 48, 0.24);
+    color: #6b2e30;
+}
+
+.dolci-seasonal-banner {
+    border-radius: 1.35rem;
+    background: linear-gradient(140deg, rgba(255, 250, 243, 0.9), rgba(243, 227, 203, 0.78));
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    box-shadow: var(--dolci-shadow-strong);
+    backdrop-filter: blur(9px);
+    -webkit-backdrop-filter: blur(9px);
+}
+
+.dolci-trust-row > div {
+    border: 1px solid rgba(255, 255, 255, 0.78);
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.88), rgba(255, 249, 241, 0.8));
+    box-shadow: 0 14px 30px rgba(107, 46, 48, 0.1);
+}
+
+.dolci-review-card {
+    position: relative;
+    border: 1px solid rgba(255, 255, 255, 0.76);
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.88), rgba(255, 250, 242, 0.8));
+    box-shadow: var(--dolci-shadow-soft);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.dolci-review-card::before {
+    content: '"';
+    position: absolute;
+    top: -0.28rem;
+    right: 0.8rem;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.6rem;
+    color: rgba(107, 46, 48, 0.32);
+    line-height: 1;
+}
+
+.dolci-review-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--dolci-shadow-strong);
+}
+
+.dolci-stars {
+    font-size: 1rem;
+    letter-spacing: 2px;
+}
+
+.dolci-instagram-item {
+    border-radius: 0.95rem;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.64);
+    box-shadow: 0 10px 24px rgba(107, 46, 48, 0.14);
+}
+
+.dolci-instagram-item img {
+    transition: transform 0.28s ease, filter 0.28s ease;
+}
+
+.dolci-instagram-item:hover img {
+    transform: scale(1.06);
+    filter: saturate(1.08);
+}
+
+.dolci-footer {
+    border-top: 0;
+    margin-top: 2.5rem;
+    background: linear-gradient(180deg, rgba(239, 228, 214, 0.4), rgba(232, 215, 196, 0.78));
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.58);
+}
+
+.dolci-footer-grid > div {
+    border: 1px solid rgba(255, 255, 255, 0.64);
+    border-radius: 1rem;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.54);
+    box-shadow: 0 12px 28px rgba(107, 46, 48, 0.08);
+}
+
+.dolci-subscribe-form input {
+    background: rgba(255, 255, 255, 0.86);
+}
+
+.dolci-subscribe-form button {
+    background: linear-gradient(135deg, #6b2e30, #6b2e30);
+}
+
+.dolci-shop-section .dolci-page-intro,
+.dolci-seasonal-section .dolci-page-intro,
+.dolci-reviews-section .dolci-page-intro {
+    margin-bottom: 1.25rem;
+}
+
+.dolci-page-home .dolci-main {
+    background:
+        radial-gradient(circle at 18% 16%, rgba(255, 255, 255, 0.22), transparent 30%),
+        radial-gradient(circle at 80% 22%, rgba(255, 246, 232, 0.28), transparent 38%);
+}
+
+.dolci-page-shop .dolci-main,
+.dolci-page-seasonal .dolci-main,
+.dolci-page-reviews .dolci-main {
+    background:
+        radial-gradient(circle at 12% 6%, rgba(255, 255, 255, 0.2), transparent 34%),
+        radial-gradient(circle at 84% 10%, rgba(255, 247, 236, 0.22), transparent 36%);
+}
+
+.dolci-product-focus .dolci-product-layout {
+    gap: 1.2rem;
+    align-items: start;
+}
+
+.dolci-product-gallery .dolci-product-main-image img {
+    border-radius: 1.2rem;
+    box-shadow: var(--dolci-shadow-strong);
+}
+
+.dolci-thumb {
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.dolci-thumb:hover,
+.dolci-thumb.is-active {
+    transform: translateY(-2px);
+    border-color: rgba(107, 46, 48, 0.4);
+    box-shadow: 0 12px 22px rgba(107, 46, 48, 0.2);
+}
+
+.dolci-product-panel {
+    background: var(--dolci-glass);
+    border: 1px solid var(--dolci-glass-border);
+    border-radius: 1.2rem;
+    padding: 1.1rem;
+    box-shadow: var(--dolci-shadow-soft);
+    backdrop-filter: blur(10px) saturate(125%);
+    -webkit-backdrop-filter: blur(10px) saturate(125%);
+}
+
+.dolci-product-panel .dolci-product-sub {
+    color: #6b2e30;
+    font-weight: 700;
+    margin-bottom: 0.55rem;
+}
+
+.dolci-product-panel > p {
+    color: #6b2e30;
+}
+
+.dolci-product-highlights {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.5rem;
+    margin: 0.75rem 0 0.95rem;
+}
+
+.dolci-product-highlights span {
+    border: 1px solid rgba(107, 46, 48, 0.22);
+    border-radius: 0.85rem;
+    padding: 0.5rem 0.55rem;
+    background: rgba(255, 255, 255, 0.66);
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #6b2e30;
+}
+
+.dolci-product-panel .dolci-inline-badges {
+    margin: 0.75rem 0 0.85rem;
+}
+
+.dolci-product-panel .dolci-pill {
+    background: rgba(255, 255, 255, 0.8);
+}
+
+.dolci-countdown-inline,
+.dolci-countdown {
+    border: 1px solid rgba(107, 46, 48, 0.2);
+    border-radius: 0.9rem;
+    padding: 0.68rem 0.78rem;
+    background: rgba(255, 255, 255, 0.62);
+}
+
+.dolci-countdown-inline p,
+.dolci-countdown p {
+    margin: 0;
+}
+
+.dolci-trust-mini {
+    margin-top: 0.85rem;
+    border: 1px dashed rgba(107, 46, 48, 0.24);
+    border-radius: 0.9rem;
+    padding: 0.72rem 0.8rem;
+    background: rgba(255, 255, 255, 0.55);
+}
+
+.dolci-trust-mini p {
+    margin-bottom: 0.4rem;
+}
+
+.dolci-trust-mini p:last-child {
+    margin-bottom: 0;
+}
+
+.dolci-form-card {
+    margin-top: 1rem;
+    border-color: rgba(255, 255, 255, 0.76);
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.88), rgba(255, 252, 247, 0.78));
+}
+
+.dolci-size-option {
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease, background-color 0.2s ease;
+}
+
+.dolci-size-option:hover {
+    transform: translateY(-1px);
+    border-color: rgba(107, 46, 48, 0.32);
+}
+
+.dolci-size-option:has(input:checked) {
+    border-color: rgba(107, 46, 48, 0.48);
+    background: linear-gradient(140deg, rgba(255, 251, 245, 0.9), rgba(244, 230, 212, 0.66));
+    box-shadow: inset 0 0 0 1px rgba(107, 46, 48, 0.22);
+}
+
+.dolci-about-values .dolci-three-cols article {
+    border: 1px solid rgba(255, 255, 255, 0.76);
+    border-radius: 1rem;
+    padding: 1rem;
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.84), rgba(255, 249, 242, 0.74));
+    box-shadow: var(--dolci-shadow-soft);
+}
+
+.dolci-about-journey {
+    padding-top: 0;
+}
+
+.dolci-about-timeline {
+    display: grid;
+    gap: 0.8rem;
+}
+
+.dolci-about-timeline article {
+    border: 1px solid rgba(255, 255, 255, 0.74);
+    border-radius: 1rem;
+    padding: 0.9rem 1rem;
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.86), rgba(255, 250, 242, 0.74));
+    box-shadow: var(--dolci-shadow-soft);
+}
+
+.dolci-about-timeline span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.25rem 0.55rem;
+    border-radius: 999px;
+    background: rgba(107, 46, 48, 0.1);
+    color: #6b2e30;
+    border: 1px solid rgba(107, 46, 48, 0.2);
+    font-size: 0.74rem;
+    font-weight: 800;
+    margin-bottom: 0.35rem;
+}
+
+.dolci-about-timeline h3 {
+    margin-bottom: 0.28rem;
+}
+
+.dolci-about-media .dolci-rounded-img {
+    box-shadow: var(--dolci-shadow-strong);
+}
+
+.dolci-hero-copy,
+.dolci-product-card,
+.dolci-review-card,
+.dolci-about-values .dolci-three-cols article,
+.dolci-product-panel,
+.dolci-seasonal-banner,
+.dolci-page-intro {
+    animation: dolci-rise-in 0.6s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+@keyframes dolci-rise-in {
+    0% {
+        opacity: 0;
+        transform: translate3d(0, 12px, 0) scale(0.992);
+    }
+    100% {
+        opacity: 1;
+        transform: translate3d(0, 0, 0) scale(1);
+    }
+}
+
+@media (min-width: 900px) {
+    .dolci-mobile-nav {
+        display: none;
+    }
+
+    .dolci-product-panel {
+        position: sticky;
+        top: 7.2rem;
+    }
+
+    .dolci-about-timeline {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 899px) {
+    .dolci-nav {
+        display: none;
+    }
+
+    .dolci-header-inner {
+        grid-template-columns: 1fr auto;
+        padding: 0.52rem 0.58rem;
+        border-radius: 1rem;
+    }
+
+    .dolci-logo {
+        font-size: 1.82rem;
+    }
+
+    .dolci-header-actions {
+        padding: 0;
+        border: 0;
+        background: transparent;
+        box-shadow: none;
+        gap: 0.45rem;
+    }
+
+    .dolci-cart-btn {
+        padding: 0.38rem 0.68rem 0.38rem 0.74rem;
+    }
+
+    .dolci-hero-metrics,
+    .dolci-shop-hero-stats,
+    .dolci-seasonal-hero-stats,
+    .dolci-reviews-hero-stats,
+    .dolci-product-highlights {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 640px) {
+    .dolci-container {
+        width: calc(100% - 1.2rem);
+    }
+
+    .dolci-header-inner {
+        padding: 0.45rem 0.5rem;
+    }
+
+    .dolci-logo {
+        font-size: 1.7rem;
+    }
+
+    .dolci-link-muted {
+        display: none;
+    }
+
+    .dolci-cart-btn {
+        padding: 0.34rem 0.62rem 0.34rem 0.66rem;
+    }
+
+    .dolci-cart-count {
+        min-width: 1.26rem;
+        height: 1.26rem;
+        font-size: 0.7rem;
+    }
+
+    .dolci-mobile-nav {
+        padding: 0.32rem;
+        gap: 0.35rem;
+    }
+
+    .dolci-mobile-nav a {
+        padding: 0.4rem 0.66rem;
+        font-size: 0.84rem;
+    }
+
+    .dolci-hero-copy,
+    .dolci-hero-media img {
+        border-radius: 1.1rem;
+    }
+
+    .dolci-page-intro {
+        padding: 0.9rem 0.95rem;
+    }
+
+    .dolci-shop-hero,
+    .dolci-seasonal-hero,
+    .dolci-reviews-hero {
+        padding: 0.92rem 0.95rem;
+    }
+
+    .dolci-hero-metrics,
+    .dolci-shop-hero-stats,
+    .dolci-seasonal-hero-stats,
+    .dolci-reviews-hero-stats,
+    .dolci-product-highlights {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .dolci-about-timeline article {
+        padding: 0.82rem 0.88rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .dolci-hero-copy,
+    .dolci-product-card,
+    .dolci-review-card,
+    .dolci-about-values .dolci-three-cols article,
+    .dolci-product-panel,
+    .dolci-seasonal-banner,
+    .dolci-page-intro {
+        animation: none !important;
+    }
+}
+
+/* Header rebuild v2 */
+body.dolci-body.dolci-lock-scroll {
+    overflow: hidden;
+}
+
+.dolci-topbar-v2 {
+    position: sticky;
+    top: 0;
+    margin-top: 0;
+    z-index: 80;
+    padding: 0 0 8px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    background: #f4ebe6;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    box-shadow: none;
+}
+
+.dolci-topbar-v2::after {
+    display: none;
+}
+
+.dolci-topbar-v2 .dolci-topbar-shell {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 0.8rem;
+    margin-top: 0;
+    padding: 6px 0 0;
+    min-height: auto;
+    border-radius: 1.2rem;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+}
+
+.dolci-topbar-v2 .dolci-logo-v2 {
+    display: inline-grid;
+    gap: 0.02rem;
+    align-items: center;
+    line-height: 1;
+    padding: 0.32rem 0.48rem 0.32rem 0.38rem;
+}
+
+.dolci-topbar-v2 .dolci-logo-word {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.8rem, 2vw, 2.2rem);
+    font-weight: 700;
+    letter-spacing: 0.7px;
+    color: #6b2e30;
+}
+
+.dolci-topbar-v2 .dolci-logo-tag {
+    font-size: 0.62rem;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    font-weight: 800;
+    color: rgba(107, 46, 48, 0.72);
+}
+
+.dolci-topbar-v2 .dolci-primary-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.34rem;
+    padding: 0.3rem;
+    border-radius: 999px;
+    border: 1px solid rgba(107, 46, 48, 0.15);
+    background: rgba(255, 255, 255, 0.58);
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+.dolci-topbar-v2 .dolci-primary-nav::-webkit-scrollbar {
+    display: none;
+}
+
+.dolci-topbar-v2 .dolci-nav-link {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.46rem 0.75rem;
+    border-radius: 999px;
+    border: 1px solid transparent;
+    color: #6b2e30;
+    font-size: 0.9rem;
+    font-weight: 800;
+    line-height: 1;
+    transition: transform 0.2s ease, border-color 0.2s ease, color 0.2s ease, background-color 0.2s ease;
+}
+
+.dolci-topbar-v2 .dolci-nav-link:hover {
+    transform: translateY(-1px);
+    border-color: rgba(107, 46, 48, 0.22);
+    background: rgba(255, 255, 255, 0.66);
+}
+
+.dolci-topbar-v2 .dolci-nav-link.is-active {
+    border-color: transparent;
+    color: #fff;
+    background: linear-gradient(135deg, #6b2e30, #7f3a3d);
+    box-shadow: 0 8px 20px rgba(107, 46, 48, 0.25);
+}
+
+.dolci-topbar-v2 .dolci-topbar-tools {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.42rem;
+}
+
+.dolci-topbar-v2 .dolci-track-btn,
+.dolci-topbar-v2 .dolci-user-link,
+.dolci-topbar-v2 .dolci-menu-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.2rem;
+    border-radius: 999px;
+    border: 1px solid rgba(107, 46, 48, 0.18);
+    padding: 0.4rem 0.78rem;
+    font-size: 0.82rem;
+    font-weight: 800;
+    line-height: 1;
+    color: #6b2e30;
+    background: rgba(255, 255, 255, 0.68);
+    transition: transform 0.2s ease, border-color 0.2s ease, color 0.2s ease, background-color 0.2s ease;
+}
+
+.dolci-topbar-v2 .dolci-track-btn:hover,
+.dolci-topbar-v2 .dolci-user-link:hover,
+.dolci-topbar-v2 .dolci-menu-toggle:hover {
+    transform: translateY(-1px);
+    border-color: rgba(107, 46, 48, 0.28);
+}
+
+.dolci-topbar-v2 .dolci-track-btn.is-active,
+.dolci-topbar-v2 .dolci-user-link.is-active {
+    color: #fff;
+    border-color: transparent;
+    background: linear-gradient(135deg, #6b2e30, #7f3a3d);
+    box-shadow: 0 8px 18px rgba(107, 46, 48, 0.24);
+}
+
+.dolci-topbar-v2 .dolci-cart-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.46rem;
+    min-height: 2.2rem;
+    padding: 0.3rem 0.75rem 0.3rem 0.8rem;
+    border-radius: 999px;
+    border: 1px solid rgba(107, 46, 48, 0.2);
+    background: linear-gradient(130deg, rgba(255, 255, 255, 0.88), rgba(255, 255, 255, 0.68));
+    color: #6b2e30;
+    font-size: 0.84rem;
+    font-weight: 800;
+    line-height: 1;
+    box-shadow: 0 10px 24px rgba(107, 46, 48, 0.14);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+}
+
+.dolci-topbar-v2 .dolci-cart-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 12px 26px rgba(107, 46, 48, 0.2);
+}
+
+.dolci-topbar-v2 .dolci-cart-btn.is-active {
+    color: #fff;
+    border-color: transparent;
+    background: linear-gradient(135deg, #6b2e30, #7f3a3d);
+}
+
+.dolci-topbar-v2 .dolci-cart-btn.is-active .dolci-cart-count {
+    color: #6b2e30;
+    background: #fff;
+    box-shadow: inset 0 0 0 1px rgba(107, 46, 48, 0.2);
+}
+
+.dolci-topbar-v2 .dolci-cart-count {
+    min-width: 1.4rem;
+    height: 1.4rem;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.72rem;
+    font-weight: 800;
+    color: #fff;
+    background: linear-gradient(135deg, #6b2e30, #7f3a3d);
+}
+
+.dolci-topbar-v2 .dolci-menu-toggle {
+    display: none;
+    cursor: pointer;
+}
+
+.dolci-topbar-v2 .dolci-mobile-drawer {
+    display: none;
+}
+
+.dolci-topbar-v2 .dolci-mobile-drawer.is-open {
+    display: block;
+}
+
+.dolci-topbar-v2 .dolci-mobile-drawer-backdrop {
+    position: fixed;
+    inset: 0;
+    border: 0;
+    margin: 0;
+    padding: 0;
+    background: rgba(32, 14, 14, 0.5);
+    z-index: 92;
+    cursor: pointer;
+}
+
+.dolci-topbar-v2 .dolci-mobile-drawer-panel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: min(360px, 88vw);
+    height: 100dvh;
+    z-index: 93;
+    padding: 0.85rem;
+    border-left: 1px solid rgba(107, 46, 48, 0.25);
+    background: linear-gradient(170deg, rgba(255, 252, 247, 0.98), rgba(248, 238, 224, 0.95));
+    box-shadow: -22px 0 46px rgba(107, 46, 48, 0.24);
+    overflow-y: auto;
+}
+
+.dolci-topbar-v2 .dolci-mobile-drawer-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.2rem 0.1rem 0.72rem;
+    margin-bottom: 0.72rem;
+    border-bottom: 1px solid rgba(107, 46, 48, 0.15);
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: #6b2e30;
+}
+
+.dolci-topbar-v2 .dolci-mobile-close {
+    border: 1px solid rgba(107, 46, 48, 0.22);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.72);
+    color: #6b2e30;
+    font-size: 0.78rem;
+    font-weight: 800;
+    line-height: 1;
+    padding: 0.4rem 0.72rem;
+    cursor: pointer;
+}
+
+.dolci-topbar-v2 .dolci-mobile-nav-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.5rem;
+}
+
+.dolci-topbar-v2 .dolci-mobile-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.36rem;
+    padding: 0.45rem 0.62rem;
+    border-radius: 0.82rem;
+    border: 1px solid rgba(107, 46, 48, 0.2);
+    color: #6b2e30;
+    background: rgba(255, 255, 255, 0.72);
+    font-size: 0.82rem;
+    font-weight: 800;
+    line-height: 1.1;
+    text-align: center;
+}
+
+.dolci-topbar-v2 .dolci-mobile-link.is-active {
+    border-color: transparent;
+    color: #fff;
+    background: linear-gradient(135deg, #6b2e30, #7f3a3d);
+    box-shadow: 0 10px 20px rgba(107, 46, 48, 0.22);
+}
+
+.dolci-topbar-v2 .dolci-mobile-link-cart {
+    grid-column: 1 / -1;
+    justify-content: space-between;
+    padding-inline: 0.75rem;
+}
+
+@media (max-width: 1150px) {
+    .dolci-topbar-v2 .dolci-primary-nav {
+        gap: 0.22rem;
+    }
+
+    .dolci-topbar-v2 .dolci-nav-link {
+        padding-inline: 0.62rem;
+        font-size: 0.84rem;
+    }
+}
+
+@media (max-width: 1023px) {
+    .dolci-topbar-v2 .dolci-topbar-shell {
+        grid-template-columns: minmax(0, 1fr) auto;
+        padding: 6px 0 0;
+    }
+
+    .dolci-topbar-v2 .dolci-primary-nav,
+    .dolci-topbar-v2 .dolci-track-btn {
+        display: none;
+    }
+
+    .dolci-topbar-v2 .dolci-menu-toggle {
+        display: inline-flex;
+    }
+}
+
+@media (max-width: 680px) {
+    .dolci-topbar-v2 {
+        padding: 0 0 8px;
+    }
+
+    .dolci-topbar-v2 .dolci-topbar-shell {
+        margin-top: 0;
+        border-radius: 1rem;
+        padding: 6px 0 0;
+    }
+
+    .dolci-topbar-v2 .dolci-logo-v2 {
+        padding: 0.2rem 0.3rem;
+    }
+
+    .dolci-topbar-v2 .dolci-logo-word {
+        font-size: 1.72rem;
+    }
+
+    .dolci-topbar-v2 .dolci-logo-tag {
+        display: none;
+    }
+
+    .dolci-topbar-v2 .dolci-user-link {
+        display: none;
+    }
+
+    .dolci-topbar-v2 .dolci-cart-btn {
+        min-height: 2.1rem;
+        padding: 0.25rem 0.62rem 0.25rem 0.68rem;
+        font-size: 0.8rem;
+    }
+
+    .dolci-topbar-v2 .dolci-cart-count {
+        min-width: 1.28rem;
+        height: 1.28rem;
+        font-size: 0.68rem;
+    }
+
+    .dolci-topbar-v2 .dolci-menu-toggle {
+        min-height: 2.1rem;
+        padding: 0.34rem 0.66rem;
+        font-size: 0.78rem;
+    }
+
+    .dolci-topbar-v2 .dolci-mobile-nav-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}

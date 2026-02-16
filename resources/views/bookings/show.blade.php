@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('title', 'Workshop booking details #' . $booking->id)
 
@@ -35,9 +35,9 @@
                     <p class="text-xs uppercase tracking-wider text-orange-500 font-semibold">Workshop</p>
                     <h2 class="mt-1 text-2xl font-bold text-slate-900">{{ $workshop->title ?? 'Unknown workshop' }}</h2>
                     <p class="text-sm text-slate-500">
-                        {{ optional($workshop->start_date)->locale('ar')->translatedFormat('d F Y • h:i a') }}
+                        {{ optional($workshop->start_date)->locale('ar')->translatedFormat('d F Y â€¢ h:i a') }}
                         @if($workshop?->duration)
-                            • Duration {{ $workshop->duration }} min
+                            â€¢ Duration {{ $workshop->duration }} min
                         @endif
                     </p>
                 </div>
@@ -59,7 +59,7 @@
                     </div>
                     <div class="flex items-center justify-between">
                         <dt class="font-semibold text-slate-800">Amount</dt>
-                        <dd>{{ number_format($booking->payment_amount ?? $workshop->price ?? 0, 2) }} {{ $workshop->currency ?? 'USD' }}</dd>
+                        <dd>{{ number_format($booking->payment_amount ?? $workshop->price ?? 0, 2) }} {{ $workshop->currency ?? config('finance.default_currency', 'JOD') }}</dd>
                     </div>
                     <div>
                         <dt class="font-semibold text-slate-800 mb-1">Notes</dt>
@@ -87,7 +87,7 @@
                             <span class="text-sm text-slate-500 __web-inspector-hide-shortcut__">This workshop is online-only and cannot be switched to in-person.</span>
                         </p>
                         <div class="mt-3 rounded-xl border border-slate-100 bg-slate-50 px-4 py-3 text-xs leading-relaxed text-slate-600">
-                            ننشئ غرفة Google Meet مباشرة من حسابك في Google لتبقى أنت المضيف. <span class="font-semibold text-slate-800">حساب المضيف:</span> maunwebsite@gmail.com
+                            Ù†Ù†Ø´Ø¦ ØºØ±ÙØ© Google Meet Ù…Ø¨Ø§Ø´Ø±Ø© Ù…Ù† Ø­Ø³Ø§Ø¨Ùƒ ÙÙŠ Google Ù„ØªØ¨Ù‚Ù‰ Ø£Ù†Øª Ø§Ù„Ù…Ø¶ÙŠÙ. <span class="font-semibold text-slate-800">Ø­Ø³Ø§Ø¨ Ø§Ù„Ù…Ø¶ÙŠÙ:</span> maunwebsite@gmail.com
                         </div>
                     @endif
 
@@ -145,4 +145,5 @@
     </div>
 </div>
 @endsection
+
 

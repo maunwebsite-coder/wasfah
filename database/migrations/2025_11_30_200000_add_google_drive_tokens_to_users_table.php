@@ -13,23 +13,23 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             if (! Schema::hasColumn('users', 'google_drive_email')) {
-                $table->string('google_drive_email')->nullable()->after('google_calendar_scopes');
+                $table->string('google_drive_email')->nullable();
             }
 
             if (! Schema::hasColumn('users', 'google_access_token')) {
-                $table->text('google_access_token')->nullable()->after('google_drive_email');
+                $table->text('google_access_token')->nullable();
             }
 
             if (! Schema::hasColumn('users', 'google_refresh_token')) {
-                $table->text('google_refresh_token')->nullable()->after('google_access_token');
+                $table->text('google_refresh_token')->nullable();
             }
 
             if (! Schema::hasColumn('users', 'google_expires_at')) {
-                $table->dateTime('google_expires_at')->nullable()->after('google_refresh_token');
+                $table->dateTime('google_expires_at')->nullable();
             }
 
             if (! Schema::hasColumn('users', 'google_drive_scopes')) {
-                $table->text('google_drive_scopes')->nullable()->after('google_expires_at');
+                $table->text('google_drive_scopes')->nullable();
             }
         });
     }

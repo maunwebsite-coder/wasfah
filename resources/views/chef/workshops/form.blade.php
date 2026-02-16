@@ -12,7 +12,7 @@
         'advanced' => __('chef.workshops.levels.advanced'),
     ];
     $currencies = [
-        'USD' => __('chef.workshop_form.currencies.usd'),
+        'JOD' => __('chef.workshop_form.currencies.jod'),
     ];
     $isOnline = true;
     $autoGenerateMeeting = old(
@@ -114,7 +114,7 @@
         border-radius: 1.5rem;
         overflow: hidden;
         isolation: isolate;
-        background: linear-gradient(135deg, #0b344f 0%, #0819ff 60%, #0f172a 100%);
+        background: linear-gradient(135deg, #4d1f22 0%, #6b2e30 60%, #0f172a 100%);
         box-shadow: 0 18px 46px -28px rgba(0, 0, 0, 0.6);
     }
 
@@ -164,7 +164,7 @@
         gap: 0.5rem;
         height: 100%;
         width: 100%;
-        background: linear-gradient(135deg, rgba(8, 25, 255, 0.6), rgba(15, 23, 42, 0.8));
+        background: linear-gradient(135deg, rgba(107, 46, 48, 0.6), rgba(15, 23, 42, 0.8));
         color: #e2e8f0;
         font-weight: 600;
         text-align: center;
@@ -325,7 +325,7 @@
                 <label for="currency" class="text-sm font-semibold text-slate-700">{{ __('chef.workshop_form.fields.currency.label') }}</label>
                 <select id="currency" name="currency" class="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-slate-900 shadow-inner focus:border-orange-400 focus:ring-4 focus:ring-orange-100">
                     @foreach ($currencies as $value => $label)
-                        <option value="{{ $value }}" @selected(old('currency', $workshop->currency ?? 'USD') === $value)>{{ $label }}</option>
+                        <option value="{{ $value }}" @selected(old('currency', $workshop->currency ?? config('finance.default_currency', 'JOD')) === $value)>{{ $label }}</option>
                     @endforeach
                 </select>
             </div>
@@ -645,7 +645,7 @@
                        name="image"
                        accept="image/*"
                        class="w-full rounded-2xl border border-dashed border-slate-300 bg-slate-50 px-4 py-6 text-sm text-slate-500 focus:border-orange-400 focus:ring-4 focus:ring-orange-100"
-                       data-max-size="5120"
+                       data-max-size="25600"
                        data-max-size-message="{{ __('chef.workshop_form.messages.image_max_size') }}"
                        data-error-target="#chef_workshop_image_error">
                 <p id="chef_workshop_image_error" class="text-sm text-red-600 mt-2 hidden"></p>
@@ -1025,6 +1025,8 @@
     });
 </script>
 @endpush
+
+
 
 
 

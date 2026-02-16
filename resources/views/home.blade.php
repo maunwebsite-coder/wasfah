@@ -467,7 +467,7 @@
     @endif
 
     <!-- قسم فيديوهات الخلاصة -->
-    <section class="container mx-auto px-4 py-12">
+    <section class="container mx-auto px-4 py-12 home-feed-section">
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 px-2 sm:px-4 lg:px-6 mb-4">
             <div>
                 <h2 class="text-2xl font-bold text-gray-900">{{ __('home.featured_recipes.title') ?? 'الفيديوهات' }}</h2>
@@ -519,10 +519,10 @@
     </section>
 
     <!-- قسم الورشات المحسن -->
-    <section class="py-12 bg-gradient-to-br from-gray-50 to-white">
+    <section class="py-12 bg-gradient-to-br from-gray-50 to-white premium-workshops-section">
         <div class="container mx-auto px-4">
             <!-- Header Section -->
-            <div class="text-center mb-12">
+            <div class="text-center mb-12 premium-workshops-header">
                 <h2 class="text-4xl font-bold text-gray-800 mb-4">{{ __('home.premium_workshops.title') }}</h2>
                 <p class="text-gray-600 text-lg max-w-3xl mx-auto mb-6">{{ __('home.premium_workshops.subtitle') }}</p>
                 <a href="{{ route('workshops') }}" class="inline-flex items-center gap-2 text-amber-600 hover:text-amber-700 font-semibold text-lg transition-colors">
@@ -590,7 +590,7 @@
                                                 </span>
                                             </div>
                                             @endif
-                                            <div class="absolute top-4 right-4 bg-orange-500 text-white text-sm font-semibold px-3 py-1 rounded-full">{{ $workshop->price }} {{ $workshop->currency }}</div>
+                                            <div class="absolute top-4 right-4 bg-orange-500 text-white text-sm font-semibold px-3 py-1 rounded-full workshop-price-chip">{{ $workshop->price }} {{ $workshop->currency }}</div>
                                         </div>
                                         
                                         <div class="p-6 flex flex-col flex-grow">

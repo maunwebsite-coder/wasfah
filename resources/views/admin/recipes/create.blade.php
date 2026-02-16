@@ -26,7 +26,7 @@
         left: 0;
         right: 0;
         height: 4px;
-        background: linear-gradient(90deg, #0819ff, #0f78ad, #dc2626);
+        background: linear-gradient(90deg, #6b2e30, #7f3a3d, #dc2626);
     }
     
     .form-input {
@@ -41,8 +41,8 @@
     
     .form-input:focus {
         outline: none;
-        border-color: #0819ff;
-        box-shadow: 0 0 0 4px rgba(8, 25, 255, 0.1);
+        border-color: #6b2e30;
+        box-shadow: 0 0 0 4px rgba(107, 46, 48, 0.1);
         background: white;
         transform: translateY(-1px);
     }
@@ -68,12 +68,12 @@
         left: 0;
         width: 30px;
         height: 2px;
-        background: linear-gradient(90deg, #0819ff, #0f78ad);
+        background: linear-gradient(90deg, #6b2e30, #7f3a3d);
         border-radius: 1px;
     }
     
     .btn-primary {
-        background: linear-gradient(135deg, #0819ff 0%, #0f78ad 100%);
+        background: linear-gradient(135deg, #6b2e30 0%, #7f3a3d 100%);
         border: none;
         color: white;
         padding: 1rem 2rem;
@@ -84,7 +84,7 @@
         cursor: pointer;
         position: relative;
         overflow: hidden;
-        box-shadow: 0 4px 14px 0 rgba(8, 25, 255, 0.39);
+        box-shadow: 0 4px 14px 0 rgba(107, 46, 48, 0.39);
     }
     
     .btn-primary::before {
@@ -103,9 +103,9 @@
     }
     
     .btn-primary:hover {
-        background: linear-gradient(135deg, #0f78ad 0%, #0b344f 100%);
+        background: linear-gradient(135deg, #7f3a3d 0%, #4d1f22 100%);
         transform: translateY(-2px);
-        box-shadow: 0 8px 25px 0 rgba(8, 25, 255, 0.5);
+        box-shadow: 0 8px 25px 0 rgba(107, 46, 48, 0.5);
     }
     
     .btn-primary:active {
@@ -240,7 +240,7 @@
         left: 0;
         right: 0;
         height: 3px;
-        background: linear-gradient(90deg, #0819ff, #0f78ad, #dc2626);
+        background: linear-gradient(90deg, #6b2e30, #7f3a3d, #dc2626);
     }
     
     .section-title {
@@ -254,7 +254,7 @@
     }
     
     .section-title i {
-        color: #0819ff;
+        color: #6b2e30;
         font-size: 1.25rem;
     }
     
@@ -281,7 +281,7 @@
     }
     
     .progress-fill {
-        background: linear-gradient(90deg, #0819ff, #0f78ad);
+        background: linear-gradient(90deg, #6b2e30, #7f3a3d);
         height: 100%;
         border-radius: 1rem;
         transition: width 0.5s ease;
@@ -376,12 +376,12 @@
     }
     
     .image-upload-area:hover {
-        border-color: #0819ff;
+        border-color: #6b2e30;
         background: #fef7ed;
     }
     
     .image-upload-area.dragover {
-        border-color: #0819ff;
+        border-color: #6b2e30;
         background: #fef7ed;
         transform: scale(1.02);
     }
@@ -412,13 +412,13 @@
         bottom: 2rem;
         right: 2rem;
         z-index: 50;
-        background: linear-gradient(135deg, #0819ff 0%, #0f78ad 100%);
+        background: linear-gradient(135deg, #6b2e30 0%, #7f3a3d 100%);
         color: white;
         border: none;
         border-radius: 50px;
         padding: 1rem 1.5rem;
         font-weight: 700;
-        box-shadow: 0 8px 25px 0 rgba(8, 25, 255, 0.5);
+        box-shadow: 0 8px 25px 0 rgba(107, 46, 48, 0.5);
         cursor: pointer;
         transition: all 0.3s ease;
         opacity: 0;
@@ -432,7 +432,7 @@
     
     .floating-save:hover {
         transform: translateY(-2px) scale(1.05);
-        box-shadow: 0 12px 30px 0 rgba(8, 25, 255, 0.6);
+        box-shadow: 0 12px 30px 0 rgba(107, 46, 48, 0.6);
     }
     
     @media (max-width: 768px) {
@@ -645,12 +645,12 @@
                                            class="hidden"
                                            accept="image/*"
                                            onchange="previewImage(this, {{$i}})"
-                                           data-max-size="5120"
-                                           data-max-size-message="لا يمكن رفع صورة أكبر من 5 ميجابايت."
+                                           data-max-size="25600"
+                                           data-max-size-message="لا يمكن رفع صورة أكبر من 25 ميجابايت."
                                            data-error-target="#image_{{$i}}_error">
                                     <p class="text-xs text-gray-500 mt-2">
                                         <i class="fas fa-info-circle ml-1"></i>
-                                        JPG, PNG, GIF - الحد الأقصى 5MB
+                                        JPG, PNG, GIF - الحد الأقصى 25MB
                                     </p>
                                     <p id="image_{{$i}}_error" class="text-xs text-red-600 mt-1 hidden"></p>
                                     @error('image' . ($i == 1 ? '' : '_' . $i))
@@ -1187,9 +1187,9 @@ function previewImage(input, imageNumber = 1) {
     const previewImg = document.getElementById(`preview-img-${imageNumber}`);
     
     if (input.files && input.files[0]) {
-        // Check file size (5MB limit)
-        if (input.files[0].size > 5 * 1024 * 1024) {
-            showNotification('حجم الصورة يجب أن يكون أقل من 5 ميجابايت', 'error');
+        // Check file size (25MB limit)
+        if (input.files[0].size > 25 * 1024 * 1024) {
+            showNotification('حجم الصورة يجب أن يكون أقل من 25 ميجابايت', 'error');
             input.value = '';
             return;
         }

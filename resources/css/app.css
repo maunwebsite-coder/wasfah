@@ -9,62 +9,106 @@
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
 
-    /* Remap Tailwind color tokens to an electric-blue palette built around #0819ff */
-    --color-orange-50: #f5f7ff;
-    --color-orange-100: #e7edff;
-    --color-orange-200: #cbd9ff;
-    --color-orange-300: #9fb5ff;
-    --color-orange-400: #6f8dff;
-    --color-orange-500: #3f66ff;
-    --color-orange-600: #1f45ff;
-    --color-orange-700: #0f2dd5;
-    --color-orange-800: #0b239f;
-    --color-orange-900: #081a73;
+    /* Global theme palette: burgundy + white across utility colors */
+    --color-orange-50: #fcf7f7;
+    --color-orange-100: #f8edee;
+    --color-orange-200: #f1d8da;
+    --color-orange-300: #e4b9bd;
+    --color-orange-400: #d18a8f;
+    --color-orange-500: #bc646b;
+    --color-orange-600: #9f4a50;
+    --color-orange-700: #7f3a3d;
+    --color-orange-800: #6b2e30;
+    --color-orange-900: #4d1f22;
 
-    --color-amber-50: #f2fbff;
-    --color-amber-100: #d9f2ff;
-    --color-amber-200: #b6e5ff;
-    --color-amber-300: #86d6ff;
-    --color-amber-400: #4fc3ff;
-    --color-amber-500: #1ab8ff;
-    --color-amber-600: #1296d9;
-    --color-amber-700: #0f78ad;
-    --color-amber-800: #0c5c82;
-    --color-amber-900: #083f59;
+    --color-amber-50: #fcf7f7;
+    --color-amber-100: #f8edee;
+    --color-amber-200: #f1d8da;
+    --color-amber-300: #e4b9bd;
+    --color-amber-400: #d18a8f;
+    --color-amber-500: #bc646b;
+    --color-amber-600: #9f4a50;
+    --color-amber-700: #7f3a3d;
+    --color-amber-800: #6b2e30;
+    --color-amber-900: #4d1f22;
 
-    --color-rose-50: #f5f6ff;
-    --color-rose-100: #e4e7ff;
-    --color-rose-200: #cdd3ff;
-    --color-rose-300: #a7b1ff;
-    --color-rose-400: #7d8bff;
-    --color-rose-500: #4f5cff;
-    --color-rose-600: #2f3ef7;
-    --color-rose-700: #1f2fd1;
-    --color-rose-800: #1825a5;
-    --color-rose-900: #131c7a;
+    --color-rose-50: #fcf7f7;
+    --color-rose-100: #f8edee;
+    --color-rose-200: #f1d8da;
+    --color-rose-300: #e4b9bd;
+    --color-rose-400: #d18a8f;
+    --color-rose-500: #bc646b;
+    --color-rose-600: #9f4a50;
+    --color-rose-700: #7f3a3d;
+    --color-rose-800: #6b2e30;
+    --color-rose-900: #4d1f22;
+
+    --color-blue-50: #fcf7f7;
+    --color-blue-100: #f8edee;
+    --color-blue-200: #f1d8da;
+    --color-blue-300: #e4b9bd;
+    --color-blue-400: #d18a8f;
+    --color-blue-500: #bc646b;
+    --color-blue-600: #9f4a50;
+    --color-blue-700: #7f3a3d;
+    --color-blue-800: #6b2e30;
+    --color-blue-900: #4d1f22;
+
+    --color-cyan-50: #fcf7f7;
+    --color-cyan-100: #f8edee;
+    --color-cyan-200: #f1d8da;
+    --color-cyan-300: #e4b9bd;
+    --color-cyan-400: #d18a8f;
+    --color-cyan-500: #bc646b;
+    --color-cyan-600: #9f4a50;
+    --color-cyan-700: #7f3a3d;
+    --color-cyan-800: #6b2e30;
+    --color-cyan-900: #4d1f22;
+
+    --color-sky-50: #fcf7f7;
+    --color-sky-100: #f8edee;
+    --color-sky-200: #f1d8da;
+    --color-sky-300: #e4b9bd;
+    --color-sky-400: #d18a8f;
+    --color-sky-500: #bc646b;
+    --color-sky-600: #9f4a50;
+    --color-sky-700: #7f3a3d;
+    --color-sky-800: #6b2e30;
+    --color-sky-900: #4d1f22;
+
+    --color-indigo-50: #fcf7f7;
+    --color-indigo-100: #f8edee;
+    --color-indigo-200: #f1d8da;
+    --color-indigo-300: #e4b9bd;
+    --color-indigo-400: #d18a8f;
+    --color-indigo-500: #bc646b;
+    --color-indigo-600: #9f4a50;
+    --color-indigo-700: #7f3a3d;
+    --color-indigo-800: #6b2e30;
+    --color-indigo-900: #4d1f22;
 }
 
 @layer base {
     :root {
-        --brand-navy: #0819ff;
-        --brand-navy-600: #0614d3;
-        --brand-navy-700: #050f9f;
-        --brand-navy-800: #040b73;
-        --brand-ink: #030b52;
-        --brand-muted: #5c6fe0;
+        --brand-navy: #6b2e30;
+        --brand-navy-600: #5a2628;
+        --brand-navy-700: #4d1f22;
+        --brand-navy-800: #3f1a1d;
+        --brand-ink: #321417;
+        --brand-muted: #8f4a50;
 
-        --brand-teal: #1ab8ff;
-        --brand-teal-600: #1296d9;
-        --brand-teal-700: #0f78ad;
+        --brand-teal: #9f5e63;
+        --brand-teal-600: #8f4a50;
+        --brand-teal-700: #7f3a3d;
 
-        --brand-gold: #5ad3ff;
-        --brand-gold-soft: #e3ecff;
-        --brand-gold-tint: #c8d6ff;
+        --brand-gold: #d7a5ac;
+        --brand-gold-soft: #f8edee;
+        --brand-gold-tint: #f1d8da;
 
-        --brand-cream: #f4f6ff;
+        --brand-cream: #ffffff;
 
-        --brand-navy-rgb: 8, 25, 255;
-        --brand-teal-rgb: 26, 184, 255;
-        --brand-gold-rgb: 90, 211, 255;
+        --brand-navy-rgb: 107, 46, 48;
+        --brand-teal-rgb: 143, 74, 80;
+        --brand-gold-rgb: 215, 165, 172;
     }
 }

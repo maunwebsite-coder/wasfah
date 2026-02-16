@@ -23,8 +23,8 @@
 @push('styles')
 <style>
     :root {
-        --primary-color: #0819ff;
-        --primary-dark: #0b344f;
+        --primary-color: #6b2e30;
+        --primary-dark: #4d1f22;
         --accent-color: #f59e0b;
         --text-main: #1e293b;
         --text-muted: #64748b;
@@ -129,7 +129,7 @@
         font-weight: 800;
         line-height: 1.1;
         margin-bottom: 1.1rem;
-        background: linear-gradient(90deg, #ffffff 0%, #ecf2ff 45%, #c7d2fe 100%);
+        background: linear-gradient(90deg, #ffffff 0%, #ecf2ff 45%, #efdde1 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
     }
@@ -203,9 +203,9 @@
         gap: 0.45rem;
         padding: 0.45rem 0.8rem;
         background: #e8f1ff;
-        border: 1px solid #c7d2fe;
+        border: 1px solid #efdde1;
         border-radius: 14px;
-        color: #0b1f4a;
+        color: #3b1a1f;
         font-weight: 700;
         font-size: 0.9rem;
         text-decoration: none;
@@ -215,7 +215,7 @@
     }
 
     .instructor-chip:hover {
-        border-color: #93c5fd;
+        border-color: #eacfd4;
         transform: translateY(-1px);
         box-shadow: 0 14px 28px -18px rgba(12, 74, 110, 0.55);
     }
@@ -224,12 +224,12 @@
         width: 1.85rem;
         height: 1.85rem;
         border-radius: 999px;
-        background: #dbeafe;
+        background: #f8edee;
         border: 1px solid #bfdbfe;
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        color: #0b1f4a;
+        color: #3b1a1f;
         font-size: 0.95rem;
     }
 
@@ -243,17 +243,17 @@
         font-size: 0.68rem;
         text-transform: uppercase;
         letter-spacing: 0.05em;
-        color: #2563eb;
+        color: #9f5e63;
     }
 
     .instructor-chip .chip-name {
-        color: #0b1f4a;
+        color: #3b1a1f;
         font-weight: 800;
         font-size: 0.92rem;
     }
 
     .instructor-chip .chip-arrow {
-        color: #2563eb;
+        color: #9f5e63;
         font-size: 0.85rem;
     }
 
@@ -319,8 +319,8 @@
         width: 10px;
         height: 10px;
         border-radius: 999px;
-        background: #2563eb;
-        border: 1px solid #93c5fd;
+        background: #9f5e63;
+        border: 1px solid #eacfd4;
         box-shadow: 0 0 0 6px rgba(147, 197, 253, 0.18);
     }
 
@@ -341,9 +341,9 @@
     }
 
     .hero-stat-item {
-        --accent-bg: #f5f8ff;
-        --accent-border: #d6e4ff;
-        --accent-ink: #0b1f4a;
+        --accent-bg: #fffdfd;
+        --accent-border: #f3e4e7;
+        --accent-ink: #3b1a1f;
         position: relative;
         display: flex;
         align-items: center;
@@ -379,9 +379,9 @@
     .hero-stat-item.accent-emerald,
     .hero-stat-item.accent-indigo,
     .hero-stat-item.accent-rose {
-        --accent-bg: #f5f8ff;
-        --accent-border: #d6e4ff;
-        --accent-ink: #0b1f4a;
+        --accent-bg: #fffdfd;
+        --accent-border: #f3e4e7;
+        --accent-ink: #3b1a1f;
     }
 
     .hero-stat-item > * {
@@ -399,7 +399,7 @@
         align-items: center;
         justify-content: center;
         font-size: 0.95rem;
-        color: #0b1f4a;
+        color: #3b1a1f;
         box-shadow:
             inset 0 0 0 1px rgba(255, 255, 255, 0.82),
             0 12px 18px -16px rgba(15, 23, 42, 0.35);
@@ -577,7 +577,7 @@
 
     .section-icon {
         color: var(--primary-color);
-        background: #e0f2fe;
+        background: #f9eff1;
         width: 2.5rem;
         height: 2.5rem;
         border-radius: 0.75rem;
@@ -603,8 +603,8 @@
         background: white;
         border-radius: var(--radius-lg);
         overflow: hidden;
-        box-shadow: 0 20px 50px -10px rgba(8, 25, 255, 0.15);
-        border: 1px solid rgba(8, 25, 255, 0.1);
+        box-shadow: 0 20px 50px -10px rgba(107, 46, 48, 0.15);
+        border: 1px solid rgba(107, 46, 48, 0.1);
     }
 
     .booking-header {
@@ -684,12 +684,12 @@
     .btn-primary {
         background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
         color: white;
-        box-shadow: 0 10px 20px -5px rgba(8, 25, 255, 0.3);
+        box-shadow: 0 10px 20px -5px rgba(107, 46, 48, 0.3);
     }
 
     .btn-primary:hover {
         transform: translateY(-2px);
-        box-shadow: 0 15px 30px -5px rgba(8, 25, 255, 0.4);
+        box-shadow: 0 15px 30px -5px rgba(107, 46, 48, 0.4);
     }
 
     /* RTL Support */
@@ -816,7 +816,7 @@
             gap: 0.55rem;
             padding: 0.7rem 0.8rem;
             border-radius: 0.9rem;
-            background: linear-gradient(140deg, #ffffff, #f5f8ff);
+            background: linear-gradient(140deg, #ffffff, #fffdfd);
             border: 1px solid var(--accent-border);
         }
 
@@ -873,7 +873,7 @@
 
         .hero-stat-item {
             padding: 0.65rem 0.75rem;
-            background: linear-gradient(140deg, #ffffff, #f5f8ff);
+            background: linear-gradient(140deg, #ffffff, #fffdfd);
             border: 1px solid var(--accent-border);
         }
 
@@ -1015,15 +1015,15 @@
         align-items: center;
         justify-content: center;
         gap: 0.35rem;
-        background: linear-gradient(135deg, #0819ff, #1296d9);
+        background: linear-gradient(135deg, #6b2e30, #8f4a50);
         color: #fff;
-        box-shadow: 0 14px 32px rgba(8, 25, 255, 0.28);
+        box-shadow: 0 14px 32px rgba(107, 46, 48, 0.28);
         transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
 
     .floating-booking-bar .floating-btn:hover {
         transform: translateY(-2px);
-        box-shadow: 0 18px 40px rgba(8, 25, 255, 0.32);
+        box-shadow: 0 18px 40px rgba(107, 46, 48, 0.32);
     }
 
     .floating-booking-bar .floating-btn i {
@@ -1083,12 +1083,12 @@
         width: 3rem;
         height: 3rem;
         border-radius: 1rem;
-        background: linear-gradient(140deg, var(--primary-color), #1296d9);
+        background: linear-gradient(140deg, var(--primary-color), #8f4a50);
         color: #ffffff;
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        box-shadow: 0 14px 30px rgba(8, 25, 255, 0.28);
+        box-shadow: 0 14px 30px rgba(107, 46, 48, 0.28);
     }
 
     .additional-details-title {
@@ -1117,7 +1117,7 @@
         padding: 0.9rem 1rem;
         background: rgba(255, 255, 255, 0.92);
         border-radius: 1rem;
-        border: 1px solid rgba(8, 25, 255, 0.1);
+        border: 1px solid rgba(107, 46, 48, 0.1);
         box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
         backdrop-filter: blur(8px);
     }
@@ -1129,9 +1129,9 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        background: linear-gradient(145deg, var(--primary-color), #1296d9);
+        background: linear-gradient(145deg, var(--primary-color), #8f4a50);
         color: #fff;
-        box-shadow: 0 12px 22px rgba(8, 25, 255, 0.24);
+        box-shadow: 0 12px 22px rgba(107, 46, 48, 0.24);
     }
 
     .additional-detail-label {
@@ -1154,7 +1154,7 @@
     .related-workshop-card {
         border-radius: 1.25rem;
         overflow: hidden;
-        border: 1px solid rgba(8, 25, 255, 0.08);
+        border: 1px solid rgba(107, 46, 48, 0.08);
         box-shadow: 0 16px 32px rgba(15, 23, 42, 0.08);
         transition: transform 0.25s ease, box-shadow 0.25s ease;
         background: #ffffff;
@@ -1168,7 +1168,7 @@
 
     .related-workshop-card:hover {
         transform: translateY(-6px);
-        box-shadow: 0 24px 52px rgba(8, 25, 255, 0.16);
+        box-shadow: 0 24px 52px rgba(107, 46, 48, 0.16);
     }
 
     .related-workshop-card .p-6 {
@@ -1183,7 +1183,7 @@
         display: flex;
         align-items: baseline;
         gap: 0.35rem;
-        color: #0b344f;
+        color: #4d1f22;
     }
 
     .related-cta {
@@ -2052,7 +2052,7 @@ const bookingConfig = {
     workshop: {
         title: @json($workshop->title),
         price: @json((float) $workshop->price),
-        currency: @json(strtoupper($workshop->currency ?? config('finance.default_currency', 'USD'))),
+        currency: @json(strtoupper($workshop->currency ?? config('finance.default_currency', 'JOD'))),
     },
     stripe: {
         enabled: @json((bool) $stripeEnabled),
@@ -2544,7 +2544,7 @@ async function setupStripeWalletButton() {
 
     const paymentRequest = stripeInstance.paymentRequest({
         country: paymentCountry,
-        currency: (stripeIntentCurrency || bookingConfig.workshop.currency || 'USD').toLowerCase(),
+        currency: (stripeIntentCurrency || bookingConfig.workshop.currency || 'JOD').toLowerCase(),
         total: {
             label: bookingConfig.workshop.title || 'Workshop booking',
             amount: stripeIntentAmount,
@@ -3205,6 +3205,8 @@ if (document.readyState === 'loading') {
         </script>
     @endpush
 @endif
+
+
 
 
 

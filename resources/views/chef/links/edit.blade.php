@@ -14,7 +14,7 @@
     $bioValue = old('bio', $page->bio) ?? '';
     $ctaLabelValue = old('cta_label', $page->cta_label) ?? '';
     $ctaUrlValue = old('cta_url', $page->cta_url) ?: '#';
-    $accentColorValue = old('accent_color', $page->accent_color ?? $accentColor ?? '#0819ff') ?: '#0819ff';
+    $accentColorValue = old('accent_color', $page->accent_color ?? $accentColor ?? '#6b2e30') ?: '#6b2e30';
     $lastUpdated = $page->updated_at?->locale('ar')->diffForHumans() ?? 'الآن';
     $heroPlaceholder = \App\Support\BrandAssets::logoAsset('webp');
     $heroPreviewDefault = $heroImageUrl ?: $heroPlaceholder;
@@ -133,7 +133,7 @@
                                 <label for="accent_color" class="text-sm font-medium text-gray-700">لون التمييز</label>
                                 <div class="flex items-center gap-3">
                                     <input type="color" id="accent_color_picker" value="{{ $accentColorValue }}" class="h-12 w-14 rounded-xl border border-gray-200" data-preview-target="accent_color">
-                                    <input type="text" id="accent_color" name="accent_color" value="{{ old('accent_color', $page->accent_color) }}" class="flex-1 rounded-xl border border-gray-200 px-4 py-3 text-sm focus:border-orange-400 focus:ring focus:ring-orange-100" placeholder="#0819ff" data-preview-target="accent_color">
+                                    <input type="text" id="accent_color" name="accent_color" value="{{ old('accent_color', $page->accent_color) }}" class="flex-1 rounded-xl border border-gray-200 px-4 py-3 text-sm focus:border-orange-400 focus:ring focus:ring-orange-100" placeholder="#6b2e30" data-preview-target="accent_color">
                                 </div>
                                 <p class="text-xs text-gray-500">يمكنك لصق كود اللون (Hex) أو اختياره من لوحة الألوان.</p>
                             </div>
@@ -171,7 +171,7 @@
                                 @php
                                     $workshopDate = optional($upcomingWorkshop->start_date)->locale('ar')->translatedFormat('d F Y • h:i a');
                                     $workshopLocation = $upcomingWorkshop->is_online ? 'أونلاين عبر المنصة' : ($upcomingWorkshop->location ?: 'سيتم تحديد الموقع');
-                                    $workshopPrice = $upcomingWorkshop->formatted_price ?? (number_format((float) ($upcomingWorkshop->price ?? 0), 2) . ' ' . ($upcomingWorkshop->currency ?? 'USD'));
+                                    $workshopPrice = $upcomingWorkshop->formatted_price ?? (number_format((float) ($upcomingWorkshop->price ?? 0), 2) . ' ' . ($upcomingWorkshop->currency ?? config('finance.default_currency', 'JOD')));
                                 @endphp
                                 <div class="rounded-2xl border border-dashed border-orange-200 bg-white/90 px-4 py-4 shadow-sm">
                                     <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -234,14 +234,14 @@
                                            accept="image/*"
                                            class="block w-full rounded-xl border border-dashed border-gray-300 px-4 py-3 text-sm text-gray-600 focus:border-orange-400 focus:ring focus:ring-orange-100"
                                            data-preview-target="hero_image"
-                                           data-max-size="5120"
-                                           data-max-size-message="لا يمكن رفع صورة أكبر من 5 ميجابايت."
+                                           data-max-size="25600"
+                                           data-max-size-message="لا يمكن رفع صورة أكبر من 25 ميجابايت."
                                            data-error-target="#hero_image_error">
                                     <label class="flex items-center gap-2 text-sm text-gray-600">
                                         <input type="checkbox" name="remove_hero_image" value="1" class="rounded border-gray-300 text-orange-500 focus:ring-orange-400" data-preview-target="remove_hero_image">
                                         إزالة الصورة الحالية
                                     </label>
-                                    <p class="text-xs text-gray-500">الحد الأقصى لحجم الصورة 5MB. يفضّل استخدام صورة مربعة عالية الدقة.</p>
+                                    <p class="text-xs text-gray-500">الحد الأقصى لحجم الصورة 25MB. يفضّل استخدام صورة مربعة عالية الدقة.</p>
                                     <p id="hero_image_error" class="text-xs text-red-600 hidden"></p>
                                 </div>
                             </div>
@@ -405,7 +405,7 @@
 
             <div class="order-1 space-y-8 lg:order-2 lg:sticky lg:top-8">
                 <div id="chef-links-preview" class="rounded-3xl border border-orange-100 bg-white shadow-sm overflow-hidden" style="--accent-color: {{ $accentColorValue }};" data-default-color="{{ $accentColorValue }}">
-                    <div class="relative h-36" style="background: linear-gradient(135deg, var(--accent-color), rgba(8, 25, 255, 0.3));">
+                    <div class="relative h-36" style="background: linear-gradient(135deg, var(--accent-color), rgba(107, 46, 48, 0.3));">
                         <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(circle at 30% 20%, rgba(255,255,255,0.7), transparent 60%), radial-gradient(circle at 70% 80%, rgba(255,255,255,0.5), transparent 60%);"></div>
                         <div class="relative flex h-full flex-col items-center justify-center gap-3 px-6 text-center text-white">
                             <div class="h-20 w-20 overflow-hidden rounded-2xl border border-white/50 shadow" style="background-color: rgba(255,255,255,0.15);">
@@ -728,7 +728,7 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        const fallback = previewRoot.getAttribute('data-default-color') || '#0819ff';
+        const fallback = previewRoot.getAttribute('data-default-color') || '#6b2e30';
         const hex = normalizeHex(value) || fallback;
 
         previewRoot.style.setProperty('--accent-color', hex);
@@ -950,7 +950,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const colorPicker = document.getElementById('accent_color_picker');
     const colorInput = document.getElementById('accent_color');
-    const initialAccent = colorInput?.value || colorPicker?.value || (previewRoot ? previewRoot.getAttribute('data-default-color') : '#0819ff');
+    const initialAccent = colorInput?.value || colorPicker?.value || (previewRoot ? previewRoot.getAttribute('data-default-color') : '#6b2e30');
     applyAccentColor(initialAccent);
 
     if (colorPicker && colorInput) {
@@ -1021,6 +1021,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 </script>
 @endpush
+
 
 
 

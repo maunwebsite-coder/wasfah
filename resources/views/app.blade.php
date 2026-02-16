@@ -35,11 +35,12 @@
     @php
         $vite = app(\Illuminate\Foundation\Vite::class);
         $isViteHot = \App\Support\ViteHot::shouldUseHotReload();
+        $hasViteManifest = \App\Support\ViteHot::hasBuildManifest();
     @endphp
 
     @if ($isViteHot)
         @vite(['resources/css/app.css', 'resources/js/app.js'])
-    @else
+    @elseif ($hasViteManifest)
         @php
             $appCss = $vite->asset('resources/css/app.css');
         @endphp
@@ -182,9 +183,6 @@
                             </div>
                         </div>
                     @endauth
-                    @guest
-                        <a href="{{ route('login') }}" class="hover:text-orange-500 transition-colors">Log in</a>
-                    @endguest
                     <a href="#" class="hover:text-orange-500 transition-colors">Contact us</a>
                 </nav>
             </div>
@@ -209,9 +207,6 @@
                         </form>
                     </div>
                 @endauth
-                @guest
-                    <a href="{{ route('login') }}" class="hover:text-orange-500 transition-colors">Log in</a>
-                @endguest
                 <a href="#" class="hover:text-orange-500 transition-colors">Contact us</a>
             </nav>
         </div>

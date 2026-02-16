@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('title', 'Shopping cart - Wasfah')
 
@@ -12,7 +12,7 @@
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
     
-    /* تحسينات للهواتف */
+    /* ØªØ­Ø³ÙŠÙ†Ø§Øª Ù„Ù„Ù‡ÙˆØ§ØªÙ */
     @media (max-width: 640px) {
         .cart-item {
             margin-bottom: 1rem;
@@ -108,7 +108,7 @@
                                                 <div class="mb-3">
                                                     <div class="text-xs text-gray-600 mb-1">Unit price:</div>
                                                     <div class="text-lg font-bold text-orange-600" data-unit-price="{{ $item->price }}">
-                                                        {{ number_format($item->price, 2) }} AED
+                                                        {{ number_format($item->price, 2) }} JOD
                                                     </div>
                                                 </div>
                                             </div>
@@ -165,7 +165,7 @@
                                                 <div class="mb-3">
                                                     <div class="text-sm text-gray-600 mb-1">Unit price:</div>
                                                     <div class="text-lg font-bold text-orange-600" data-unit-price="{{ $item->price }}">
-                                                        {{ number_format($item->price, 2) }} AED
+                                                        {{ number_format($item->price, 2) }} JOD
                                                     </div>
                                                 </div>
                                                 
@@ -214,12 +214,12 @@
                                 </div>
                                 <div class="flex justify-between text-xs sm:text-sm">
                                     <span class="text-gray-600">Subtotal:</span>
-                                    <span class="font-medium">{{ number_format($total, 2) }} AED</span>
+                                    <span class="font-medium">{{ number_format($total, 2) }} JOD</span>
                                 </div>
                                 <hr class="my-2 sm:my-3">
                                 <div class="flex justify-between text-base sm:text-lg font-bold">
                                     <span>Total:</span>
-                                    <span class="text-orange-600">{{ number_format($total, 2) }} AED</span>
+                                    <span class="text-orange-600">{{ number_format($total, 2) }} JOD</span>
                                 </div>
                             </div>
                             
@@ -359,8 +359,8 @@ document.addEventListener('DOMContentLoaded', function() {
             const totalEls = document.querySelectorAll('.text-orange-600');
             totalEls.forEach(el => {
                 // Only update if it's NOT a unit price (unit prices have data-unit-price attribute)
-                if (el.textContent.includes('AED') && !el.hasAttribute('data-unit-price')) {
-                    el.textContent = parseFloat(data.cart_total).toFixed(2) + ' AED';
+                if (el.textContent.includes('JOD') && !el.hasAttribute('data-unit-price')) {
+                    el.textContent = parseFloat(data.cart_total).toFixed(2) + ' JOD';
                 }
             });
         }
@@ -425,5 +425,6 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 @endpush
+
 
 

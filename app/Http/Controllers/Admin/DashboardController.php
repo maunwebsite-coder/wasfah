@@ -53,7 +53,7 @@ class DashboardController extends Controller
         $selectedPeriodSummary = $this->buildPeriodSummary($periodContext, $workshopMode);
         $selectedPeriodStats = $this->getPeriodStats($periodDays, $workshopMode);
 
-        // إحصائيات المستخدمين
+        // Ø¥Ø­ØµØ§Ø¦ÙŠØ§Øª Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù…ÙŠÙ†
         $totalUsers = User::count();
         $newUsersThisMonth = User::whereMonth('created_at', now()->month)
                                 ->whereYear('created_at', now()->year)
@@ -63,7 +63,7 @@ class DashboardController extends Controller
                                       ->orWhere('role', User::ROLE_ADMIN);
                             })->count();
 
-        // إحصائيات الوصفات
+        // Ø¥Ø­ØµØ§Ø¦ÙŠØ§Øª Ø§Ù„ÙˆØµÙØ§Øª
         $totalRecipes = Recipe::count();
         $newRecipesThisMonth = Recipe::whereMonth('created_at', now()->month)
                                     ->whereYear('created_at', now()->year)
@@ -73,7 +73,7 @@ class DashboardController extends Controller
                                   ->orderBy('interactions_count', 'desc')
                                   ->first();
 
-        // إحصائيات الورشات
+        // Ø¥Ø­ØµØ§Ø¦ÙŠØ§Øª Ø§Ù„ÙˆØ±Ø´Ø§Øª
         $totalWorkshops = Workshop::count();
         $activeWorkshops = Workshop::where('is_active', true)->count();
         $featuredWorkshops = Workshop::where('is_featured', true)->count();
@@ -81,21 +81,21 @@ class DashboardController extends Controller
         $confirmedBookings = WorkshopBooking::where('status', 'confirmed')->count();
         $pendingBookings = WorkshopBooking::where('status', 'pending')->count();
 
-        // إحصائيات التفاعلات
+        // Ø¥Ø­ØµØ§Ø¦ÙŠØ§Øª Ø§Ù„ØªÙØ§Ø¹Ù„Ø§Øª
         $totalInteractions = UserInteraction::count();
         $savedRecipes = UserInteraction::where('is_saved', true)->count();
         $madeRecipes = UserInteraction::where('is_made', true)->count();
         $totalRatings = UserInteraction::whereNotNull('rating')->count();
         $averageRating = UserInteraction::whereNotNull('rating')->avg('rating');
 
-        // إحصائيات الأدوات
+        // Ø¥Ø­ØµØ§Ø¦ÙŠØ§Øª Ø§Ù„Ø£Ø¯ÙˆØ§Øª
         $totalTools = Tool::count();
         $activeTools = Tool::where('is_active', true)->count();
 
-        // إحصائيات التصنيفات
+        // Ø¥Ø­ØµØ§Ø¦ÙŠØ§Øª Ø§Ù„ØªØµÙ†ÙŠÙØ§Øª
         $totalCategories = Category::count();
 
-        // إحصائيات الإيرادات (من الورشات)
+        // Ø¥Ø­ØµØ§Ø¦ÙŠØ§Øª Ø§Ù„Ø¥ÙŠØ±Ø§Ø¯Ø§Øª (Ù…Ù† Ø§Ù„ÙˆØ±Ø´Ø§Øª)
         $totalRevenue = WorkshopBooking::where('status', 'confirmed')
                                       ->where('payment_status', 'paid')
                                       ->sum('payment_amount');
@@ -137,12 +137,12 @@ class DashboardController extends Controller
             ->whereBetween('distributed_at', $currentMonthRange)
             ->sum('amount');
 
-        // إحصائيات الأسبوع الماضي
+        // Ø¥Ø­ØµØ§Ø¦ÙŠØ§Øª Ø§Ù„Ø£Ø³Ø¨ÙˆØ¹ Ø§Ù„Ù…Ø§Ø¶ÙŠ
         $lastWeekUsers = User::where('created_at', '>=', now()->subWeek())->count();
         $lastWeekRecipes = Recipe::where('created_at', '>=', now()->subWeek())->count();
         $lastWeekBookings = WorkshopBooking::where('created_at', '>=', now()->subWeek())->count();
 
-        // الوصفات الأكثر شعبية (آخر 30 يوم)
+        // Ø§Ù„ÙˆØµÙØ§Øª Ø§Ù„Ø£ÙƒØ«Ø± Ø´Ø¹Ø¨ÙŠØ© (Ø¢Ø®Ø± 30 ÙŠÙˆÙ…)
         $popularRecipes = Recipe::approved()->public()
                                 ->withCount(['interactions' => function($query) {
                                     $query->where('created_at', '>=', now()->subDays(30));
@@ -151,7 +151,7 @@ class DashboardController extends Controller
                                 ->limit(5)
                                 ->get();
 
-        // الورشات الأكثر حجزاً
+        // Ø§Ù„ÙˆØ±Ø´Ø§Øª Ø§Ù„Ø£ÙƒØ«Ø± Ø­Ø¬Ø²Ø§Ù‹
         $popularWorkshopsQuery = Workshop::withCount('bookings')
                                    ->orderBy('bookings_count', 'desc');
         $this->applyWorkshopModeConstraint($popularWorkshopsQuery, $workshopMode);
@@ -159,13 +159,13 @@ class DashboardController extends Controller
                                    ->limit(5)
                                    ->get();
 
-        // المستخدمون النشطون (آخر 30 يوم)
+        // Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù…ÙˆÙ† Ø§Ù„Ù†Ø´Ø·ÙˆÙ† (Ø¢Ø®Ø± 30 ÙŠÙˆÙ…)
         $activeUsers = User::whereHas('interactions', function($query) {
                             $query->where('created_at', '>=', now()->subDays(30));
                         })
                         ->count();
 
-        // إحصائيات النمو الشهرية
+        // Ø¥Ø­ØµØ§Ø¦ÙŠØ§Øª Ø§Ù„Ù†Ù…Ùˆ Ø§Ù„Ø´Ù‡Ø±ÙŠØ©
         $monthlyGrowth = [
             'users' => $this->calculateGrowthRate(User::class, 'users'),
             'recipes' => $this->calculateGrowthRate(Recipe::class, 'recipes'),
@@ -173,7 +173,7 @@ class DashboardController extends Controller
             'bookings' => $this->calculateGrowthRate(WorkshopBooking::class, 'bookings'),
         ];
 
-        // إحصائيات إضافية جديدة
+        // Ø¥Ø­ØµØ§Ø¦ÙŠØ§Øª Ø¥Ø¶Ø§ÙÙŠØ© Ø¬Ø¯ÙŠØ¯Ø©
         $todayUsers = User::whereDate('created_at', today())->count();
         $todayRecipes = Recipe::whereDate('created_at', today())->count();
         $todayBookings = WorkshopBooking::whereDate('created_at', today())->count();
@@ -182,18 +182,18 @@ class DashboardController extends Controller
                                       ->join('workshops', 'workshop_bookings.workshop_id', '=', 'workshops.id')
                                       ->sum('workshops.price') ?? 0;
 
-        // إحصائيات الحجوزات التفصيلية
+        // Ø¥Ø­ØµØ§Ø¦ÙŠØ§Øª Ø§Ù„Ø­Ø¬ÙˆØ²Ø§Øª Ø§Ù„ØªÙØµÙŠÙ„ÙŠØ©
         $cancelledBookings = WorkshopBooking::where('status', 'cancelled')->count();
         $completedBookings = WorkshopBooking::where('status', 'completed')->count();
         $refundedBookings = WorkshopBooking::where('status', 'refunded')->count();
 
-        // إحصائيات الورشات التفصيلية
+        // Ø¥Ø­ØµØ§Ø¦ÙŠØ§Øª Ø§Ù„ÙˆØ±Ø´Ø§Øª Ø§Ù„ØªÙØµÙŠÙ„ÙŠØ©
         $upcomingWorkshops = Workshop::where('start_date', '>', now())->count();
         $completedWorkshops = Workshop::where('end_date', '<', now())->count();
         $workshopCapacity = Workshop::sum('max_participants') ?? 0;
         $totalParticipants = WorkshopBooking::where('status', 'confirmed')->count();
 
-        // إحصائيات التقييمات
+        // Ø¥Ø­ØµØ§Ø¦ÙŠØ§Øª Ø§Ù„ØªÙ‚ÙŠÙŠÙ…Ø§Øª
         $workshopReviews = WorkshopReview::count();
         $averageWorkshopRating = WorkshopReview::avg('rating') ?? 0;
         $highRatedWorkshops = Workshop::whereIn('id', function ($subquery) {
@@ -203,15 +203,15 @@ class DashboardController extends Controller
                 ->havingRaw('AVG(rating) >= 4.5');
         })->count();
 
-        // إحصائيات البحث والاستخدام
+        // Ø¥Ø­ØµØ§Ø¦ÙŠØ§Øª Ø§Ù„Ø¨Ø­Ø« ÙˆØ§Ù„Ø§Ø³ØªØ®Ø¯Ø§Ù…
         $totalViews = WorkshopView::count();
-        $uniqueViewers = WorkshopView::distinct('ip_address')->count(); // استخدام IP بدلاً من user_id
+        $uniqueViewers = WorkshopView::distinct('ip_address')->count(); // Ø§Ø³ØªØ®Ø¯Ø§Ù… IP Ø¨Ø¯Ù„Ø§Ù‹ Ù…Ù† user_id
         $mostViewedWorkshopQuery = Workshop::withCount('views')
                                     ->orderBy('views_count', 'desc');
         $this->applyWorkshopModeConstraint($mostViewedWorkshopQuery, $workshopMode);
         $mostViewedWorkshop = $mostViewedWorkshopQuery->first();
 
-        // الأنشطة الأخيرة
+        // Ø§Ù„Ø£Ù†Ø´Ø·Ø© Ø§Ù„Ø£Ø®ÙŠØ±Ø©
         $recentUsers = User::latest()->limit(5)->get();
         $recentRecipes = Recipe::latest()->limit(5)->get();
         $recentBookingsQuery = WorkshopBooking::with(['user', 'workshop'])
@@ -225,12 +225,12 @@ class DashboardController extends Controller
                                             ->limit(10)
                                             ->get();
 
-        // إحصائيات الأداء
+        // Ø¥Ø­ØµØ§Ø¦ÙŠØ§Øª Ø§Ù„Ø£Ø¯Ø§Ø¡
         $conversionRate = $totalUsers > 0 ? round(($totalBookings / $totalUsers) * 100, 2) : 0;
         $workshopFillRate = $workshopCapacity > 0 ? round(($totalParticipants / $workshopCapacity) * 100, 2) : 0;
         $userRetentionRate = $totalUsers > 0 ? round(($activeUsers / $totalUsers) * 100, 2) : 0;
 
-        // إحصائيات الأيام
+        // Ø¥Ø­ØµØ§Ø¦ÙŠØ§Øª Ø§Ù„Ø£ÙŠØ§Ù…
         $last7DaysStats = $this->getLast7DaysStats($workshopMode);
         $last30DaysStats = $this->getLast30DaysStats($workshopMode);
 
@@ -278,21 +278,21 @@ class DashboardController extends Controller
     private function periodOptions(): array
     {
         return [
-            7 => 'آخر 7 أيام',
-            14 => 'آخر 14 يوم',
-            30 => 'آخر 30 يوم',
-            60 => 'آخر 60 يوم',
-            90 => 'آخر 90 يوم',
+            7 => 'Ø¢Ø®Ø± 7 Ø£ÙŠØ§Ù…',
+            14 => 'Ø¢Ø®Ø± 14 ÙŠÙˆÙ…',
+            30 => 'Ø¢Ø®Ø± 30 ÙŠÙˆÙ…',
+            60 => 'Ø¢Ø®Ø± 60 ÙŠÙˆÙ…',
+            90 => 'Ø¢Ø®Ø± 90 ÙŠÙˆÙ…',
         ];
     }
 
     private function workshopModeOptions(): array
     {
         return [
-            'all' => 'جميع الورشات',
-            'online' => 'ورشات أونلاين فقط',
-            'in_person' => 'ورشات حضورية فقط',
-            'featured' => 'ورشات مميزة فقط',
+            'all' => 'Ø¬Ù…ÙŠØ¹ Ø§Ù„ÙˆØ±Ø´Ø§Øª',
+            'online' => 'ÙˆØ±Ø´Ø§Øª Ø£ÙˆÙ†Ù„Ø§ÙŠÙ† ÙÙ‚Ø·',
+            'in_person' => 'ÙˆØ±Ø´Ø§Øª Ø­Ø¶ÙˆØ±ÙŠØ© ÙÙ‚Ø·',
+            'featured' => 'ÙˆØ±Ø´Ø§Øª Ù…Ù…ÙŠØ²Ø© ÙÙ‚Ø·',
         ];
     }
 
@@ -306,8 +306,8 @@ class DashboardController extends Controller
             'days' => $periodDays,
             'start' => $start,
             'end' => $end,
-            'label' => $this->periodOptions()[$periodDays] ?? __('آخر :days يوم', ['days' => $periodDays]),
-            'formatted_range' => sprintf('%s — %s', $start->format('Y-m-d'), $end->format('Y-m-d')),
+            'label' => $this->periodOptions()[$periodDays] ?? __('Ø¢Ø®Ø± :days ÙŠÙˆÙ…', ['days' => $periodDays]),
+            'formatted_range' => sprintf('%s â€” %s', $start->format('Y-m-d'), $end->format('Y-m-d')),
         ];
     }
 
@@ -336,34 +336,34 @@ class DashboardController extends Controller
 
         $currentRevenue = $this->sumRevenueBetween($currentStart, $currentEnd, $workshopMode);
         $previousRevenue = $this->sumRevenueBetween($previousStart, $previousEnd, $workshopMode);
-        $currencyCode = config('finance.default_currency', 'USD');
+        $currencyCode = config('finance.default_currency', 'JOD');
 
         $modeLabel = $this->workshopModeOptions()[$workshopMode] ?? $this->workshopModeOptions()['all'];
 
         return [
             [
                 'key' => 'users',
-                'label' => 'المستخدمون الجدد',
+                'label' => 'Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù…ÙˆÙ† Ø§Ù„Ø¬Ø¯Ø¯',
                 'value' => $currentUsers,
                 'change' => $this->calculateDeltaBetween($currentUsers, $previousUsers),
-                'description' => 'ضمن ' . $periodContext['label'],
+                'description' => 'Ø¶Ù…Ù† ' . $periodContext['label'],
                 'icon' => 'fa-users',
                 'unit' => '',
                 'is_currency' => false,
             ],
             [
                 'key' => 'recipes',
-                'label' => 'الوصفات المنشورة',
+                'label' => 'Ø§Ù„ÙˆØµÙØ§Øª Ø§Ù„Ù…Ù†Ø´ÙˆØ±Ø©',
                 'value' => $currentRecipes,
                 'change' => $this->calculateDeltaBetween($currentRecipes, $previousRecipes),
-                'description' => 'تمت إضافتها خلال المدة المحددة',
+                'description' => 'ØªÙ…Øª Ø¥Ø¶Ø§ÙØªÙ‡Ø§ Ø®Ù„Ø§Ù„ Ø§Ù„Ù…Ø¯Ø© Ø§Ù„Ù…Ø­Ø¯Ø¯Ø©',
                 'icon' => 'fa-book-open',
                 'unit' => '',
                 'is_currency' => false,
             ],
             [
                 'key' => 'bookings',
-                'label' => 'الحجوزات',
+                'label' => 'Ø§Ù„Ø­Ø¬ÙˆØ²Ø§Øª',
                 'value' => $currentBookings,
                 'change' => $this->calculateDeltaBetween($currentBookings, $previousBookings),
                 'description' => $modeLabel,
@@ -373,10 +373,10 @@ class DashboardController extends Controller
             ],
             [
                 'key' => 'revenue',
-                'label' => 'الإيرادات المؤكدة',
+                'label' => 'Ø§Ù„Ø¥ÙŠØ±Ø§Ø¯Ø§Øª Ø§Ù„Ù…Ø¤ÙƒØ¯Ø©',
                 'value' => $currentRevenue,
                 'change' => $this->calculateDeltaBetween($currentRevenue, $previousRevenue),
-                'description' => 'صافي المدفوعات المؤكدة',
+                'description' => 'ØµØ§ÙÙŠ Ø§Ù„Ù…Ø¯ÙÙˆØ¹Ø§Øª Ø§Ù„Ù…Ø¤ÙƒØ¯Ø©',
                 'icon' => 'fa-coins',
                 'unit' => $currencyCode,
                 'is_currency' => true,
@@ -534,3 +534,4 @@ class DashboardController extends Controller
     }
 
 }
+

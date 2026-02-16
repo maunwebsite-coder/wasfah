@@ -5,7 +5,7 @@
 @push('styles')
 <style>
     body {
-        background: linear-gradient(135deg, #f8fafc 0%, #e0f2fe 45%, #f4f6ff 100%);
+        background: linear-gradient(135deg, #f8fafc 0%, #f9eff1 45%, #ffffff 100%);
         min-height: 100vh;
     }
 
@@ -22,9 +22,9 @@
         overflow: hidden;
         background: linear-gradient(135deg, rgba(255,255,255,0.96) 0%, rgba(254, 243, 199, 0.94) 55%, rgba(224, 238, 255, 0.94) 100%);
         border-radius: 1.75rem;
-        border: 1px solid rgba(8, 25, 255, 0.16);
+        border: 1px solid rgba(107, 46, 48, 0.16);
         padding: 2.75rem 2.5rem;
-        box-shadow: 0 35px 60px -42px rgba(8, 25, 255, 0.55);
+        box-shadow: 0 35px 60px -42px rgba(107, 46, 48, 0.55);
     }
 
     .page-hero::before,
@@ -49,7 +49,7 @@
         height: 420px;
         bottom: -220px;
         right: -170px;
-        background: radial-gradient(circle, rgba(8, 25, 255, 0.3), transparent 70%);
+        background: radial-gradient(circle, rgba(107, 46, 48, 0.3), transparent 70%);
     }
 
     .page-hero > * {
@@ -93,13 +93,13 @@
     .hero-badge--online {
         background: rgba(59, 130, 246, 0.22);
         border-color: rgba(59, 130, 246, 0.35);
-        color: #1d4ed8;
+        color: #8f4a50;
     }
 
     .hero-badge--featured {
         background: rgba(250, 204, 21, 0.3);
         border-color: rgba(250, 204, 21, 0.45);
-        color: #050f9f;
+        color: #4d1f22;
     }
 
     .hero-meta-grid {
@@ -179,7 +179,7 @@
     .progress-fill {
         position: absolute;
         inset: 0;
-        background: linear-gradient(135deg, #0819ff, #16c3ff);
+        background: linear-gradient(135deg, #6b2e30, #9f5e63);
         border-radius: inherit;
         transition: width 0.4s ease;
     }
@@ -214,7 +214,7 @@
     }
 
     .notification.warning {
-        background: linear-gradient(135deg, #1296d9, #050f9f);
+        background: linear-gradient(135deg, #8f4a50, #4d1f22);
     }
 
     @media (max-width: 1024px) {

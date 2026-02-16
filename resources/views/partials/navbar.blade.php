@@ -59,26 +59,25 @@
     }
 
     $showBreadcrumbs = (bool) ($showBreadcrumbs ?? false);
-    $headerClasses = 'sticky top-0 bg-white/95 backdrop-blur shadow-sm';
-    $headerClasses .= $showBreadcrumbs ? ' border-b-0' : ' border-b border-orange-100';
+    $headerClasses = 'sticky top-0';
 @endphp
 
-<header class="{{ $headerClasses }}" data-navbar-layer data-header>
-    <div class="h-1 w-full bg-gradient-to-l from-orange-500 via-rose-500 to-amber-400 hidden md:block"></div>
-    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between gap-4 py-3 md:py-4 header-container">
+<header class="{{ $headerClasses }} thedolci-navbar" data-navbar-layer data-header>
+    <div class="relative max-w-7xl mx-auto px-3 sm:px-5 lg:px-8">
+        <div class="flex items-center justify-between gap-4 rounded-[1.35rem] border border-white/80 bg-white/80 px-3 py-2.5 shadow-[0_16px_34px_rgba(8,25,255,0.14)] backdrop-blur-xl md:px-4 md:py-3 header-container thedolci-shell">
             <div class="flex items-center gap-4 min-w-0">
-                <a href="{{ route('home') }}" class="flex items-center gap-3 text-slate-800 header-logo-link" aria-label="{{ $navCopy['links']['home'] }}">
-                    <img src="{{ \App\Support\BrandAssets::logoAsset('png') }}" alt="Logo" class="h-16 w-auto inline header-logo">
+                <a href="{{ route('home') }}" class="flex items-center gap-3 rounded-2xl px-2 py-1 text-slate-800 transition-colors hover:text-orange-700 header-logo-link thedolci-logo-link" aria-label="{{ $navCopy['links']['home'] }}">
+                    <img src="{{ \App\Support\BrandAssets::logoAsset('png') }}" alt="Logo" class="h-14 w-auto inline header-logo md:h-16 thedolci-logo">
                     <span class="hidden md:inline text-xl font-bold tracking-tight"></span>
                 </a>
 
-                <nav class="hidden md:flex flex-wrap items-center gap-2 lg:gap-1 text-sm font-medium text-slate-600" aria-label="{{ $navCopy['primary_nav_label'] }}">
+                <nav class="hidden md:flex flex-wrap items-center gap-2 rounded-full border border-white/70 bg-white/80 px-2 py-1.5 text-sm font-medium text-slate-600 shadow-inner shadow-white/70 thedolci-primary-nav" aria-label="{{ $navCopy['primary_nav_label'] }}">
                     @foreach ($primaryLinks as $link)
                         @php $active = request()->routeIs($link['route'] . '*'); @endphp
                         <a href="{{ route($link['route']) }}"
                            aria-label="{{ $link['label'] }}"
-                           class="flex items-center gap-2 px-3 py-2 lg:px-4 rounded-full transition-all duration-200 {{ $active ? 'bg-orange-500/10 text-orange-600 shadow-sm border border-orange-200' : 'hover:text-orange-600 hover:bg-orange-50 border border-transparent' }}">
+                           @if($active) aria-current="page" @endif
+                           class="thedolci-nav-link flex items-center gap-2 px-3 py-2 lg:px-4 rounded-full transition-all duration-200 {{ $active ? 'thedolci-nav-link-active' : 'thedolci-nav-link-idle' }}">
                             <i class="{{ $link['icon'] }} text-base"></i>
                             <span>{{ $link['label'] }}</span>
                         </a>
@@ -86,9 +85,9 @@
                 </nav>
             </div>
 
-            <div class="flex items-center gap-2 md:hidden mobile-menu-btn">
+            <div class="flex items-center gap-2 rounded-full border border-white/80 bg-white/75 p-1.5 shadow-sm md:hidden mobile-menu-btn">
                 @if($showNavbarSearch)
-                    <button id="mobileSearchBtn" class="flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition-all duration-200 hover:border-orange-300 hover:text-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-200">
+                    <button id="mobileSearchBtn" class="header-icon-btn">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                         </svg>
@@ -97,7 +96,7 @@
                 @endif
 
                 @if($showAdminTools)
-                    <a href="{{ route('saved.index') }}" class="relative flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition-all duration-200 hover:border-orange-300 hover:text-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-200">
+                    <a href="{{ route('saved.index') }}" class="header-icon-btn relative">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <circle cx="9" cy="21" r="1" fill="none" stroke="currentColor" />
                             <circle cx="20" cy="21" r="1" fill="none" stroke="currentColor" />
@@ -109,14 +108,14 @@
                 @endif
 
                 @auth
-                    <a href="{{ route('notifications.index') }}" class="relative flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition-all duration-200 hover:border-orange-300 hover:text-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-200">
+                    <a href="{{ route('notifications.index') }}" class="header-icon-btn relative">
                         <i class="fas fa-bell text-base"></i>
                         <span id="mobile-notification-count" data-notification-badge aria-live="polite" aria-atomic="true" class="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold rounded-full h-5 w-5 flex items-center justify-center hidden min-w-[20px]" aria-hidden="true">0</span>
                         <span class="sr-only">الإشعارات</span>
                     </a>
                 @endauth
 
-                <button id="mobileMenuBtn" class="flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition-all duration-200 hover:border-orange-300 hover:text-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-200">
+                <button id="mobileMenuBtn" class="header-icon-btn">
                     <svg id="menu-icon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16m-7 6h7"/>
                     </svg>
@@ -127,13 +126,13 @@
                 </button>
             </div>
 
-            <div class="hidden md:flex flex-1 items-center justify-end gap-5 text-slate-600 header-nav">
+            <div class="hidden md:flex flex-1 items-center justify-end gap-3 text-slate-600 header-nav thedolci-header-nav">
                 @if($showNavbarSearch)
                     <button id="desktopSearchToggle"
                             type="button"
                             aria-controls="search-container"
                             aria-expanded="{{ $desktopSearchHasQuery ? 'true' : 'false' }}"
-                            class="desktop-search-toggle group flex h-11 items-center justify-center gap-2 rounded-full border border-slate-200 bg-white px-4 text-slate-500 shadow-sm transition-all duration-200 hover:border-orange-300 hover:text-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-200">
+                            class="desktop-search-toggle header-chip-btn group flex h-11 items-center justify-center gap-2 rounded-full px-4">
                         <i class="fas fa-search text-base"></i>
                         <span class="hidden text-sm font-semibold text-slate-600 group-hover:text-orange-600 xl:inline">
                             {{ $navCopy['search']['open'] }}
@@ -144,27 +143,27 @@
 
                 <nav class="flex items-center gap-2 text-sm font-medium text-slate-600" aria-label="{{ $navCopy['account_nav_label'] }}">
                     @if($showAdminTools)
-                        <a href="{{ route('saved.index') }}" class="relative flex items-center gap-2 rounded-full border border-transparent bg-white px-3 py-2 text-[13px] text-slate-500 shadow-sm transition-all duration-200 hover:border-orange-200 hover:bg-orange-50 hover:text-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-200">
+                        <a href="{{ route('saved.index') }}" class="header-chip-btn relative flex items-center gap-2 rounded-full px-3 py-2 text-[13px] text-slate-500">
                             <i class="fas fa-bookmark text-base"></i>
                             <span class="hidden text-[13px] xl:inline">{{ $navCopy['saved']['label'] }}</span>
                             <span id="saved-count" class="absolute -top-1 -right-1 bg-orange-500 text-white text-[10px] font-bold rounded-full h-5 w-5 flex items-center justify-center hidden min-w-[20px]">0</span>
                         </a>
                     @endif
 
-                    <a href="{{ route('partnership') }}" class="hidden lg:inline-flex items-center gap-2 rounded-full border border-orange-200 bg-orange-50 px-4 py-2 text-sm font-semibold text-orange-600 transition-all duration-200 hover:border-orange-300 hover:bg-orange-100 focus:outline-none focus:ring-2 focus:ring-orange-200">
+                    <a href="{{ route('partnership') }}" class="hidden lg:inline-flex items-center gap-2 rounded-full border border-orange-200/80 bg-gradient-to-r from-orange-50 to-amber-50 px-4 py-2 text-sm font-semibold text-orange-700 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-orange-300 hover:from-white hover:to-orange-50 hover:shadow-[0_10px_20px_rgba(8,25,255,0.1)] focus:outline-none focus:ring-2 focus:ring-orange-200 thedolci-partnership-btn">
                         <i class="fas fa-handshake-angle text-base"></i>
                         <span>{{ $navCopy['partnership_cta'] }}</span>
                     </a>
 
                     @auth
                         <div class="relative notification-container" id="notification-container">
-                            <button id="notification-bell" class="relative flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition-all duration-200 hover:border-orange-300 hover:text-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-200" onclick="toggleNotificationDropdown()" aria-expanded="false" aria-haspopup="true">
+                            <button id="notification-bell" class="header-icon-btn relative" onclick="toggleNotificationDropdown()" aria-expanded="false" aria-haspopup="true">
                                 <i class="fas fa-bell text-base"></i>
                                 <span id="notification-count" data-notification-badge aria-live="polite" aria-atomic="true" class="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold rounded-full h-5 w-5 flex items-center justify-center hidden min-w-[20px]" aria-hidden="true">0</span>
                                 <span class="sr-only">{{ data_get($notificationDropdownCopy, 'sr_label', 'عرض الإشعارات') }}</span>
                             </button>
 
-                            <div id="notification-dropdown" class="absolute right-0 top-full mt-4 w-[24rem] text-sm text-slate-600 z-50 hidden">
+                            <div id="notification-dropdown" class="absolute right-0 top-full mt-4 w-[24rem] text-sm text-slate-600 z-50 hidden thedolci-notification-dropdown">
                                 <div class="rounded-[28px] border border-slate-100 bg-white/95 p-4 shadow-[0_26px_50px_rgba(15,23,42,0.12)] backdrop-blur-xl space-y-4">
                                     <div class="flex items-center justify-between rounded-2xl bg-white px-4 py-3 shadow-inner shadow-slate-100/70">
                                         <div>
@@ -200,7 +199,7 @@
                             <button
                                 id="user-menu-button"
                                 type="button"
-                                class="group flex items-center gap-3 rounded-full border border-orange-100 bg-orange-50/80 px-4 py-2 text-right text-slate-700 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-orange-200 hover:bg-white focus:outline-none focus:ring-2 focus:ring-orange-200"
+                                class="group flex items-center gap-3 rounded-full border border-orange-100/80 bg-gradient-to-r from-orange-50/95 to-white px-4 py-2 text-right text-slate-700 shadow-[0_8px_20px_rgba(8,25,255,0.1)] transition-all duration-200 hover:-translate-y-0.5 hover:border-orange-200 hover:shadow-[0_14px_24px_rgba(8,25,255,0.14)] focus:outline-none focus:ring-2 focus:ring-orange-200 thedolci-user-trigger"
                                 aria-haspopup="true"
                                 aria-expanded="false"
                                 aria-controls="user-menu-dropdown">
@@ -214,7 +213,7 @@
                             </button>
                             <div
                                 id="user-menu-dropdown"
-                                class="absolute right-0 mt-3 hidden w-64 rounded-3xl border border-orange-100 bg-white/95 pb-2 text-sm text-slate-600 shadow-2xl backdrop-blur-md"
+                                class="absolute right-0 mt-3 hidden w-64 rounded-3xl border border-orange-100 bg-white/95 pb-2 text-sm text-slate-600 shadow-2xl backdrop-blur-md thedolci-user-dropdown"
                                 role="menu"
                                 aria-labelledby="user-menu-button">
                                 <div class="border-b border-slate-100 px-5 pt-5 pb-3">
@@ -273,9 +272,6 @@
                             </a>
                         @endif
                     @else
-                        <a href="{{ route('login') }}" class="rounded-full border border-transparent bg-orange-500 px-4 py-2 text-white shadow-sm transition-all duration-200 hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-200">
-                            {{ data_get($guestActions, 'login', __('navbar.guest_actions.login')) }}
-                        </a>
                         <a href="{{ route('register') }}" class="rounded-full border border-orange-200 px-4 py-2 text-orange-600 transition-all duration-200 hover:border-orange-300 hover:bg-orange-50 focus:outline-none focus:ring-2 focus:ring-orange-200">
                             {{ data_get($guestActions, 'register', __('navbar.guest_actions.register')) }}
                         </a>
@@ -288,7 +284,7 @@
             <div class="desktop-search-layer hidden md:block">
                 <div id="search-container"
                      data-expanded="{{ $desktopSearchHasQuery ? 'true' : 'false' }}"
-                     class="desktop-search-flyout navbar-search{{ $desktopSearchHasQuery ? ' search-expanded' : '' }}">
+                     class="desktop-search-flyout navbar-search thedolci-search-flyout{{ $desktopSearchHasQuery ? ' search-expanded' : '' }}">
                     <div class="desktop-search-flyout-inner">
                         <button id="search-submit"
                                 type="button"
@@ -319,7 +315,7 @@
         @endif
     </div>
 
-    <div id="mobileMenu" class="mobile-menu hidden border-t border-orange-100 bg-white/95 shadow-lg backdrop-blur md:hidden" style="display: none; z-index: 9999;">
+    <div id="mobileMenu" class="mobile-menu hidden border-t border-orange-100 bg-white/95 shadow-lg backdrop-blur md:hidden thedolci-mobile-menu" style="display: none; z-index: 9999;">
         <button type="button" data-close-mobile-menu class="absolute top-4 right-4 rtl:left-4 rtl:right-auto z-50 flex h-11 w-11 items-center justify-center rounded-full border border-rose-500 bg-rose-500 text-white shadow-lg shadow-rose-200 transition hover:bg-rose-600 focus:outline-none focus:ring-2 focus:ring-rose-200" style="z-index: 10050;">
             <i class="fas fa-times text-xl font-bold"></i>
             <span class="sr-only">{{ $navCopy['menu']['close'] ?? 'إغلاق القائمة' }}</span>
@@ -538,13 +534,6 @@
                         <span class="h-px flex-1 bg-slate-200"></span>
                     </div>
                     <div class="flex flex-col gap-3">
-                        <a href="{{ route('login') }}" class="flex items-center justify-between rounded-2xl bg-gradient-to-l from-orange-500 to-rose-500 p-4 text-white shadow-lg transition hover:opacity-95">
-                            <div>
-                                <p class="text-base font-semibold">{{ data_get($guestActions, 'login', __('navbar.guest_actions.login')) }}</p>
-                                <p class="text-sm text-white/80">تابع أدواتك وحجوزاتك بسهولة</p>
-                            </div>
-                            <i class="fas fa-arrow-left text-white/80"></i>
-                        </a>
                         <a href="{{ route('register') }}" class="flex items-center justify-between rounded-2xl border border-orange-200 bg-white/90 p-4 text-sm font-semibold text-orange-600 transition hover:bg-orange-50">
                             <div>
                                 <p>{{ data_get($guestActions, 'register', __('navbar.guest_actions.register')) }}</p>

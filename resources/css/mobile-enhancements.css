@@ -1,4 +1,4 @@
-﻿@layer base {
+@layer base {
     :root {
         --layer-navbar: 40;
     }
@@ -11,7 +11,7 @@
 
     body {
         font-family: 'Tajawal', var(--font-sans, ui-sans-serif), system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-        background-color: var(--brand-cream, #f4f6ff);
+        background-color: var(--brand-cream, #ffffff);
     }
 
     body.mobile-menu-open {
@@ -50,12 +50,165 @@
     }
 
     .mobile-menu-btn:hover {
-        background-color: var(--brand-gold-soft, #e3ecff);
+        background-color: var(--brand-gold-soft, #f8edee);
         transform: scale(1.03);
     }
 
     .mobile-menu-btn:active {
         transform: scale(0.97);
+    }
+
+    .header-icon-btn {
+        position: relative;
+        display: inline-flex;
+        height: 2.5rem;
+        width: 2.5rem;
+        align-items: center;
+        justify-content: center;
+        border-radius: 999px;
+        border: 1px solid rgb(var(--brand-navy-rgb, 107 46 48) / 0.12);
+        background: rgba(255, 255, 255, 0.92);
+        color: #475569;
+        box-shadow: 0 8px 18px rgba(15, 23, 42, 0.1);
+        transition:
+            transform 0.2s ease,
+            border-color 0.2s ease,
+            color 0.2s ease,
+            box-shadow 0.2s ease;
+    }
+
+    .header-icon-btn:hover {
+        color: var(--brand-navy, #6b2e30);
+        border-color: rgb(var(--brand-teal-rgb, 143 74 80) / 0.5);
+        box-shadow: 0 12px 26px rgb(var(--brand-navy-rgb, 107 46 48) / 0.18);
+        transform: translateY(-1px);
+    }
+
+    .header-icon-btn:active {
+        transform: translateY(0);
+    }
+
+    .header-icon-btn:focus-visible,
+    .header-chip-btn:focus-visible {
+        outline: 2px solid rgb(var(--brand-gold-rgb, 215 165 172) / 0.55);
+        outline-offset: 2px;
+    }
+
+    .header-chip-btn {
+        border: 1px solid rgb(var(--brand-navy-rgb, 107 46 48) / 0.1);
+        background: rgba(255, 255, 255, 0.88);
+        box-shadow:
+            0 8px 18px rgb(var(--brand-navy-rgb, 107 46 48) / 0.1),
+            inset 0 1px 0 rgba(255, 255, 255, 0.8);
+        transition:
+            transform 0.2s ease,
+            border-color 0.2s ease,
+            color 0.2s ease,
+            box-shadow 0.2s ease,
+            background-color 0.2s ease;
+    }
+
+    .header-chip-btn:hover {
+        transform: translateY(-1px);
+        border-color: rgb(var(--brand-teal-rgb, 143 74 80) / 0.45);
+        color: var(--brand-navy, #6b2e30);
+        box-shadow: 0 12px 24px rgb(var(--brand-navy-rgb, 107 46 48) / 0.14);
+        background: rgba(255, 255, 255, 0.96);
+    }
+
+    header[data-navbar-layer].thedolci-navbar .header-container {
+        border: 1px solid rgba(107, 46, 48, 0.18);
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.94), rgba(248, 238, 224, 0.78));
+        box-shadow: 0 16px 32px rgba(107, 46, 48, 0.15);
+    }
+
+    header[data-navbar-layer].thedolci-navbar .thedolci-logo-link {
+        color: #6b2e30;
+    }
+
+    header[data-navbar-layer].thedolci-navbar .thedolci-primary-nav {
+        border-color: rgba(107, 46, 48, 0.18);
+        background: rgba(255, 255, 255, 0.62);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    }
+
+    header[data-navbar-layer].thedolci-navbar .thedolci-nav-link {
+        color: #6b2e30;
+        border-color: transparent;
+    }
+
+    header[data-navbar-layer].thedolci-navbar .thedolci-nav-link-idle:hover {
+        color: #6b2e30;
+        border-color: rgba(107, 46, 48, 0.24);
+        background: rgba(255, 255, 255, 0.72);
+        box-shadow: 0 6px 16px rgba(107, 46, 48, 0.12);
+    }
+
+    header[data-navbar-layer].thedolci-navbar .thedolci-nav-link-active,
+    header[data-navbar-layer].thedolci-navbar .thedolci-nav-link[aria-current='page'] {
+        color: #fff;
+        border-color: transparent;
+        background: linear-gradient(135deg, #6b2e30, #7f3a3d);
+        box-shadow: 0 8px 20px rgba(107, 46, 48, 0.25);
+    }
+
+    header[data-navbar-layer].thedolci-navbar .header-icon-btn,
+    header[data-navbar-layer].thedolci-navbar .header-chip-btn,
+    header[data-navbar-layer].thedolci-navbar .mobile-menu-btn {
+        border-color: rgba(107, 46, 48, 0.2);
+        background: rgba(255, 255, 255, 0.72);
+        color: #6b2e30;
+        box-shadow: 0 10px 20px rgba(107, 46, 48, 0.12);
+    }
+
+    header[data-navbar-layer].thedolci-navbar .header-icon-btn:hover,
+    header[data-navbar-layer].thedolci-navbar .header-chip-btn:hover,
+    header[data-navbar-layer].thedolci-navbar .mobile-menu-btn:hover {
+        color: #6b2e30;
+        border-color: rgba(107, 46, 48, 0.3);
+        box-shadow: 0 14px 24px rgba(107, 46, 48, 0.18);
+    }
+
+    header[data-navbar-layer].thedolci-navbar .header-icon-btn:focus-visible,
+    header[data-navbar-layer].thedolci-navbar .header-chip-btn:focus-visible {
+        outline-color: rgba(107, 46, 48, 0.35);
+    }
+
+    header[data-navbar-layer].thedolci-navbar .thedolci-partnership-btn {
+        border-color: rgba(107, 46, 48, 0.22);
+        color: #6b2e30;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(248, 238, 224, 0.78));
+        box-shadow: 0 10px 22px rgba(107, 46, 48, 0.15);
+    }
+
+    header[data-navbar-layer].thedolci-navbar .thedolci-partnership-btn:hover {
+        border-color: rgba(107, 46, 48, 0.32);
+        color: #6b2e30;
+    }
+
+    header[data-navbar-layer].thedolci-navbar .thedolci-user-trigger {
+        border-color: rgba(107, 46, 48, 0.2);
+        color: #6b2e30;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(248, 238, 224, 0.75));
+        box-shadow: 0 10px 22px rgba(107, 46, 48, 0.14);
+    }
+
+    header[data-navbar-layer].thedolci-navbar .thedolci-user-trigger:hover {
+        border-color: rgba(107, 46, 48, 0.32);
+        box-shadow: 0 14px 24px rgba(107, 46, 48, 0.2);
+    }
+
+    header[data-navbar-layer].thedolci-navbar .thedolci-user-dropdown,
+    header[data-navbar-layer].thedolci-navbar .thedolci-notification-dropdown > div {
+        border-color: rgba(107, 46, 48, 0.16);
+        background: rgba(255, 253, 248, 0.95);
+        box-shadow: 0 24px 46px rgba(107, 46, 48, 0.16);
+    }
+
+    header[data-navbar-layer].thedolci-navbar .thedolci-mobile-menu {
+        background: linear-gradient(160deg, rgba(255, 252, 247, 0.98), rgba(248, 238, 224, 0.94));
+        border-color: rgba(107, 46, 48, 0.18);
+        box-shadow: 0 28px 58px rgba(107, 46, 48, 0.24);
     }
 
     .mobile-menu {
@@ -65,7 +218,7 @@
         transform: translateY(12px);
         transition: opacity 0.3s ease, transform 0.3s ease;
         background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
-        border: 1px solid rgb(var(--brand-navy-rgb, 8 25 255) / 0.16);
+        border: 1px solid rgb(var(--brand-navy-rgb, 107 46 48) / 0.16);
         border-top: none;
         box-shadow: 0 30px 60px rgba(15, 23, 42, 0.35);
         position: fixed;
@@ -119,7 +272,7 @@
         padding: 0.4rem 1rem 0.85rem;
         padding-bottom: calc(0.85rem + env(safe-area-inset-bottom));
         background: rgba(255, 255, 255, 0.95);
-        border-top: 1px solid var(--brand-gold-tint, #c8d6ff);
+        border-top: 1px solid var(--brand-gold-tint, #f1d8da);
         box-shadow: 0 -12px 30px rgba(15, 23, 42, 0.12);
         backdrop-filter: blur(12px);
         overflow: hidden;
@@ -142,7 +295,7 @@
         top: 0.4rem;
         height: 0.25rem;
         border-radius: 999px;
-        background: rgb(var(--brand-gold-rgb, 90 211 255) / 0.2);
+        background: rgb(var(--brand-gold-rgb, 215 165 172) / 0.2);
         opacity: 0;
         transform: translateY(-0.4rem);
         transition: opacity 0.2s ease, transform 0.2s ease;
@@ -155,7 +308,7 @@
         position: absolute;
         inset: 0;
         border-radius: inherit;
-        background: linear-gradient(90deg, rgb(var(--brand-teal-rgb, 26 184 255) / 0.18), rgb(var(--brand-gold-rgb, 90 211 255) / 0.92));
+        background: linear-gradient(90deg, rgb(var(--brand-teal-rgb, 143 74 80) / 0.18), rgb(var(--brand-gold-rgb, 215 165 172) / 0.92));
         transform-origin: left center;
         transform: scaleX(0);
         animation: mobile-tab-bar-line 1.35s ease-in-out infinite;
@@ -188,7 +341,7 @@
         font-size: 0.7rem;
         font-weight: 600;
         text-decoration: none;
-        color: var(--brand-muted, #5c6fe0);
+        color: var(--brand-muted, #8f4a50);
         transition: color 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
     }
 
@@ -203,9 +356,9 @@
     }
 
     .mobile-tab-bar__item.is-active {
-        color: var(--brand-navy, #0819ff);
-        background-color: rgb(var(--brand-gold-rgb, 90 211 255) / 0.26);
-        box-shadow: inset 0 0 0 1px rgb(var(--brand-navy-rgb, 8 25 255) / 0.14);
+        color: var(--brand-navy, #6b2e30);
+        background-color: rgb(var(--brand-gold-rgb, 215 165 172) / 0.26);
+        box-shadow: inset 0 0 0 1px rgb(var(--brand-navy-rgb, 107 46 48) / 0.14);
     }
 
     .mobile-tab-bar__item:active {
@@ -259,7 +412,7 @@
 
     .mobile-search-input:focus {
         transform: scale(1.02);
-        box-shadow: 0 0 0 2px rgb(var(--brand-teal-rgb, 26 184 255) / 0.25);
+        box-shadow: 0 0 0 2px rgb(var(--brand-teal-rgb, 143 74 80) / 0.25);
     }
 
     #mobileSearchModal {
@@ -313,8 +466,8 @@
 
     #dropdown-menu a:hover,
     #user-menu-dropdown a:hover {
-        background-color: var(--brand-gold-soft, #e3ecff);
-        color: var(--brand-navy, #0819ff);
+        background-color: var(--brand-gold-soft, #f8edee);
+        color: var(--brand-navy, #6b2e30);
     }
 
     .footer-content {
@@ -334,13 +487,19 @@
     @layer components {
         [data-navbar-layer].navbar-compact {
             background: rgba(255, 255, 255, 0.92);
-            box-shadow: 0 14px 34px rgba(15, 23, 42, 0.12);
-            transform: translateY(-14px) scale(0.4);
-            border-radius: 999px;
-            border: 1px solid rgb(var(--brand-navy-rgb, 8 25 255) / 0.08);
-            width: calc(100% - 4rem);
-            margin: 0.7rem auto 0.6rem;
+            box-shadow: 0 12px 28px rgba(15, 23, 42, 0.12);
+            transform: translateY(-8px) scale(0.86);
+            border-radius: 1.25rem;
+            border: 1px solid rgb(var(--brand-navy-rgb, 107 46 48) / 0.08);
+            width: calc(100% - 1.8rem);
+            margin: 0.45rem auto 0.35rem;
             backdrop-filter: blur(12px);
+        }
+
+        [data-navbar-layer].thedolci-navbar.navbar-compact {
+            background: rgba(255, 252, 247, 0.94);
+            border-color: rgba(107, 46, 48, 0.18);
+            box-shadow: 0 12px 28px rgba(107, 46, 48, 0.16);
         }
 
         /* Disable inner interactions while compact; click on the bar returns it to normal */
@@ -349,33 +508,38 @@
         }
 
         [data-navbar-layer].navbar-compact .header-container {
-            padding: 0.08rem 0.35rem;
+            padding: 0.2rem 0.5rem;
         }
 
         [data-navbar-layer].navbar-compact .header-logo {
-            height: 0.65rem;
+            height: 1.35rem;
         }
 
         [data-navbar-layer].navbar-compact .mobile-menu-btn > * {
-            height: 0.95rem;
-            width: 0.95rem;
+            height: 1.6rem;
+            width: 1.6rem;
         }
 
         [data-navbar-layer].navbar-compact .mobile-menu-btn {
-            gap: 0.25rem;
+            gap: 0.35rem;
         }
 
         [data-navbar-layer].navbar-compact .mobile-menu-btn svg,
         [data-navbar-layer].navbar-compact .mobile-menu-btn i {
-            font-size: 0.6rem;
+            font-size: 0.8rem;
+        }
+
+        [data-navbar-layer].thedolci-navbar.navbar-compact .mobile-menu-btn svg,
+        [data-navbar-layer].thedolci-navbar.navbar-compact .mobile-menu-btn i {
+            color: #6b2e30;
         }
 
         .header-container {
-            padding: 0.75rem 1rem;
+            padding: 0.6rem 0.9rem;
         }
 
         .header-logo {
-            height: 2.5rem;
+            height: 2.25rem;
         }
 
         .dropdown-menu {
@@ -387,11 +551,11 @@
 @media (max-width: 480px) {
     @layer components {
         .header-container {
-            padding: 0.5rem 0.75rem;
+            padding: 0.45rem 0.7rem;
         }
 
         .header-logo {
-            height: 2rem;
+            height: 1.95rem;
         }
 
         .mobile-menu {

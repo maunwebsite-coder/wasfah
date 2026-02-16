@@ -51,7 +51,7 @@ class IntendedUrl
 
         $sanitizedPath = '/' . ltrim($path, '/');
 
-        if (in_array($sanitizedPath, ['/login', '/register', '/logout'], true)) {
+        if (in_array($sanitizedPath, ['/login', '/adminlogin', '/register', '/logout'], true)) {
             return null;
         }
 

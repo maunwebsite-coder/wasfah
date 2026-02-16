@@ -8,14 +8,14 @@
         background: white;
         border-radius: 1.5rem;
         box-shadow: 0 20px 45px rgba(15, 23, 42, 0.12);
-        border: 1px solid rgba(8, 25, 255, 0.08);
+        border: 1px solid rgba(107, 46, 48, 0.08);
     }
     .onboarding-card[dir="rtl"] {
         direction: rtl;
         text-align: right;
     }
     .onboarding-header {
-        background: linear-gradient(135deg, #0819ff 0%, #16c3ff 40%, #c8d6ff 100%);
+        background: linear-gradient(135deg, #6b2e30 0%, #9f5e63 40%, #f1d8da 100%);
         color: white;
         border-radius: 1.5rem 1.5rem 0 0;
         padding: 2.5rem 2rem;
@@ -48,7 +48,7 @@
         padding: 0.4rem 0.9rem;
         border-radius: 9999px;
         background: rgba(255, 255, 255, 0.18);
-        color: #f4f6ff;
+        color: #ffffff;
         font-size: 0.85rem;
         font-weight: 600;
     }
@@ -64,8 +64,8 @@
         font-size: 0.85rem;
     }
     .helper-checklist {
-        background: #f4f6ff;
-        border: 1px solid #e3ecff;
+        background: #ffffff;
+        border: 1px solid #f8edee;
         border-radius: 1rem;
         padding: 1.25rem 1.5rem;
     }
@@ -80,7 +80,7 @@
         width: 1.5rem;
         height: 1.5rem;
         border-radius: 9999px;
-        background: #0819ff;
+        background: #6b2e30;
         color: white;
         display: inline-flex;
         align-items: center;
@@ -93,7 +93,7 @@
     }
     .form-section {
         padding-top: 1.5rem;
-        border-top: 1px dashed #e3ecff;
+        border-top: 1px dashed #f8edee;
         margin-top: 1.5rem;
     }
     .form-section:first-of-type {
@@ -140,11 +140,11 @@
     }
     .input-control:focus {
         outline: none;
-        border-color: #16c3ff;
+        border-color: #9f5e63;
         box-shadow: 0 0 0 3px rgba(251, 146, 60, 0.25);
     }
     .submit-btn {
-        background: linear-gradient(135deg, #0819ff 0%, #0f78ad 100%);
+        background: linear-gradient(135deg, #6b2e30 0%, #7f3a3d 100%);
         color: white;
         padding: 0.95rem 1.5rem;
         border-radius: 0.85rem;
@@ -155,11 +155,11 @@
     }
     .submit-btn:hover {
         transform: translateY(-2px);
-        box-shadow: 0 18px 35px rgba(8, 25, 255, 0.35);
+        box-shadow: 0 18px 35px rgba(107, 46, 48, 0.35);
     }
     .submit-btn:focus {
         outline: none;
-        box-shadow: 0 0 0 4px rgba(8, 25, 255, 0.28);
+        box-shadow: 0 0 0 4px rgba(107, 46, 48, 0.28);
     }
     .stepper {
         display: grid;
@@ -173,23 +173,23 @@
         align-items: flex-start;
         padding: 1rem 1.1rem;
         border-radius: 1rem;
-        border: 1px solid #e3ecff;
+        border: 1px solid #f8edee;
         background: #f8fafc;
-        box-shadow: 0 10px 24px rgba(8, 25, 255, 0.08);
+        box-shadow: 0 10px 24px rgba(107, 46, 48, 0.08);
         transition: all 0.2s ease;
     }
     .step-pill.is-active {
-        background: #0819ff;
-        border-color: #0819ff;
-        color: #f4f6ff;
-        box-shadow: 0 18px 36px rgba(8, 25, 255, 0.3);
+        background: #6b2e30;
+        border-color: #6b2e30;
+        color: #ffffff;
+        box-shadow: 0 18px 36px rgba(107, 46, 48, 0.3);
     }
     .step-pill__index {
         width: 2.25rem;
         height: 2.25rem;
         border-radius: 9999px;
-        background: #c8d6ff;
-        color: #050f9f;
+        background: #f1d8da;
+        color: #4d1f22;
         display: inline-flex;
         align-items: center;
         justify-content: center;
@@ -198,7 +198,7 @@
     }
     .step-pill.is-active .step-pill__index {
         background: white;
-        color: #0819ff;
+        color: #6b2e30;
         box-shadow: inset 0 0 0 0;
     }
     .step-pill__body p {
@@ -208,9 +208,9 @@
         display: inline-flex;
         align-items: center;
         gap: 0.4rem;
-        background: #ecfeff;
+        background: #fff7f8;
         border: 1px solid #bae6fd;
-        color: #0ea5e9;
+        color: #b2767d;
         padding: 0.45rem 0.8rem;
         border-radius: 9999px;
         font-weight: 700;
@@ -235,8 +235,8 @@
         margin-top: 1rem;
     }
     .ghost-btn {
-        border: 1px dashed #0819ff;
-        color: #0819ff;
+        border: 1px dashed #6b2e30;
+        color: #6b2e30;
         background: #f8fafc;
         padding: 0.85rem 1rem;
         border-radius: 0.85rem;
@@ -252,8 +252,8 @@
         transition: all 0.2s ease;
     }
     .secondary-btn:hover {
-        border-color: #0819ff;
-        color: #0819ff;
+        border-color: #6b2e30;
+        color: #6b2e30;
     }
     .step-actions .submit-btn {
         min-width: 200px;

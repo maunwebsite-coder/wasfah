@@ -314,12 +314,12 @@ function printRecipe() {
                 .recipe-header {
                     text-align: center;
                     margin-bottom: 30px;
-                    border-bottom: 2px solid #0819ff;
+                    border-bottom: 2px solid #6b2e30;
                     padding-bottom: 20px;
                 }
                 .recipe-title {
                     font-size: 2.5em;
-                    color: #0819ff;
+                    color: #6b2e30;
                     margin-bottom: 10px;
                 }
                 .recipe-meta {
@@ -346,7 +346,7 @@ function printRecipe() {
                 }
                 .section-title {
                     font-size: 1.8em;
-                    color: #0819ff;
+                    color: #6b2e30;
                     margin-bottom: 20px;
                     border-bottom: 1px solid #e9ecef;
                     padding-bottom: 10px;
@@ -360,7 +360,7 @@ function printRecipe() {
                     margin: 8px 0;
                     padding: 12px 20px;
                     border-radius: 8px;
-                    border-right: 4px solid #0819ff;
+                    border-right: 4px solid #6b2e30;
                 }
                 .instructions-list {
                     counter-reset: step-counter;
@@ -380,7 +380,7 @@ function printRecipe() {
                     position: absolute;
                     right: -15px;
                     top: -15px;
-                    background: #0819ff;
+                    background: #6b2e30;
                     color: white;
                     width: 30px;
                     height: 30px;

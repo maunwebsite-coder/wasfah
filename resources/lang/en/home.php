@@ -1,8 +1,8 @@
-<?php
+﻿<?php
 
 return [
     'meta' => [
-        'title' => 'Peahskill – Multi-industry skill platform',
+        'title' => 'Peahskill â€“ Multi-industry skill platform',
     ],
 
     'hero' => [
@@ -158,7 +158,7 @@ return [
         'onsite_short' => 'In-person',
         'live_online' => 'Online (live)',
         'with' => 'With',
-        'currency_suffix' => 'AED',
+        'currency_suffix' => 'JOD',
         'user_placeholder' => 'Guest',
     ],
 
@@ -181,3 +181,4 @@ return [
         'save_error' => 'Something went wrong while saving the recipe',
     ],
 ];
+

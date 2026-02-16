@@ -46,6 +46,16 @@ class LoginController extends Controller
         /** @var User $user */
         $user = $request->user();
 
+        if (! $user || ! $user->isAdmin()) {
+            Auth::logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+
+            throw ValidationException::withMessages([
+                'email' => 'تسجيل الدخول متاح حالياً للأدمن فقط.',
+            ]);
+        }
+
         $this->updateLoginMetadata($user, $request);
 
         if ($this->shouldRedirectToOnboarding($user)) {

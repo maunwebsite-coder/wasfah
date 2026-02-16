@@ -1,77 +1,77 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
-@section('title', 'إدارة الحجوزات')
+@section('title', 'Ø¥Ø¯Ø§Ø±Ø© Ø§Ù„Ø­Ø¬ÙˆØ²Ø§Øª')
 
 @php
     $totalBookings = max($stats['total'], 1);
 
     $statusCards = [
         [
-            'label' => 'إجمالي الحجوزات',
+            'label' => 'Ø¥Ø¬Ù…Ø§Ù„ÙŠ Ø§Ù„Ø­Ø¬ÙˆØ²Ø§Øª',
             'value' => $stats['total'],
             'formatted' => number_format($stats['total']),
             'icon' => 'fa-calendar-check',
             'gradient' => 'from-sky-500 via-indigo-500 to-purple-500',
-            'description' => 'جميع الحجوزات المسجلة في النظام',
+            'description' => 'Ø¬Ù…ÙŠØ¹ Ø§Ù„Ø­Ø¬ÙˆØ²Ø§Øª Ø§Ù„Ù…Ø³Ø¬Ù„Ø© ÙÙŠ Ø§Ù„Ù†Ø¸Ø§Ù…',
             'percentage' => null,
         ],
         [
-            'label' => 'قيد المراجعة',
+            'label' => 'Ù‚ÙŠØ¯ Ø§Ù„Ù…Ø±Ø§Ø¬Ø¹Ø©',
             'value' => $stats['pending'],
             'formatted' => number_format($stats['pending']),
             'icon' => 'fa-hourglass-half',
             'gradient' => 'from-amber-500 to-orange-500',
-            'description' => 'حجوزات تنتظر الإجراء',
+            'description' => 'Ø­Ø¬ÙˆØ²Ø§Øª ØªÙ†ØªØ¸Ø± Ø§Ù„Ø¥Ø¬Ø±Ø§Ø¡',
             'percentage' => round(($stats['pending'] / $totalBookings) * 100, 1),
         ],
         [
-            'label' => 'مؤكدة',
+            'label' => 'Ù…Ø¤ÙƒØ¯Ø©',
             'value' => $stats['confirmed'],
             'formatted' => number_format($stats['confirmed']),
             'icon' => 'fa-check-circle',
             'gradient' => 'from-emerald-500 to-teal-500',
-            'description' => 'تم تأكيدها للمشاركين',
+            'description' => 'ØªÙ… ØªØ£ÙƒÙŠØ¯Ù‡Ø§ Ù„Ù„Ù…Ø´Ø§Ø±ÙƒÙŠÙ†',
             'percentage' => round(($stats['confirmed'] / $totalBookings) * 100, 1),
         ],
         [
-            'label' => 'ملغية',
+            'label' => 'Ù…Ù„ØºÙŠØ©',
             'value' => $stats['cancelled'],
             'formatted' => number_format($stats['cancelled']),
             'icon' => 'fa-times-circle',
             'gradient' => 'from-rose-500 to-red-500',
-            'description' => 'تحتاج تحليل أسباب الإلغاء',
+            'description' => 'ØªØ­ØªØ§Ø¬ ØªØ­Ù„ÙŠÙ„ Ø£Ø³Ø¨Ø§Ø¨ Ø§Ù„Ø¥Ù„ØºØ§Ø¡',
             'percentage' => round(($stats['cancelled'] / $totalBookings) * 100, 1),
         ],
     ];
 
     $quickStatusFilters = [
         [
-            'label' => 'الكل',
+            'label' => 'Ø§Ù„ÙƒÙ„',
             'value' => null,
             'count' => number_format($stats['total']),
             'icon' => 'fa-layer-group',
-            'hint' => 'عرض جميع الحجوزات',
+            'hint' => 'Ø¹Ø±Ø¶ Ø¬Ù…ÙŠØ¹ Ø§Ù„Ø­Ø¬ÙˆØ²Ø§Øª',
         ],
         [
-            'label' => 'قيد المراجعة',
+            'label' => 'Ù‚ÙŠØ¯ Ø§Ù„Ù…Ø±Ø§Ø¬Ø¹Ø©',
             'value' => 'pending',
             'count' => number_format($stats['pending']),
             'icon' => 'fa-hourglass-half',
-            'hint' => 'الحجوزات التي لم يتم اتخاذ إجراء بشأنها',
+            'hint' => 'Ø§Ù„Ø­Ø¬ÙˆØ²Ø§Øª Ø§Ù„ØªÙŠ Ù„Ù… ÙŠØªÙ… Ø§ØªØ®Ø§Ø° Ø¥Ø¬Ø±Ø§Ø¡ Ø¨Ø´Ø£Ù†Ù‡Ø§',
         ],
         [
-            'label' => 'مؤكدة',
+            'label' => 'Ù…Ø¤ÙƒØ¯Ø©',
             'value' => 'confirmed',
             'count' => number_format($stats['confirmed']),
             'icon' => 'fa-check-circle',
-            'hint' => 'الحجوزات الجاهزة للورشة',
+            'hint' => 'Ø§Ù„Ø­Ø¬ÙˆØ²Ø§Øª Ø§Ù„Ø¬Ø§Ù‡Ø²Ø© Ù„Ù„ÙˆØ±Ø´Ø©',
         ],
         [
-            'label' => 'ملغية',
+            'label' => 'Ù…Ù„ØºÙŠØ©',
             'value' => 'cancelled',
             'count' => number_format($stats['cancelled']),
             'icon' => 'fa-ban',
-            'hint' => 'إلغاءات تحتاج متابعة',
+            'hint' => 'Ø¥Ù„ØºØ§Ø¡Ø§Øª ØªØ­ØªØ§Ø¬ Ù…ØªØ§Ø¨Ø¹Ø©',
         ],
     ];
 
@@ -88,79 +88,79 @@
 
     $paymentMeta = [
         'pending' => [
-            'label' => 'بانتظار الدفع',
+            'label' => 'Ø¨Ø§Ù†ØªØ¸Ø§Ø± Ø§Ù„Ø¯ÙØ¹',
             'class' => 'bg-amber-100 text-amber-700',
         ],
         'paid' => [
-            'label' => 'مدفوعة',
+            'label' => 'Ù…Ø¯ÙÙˆØ¹Ø©',
             'class' => 'bg-emerald-100 text-emerald-700',
         ],
         'refunded' => [
-            'label' => 'مستردة',
+            'label' => 'Ù…Ø³ØªØ±Ø¯Ø©',
             'class' => 'bg-purple-100 text-purple-700',
         ],
     ];
 
     $financialStatusMeta = [
         \App\Models\WorkshopBooking::FINANCIAL_STATUS_PENDING => [
-            'label' => 'بانتظار التوزيع',
+            'label' => 'Ø¨Ø§Ù†ØªØ¸Ø§Ø± Ø§Ù„ØªÙˆØ²ÙŠØ¹',
             'class' => 'bg-slate-100 text-slate-700',
         ],
         \App\Models\WorkshopBooking::FINANCIAL_STATUS_DISTRIBUTED => [
-            'label' => 'تم التوزيع',
+            'label' => 'ØªÙ… Ø§Ù„ØªÙˆØ²ÙŠØ¹',
             'class' => 'bg-emerald-100 text-emerald-700',
         ],
         \App\Models\WorkshopBooking::FINANCIAL_STATUS_VOID => [
-            'label' => 'معلق أو ملغي',
+            'label' => 'Ù…Ø¹Ù„Ù‚ Ø£Ùˆ Ù…Ù„ØºÙŠ',
             'class' => 'bg-rose-100 text-rose-700',
         ],
     ];
 
     $financialStatusFilters = [
         [
-            'label' => 'الكل',
+            'label' => 'Ø§Ù„ÙƒÙ„',
             'value' => null,
-            'hint' => 'عرض جميع الحالات المالية',
+            'hint' => 'Ø¹Ø±Ø¶ Ø¬Ù…ÙŠØ¹ Ø§Ù„Ø­Ø§Ù„Ø§Øª Ø§Ù„Ù…Ø§Ù„ÙŠØ©',
         ],
         [
-            'label' => 'بانتظار التوزيع',
+            'label' => 'Ø¨Ø§Ù†ØªØ¸Ø§Ø± Ø§Ù„ØªÙˆØ²ÙŠØ¹',
             'value' => \App\Models\WorkshopBooking::FINANCIAL_STATUS_PENDING,
-            'hint' => 'الحجوزات التي لم يتم توزيع مبالغها بعد',
+            'hint' => 'Ø§Ù„Ø­Ø¬ÙˆØ²Ø§Øª Ø§Ù„ØªÙŠ Ù„Ù… ÙŠØªÙ… ØªÙˆØ²ÙŠØ¹ Ù…Ø¨Ø§Ù„ØºÙ‡Ø§ Ø¨Ø¹Ø¯',
         ],
         [
-            'label' => 'تم التوزيع',
+            'label' => 'ØªÙ… Ø§Ù„ØªÙˆØ²ÙŠØ¹',
             'value' => \App\Models\WorkshopBooking::FINANCIAL_STATUS_DISTRIBUTED,
-            'hint' => 'الحجوزات التي تم تقسيم عوائدها تلقائياً',
+            'hint' => 'Ø§Ù„Ø­Ø¬ÙˆØ²Ø§Øª Ø§Ù„ØªÙŠ ØªÙ… ØªÙ‚Ø³ÙŠÙ… Ø¹ÙˆØ§Ø¦Ø¯Ù‡Ø§ ØªÙ„Ù‚Ø§Ø¦ÙŠØ§Ù‹',
         ],
         [
-            'label' => 'معلق أو ملغي',
+            'label' => 'Ù…Ø¹Ù„Ù‚ Ø£Ùˆ Ù…Ù„ØºÙŠ',
             'value' => \App\Models\WorkshopBooking::FINANCIAL_STATUS_VOID,
-            'hint' => 'الحجوزات التي تم إيقاف توزيعها',
+            'hint' => 'Ø§Ù„Ø­Ø¬ÙˆØ²Ø§Øª Ø§Ù„ØªÙŠ ØªÙ… Ø¥ÙŠÙ‚Ø§Ù ØªÙˆØ²ÙŠØ¹Ù‡Ø§',
         ],
     ];
 
-    $defaultCurrency = config('finance.default_currency', 'USD');
+    $defaultCurrency = config('finance.default_currency', 'JOD');
     $currencyOptions = $currencyOptions ?? \App\Support\Currency::all();
     $shareTotals = $stats['share_totals'] ?? ['chef' => 0, 'partner' => 0, 'admin' => 0];
     $paidCurrencies = $stats['paid_currencies'] ?? [];
 
     $statusCards[] = [
-        'label' => 'مدفوعات مؤكدة',
+        'label' => 'Ù…Ø¯ÙÙˆØ¹Ø§Øª Ù…Ø¤ÙƒØ¯Ø©',
         'value' => $stats['paid_amount'] ?? 0,
         'formatted' => number_format($stats['paid_amount'] ?? 0, 2) . ' ' . $defaultCurrency,
         'icon' => 'fa-wallet',
         'gradient' => 'from-emerald-500 to-lime-500',
-        'description' => 'إجمالي المبالغ المدفوعة حتى الآن',
+        'description' => 'Ø¥Ø¬Ù…Ø§Ù„ÙŠ Ø§Ù„Ù…Ø¨Ø§Ù„Øº Ø§Ù„Ù…Ø¯ÙÙˆØ¹Ø© Ø­ØªÙ‰ Ø§Ù„Ø¢Ù†',
         'percentage' => null,
     ];
 
     $statusCards[] = [
-        'label' => 'حجوزات موزعة مالياً',
+        'label' => 'Ø­Ø¬ÙˆØ²Ø§Øª Ù…ÙˆØ²Ø¹Ø© Ù…Ø§Ù„ÙŠØ§Ù‹',
         'value' => $stats['financial']['distributed'] ?? 0,
         'formatted' => number_format($stats['financial']['distributed'] ?? 0),
         'icon' => 'fa-coins',
         'gradient' => 'from-cyan-500 to-blue-500',
-        'description' => 'عدد الحجوزات التي تم تقسيم حصصها',
+        'description' => 'Ø¹Ø¯Ø¯ Ø§Ù„Ø­Ø¬ÙˆØ²Ø§Øª Ø§Ù„ØªÙŠ ØªÙ… ØªÙ‚Ø³ÙŠÙ… Ø­ØµØµÙ‡Ø§',
         'percentage' => null,
     ];
 @endphp
@@ -240,7 +240,7 @@
     border-radius: 9999px;
     border: 1px solid rgba(59, 130, 246, 0.18);
     background: rgba(59, 130, 246, 0.08);
-    color: #1e3a8a;
+    color: #6b2e30;
     font-size: 0.85rem;
     font-weight: 600;
     transition: all 0.2s ease-in-out;
@@ -269,14 +269,14 @@
 
 .quick-filter-chip .chip-count {
     background: rgba(255, 255, 255, 0.9);
-    color: #1e40af;
+    color: #7f3a3d;
     font-weight: 700;
 }
 
 .quick-filter-chip.is-active {
     color: #fff;
     border-color: transparent;
-    background: linear-gradient(135deg, #2563eb, #7c3aed);
+    background: linear-gradient(135deg, #9f5e63, #7c3aed);
     box-shadow: 0 16px 32px -24px rgba(79, 70, 229, 0.65);
 }
 
@@ -310,7 +310,7 @@
     height: 2.75rem;
     border-radius: 9999px;
     background: rgba(59, 130, 246, 0.12);
-    color: #1d4ed8;
+    color: #8f4a50;
     font-size: 1.25rem;
 }
 
@@ -361,34 +361,34 @@
                         <span class="inline-flex h-11 w-11 items-center justify-center rounded-full bg-blue-100 text-blue-600">
                             <i class="fas fa-calendar-check"></i>
                         </span>
-                        إدارة الحجوزات
+                        Ø¥Ø¯Ø§Ø±Ø© Ø§Ù„Ø­Ø¬ÙˆØ²Ø§Øª
                     </h1>
                     <p class="mt-2 text-sm text-gray-600">
-                        متابعة سريعة للحجوزات، المدفوعات، والإجراءات اليومية.
+                        Ù…ØªØ§Ø¨Ø¹Ø© Ø³Ø±ÙŠØ¹Ø© Ù„Ù„Ø­Ø¬ÙˆØ²Ø§ØªØŒ Ø§Ù„Ù…Ø¯ÙÙˆØ¹Ø§ØªØŒ ÙˆØ§Ù„Ø¥Ø¬Ø±Ø§Ø¡Ø§Øª Ø§Ù„ÙŠÙˆÙ…ÙŠØ©.
                     </p>
                 </div>
                 <div class="flex flex-wrap items-center gap-2 sm:gap-3 justify-end">
                     <a href="{{ route('admin.bookings.manual') }}" class="inline-flex items-center gap-2 px-4 py-2 rounded-md bg-green-600 text-white text-sm font-semibold hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-green-500">
                         <i class="fas fa-plus"></i>
-                        إضافة حجز يدوي
+                        Ø¥Ø¶Ø§ÙØ© Ø­Ø¬Ø² ÙŠØ¯ÙˆÙŠ
                     </a>
                     <a href="{{ route('admin.bookings.export', request()->query()) }}" class="inline-flex items-center gap-2 px-4 py-2 rounded-md border border-blue-200 text-sm font-semibold text-blue-700 bg-blue-50 hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-blue-500">
                         <i class="fas fa-file-export"></i>
-                        تصدير النتائج
+                        ØªØµØ¯ÙŠØ± Ø§Ù„Ù†ØªØ§Ø¦Ø¬
                     </a>
                     <button type="button" onclick="refreshBookings()" class="inline-flex items-center gap-2 px-3 py-2 rounded-md border border-gray-200 text-sm font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-gray-300">
                         <i class="fas fa-sync-alt"></i>
-                        تحديث
+                        ØªØ­Ø¯ÙŠØ«
                     </button>
                     <a href="{{ route('admin.dashboard') }}" class="inline-flex items-center gap-1 px-3 py-2 text-sm font-medium text-gray-500 hover:text-gray-700">
                         <i class="fas fa-arrow-right"></i>
-                        العودة للوحة التحكم
+                        Ø§Ù„Ø¹ÙˆØ¯Ø© Ù„Ù„ÙˆØ­Ø© Ø§Ù„ØªØ­ÙƒÙ…
                     </a>
                 </div>
             </div>
             <div class="flex items-center text-sm text-gray-500 gap-2">
                 <i class="fas fa-clock text-gray-400"></i>
-                <span>آخر تحديث: {{ now()->format('Y-m-d H:i') }}</span>
+                <span>Ø¢Ø®Ø± ØªØ­Ø¯ÙŠØ«: {{ now()->format('Y-m-d H:i') }}</span>
             </div>
         </div>
 
@@ -401,10 +401,10 @@
                                 <span class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-amber-100 text-amber-600">
                                     <i class="fas fa-inbox"></i>
                                 </span>
-                                حجوزات جديدة بانتظار الإجراء
+                                Ø­Ø¬ÙˆØ²Ø§Øª Ø¬Ø¯ÙŠØ¯Ø© Ø¨Ø§Ù†ØªØ¸Ø§Ø± Ø§Ù„Ø¥Ø¬Ø±Ø§Ø¡
                             </h2>
                             <p class="text-sm text-gray-500">
-                                راجع أحدث الحجوزات وقرر تأكيدها أو رفضها مباشرة بدون الحاجة للتمرير إلى الأسفل.
+                                Ø±Ø§Ø¬Ø¹ Ø£Ø­Ø¯Ø« Ø§Ù„Ø­Ø¬ÙˆØ²Ø§Øª ÙˆÙ‚Ø±Ø± ØªØ£ÙƒÙŠØ¯Ù‡Ø§ Ø£Ùˆ Ø±ÙØ¶Ù‡Ø§ Ù…Ø¨Ø§Ø´Ø±Ø© Ø¨Ø¯ÙˆÙ† Ø§Ù„Ø­Ø§Ø¬Ø© Ù„Ù„ØªÙ…Ø±ÙŠØ± Ø¥Ù„Ù‰ Ø§Ù„Ø£Ø³ÙÙ„.
                             </p>
                         </div>
                         <div class="flex items-center gap-3">
@@ -413,7 +413,7 @@
                                 class="inline-flex items-center px-4 py-2 rounded-md border border-blue-200 text-sm font-medium text-blue-600 bg-blue-50 hover:bg-blue-100 transition-colors duration-200"
                             >
                                 <i class="fas fa-filter ml-2"></i>
-                                عرض كل الحجوزات المعلقة
+                                Ø¹Ø±Ø¶ ÙƒÙ„ Ø§Ù„Ø­Ø¬ÙˆØ²Ø§Øª Ø§Ù„Ù…Ø¹Ù„Ù‚Ø©
                             </a>
                         </div>
                     </div>
@@ -424,23 +424,23 @@
                                     <tr>
                                         <th class="px-6 py-3 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                             <i class="fas fa-user ml-2"></i>
-                                            المستخدم
+                                            Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù…
                                         </th>
                                         <th class="px-6 py-3 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                             <i class="fas fa-graduation-cap ml-2"></i>
-                                            الورشة
+                                            Ø§Ù„ÙˆØ±Ø´Ø©
                                         </th>
                                         <th class="px-6 py-3 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                             <i class="fas fa-credit-card ml-2"></i>
-                                            الدفع
+                                            Ø§Ù„Ø¯ÙØ¹
                                         </th>
                                         <th class="px-6 py-3 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                             <i class="fas fa-calendar ml-2"></i>
-                                            تاريخ الحجز
+                                            ØªØ§Ø±ÙŠØ® Ø§Ù„Ø­Ø¬Ø²
                                         </th>
                                         <th class="px-6 py-3 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                             <i class="fas fa-cogs ml-2"></i>
-                                            الإجراءات السريعة
+                                            Ø§Ù„Ø¥Ø¬Ø±Ø§Ø¡Ø§Øª Ø§Ù„Ø³Ø±ÙŠØ¹Ø©
                                         </th>
                                     </tr>
                                 </thead>
@@ -455,7 +455,7 @@
                                             <td class="px-6 py-4 whitespace-nowrap">
                                                 <div class="flex flex-col">
                                                     <span class="text-sm font-semibold text-gray-900">
-                                                        {{ $pendingUser?->name ?? 'مستخدم بدون اسم' }}
+                                                        {{ $pendingUser?->name ?? 'Ù…Ø³ØªØ®Ø¯Ù… Ø¨Ø¯ÙˆÙ† Ø§Ø³Ù…' }}
                                                     </span>
                                                     @if($pendingUser?->email)
                                                         <span class="text-xs text-gray-500">
@@ -467,11 +467,11 @@
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap">
                                                 <div class="text-sm font-semibold text-gray-900">
-                                                    {{ $pendingWorkshop?->title ?? 'ورشة غير محددة' }}
+                                                    {{ $pendingWorkshop?->title ?? 'ÙˆØ±Ø´Ø© ØºÙŠØ± Ù…Ø­Ø¯Ø¯Ø©' }}
                                                 </div>
                                                 <div class="text-xs text-gray-500 flex items-center gap-1 mt-1">
                                                     <i class="fas fa-clock"></i>
-                                                    {{ optional($pendingWorkshop?->start_date)->format('Y-m-d H:i') ?? 'غير مجدول' }}
+                                                    {{ optional($pendingWorkshop?->start_date)->format('Y-m-d H:i') ?? 'ØºÙŠØ± Ù…Ø¬Ø¯ÙˆÙ„' }}
                                                 </div>
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap">
@@ -508,7 +508,7 @@
                                                         class="inline-flex items-center px-3 py-1 rounded-md border border-transparent text-xs font-medium text-blue-700 bg-blue-100 hover:bg-blue-200 transition-colors duration-200"
                                                     >
                                                         <i class="fas fa-eye ml-1"></i>
-                                                        عرض
+                                                        Ø¹Ø±Ø¶
                                                     </a>
                                                     <button
                                                         type="button"
@@ -516,7 +516,7 @@
                                                         class="inline-flex items-center px-3 py-1 rounded-md border border-transparent text-xs font-medium text-green-700 bg-green-100 hover:bg-green-200 transition-colors duration-200"
                                                     >
                                                         <i class="fas fa-check ml-1"></i>
-                                                        تأكيد
+                                                        ØªØ£ÙƒÙŠØ¯
                                                     </button>
                                                     <button
                                                         type="button"
@@ -524,7 +524,7 @@
                                                         class="inline-flex items-center px-3 py-1 rounded-md border border-transparent text-xs font-medium text-red-700 bg-red-100 hover:bg-red-200 transition-colors duration-200"
                                                     >
                                                         <i class="fas fa-times ml-1"></i>
-                                                        إلغاء
+                                                        Ø¥Ù„ØºØ§Ø¡
                                                     </button>
                                                 </div>
                                             </td>
@@ -535,14 +535,14 @@
                         </div>
                     @else
                         <div class="px-6 py-8 text-center text-sm text-gray-500">
-                            لا توجد حجوزات جديدة بانتظار الموافقة حالياً.
+                            Ù„Ø§ ØªÙˆØ¬Ø¯ Ø­Ø¬ÙˆØ²Ø§Øª Ø¬Ø¯ÙŠØ¯Ø© Ø¨Ø§Ù†ØªØ¸Ø§Ø± Ø§Ù„Ù…ÙˆØ§ÙÙ‚Ø© Ø­Ø§Ù„ÙŠØ§Ù‹.
                         </div>
                     @endif
                 </div>
             </div>
         @endisset
 
-        <!-- نظرة عامة سريعة -->
+        <!-- Ù†Ø¸Ø±Ø© Ø¹Ø§Ù…Ø© Ø³Ø±ÙŠØ¹Ø© -->
         <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 mb-8">
             @foreach($statusCards as $card)
                 <div class="status-summary-card">
@@ -568,9 +568,9 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
             <div class="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm flex items-center justify-between">
                 <div>
-                    <p class="text-xs font-semibold text-gray-500">حصة المنصة</p>
+                    <p class="text-xs font-semibold text-gray-500">Ø­ØµØ© Ø§Ù„Ù…Ù†ØµØ©</p>
                     <p class="mt-2 text-2xl font-bold text-gray-900">{{ number_format($shareTotals['admin'] ?? 0, 2) }} {{ $defaultCurrency }}</p>
-                    <p class="mt-1 text-xs text-gray-500">تشمل الرسوم التشغيلية والتقنية</p>
+                    <p class="mt-1 text-xs text-gray-500">ØªØ´Ù…Ù„ Ø§Ù„Ø±Ø³ÙˆÙ… Ø§Ù„ØªØ´ØºÙŠÙ„ÙŠØ© ÙˆØ§Ù„ØªÙ‚Ù†ÙŠØ©</p>
                 </div>
                 <span class="h-12 w-12 rounded-full bg-gray-100 text-gray-600 flex items-center justify-center">
                     <i class="fas fa-shield-alt text-xl"></i>
@@ -578,9 +578,9 @@
             </div>
             <div class="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm flex items-center justify-between">
                 <div>
-                    <p class="text-xs font-semibold text-gray-500">صافي الشيفات</p>
+                    <p class="text-xs font-semibold text-gray-500">ØµØ§ÙÙŠ Ø§Ù„Ø´ÙŠÙØ§Øª</p>
                     <p class="mt-2 text-2xl font-bold text-gray-900">{{ number_format($shareTotals['chef'] ?? 0, 2) }} {{ $defaultCurrency }}</p>
-                    <p class="mt-1 text-xs text-gray-500">يتم تحويله بعد انتهاء الورشات</p>
+                    <p class="mt-1 text-xs text-gray-500">ÙŠØªÙ… ØªØ­ÙˆÙŠÙ„Ù‡ Ø¨Ø¹Ø¯ Ø§Ù†ØªÙ‡Ø§Ø¡ Ø§Ù„ÙˆØ±Ø´Ø§Øª</p>
                 </div>
                 <span class="h-12 w-12 rounded-full bg-orange-50 text-orange-500 flex items-center justify-center">
                     <i class="fas fa-utensils text-xl"></i>
@@ -588,9 +588,9 @@
             </div>
             <div class="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm flex items-center justify-between">
                 <div>
-                    <p class="text-xs font-semibold text-gray-500">عمولات الشركاء</p>
+                    <p class="text-xs font-semibold text-gray-500">Ø¹Ù…ÙˆÙ„Ø§Øª Ø§Ù„Ø´Ø±ÙƒØ§Ø¡</p>
                     <p class="mt-2 text-2xl font-bold text-gray-900">{{ number_format($shareTotals['partner'] ?? 0, 2) }} {{ $defaultCurrency }}</p>
-                    <p class="mt-1 text-xs text-gray-500">يتم تتبعها عبر لوحة برنامج الإحالة</p>
+                    <p class="mt-1 text-xs text-gray-500">ÙŠØªÙ… ØªØªØ¨Ø¹Ù‡Ø§ Ø¹Ø¨Ø± Ù„ÙˆØ­Ø© Ø¨Ø±Ù†Ø§Ù…Ø¬ Ø§Ù„Ø¥Ø­Ø§Ù„Ø©</p>
                 </div>
                 <span class="h-12 w-12 rounded-full bg-blue-50 text-blue-500 flex items-center justify-center">
                     <i class="fas fa-handshake text-xl"></i>
@@ -604,15 +604,15 @@
                     <div>
                         <h3 class="text-lg font-semibold text-gray-900 flex items-center">
                             <i class="fas fa-globe text-indigo-500 ml-2"></i>
-                            توزيع المدفوعات حسب العملة
+                            ØªÙˆØ²ÙŠØ¹ Ø§Ù„Ù…Ø¯ÙÙˆØ¹Ø§Øª Ø­Ø³Ø¨ Ø§Ù„Ø¹Ù…Ù„Ø©
                         </h3>
                         <p class="text-sm text-gray-500 mt-1">
-                            راقب العملات المستخدمة في الحجوزات المدفوعة لضمان جاهزية التحويلات المالية وإصدار الفواتير بالعملة الصحيحة.
+                            Ø±Ø§Ù‚Ø¨ Ø§Ù„Ø¹Ù…Ù„Ø§Øª Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù…Ø© ÙÙŠ Ø§Ù„Ø­Ø¬ÙˆØ²Ø§Øª Ø§Ù„Ù…Ø¯ÙÙˆØ¹Ø© Ù„Ø¶Ù…Ø§Ù† Ø¬Ø§Ù‡Ø²ÙŠØ© Ø§Ù„ØªØ­ÙˆÙŠÙ„Ø§Øª Ø§Ù„Ù…Ø§Ù„ÙŠØ© ÙˆØ¥ØµØ¯Ø§Ø± Ø§Ù„ÙÙˆØ§ØªÙŠØ± Ø¨Ø§Ù„Ø¹Ù…Ù„Ø© Ø§Ù„ØµØ­ÙŠØ­Ø©.
                         </p>
                     </div>
                     <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 text-sm font-semibold">
                         <i class="fas fa-money-bill-wave"></i>
-                        {{ count($paidCurrencies) }} عملة نشطة
+                        {{ count($paidCurrencies) }} Ø¹Ù…Ù„Ø© Ù†Ø´Ø·Ø©
                     </span>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
@@ -637,11 +637,11 @@
                             <div class="flex items-center justify-between text-sm text-gray-500">
                                 <span class="inline-flex items-center gap-1">
                                     <i class="fas fa-receipt text-indigo-500"></i>
-                                    {{ number_format($currencyStat['total_bookings']) }} حجوزات
+                                    {{ number_format($currencyStat['total_bookings']) }} Ø­Ø¬ÙˆØ²Ø§Øª
                                 </span>
                                 <span class="inline-flex items-center gap-1">
                                     <i class="fas fa-exchange-alt text-gray-400"></i>
-                                    ≈ {{ number_format($currencyStat['total_amount_usd'] ?? 0, 2) }} {{ $defaultCurrency }}
+                                    â‰ˆ {{ number_format($currencyStat['total_amount_usd'] ?? 0, 2) }} {{ $defaultCurrency }}
                                 </span>
                             </div>
                         </div>
@@ -656,29 +656,29 @@
                     <div>
                         <h3 class="text-lg font-semibold text-gray-900 flex items-center">
                             <i class="fas fa-exclamation-circle text-amber-500 ml-2"></i>
-                            حجوزات تحتاج متابعة
+                            Ø­Ø¬ÙˆØ²Ø§Øª ØªØ­ØªØ§Ø¬ Ù…ØªØ§Ø¨Ø¹Ø©
                         </h3>
                         <p class="text-sm text-gray-500 mt-1">
-                            الطلبات التي تجاوزت 48 ساعة بدون إجراء. تعامل معها أولاً لضمان تجربة أفضل للمستخدمين.
+                            Ø§Ù„Ø·Ù„Ø¨Ø§Øª Ø§Ù„ØªÙŠ ØªØ¬Ø§ÙˆØ²Øª 48 Ø³Ø§Ø¹Ø© Ø¨Ø¯ÙˆÙ† Ø¥Ø¬Ø±Ø§Ø¡. ØªØ¹Ø§Ù…Ù„ Ù…Ø¹Ù‡Ø§ Ø£ÙˆÙ„Ø§Ù‹ Ù„Ø¶Ù…Ø§Ù† ØªØ¬Ø±Ø¨Ø© Ø£ÙØ¶Ù„ Ù„Ù„Ù…Ø³ØªØ®Ø¯Ù…ÙŠÙ†.
                         </p>
                     </div>
                     <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-50 text-amber-700 text-sm font-semibold">
                         <i class="fas fa-clock"></i>
-                        {{ $pendingFollowUpCount ?? $followUpBookings->count() }} حجوزات متأخرة
+                        {{ $pendingFollowUpCount ?? $followUpBookings->count() }} Ø­Ø¬ÙˆØ²Ø§Øª Ù…ØªØ£Ø®Ø±Ø©
                     </span>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
                     @foreach($followUpBookings->take(6) as $pending)
                         @php
-                            $userName = optional($pending->user)->name ?? 'مستخدم';
-                            $workshopTitle = optional($pending->workshop)->title ?? 'ورشة غير محددة';
+                            $userName = optional($pending->user)->name ?? 'Ù…Ø³ØªØ®Ø¯Ù…';
+                            $workshopTitle = optional($pending->workshop)->title ?? 'ÙˆØ±Ø´Ø© ØºÙŠØ± Ù…Ø­Ø¯Ø¯Ø©';
                         @endphp
                         <div class="border border-amber-100 rounded-lg p-4 flex flex-col gap-3 bg-amber-50">
                             <div>
                                 <p class="text-sm font-semibold text-gray-900">{{ $userName }}</p>
                                 <p class="text-xs text-gray-500 mt-1">
                                     <i class="fas fa-calendar text-[11px] ml-1"></i>
-                                    {{ optional($pending->created_at)->format('Y-m-d H:i') ?? 'غير معروف' }}
+                                    {{ optional($pending->created_at)->format('Y-m-d H:i') ?? 'ØºÙŠØ± Ù…Ø¹Ø±ÙˆÙ' }}
                                 </p>
                             </div>
                             <div class="text-xs text-gray-600">
@@ -687,20 +687,20 @@
                             </div>
                             <div class="flex items-center gap-2 text-xs text-gray-500">
                                 <i class="fas fa-phone ml-1"></i>
-                                {{ optional($pending->user)->phone ?? 'لا يوجد رقم' }}
+                                {{ optional($pending->user)->phone ?? 'Ù„Ø§ ÙŠÙˆØ¬Ø¯ Ø±Ù‚Ù…' }}
                             </div>
                             <div class="flex flex-wrap gap-2">
                                 <a href="{{ route('admin.bookings.show', $pending) }}" class="flex-1 inline-flex items-center justify-center px-3 py-2 rounded-md bg-white text-sm font-semibold text-blue-700 hover:bg-blue-50 transition-colors">
                                     <i class="fas fa-eye ml-1"></i>
-                                    مراجعة
+                                    Ù…Ø±Ø§Ø¬Ø¹Ø©
                                 </a>
                                 <button type="button" onclick="confirmBooking({{ $pending->id }})" class="inline-flex items-center justify-center px-3 py-2 rounded-md bg-green-500 text-white text-sm font-semibold hover:bg-green-600 transition-colors">
                                     <i class="fas fa-check ml-1"></i>
-                                    تأكيد
+                                    ØªØ£ÙƒÙŠØ¯
                                 </button>
                                 <button type="button" onclick="cancelBooking({{ $pending->id }})" class="inline-flex items-center justify-center px-3 py-2 rounded-md border border-red-200 bg-white text-sm font-semibold text-red-600 hover:bg-red-50 transition-colors">
                                     <i class="fas fa-times ml-1"></i>
-                                    إلغاء
+                                    Ø¥Ù„ØºØ§Ø¡
                                 </button>
                             </div>
                         </div>
@@ -708,29 +708,29 @@
                 </div>
                 @if($followUpBookings->count() > 6)
                     <div class="mt-4 text-sm text-gray-500">
-                        عرضنا أهم {{ min(6, $followUpBookings->count()) }} حجوزات تحتاج متابعة. يمكنك الوصول للباقي من خلال الفلاتر أو الجدول أدناه.
+                        Ø¹Ø±Ø¶Ù†Ø§ Ø£Ù‡Ù… {{ min(6, $followUpBookings->count()) }} Ø­Ø¬ÙˆØ²Ø§Øª ØªØ­ØªØ§Ø¬ Ù…ØªØ§Ø¨Ø¹Ø©. ÙŠÙ…ÙƒÙ†Ùƒ Ø§Ù„ÙˆØµÙˆÙ„ Ù„Ù„Ø¨Ø§Ù‚ÙŠ Ù…Ù† Ø®Ù„Ø§Ù„ Ø§Ù„ÙÙ„Ø§ØªØ± Ø£Ùˆ Ø§Ù„Ø¬Ø¯ÙˆÙ„ Ø£Ø¯Ù†Ø§Ù‡.
                     </div>
                 @endif
             </div>
         @endif
-        <!-- الفلاتر -->
+        <!-- Ø§Ù„ÙÙ„Ø§ØªØ± -->
         <div class="bg-white shadow-xl rounded-2xl mb-8 border border-gray-100">
             <div class="px-6 py-5 border-b border-gray-200 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
                 <div>
                     <h3 class="text-lg font-semibold text-gray-900 flex items-center">
                         <i class="fas fa-filter text-blue-500 ml-2"></i>
-                        فلترة الحجوزات
+                        ÙÙ„ØªØ±Ø© Ø§Ù„Ø­Ø¬ÙˆØ²Ø§Øª
                     </h3>
-                    <p class="mt-1 text-sm text-gray-500">اختصر الوقت باستعمال الفلاتر الذكية أدناه</p>
+                    <p class="mt-1 text-sm text-gray-500">Ø§Ø®ØªØµØ± Ø§Ù„ÙˆÙ‚Øª Ø¨Ø§Ø³ØªØ¹Ù…Ø§Ù„ Ø§Ù„ÙÙ„Ø§ØªØ± Ø§Ù„Ø°ÙƒÙŠØ© Ø£Ø¯Ù†Ø§Ù‡</p>
                 </div>
                 <div class="flex items-center gap-3">
                     <button type="button" id="toggleAdvancedFilters" class="inline-flex items-center px-4 py-2 rounded-md border border-blue-200 text-sm font-medium text-blue-600 bg-blue-50 hover:bg-blue-100 transition-colors duration-200" aria-expanded="{{ $advancedFiltersActive ? 'true' : 'false' }}">
                         <i class="fas fa-sliders-h ml-2"></i>
-                        <span id="advancedFiltersToggleLabel">{{ $advancedFiltersActive ? 'إخفاء الفلاتر المتقدمة' : 'عرض الفلاتر المتقدمة' }}</span>
+                        <span id="advancedFiltersToggleLabel">{{ $advancedFiltersActive ? 'Ø¥Ø®ÙØ§Ø¡ Ø§Ù„ÙÙ„Ø§ØªØ± Ø§Ù„Ù…ØªÙ‚Ø¯Ù…Ø©' : 'Ø¹Ø±Ø¶ Ø§Ù„ÙÙ„Ø§ØªØ± Ø§Ù„Ù…ØªÙ‚Ø¯Ù…Ø©' }}</span>
                     </button>
                     <a href="{{ route('admin.bookings.index') }}" class="inline-flex items-center px-4 py-2 rounded-md border border-gray-200 text-sm font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 transition-colors duration-200">
                         <i class="fas fa-redo ml-2"></i>
-                        إعادة التعيين
+                        Ø¥Ø¹Ø§Ø¯Ø© Ø§Ù„ØªØ¹ÙŠÙŠÙ†
                     </a>
                 </div>
             </div>
@@ -755,29 +755,29 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4">
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">الحالة</label>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Ø§Ù„Ø­Ø§Ù„Ø©</label>
                         <select id="statusSelect" name="status" class="w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
-                            <option value="">جميع الحالات</option>
-                            <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>في الانتظار</option>
-                            <option value="confirmed" {{ request('status') == 'confirmed' ? 'selected' : '' }}>مؤكدة</option>
-                            <option value="cancelled" {{ request('status') == 'cancelled' ? 'selected' : '' }}>ملغية</option>
+                            <option value="">Ø¬Ù…ÙŠØ¹ Ø§Ù„Ø­Ø§Ù„Ø§Øª</option>
+                            <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>ÙÙŠ Ø§Ù„Ø§Ù†ØªØ¸Ø§Ø±</option>
+                            <option value="confirmed" {{ request('status') == 'confirmed' ? 'selected' : '' }}>Ù…Ø¤ÙƒØ¯Ø©</option>
+                            <option value="cancelled" {{ request('status') == 'cancelled' ? 'selected' : '' }}>Ù…Ù„ØºÙŠØ©</option>
                         </select>
                     </div>
 
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">حالة الدفع</label>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Ø­Ø§Ù„Ø© Ø§Ù„Ø¯ÙØ¹</label>
                         <select name="payment_status" class="w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
-                            <option value="">جميع حالات الدفع</option>
-                            <option value="pending" {{ request('payment_status') == 'pending' ? 'selected' : '' }}>في الانتظار</option>
-                            <option value="paid" {{ request('payment_status') == 'paid' ? 'selected' : '' }}>مدفوعة</option>
-                            <option value="refunded" {{ request('payment_status') == 'refunded' ? 'selected' : '' }}>مستردة</option>
+                            <option value="">Ø¬Ù…ÙŠØ¹ Ø­Ø§Ù„Ø§Øª Ø§Ù„Ø¯ÙØ¹</option>
+                            <option value="pending" {{ request('payment_status') == 'pending' ? 'selected' : '' }}>ÙÙŠ Ø§Ù„Ø§Ù†ØªØ¸Ø§Ø±</option>
+                            <option value="paid" {{ request('payment_status') == 'paid' ? 'selected' : '' }}>Ù…Ø¯ÙÙˆØ¹Ø©</option>
+                            <option value="refunded" {{ request('payment_status') == 'refunded' ? 'selected' : '' }}>Ù…Ø³ØªØ±Ø¯Ø©</option>
                         </select>
                     </div>
 
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">التوزيع المالي</label>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Ø§Ù„ØªÙˆØ²ÙŠØ¹ Ø§Ù„Ù…Ø§Ù„ÙŠ</label>
                         <select name="financial_status" class="w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
-                            <option value="">جميع الحالات المالية</option>
+                            <option value="">Ø¬Ù…ÙŠØ¹ Ø§Ù„Ø­Ø§Ù„Ø§Øª Ø§Ù„Ù…Ø§Ù„ÙŠØ©</option>
                             @foreach($financialStatusFilters as $filter)
                                 @continue(is_null($filter['value']))
                                 <option value="{{ $filter['value'] }}" {{ request('financial_status') == $filter['value'] ? 'selected' : '' }}>
@@ -788,9 +788,9 @@
                     </div>
 
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">الورشة</label>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Ø§Ù„ÙˆØ±Ø´Ø©</label>
                         <select name="workshop_id" class="w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
-                            <option value="">جميع الورشات</option>
+                            <option value="">Ø¬Ù…ÙŠØ¹ Ø§Ù„ÙˆØ±Ø´Ø§Øª</option>
                             @foreach($workshops as $workshop)
                                 <option value="{{ $workshop->id }}" {{ request('workshop_id') == $workshop->id ? 'selected' : '' }}>
                                     {{ $workshop->title }}
@@ -800,12 +800,12 @@
                     </div>
 
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">من تاريخ</label>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Ù…Ù† ØªØ§Ø±ÙŠØ®</label>
                         <input type="date" name="date_from" value="{{ request('date_from') }}" class="w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" max="{{ date('Y-m-d') }}">
                     </div>
 
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">إلى تاريخ</label>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Ø¥Ù„Ù‰ ØªØ§Ø±ÙŠØ®</label>
                         <input type="date" name="date_to" value="{{ request('date_to') }}" class="w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" max="{{ date('Y-m-d') }}">
                     </div>
                 </div>
@@ -813,34 +813,34 @@
                 <div id="advancedFilters" class="border-t border-gray-200 pt-4 {{ $advancedFiltersActive ? '' : 'hidden' }}">
                     <h4 class="text-sm font-medium text-gray-700 mb-4 flex items-center">
                         <i class="fas fa-cogs ml-2"></i>
-                        فلاتر متقدمة
+                        ÙÙ„Ø§ØªØ± Ù…ØªÙ‚Ø¯Ù…Ø©
                     </h4>
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">نوع الورشة</label>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Ù†ÙˆØ¹ Ø§Ù„ÙˆØ±Ø´Ø©</label>
                             <select name="workshop_type" class="w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
-                                <option value="">جميع الأنواع</option>
-                                <option value="online" {{ request('workshop_type') == 'online' ? 'selected' : '' }}>أونلاين</option>
-                                <option value="offline" {{ request('workshop_type') == 'offline' ? 'selected' : '' }}>أوفلاين</option>
+                                <option value="">Ø¬Ù…ÙŠØ¹ Ø§Ù„Ø£Ù†ÙˆØ§Ø¹</option>
+                                <option value="online" {{ request('workshop_type') == 'online' ? 'selected' : '' }}>Ø£ÙˆÙ†Ù„Ø§ÙŠÙ†</option>
+                                <option value="offline" {{ request('workshop_type') == 'offline' ? 'selected' : '' }}>Ø£ÙˆÙÙ„Ø§ÙŠÙ†</option>
                             </select>
                         </div>
 
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">نطاق السعر</label>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Ù†Ø·Ø§Ù‚ Ø§Ù„Ø³Ø¹Ø±</label>
                             <select name="price_range" class="w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
-                                <option value="">جميع الأسعار</option>
-                                <option value="0-50" {{ request('price_range') == '0-50' ? 'selected' : '' }}>0 - 50 دولار أمريكي</option>
-                                <option value="50-100" {{ request('price_range') == '50-100' ? 'selected' : '' }}>50 - 100 دولار أمريكي</option>
-                                <option value="100-200" {{ request('price_range') == '100-200' ? 'selected' : '' }}>100 - 200 دولار أمريكي</option>
-                                <option value="200-500" {{ request('price_range') == '200-500' ? 'selected' : '' }}>200 - 500 دولار أمريكي</option>
-                                <option value="500+" {{ request('price_range') == '500+' ? 'selected' : '' }}>أكثر من 500 دولار أمريكي</option>
+                                <option value="">Ø¬Ù…ÙŠØ¹ Ø§Ù„Ø£Ø³Ø¹Ø§Ø±</option>
+                                <option value="0-50" {{ request('price_range') == '0-50' ? 'selected' : '' }}>0 - 50 Ø¯ÙˆÙ„Ø§Ø± Ø£Ù…Ø±ÙŠÙƒÙŠ</option>
+                                <option value="50-100" {{ request('price_range') == '50-100' ? 'selected' : '' }}>50 - 100 Ø¯ÙˆÙ„Ø§Ø± Ø£Ù…Ø±ÙŠÙƒÙŠ</option>
+                                <option value="100-200" {{ request('price_range') == '100-200' ? 'selected' : '' }}>100 - 200 Ø¯ÙˆÙ„Ø§Ø± Ø£Ù…Ø±ÙŠÙƒÙŠ</option>
+                                <option value="200-500" {{ request('price_range') == '200-500' ? 'selected' : '' }}>200 - 500 Ø¯ÙˆÙ„Ø§Ø± Ø£Ù…Ø±ÙŠÙƒÙŠ</option>
+                                <option value="500+" {{ request('price_range') == '500+' ? 'selected' : '' }}>Ø£ÙƒØ«Ø± Ù…Ù† 500 Ø¯ÙˆÙ„Ø§Ø± Ø£Ù…Ø±ÙŠÙƒÙŠ</option>
                             </select>
                         </div>
 
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">طريقة الدفع</label>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Ø·Ø±ÙŠÙ‚Ø© Ø§Ù„Ø¯ÙØ¹</label>
                             <select name="payment_method" class="w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
-                                <option value="">جميع الطرق</option>
+                                <option value="">Ø¬Ù…ÙŠØ¹ Ø§Ù„Ø·Ø±Ù‚</option>
                                 @foreach($paymentMethods as $method)
                                     <option value="{{ $method }}" {{ request('payment_method') == $method ? 'selected' : '' }}>
                                         {{ $method }}
@@ -849,9 +849,9 @@
                             </select>
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">عملة الدفع</label>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Ø¹Ù…Ù„Ø© Ø§Ù„Ø¯ÙØ¹</label>
                             <select name="payment_currency" class="w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
-                                <option value="">جميع العملات</option>
+                                <option value="">Ø¬Ù…ÙŠØ¹ Ø§Ù„Ø¹Ù…Ù„Ø§Øª</option>
                                 @foreach($currencyOptions as $code => $currency)
                                     <option value="{{ $code }}" {{ strtoupper(request('payment_currency')) == $code ? 'selected' : '' }}>
                                         {{ $currency['label'] ?? $code }}
@@ -861,21 +861,21 @@
                         </div>
 
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">عدد الحجوزات</label>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Ø¹Ø¯Ø¯ Ø§Ù„Ø­Ø¬ÙˆØ²Ø§Øª</label>
                             <select name="booking_count" class="w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
-                                <option value="">جميع المستخدمين</option>
-                                <option value="single" {{ request('booking_count') == 'single' ? 'selected' : '' }}>حجز واحد</option>
-                                <option value="multiple" {{ request('booking_count') == 'multiple' ? 'selected' : '' }}>عدة حجوزات</option>
+                                <option value="">Ø¬Ù…ÙŠØ¹ Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù…ÙŠÙ†</option>
+                                <option value="single" {{ request('booking_count') == 'single' ? 'selected' : '' }}>Ø­Ø¬Ø² ÙˆØ§Ø­Ø¯</option>
+                                <option value="multiple" {{ request('booking_count') == 'multiple' ? 'selected' : '' }}>Ø¹Ø¯Ø© Ø­Ø¬ÙˆØ²Ø§Øª</option>
                             </select>
                         </div>
 
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">تاريخ الورشة (من)</label>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">ØªØ§Ø±ÙŠØ® Ø§Ù„ÙˆØ±Ø´Ø© (Ù…Ù†)</label>
                             <input type="date" name="workshop_date_from" value="{{ request('workshop_date_from') }}" class="w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
                         </div>
 
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">تاريخ الورشة (إلى)</label>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">ØªØ§Ø±ÙŠØ® Ø§Ù„ÙˆØ±Ø´Ø© (Ø¥Ù„Ù‰)</label>
                             <input type="date" name="workshop_date_to" value="{{ request('workshop_date_to') }}" class="w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
                         </div>
                     </div>
@@ -885,7 +885,7 @@
                     <div class="flex flex-col xl:flex-row xl:items-end xl:justify-between gap-6">
                         <div class="w-full xl:max-w-md">
                             <label for="bookingSearchInput" class="block text-sm font-medium text-gray-700 mb-2">
-                                البحث السريع
+                                Ø§Ù„Ø¨Ø­Ø« Ø§Ù„Ø³Ø±ÙŠØ¹
                             </label>
                             <div class="relative">
                                 <span class="absolute inset-y-0 left-3 flex items-center text-gray-400">
@@ -896,40 +896,40 @@
                                     type="text"
                                     name="search"
                                     value="{{ request('search') }}"
-                                    placeholder="اسم المستخدم، البريد الإلكتروني، أو عنوان الورشة"
+                                    placeholder="Ø§Ø³Ù… Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù…ØŒ Ø§Ù„Ø¨Ø±ÙŠØ¯ Ø§Ù„Ø¥Ù„ÙƒØªØ±ÙˆÙ†ÙŠØŒ Ø£Ùˆ Ø¹Ù†ÙˆØ§Ù† Ø§Ù„ÙˆØ±Ø´Ø©"
                                     class="w-full pr-4 pl-10 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
                                 >
                             </div>
                             <p class="mt-2 text-xs text-gray-500">
-                                تظهر النتائج بمجرد الكتابة، أو اضغط إدخال للتأكيد.
+                                ØªØ¸Ù‡Ø± Ø§Ù„Ù†ØªØ§Ø¦Ø¬ Ø¨Ù…Ø¬Ø±Ø¯ Ø§Ù„ÙƒØªØ§Ø¨Ø©ØŒ Ø£Ùˆ Ø§Ø¶ØºØ· Ø¥Ø¯Ø®Ø§Ù„ Ù„Ù„ØªØ£ÙƒÙŠØ¯.
                             </p>
                         </div>
                         <div class="flex flex-col sm:flex-row gap-4 xl:gap-6">
                             <div class="flex gap-2">
                                 <div>
-                                    <label class="block text-xs font-medium text-gray-500 mb-2">ترتيب حسب</label>
+                                    <label class="block text-xs font-medium text-gray-500 mb-2">ØªØ±ØªÙŠØ¨ Ø­Ø³Ø¨</label>
                                     <select name="sort_by" class="border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
-                                        <option value="created_at" {{ request('sort_by') == 'created_at' ? 'selected' : '' }}>تاريخ الحجز</option>
-                                        <option value="payment_amount" {{ request('sort_by') == 'payment_amount' ? 'selected' : '' }}>المبلغ</option>
-                                        <option value="workshop_start_date" {{ request('sort_by') == 'workshop_start_date' ? 'selected' : '' }}>تاريخ الورشة</option>
+                                        <option value="created_at" {{ request('sort_by') == 'created_at' ? 'selected' : '' }}>ØªØ§Ø±ÙŠØ® Ø§Ù„Ø­Ø¬Ø²</option>
+                                        <option value="payment_amount" {{ request('sort_by') == 'payment_amount' ? 'selected' : '' }}>Ø§Ù„Ù…Ø¨Ù„Øº</option>
+                                        <option value="workshop_start_date" {{ request('sort_by') == 'workshop_start_date' ? 'selected' : '' }}>ØªØ§Ø±ÙŠØ® Ø§Ù„ÙˆØ±Ø´Ø©</option>
                                     </select>
                                 </div>
                                 <div>
-                                    <label class="block text-xs font-medium text-gray-500 mb-2">اتجاه الترتيب</label>
+                                    <label class="block text-xs font-medium text-gray-500 mb-2">Ø§ØªØ¬Ø§Ù‡ Ø§Ù„ØªØ±ØªÙŠØ¨</label>
                                     <select name="sort_direction" class="border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
-                                        <option value="desc" {{ request('sort_direction') == 'desc' ? 'selected' : '' }}>تنازلي</option>
-                                        <option value="asc" {{ request('sort_direction') == 'asc' ? 'selected' : '' }}>تصاعدي</option>
+                                        <option value="desc" {{ request('sort_direction') == 'desc' ? 'selected' : '' }}>ØªÙ†Ø§Ø²Ù„ÙŠ</option>
+                                        <option value="asc" {{ request('sort_direction') == 'asc' ? 'selected' : '' }}>ØªØµØ§Ø¹Ø¯ÙŠ</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="flex gap-2 sm:self-end">
                                 <button type="submit" class="px-5 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
                                     <i class="fas fa-filter ml-2"></i>
-                                    تطبيق البحث
+                                    ØªØ·Ø¨ÙŠÙ‚ Ø§Ù„Ø¨Ø­Ø«
                                 </button>
                                 <button type="button" id="clearFiltersButton" class="px-5 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-300">
                                     <i class="fas fa-undo ml-2"></i>
-                                    إعادة الضبط
+                                    Ø¥Ø¹Ø§Ø¯Ø© Ø§Ù„Ø¶Ø¨Ø·
                                 </button>
                             </div>
                         </div>
@@ -938,28 +938,28 @@
             </form>
         </div>
 
-        <!-- مؤشرات الفلاتر النشطة -->
+        <!-- Ù…Ø¤Ø´Ø±Ø§Øª Ø§Ù„ÙÙ„Ø§ØªØ± Ø§Ù„Ù†Ø´Ø·Ø© -->
         @if(request()->hasAny(['status', 'payment_status', 'financial_status', 'workshop_id', 'date_from', 'date_to', 'search', 'workshop_type', 'price_range', 'payment_method', 'payment_currency', 'booking_count', 'workshop_date_from', 'workshop_date_to', 'sort_by', 'sort_direction']))
         <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
             <div class="flex items-center justify-between">
                 <div class="flex items-center">
                     <i class="fas fa-filter text-blue-600 ml-2"></i>
-                    <span class="text-sm font-medium text-blue-900">الفلاتر النشطة:</span>
+                    <span class="text-sm font-medium text-blue-900">Ø§Ù„ÙÙ„Ø§ØªØ± Ø§Ù„Ù†Ø´Ø·Ø©:</span>
                 </div>
                 <a href="{{ route('admin.bookings.index') }}" class="text-sm text-blue-600 hover:text-blue-800">
                     <i class="fas fa-times ml-1"></i>
-                    مسح جميع الفلاتر
+                    Ù…Ø³Ø­ Ø¬Ù…ÙŠØ¹ Ø§Ù„ÙÙ„Ø§ØªØ±
                 </a>
             </div>
             <div class="mt-2 flex flex-wrap gap-2">
                 @if(request('status'))
                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                        الحالة: {{ request('status') == 'pending' ? 'في الانتظار' : (request('status') == 'confirmed' ? 'مؤكدة' : 'ملغية') }}
+                        Ø§Ù„Ø­Ø§Ù„Ø©: {{ request('status') == 'pending' ? 'ÙÙŠ Ø§Ù„Ø§Ù†ØªØ¸Ø§Ø±' : (request('status') == 'confirmed' ? 'Ù…Ø¤ÙƒØ¯Ø©' : 'Ù…Ù„ØºÙŠØ©') }}
                     </span>
                 @endif
                 @if(request('payment_status'))
                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                        الدفع: {{ request('payment_status') == 'pending' ? 'في الانتظار' : (request('payment_status') == 'paid' ? 'مدفوعة' : 'مستردة') }}
+                        Ø§Ù„Ø¯ÙØ¹: {{ request('payment_status') == 'pending' ? 'ÙÙŠ Ø§Ù„Ø§Ù†ØªØ¸Ø§Ø±' : (request('payment_status') == 'paid' ? 'Ù…Ø¯ÙÙˆØ¹Ø©' : 'Ù…Ø³ØªØ±Ø¯Ø©') }}
                     </span>
                 @endif
                 @if(request('payment_currency'))
@@ -968,91 +968,91 @@
                         $currencyLabel = $currencyOptions[$selectedCurrency]['label'] ?? $selectedCurrency;
                     @endphp
                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800">
-                        العملة: {{ $currencyLabel }}
+                        Ø§Ù„Ø¹Ù…Ù„Ø©: {{ $currencyLabel }}
                     </span>
                 @endif
                 @if(request('financial_status'))
                     @php
                         $financialFilterLabel = match (request('financial_status')) {
-                            \App\Models\WorkshopBooking::FINANCIAL_STATUS_DISTRIBUTED => 'تم التوزيع',
-                            \App\Models\WorkshopBooking::FINANCIAL_STATUS_VOID => 'معلق أو ملغي',
-                            default => 'بانتظار التوزيع',
+                            \App\Models\WorkshopBooking::FINANCIAL_STATUS_DISTRIBUTED => 'ØªÙ… Ø§Ù„ØªÙˆØ²ÙŠØ¹',
+                            \App\Models\WorkshopBooking::FINANCIAL_STATUS_VOID => 'Ù…Ø¹Ù„Ù‚ Ø£Ùˆ Ù…Ù„ØºÙŠ',
+                            default => 'Ø¨Ø§Ù†ØªØ¸Ø§Ø± Ø§Ù„ØªÙˆØ²ÙŠØ¹',
                         };
                     @endphp
                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800">
-                        التوزيع: {{ $financialFilterLabel }}
+                        Ø§Ù„ØªÙˆØ²ÙŠØ¹: {{ $financialFilterLabel }}
                     </span>
                 @endif
                 @if(request('workshop_id'))
                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
-                        الورشة: {{ $workshops->where('id', request('workshop_id'))->first()->title ?? 'غير محدد' }}
+                        Ø§Ù„ÙˆØ±Ø´Ø©: {{ $workshops->where('id', request('workshop_id'))->first()->title ?? 'ØºÙŠØ± Ù…Ø­Ø¯Ø¯' }}
                     </span>
                 @endif
                 @if(request('date_from') || request('date_to'))
                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                        التاريخ: {{ request('date_from') ?: 'بداية' }} - {{ request('date_to') ?: 'نهاية' }}
+                        Ø§Ù„ØªØ§Ø±ÙŠØ®: {{ request('date_from') ?: 'Ø¨Ø¯Ø§ÙŠØ©' }} - {{ request('date_to') ?: 'Ù†Ù‡Ø§ÙŠØ©' }}
                     </span>
                 @endif
                 @if(request('search'))
                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-                        البحث: "{{ request('search') }}"
+                        Ø§Ù„Ø¨Ø­Ø«: "{{ request('search') }}"
                     </span>
                 @endif
                 @if(request('workshop_type'))
                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800">
-                        النوع: {{ request('workshop_type') == 'online' ? 'أونلاين' : 'أوفلاين' }}
+                        Ø§Ù„Ù†ÙˆØ¹: {{ request('workshop_type') == 'online' ? 'Ø£ÙˆÙ†Ù„Ø§ÙŠÙ†' : 'Ø£ÙˆÙÙ„Ø§ÙŠÙ†' }}
                     </span>
                 @endif
                 @if(request('price_range'))
                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-pink-100 text-pink-800">
-                        السعر: {{ request('price_range') == '0-50' ? '0-50 دولار أمريكي' : (request('price_range') == '50-100' ? '50-100 دولار أمريكي' : (request('price_range') == '100-200' ? '100-200 دولار أمريكي' : (request('price_range') == '200-500' ? '200-500 دولار أمريكي' : 'أكثر من 500 دولار أمريكي'))) }}
+                        Ø§Ù„Ø³Ø¹Ø±: {{ request('price_range') == '0-50' ? '0-50 Ø¯ÙˆÙ„Ø§Ø± Ø£Ù…Ø±ÙŠÙƒÙŠ' : (request('price_range') == '50-100' ? '50-100 Ø¯ÙˆÙ„Ø§Ø± Ø£Ù…Ø±ÙŠÙƒÙŠ' : (request('price_range') == '100-200' ? '100-200 Ø¯ÙˆÙ„Ø§Ø± Ø£Ù…Ø±ÙŠÙƒÙŠ' : (request('price_range') == '200-500' ? '200-500 Ø¯ÙˆÙ„Ø§Ø± Ø£Ù…Ø±ÙŠÙƒÙŠ' : 'Ø£ÙƒØ«Ø± Ù…Ù† 500 Ø¯ÙˆÙ„Ø§Ø± Ø£Ù…Ø±ÙŠÙƒÙŠ'))) }}
                     </span>
                 @endif
                 @if(request('payment_method'))
                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-teal-100 text-teal-800">
-                        الدفع: {{ request('payment_method') }}
+                        Ø§Ù„Ø¯ÙØ¹: {{ request('payment_method') }}
                     </span>
                 @endif
                 @if(request('booking_count'))
                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-100 text-orange-800">
-                        الحجوزات: {{ request('booking_count') == 'single' ? 'واحد فقط' : 'متعددة' }}
+                        Ø§Ù„Ø­Ø¬ÙˆØ²Ø§Øª: {{ request('booking_count') == 'single' ? 'ÙˆØ§Ø­Ø¯ ÙÙ‚Ø·' : 'Ù…ØªØ¹Ø¯Ø¯Ø©' }}
                     </span>
                 @endif
                 @if(request('workshop_date_from') || request('workshop_date_to'))
                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-cyan-100 text-cyan-800">
-                        تاريخ الورشة: {{ request('workshop_date_from') ?: 'بداية' }} - {{ request('workshop_date_to') ?: 'نهاية' }}
+                        ØªØ§Ø±ÙŠØ® Ø§Ù„ÙˆØ±Ø´Ø©: {{ request('workshop_date_from') ?: 'Ø¨Ø¯Ø§ÙŠØ©' }} - {{ request('workshop_date_to') ?: 'Ù†Ù‡Ø§ÙŠØ©' }}
                     </span>
                 @endif
                 @if(request('sort_by') && request('sort_by') != 'created_at')
                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-violet-100 text-violet-800">
-                        الترتيب: {{ request('sort_by') == 'payment_amount' ? 'المبلغ' : 'تاريخ الورشة' }} 
-                        ({{ request('sort_direction') == 'desc' ? 'تنازلي' : 'تصاعدي' }})
+                        Ø§Ù„ØªØ±ØªÙŠØ¨: {{ request('sort_by') == 'payment_amount' ? 'Ø§Ù„Ù…Ø¨Ù„Øº' : 'ØªØ§Ø±ÙŠØ® Ø§Ù„ÙˆØ±Ø´Ø©' }} 
+                        ({{ request('sort_direction') == 'desc' ? 'ØªÙ†Ø§Ø²Ù„ÙŠ' : 'ØªØµØ§Ø¹Ø¯ÙŠ' }})
                     </span>
                 @endif
             </div>
         </div>
         @endif
 
-        <!-- جدول الحجوزات -->
+        <!-- Ø¬Ø¯ÙˆÙ„ Ø§Ù„Ø­Ø¬ÙˆØ²Ø§Øª -->
         <div class="bg-white shadow-lg overflow-hidden rounded-lg">
             <div class="px-6 py-4 border-b border-gray-200">
                 <div class="flex items-center justify-between">
                     <h3 class="text-lg font-semibold text-gray-900 flex items-center">
                         <i class="fas fa-list text-green-500 ml-2"></i>
-                        قائمة الحجوزات
+                        Ù‚Ø§Ø¦Ù…Ø© Ø§Ù„Ø­Ø¬ÙˆØ²Ø§Øª
                     </h3>
                     <div class="flex items-center space-x-4 space-x-reverse">
                         <div class="text-sm text-gray-500">
-                            عرض {{ $bookings->firstItem() ?? 0 }} - {{ $bookings->lastItem() ?? 0 }} من أصل {{ $bookings->total() }} حجز
+                            Ø¹Ø±Ø¶ {{ $bookings->firstItem() ?? 0 }} - {{ $bookings->lastItem() ?? 0 }} Ù…Ù† Ø£ØµÙ„ {{ $bookings->total() }} Ø­Ø¬Ø²
                         </div>
                         <div class="flex items-center space-x-2 space-x-reverse">
                             <button onclick="exportBookings()" class="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
                                 <i class="fas fa-download ml-2"></i>
-                                تصدير
+                                ØªØµØ¯ÙŠØ±
                             </button>
                             <button onclick="printBookings()" class="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
                                 <i class="fas fa-print ml-2"></i>
-                                طباعة
+                                Ø·Ø¨Ø§Ø¹Ø©
                             </button>
                         </div>
                     </div>
@@ -1067,35 +1067,35 @@
                                 <tr>
                                     <th class="px-6 py-4 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                         <i class="fas fa-user ml-2"></i>
-                                        المستخدم
+                                        Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù…
                                     </th>
                                     <th class="px-6 py-4 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                         <i class="fas fa-graduation-cap ml-2"></i>
-                                        الورشة
+                                        Ø§Ù„ÙˆØ±Ø´Ø©
                                     </th>
                                     <th class="px-6 py-4 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                         <i class="fas fa-info-circle ml-2"></i>
-                                        الحالة
+                                        Ø§Ù„Ø­Ø§Ù„Ø©
                                     </th>
                                     <th class="px-6 py-4 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                         <i class="fas fa-credit-card ml-2"></i>
-                                        حالة الدفع
+                                        Ø­Ø§Ù„Ø© Ø§Ù„Ø¯ÙØ¹
                                     </th>
                                     <th class="px-6 py-4 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                         <i class="fas fa-coins ml-2"></i>
-                                        التوزيع المالي
+                                        Ø§Ù„ØªÙˆØ²ÙŠØ¹ Ø§Ù„Ù…Ø§Ù„ÙŠ
                                     </th>
                                     <th class="px-6 py-4 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                         <i class="fas fa-money-bill-wave ml-2"></i>
-                                        المبلغ
+                                        Ø§Ù„Ù…Ø¨Ù„Øº
                                     </th>
                                     <th class="px-6 py-4 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                         <i class="fas fa-calendar ml-2"></i>
-                                        تاريخ الحجز
+                                        ØªØ§Ø±ÙŠØ® Ø§Ù„Ø­Ø¬Ø²
                                     </th>
                                     <th class="px-6 py-4 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                         <i class="fas fa-cogs ml-2"></i>
-                                        الإجراءات
+                                        Ø§Ù„Ø¥Ø¬Ø±Ø§Ø¡Ø§Øª
                                     </th>
                                 </tr>
                             </thead>
@@ -1112,14 +1112,14 @@
                                             ?? ($booking->payment_currency ?? $defaultCurrency);
                                         $invoice = $booking->invoice;
                                         $invoiceStatusMeta = [
-                                            'draft' => ['label' => 'فاتورة مسودة', 'class' => 'bg-slate-100 text-slate-700'],
-                                            'issued' => ['label' => 'فاتورة صادرة', 'class' => 'bg-amber-100 text-amber-700'],
-                                            'paid' => ['label' => 'فاتورة مدفوعة', 'class' => 'bg-emerald-100 text-emerald-700'],
-                                            'void' => ['label' => 'فاتورة ملغاة', 'class' => 'bg-rose-100 text-rose-700'],
+                                            'draft' => ['label' => 'ÙØ§ØªÙˆØ±Ø© Ù…Ø³ÙˆØ¯Ø©', 'class' => 'bg-slate-100 text-slate-700'],
+                                            'issued' => ['label' => 'ÙØ§ØªÙˆØ±Ø© ØµØ§Ø¯Ø±Ø©', 'class' => 'bg-amber-100 text-amber-700'],
+                                            'paid' => ['label' => 'ÙØ§ØªÙˆØ±Ø© Ù…Ø¯ÙÙˆØ¹Ø©', 'class' => 'bg-emerald-100 text-emerald-700'],
+                                            'void' => ['label' => 'ÙØ§ØªÙˆØ±Ø© Ù…Ù„ØºØ§Ø©', 'class' => 'bg-rose-100 text-rose-700'],
                                         ];
                                         $invoiceBadge = $invoice ? ($invoiceStatusMeta[$invoice->status] ?? $invoiceStatusMeta['draft']) : null;
                                     @endphp
-                                    <tr id="booking-row-{{ $booking->id }}" class="activity-item hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 transition-all duration-200" data-admin-note="{{ base64_encode($booking->admin_notes ?? '') }}" data-user-name="{{ e(optional($booking->user)->name ?? 'مستخدم') }}" data-workshop-title="{{ e(optional($booking->workshop)->title ?? 'غير محددة') }}">
+                                    <tr id="booking-row-{{ $booking->id }}" class="activity-item hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 transition-all duration-200" data-admin-note="{{ base64_encode($booking->admin_notes ?? '') }}" data-user-name="{{ e(optional($booking->user)->name ?? 'Ù…Ø³ØªØ®Ø¯Ù…') }}" data-workshop-title="{{ e(optional($booking->workshop)->title ?? 'ØºÙŠØ± Ù…Ø­Ø¯Ø¯Ø©') }}">
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <div class="flex items-center">
                                                 <div class="flex-shrink-0 h-12 w-12">
@@ -1135,7 +1135,7 @@
                                                     </div>
                                                     <div id="booking-note-indicator-{{ $booking->id }}" class="note-indicator mt-2 {{ $booking->admin_notes ? '' : 'hidden' }}">
                                                         <i class="fas fa-sticky-note text-xs"></i>
-                                                        توجد ملاحظة داخلية
+                                                        ØªÙˆØ¬Ø¯ Ù…Ù„Ø§Ø­Ø¸Ø© Ø¯Ø§Ø®Ù„ÙŠØ©
                                                     </div>
                                                 </div>
                                             </div>
@@ -1160,17 +1160,17 @@
                                             @if($booking->status === 'pending')
                                                 <span class="status-badge status-pending inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold">
                                                     <i class="fas fa-clock ml-1"></i>
-                                                    في الانتظار
+                                                    ÙÙŠ Ø§Ù„Ø§Ù†ØªØ¸Ø§Ø±
                                                 </span>
                                             @elseif($booking->status === 'confirmed')
                                                 <span class="status-badge status-confirmed inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold">
                                                     <i class="fas fa-check-circle ml-1"></i>
-                                                    مؤكدة
+                                                    Ù…Ø¤ÙƒØ¯Ø©
                                                 </span>
                                             @else
                                                 <span class="status-badge status-cancelled inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold">
                                                     <i class="fas fa-times-circle ml-1"></i>
-                                                    ملغية
+                                                    Ù…Ù„ØºÙŠØ©
                                                 </span>
                                             @endif
                                         </td>
@@ -1178,17 +1178,17 @@
                                             @if($booking->payment_status === 'paid')
                                                 <span class="status-badge status-confirmed inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold">
                                                     <i class="fas fa-check ml-1"></i>
-                                                    مدفوعة
+                                                    Ù…Ø¯ÙÙˆØ¹Ø©
                                                 </span>
                                             @elseif($booking->payment_status === 'refunded')
                                                 <span class="status-badge status-cancelled inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold">
                                                     <i class="fas fa-undo ml-1"></i>
-                                                    مستردة
+                                                    Ù…Ø³ØªØ±Ø¯Ø©
                                                 </span>
                                             @else
                                                 <span class="status-badge status-pending inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold">
                                                     <i class="fas fa-clock ml-1"></i>
-                                                    في الانتظار
+                                                    ÙÙŠ Ø§Ù„Ø§Ù†ØªØ¸Ø§Ø±
                                                 </span>
                                             @endif
                                         </td>
@@ -1202,15 +1202,15 @@
                                             <div class="mt-2 text-xs text-gray-600 space-y-1">
                                                 <div class="flex items-center justify-end gap-1 text-orange-600">
                                                     <i class="fas fa-utensils text-[11px]"></i>
-                                                    <span>الشيف: {{ number_format($chefShare->amount ?? 0, 2) }} {{ $shareCurrency }}</span>
+                                                    <span>Ø§Ù„Ø´ÙŠÙ: {{ number_format($chefShare->amount ?? 0, 2) }} {{ $shareCurrency }}</span>
                                                 </div>
                                                 <div class="flex items-center justify-end gap-1 text-blue-600">
                                                     <i class="fas fa-handshake text-[11px]"></i>
-                                                    <span>الشريك: {{ number_format($partnerShare->amount ?? 0, 2) }} {{ $shareCurrency }}</span>
+                                                    <span>Ø§Ù„Ø´Ø±ÙŠÙƒ: {{ number_format($partnerShare->amount ?? 0, 2) }} {{ $shareCurrency }}</span>
                                                 </div>
                                                 <div class="flex items-center justify-end gap-1 text-slate-600">
                                                     <i class="fas fa-shield-alt text-[11px]"></i>
-                                                    <span>الإدارة: {{ number_format($adminShare->amount ?? 0, 2) }} {{ $shareCurrency }}</span>
+                                                    <span>Ø§Ù„Ø¥Ø¯Ø§Ø±Ø©: {{ number_format($adminShare->amount ?? 0, 2) }} {{ $shareCurrency }}</span>
                                                 </div>
                                             </div>
                                         </td>
@@ -1229,8 +1229,8 @@
                                             </div>
                                             <div class="text-xs text-gray-500 flex items-center gap-1 mt-1">
                                                 <i class="fas fa-exchange-alt text-[10px]"></i>
-                                                ≈ {{ number_format($booking->payment_amount_usd ?? 0, 2) }} {{ $defaultCurrency }}
-                                                <span class="text-gray-400">/ سعر الصرف {{ number_format($booking->payment_exchange_rate ?? 1, 6) }}</span>
+                                                â‰ˆ {{ number_format($booking->payment_amount_usd ?? 0, 2) }} {{ $defaultCurrency }}
+                                                <span class="text-gray-400">/ Ø³Ø¹Ø± Ø§Ù„ØµØ±Ù {{ number_format($booking->payment_exchange_rate ?? 1, 6) }}</span>
                                             </div>
                                             @if($booking->payment_method)
                                                 <div class="text-xs text-gray-500 mt-1 flex items-center gap-1">
@@ -1252,26 +1252,26 @@
                                             <div class="flex space-x-2 space-x-reverse">
                                                 <a href="{{ route('admin.bookings.show', $booking) }}" class="inline-flex items-center px-3 py-1 border border-transparent text-xs font-medium rounded-md text-blue-700 bg-blue-100 hover:bg-blue-200 transition-colors duration-200">
                                                     <i class="fas fa-eye ml-1"></i>
-                                                    عرض
+                                                    Ø¹Ø±Ø¶
                                                 </a>
                                                 @if($invoice)
                                                     <a href="{{ route('admin.finance.invoices.show', $invoice) }}" class="inline-flex items-center px-3 py-1 border border-transparent text-xs font-medium rounded-md text-indigo-700 bg-indigo-100 hover:bg-indigo-200 transition-colors duration-200">
                                                         <i class="fas fa-file-invoice ml-1"></i>
-                                                        الفاتورة
+                                                        Ø§Ù„ÙØ§ØªÙˆØ±Ø©
                                                     </a>
                                                 @endif
                                                 <button onclick="openAdminNoteModal({{ $booking->id }})" class="inline-flex items-center px-3 py-1 border border-transparent text-xs font-medium rounded-md text-purple-700 bg-purple-100 hover:bg-purple-200 transition-colors duration-200">
                                                     <i class="fas fa-sticky-note ml-1"></i>
-                                                    ملاحظة
+                                                    Ù…Ù„Ø§Ø­Ø¸Ø©
                                                 </button>
                                                 @if($booking->status === 'pending')
                                                     <button onclick="confirmBooking({{ $booking->id }})" class="inline-flex items-center px-3 py-1 border border-transparent text-xs font-medium rounded-md text-green-700 bg-green-100 hover:bg-green-200 transition-colors duration-200">
                                                         <i class="fas fa-check ml-1"></i>
-                                                        تأكيد
+                                                        ØªØ£ÙƒÙŠØ¯
                                                     </button>
                                                     <button onclick="cancelBooking({{ $booking->id }})" class="inline-flex items-center px-3 py-1 border border-transparent text-xs font-medium rounded-md text-red-700 bg-red-100 hover:bg-red-200 transition-colors duration-200">
                                                         <i class="fas fa-times ml-1"></i>
-                                                        إلغاء
+                                                        Ø¥Ù„ØºØ§Ø¡
                                                     </button>
                                                 @endif
                                             </div>
@@ -1285,7 +1285,7 @@
                     <!-- Pagination -->
                     <div class="mt-8 flex items-center justify-between">
                         <div class="text-sm text-gray-700">
-                            عرض {{ $bookings->firstItem() ?? 0 }} إلى {{ $bookings->lastItem() ?? 0 }} من أصل {{ $bookings->total() }} نتيجة
+                            Ø¹Ø±Ø¶ {{ $bookings->firstItem() ?? 0 }} Ø¥Ù„Ù‰ {{ $bookings->lastItem() ?? 0 }} Ù…Ù† Ø£ØµÙ„ {{ $bookings->total() }} Ù†ØªÙŠØ¬Ø©
                         </div>
                         <div class="flex items-center space-x-2 space-x-reverse">
                             {{ $bookings->appends(request()->query())->links() }}
@@ -1297,27 +1297,27 @@
                             <div class="mx-auto w-24 h-24 bg-gradient-to-r from-blue-100 to-indigo-100 rounded-full flex items-center justify-center mb-6">
                                 <i class="fas fa-search text-blue-500 text-3xl"></i>
                             </div>
-                            <h3 class="text-xl font-semibold text-gray-900 mb-3">لا توجد نتائج</h3>
-                            <p class="text-gray-500 mb-6 max-w-md mx-auto">لم يتم العثور على حجوزات تطابق المعايير المحددة. جرب تعديل الفلاتر أو البحث بكلمات مختلفة.</p>
+                            <h3 class="text-xl font-semibold text-gray-900 mb-3">Ù„Ø§ ØªÙˆØ¬Ø¯ Ù†ØªØ§Ø¦Ø¬</h3>
+                            <p class="text-gray-500 mb-6 max-w-md mx-auto">Ù„Ù… ÙŠØªÙ… Ø§Ù„Ø¹Ø«ÙˆØ± Ø¹Ù„Ù‰ Ø­Ø¬ÙˆØ²Ø§Øª ØªØ·Ø§Ø¨Ù‚ Ø§Ù„Ù…Ø¹Ø§ÙŠÙŠØ± Ø§Ù„Ù…Ø­Ø¯Ø¯Ø©. Ø¬Ø±Ø¨ ØªØ¹Ø¯ÙŠÙ„ Ø§Ù„ÙÙ„Ø§ØªØ± Ø£Ùˆ Ø§Ù„Ø¨Ø­Ø« Ø¨ÙƒÙ„Ù…Ø§Øª Ù…Ø®ØªÙ„ÙØ©.</p>
                             <div class="flex justify-center space-x-4 space-x-reverse">
                                 <a href="{{ route('admin.bookings.index') }}" class="inline-flex items-center px-6 py-3 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700">
                                     <i class="fas fa-times ml-2"></i>
-                                    مسح الفلاتر
+                                    Ù…Ø³Ø­ Ø§Ù„ÙÙ„Ø§ØªØ±
                                 </a>
                                 <button onclick="document.getElementById('bookingFiltersForm').reset(); document.getElementById('bookingFiltersForm').submit();" class="inline-flex items-center px-6 py-3 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
                                     <i class="fas fa-redo ml-2"></i>
-                                    إعادة تعيين
+                                    Ø¥Ø¹Ø§Ø¯Ø© ØªØ¹ÙŠÙŠÙ†
                                 </button>
                             </div>
                         @else
                             <div class="mx-auto w-24 h-24 bg-gradient-to-r from-gray-100 to-gray-200 rounded-full flex items-center justify-center mb-6">
                                 <i class="fas fa-calendar-times text-gray-400 text-3xl"></i>
                             </div>
-                            <h3 class="text-xl font-semibold text-gray-900 mb-3">لا توجد حجوزات</h3>
-                            <p class="text-gray-500 mb-6">لم يتم إنشاء أي حجوزات بعد. ابدأ بإضافة حجز جديد أو انتظر حتى يقوم المستخدمون بالحجز.</p>
+                            <h3 class="text-xl font-semibold text-gray-900 mb-3">Ù„Ø§ ØªÙˆØ¬Ø¯ Ø­Ø¬ÙˆØ²Ø§Øª</h3>
+                            <p class="text-gray-500 mb-6">Ù„Ù… ÙŠØªÙ… Ø¥Ù†Ø´Ø§Ø¡ Ø£ÙŠ Ø­Ø¬ÙˆØ²Ø§Øª Ø¨Ø¹Ø¯. Ø§Ø¨Ø¯Ø£ Ø¨Ø¥Ø¶Ø§ÙØ© Ø­Ø¬Ø² Ø¬Ø¯ÙŠØ¯ Ø£Ùˆ Ø§Ù†ØªØ¸Ø± Ø­ØªÙ‰ ÙŠÙ‚ÙˆÙ… Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù…ÙˆÙ† Ø¨Ø§Ù„Ø­Ø¬Ø².</p>
                             <a href="{{ route('admin.bookings.manual') }}" class="inline-flex items-center px-6 py-3 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700">
                                 <i class="fas fa-plus ml-2"></i>
-                                إضافة حجز جديد
+                                Ø¥Ø¶Ø§ÙØ© Ø­Ø¬Ø² Ø¬Ø¯ÙŠØ¯
                             </a>
                         @endif
                     </div>
@@ -1334,9 +1334,9 @@
             <div>
                 <h3 class="text-lg font-semibold text-gray-900 flex items-center">
                     <i class="fas fa-sticky-note text-purple-500 ml-2"></i>
-                    ملاحظة الإدارة
+                    Ù…Ù„Ø§Ø­Ø¸Ø© Ø§Ù„Ø¥Ø¯Ø§Ø±Ø©
                 </h3>
-                <p class="text-sm text-gray-500 mt-1">تُحفظ هذه الملاحظة للاستخدام الداخلي ولا تظهر للمستخدم.</p>
+                <p class="text-sm text-gray-500 mt-1">ØªÙØ­ÙØ¸ Ù‡Ø°Ù‡ Ø§Ù„Ù…Ù„Ø§Ø­Ø¸Ø© Ù„Ù„Ø§Ø³ØªØ®Ø¯Ø§Ù… Ø§Ù„Ø¯Ø§Ø®Ù„ÙŠ ÙˆÙ„Ø§ ØªØ¸Ù‡Ø± Ù„Ù„Ù…Ø³ØªØ®Ø¯Ù….</p>
             </div>
             <button id="adminNoteClose" type="button" class="text-gray-400 hover:text-gray-600 transition-colors duration-150">
                 <i class="fas fa-times"></i>
@@ -1345,18 +1345,18 @@
         <div class="mt-5 space-y-5">
             <div class="bg-gray-50 border border-gray-200 rounded-xl p-4 text-sm text-gray-700">
                 <div class="flex flex-col gap-1">
-                    <span><i class="fas fa-user text-blue-500 ml-1"></i>المستخدم: <span id="adminNoteUser" class="font-semibold text-gray-900"></span></span>
-                    <span><i class="fas fa-graduation-cap text-emerald-500 ml-1"></i>الورشة: <span id="adminNoteWorkshop" class="font-semibold text-gray-900"></span></span>
+                    <span><i class="fas fa-user text-blue-500 ml-1"></i>Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù…: <span id="adminNoteUser" class="font-semibold text-gray-900"></span></span>
+                    <span><i class="fas fa-graduation-cap text-emerald-500 ml-1"></i>Ø§Ù„ÙˆØ±Ø´Ø©: <span id="adminNoteWorkshop" class="font-semibold text-gray-900"></span></span>
                 </div>
             </div>
             <div>
-                <label for="adminNoteTextarea" class="block text-sm font-medium text-gray-700 mb-2">اكتب الملاحظات الداخلية</label>
-                <textarea id="adminNoteTextarea" rows="5" class="w-full border-gray-300 rounded-xl shadow-sm focus:ring-purple-500 focus:border-purple-500" maxlength="2000" placeholder="مثال: تم التواصل مع العميل بخصوص الدفع..."></textarea>
+                <label for="adminNoteTextarea" class="block text-sm font-medium text-gray-700 mb-2">Ø§ÙƒØªØ¨ Ø§Ù„Ù…Ù„Ø§Ø­Ø¸Ø§Øª Ø§Ù„Ø¯Ø§Ø®Ù„ÙŠØ©</label>
+                <textarea id="adminNoteTextarea" rows="5" class="w-full border-gray-300 rounded-xl shadow-sm focus:ring-purple-500 focus:border-purple-500" maxlength="2000" placeholder="Ù…Ø«Ø§Ù„: ØªÙ… Ø§Ù„ØªÙˆØ§ØµÙ„ Ù…Ø¹ Ø§Ù„Ø¹Ù…ÙŠÙ„ Ø¨Ø®ØµÙˆØµ Ø§Ù„Ø¯ÙØ¹..."></textarea>
                 <div class="mt-2 flex items-center justify-between">
                     <span id="adminNoteCharCounter" class="text-xs text-gray-400">0/2000</span>
-                    <div id="adminNoteError" data-default-text="تعذر حفظ الملاحظة، حاول مرة أخرى." class="hidden text-xs text-red-600 flex items-center gap-1">
+                    <div id="adminNoteError" data-default-text="ØªØ¹Ø°Ø± Ø­ÙØ¸ Ø§Ù„Ù…Ù„Ø§Ø­Ø¸Ø©ØŒ Ø­Ø§ÙˆÙ„ Ù…Ø±Ø© Ø£Ø®Ø±Ù‰." class="hidden text-xs text-red-600 flex items-center gap-1">
                         <i class="fas fa-exclamation-circle"></i>
-                        <span>تعذر حفظ الملاحظة، حاول مرة أخرى.</span>
+                        <span>ØªØ¹Ø°Ø± Ø­ÙØ¸ Ø§Ù„Ù…Ù„Ø§Ø­Ø¸Ø©ØŒ Ø­Ø§ÙˆÙ„ Ù…Ø±Ø© Ø£Ø®Ø±Ù‰.</span>
                     </div>
                 </div>
             </div>
@@ -1365,11 +1365,11 @@
         <div class="mt-6 flex items-center justify-end gap-3">
             <button type="button" id="adminNoteCancel" class="inline-flex items-center px-4 py-2 rounded-md border border-gray-300 text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
                 <i class="fas fa-times ml-1"></i>
-                إغلاق
+                Ø¥ØºÙ„Ø§Ù‚
             </button>
             <button type="button" id="adminNoteSaveButton" class="inline-flex items-center px-5 py-2 rounded-md border border-transparent text-sm font-medium text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500">
                 <i class="fas fa-save ml-1"></i>
-                حفظ الملاحظة
+                Ø­ÙØ¸ Ø§Ù„Ù…Ù„Ø§Ø­Ø¸Ø©
             </button>
         </div>
     </div>
@@ -1385,13 +1385,13 @@
             
             <!-- Title -->
             <h3 class="text-lg font-medium text-gray-900 mb-2" id="modalTitle">
-                تأكيد العملية
+                ØªØ£ÙƒÙŠØ¯ Ø§Ù„Ø¹Ù…Ù„ÙŠØ©
             </h3>
             
             <!-- Message -->
             <div class="mt-2 px-7 py-3">
                 <p class="text-sm text-gray-500" id="modalMessage">
-                    هل أنت متأكد من تأكيد هذا الحجز؟
+                    Ù‡Ù„ Ø£Ù†Øª Ù…ØªØ£ÙƒØ¯ Ù…Ù† ØªØ£ÙƒÙŠØ¯ Ù‡Ø°Ø§ Ø§Ù„Ø­Ø¬Ø²ØŸ
                 </p>
             </div>
             
@@ -1400,11 +1400,11 @@
                 <div class="flex justify-center space-x-4 space-x-reverse">
                     <button id="modalCancel" class="modal-button px-4 py-2 bg-gray-500 text-white text-base font-medium rounded-md shadow-sm hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-300 transition-colors duration-200">
                         <i class="fas fa-times ml-2"></i>
-                        إلغاء
+                        Ø¥Ù„ØºØ§Ø¡
                     </button>
                     <button id="modalConfirm" class="modal-button px-4 py-2 bg-green-600 text-white text-base font-medium rounded-md shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 transition-colors duration-200">
                         <i class="fas fa-check ml-2"></i>
-                        تأكيد
+                        ØªØ£ÙƒÙŠØ¯
                     </button>
                 </div>
             </div>
@@ -1423,13 +1423,13 @@
             
             <!-- Title -->
             <h3 class="text-lg font-medium text-gray-900 mb-2">
-                تنبيه
+                ØªÙ†Ø¨ÙŠÙ‡
             </h3>
             
             <!-- Message -->
             <div class="mt-2 px-7 py-3">
                 <p class="text-sm text-gray-500" id="alertMessage">
-                    حدث خطأ أثناء تنفيذ العملية
+                    Ø­Ø¯Ø« Ø®Ø·Ø£ Ø£Ø«Ù†Ø§Ø¡ ØªÙ†ÙÙŠØ° Ø§Ù„Ø¹Ù…Ù„ÙŠØ©
                 </p>
             </div>
             
@@ -1438,7 +1438,7 @@
                 <div class="flex justify-center">
                     <button id="alertOk" class="modal-button px-4 py-2 bg-blue-600 text-white text-base font-medium rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200">
                         <i class="fas fa-check ml-2"></i>
-                        موافق
+                        Ù…ÙˆØ§ÙÙ‚
                     </button>
                 </div>
             </div>
@@ -1447,13 +1447,13 @@
 </div>
 
 <script>
-// وظائف إضافية
+// ÙˆØ¸Ø§Ø¦Ù Ø¥Ø¶Ø§ÙÙŠØ©
 function refreshBookings() {
     location.reload();
 }
 
 function exportBookings() {
-    // إضافة معاملات التصدير
+    // Ø¥Ø¶Ø§ÙØ© Ù…Ø¹Ø§Ù…Ù„Ø§Øª Ø§Ù„ØªØµØ¯ÙŠØ±
     const url = new URL(window.location);
     url.searchParams.set('export', 'excel');
     window.open(url.toString(), '_blank');
@@ -1463,7 +1463,7 @@ function printBookings() {
     window.print();
 }
 
-// تحسين وظائف الحجز
+// ØªØ­Ø³ÙŠÙ† ÙˆØ¸Ø§Ø¦Ù Ø§Ù„Ø­Ø¬Ø²
 function encodeBase64Unicode(str) {
     try {
         return window.btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(_, p1) {
@@ -1519,11 +1519,11 @@ function openAdminNoteModal(bookingId) {
     bookingIdInput.value = bookingId;
 
     if (userSpan) {
-        userSpan.textContent = row.dataset.userName || 'مستخدم';
+        userSpan.textContent = row.dataset.userName || 'Ù…Ø³ØªØ®Ø¯Ù…';
     }
 
     if (workshopSpan) {
-        workshopSpan.textContent = row.dataset.workshopTitle || 'ورشة';
+        workshopSpan.textContent = row.dataset.workshopTitle || 'ÙˆØ±Ø´Ø©';
     }
 
     if (errorEl) {
@@ -1572,7 +1572,7 @@ function saveAdminNote() {
 
     saveButton.disabled = true;
     const originalContent = saveButton.innerHTML;
-    saveButton.innerHTML = '<i class="fas fa-spinner fa-spin ml-1"></i>جاري الحفظ...';
+    saveButton.innerHTML = '<i class="fas fa-spinner fa-spin ml-1"></i>Ø¬Ø§Ø±ÙŠ Ø§Ù„Ø­ÙØ¸...';
 
     fetch(`/admin/bookings/${bookingId}/admin-note`, {
         method: 'POST',
@@ -1608,13 +1608,13 @@ function saveAdminNote() {
                 }
             }
 
-            const message = data?.message || 'تم حفظ ملاحظة الإدارة بنجاح';
+            const message = data?.message || 'ØªÙ… Ø­ÙØ¸ Ù…Ù„Ø§Ø­Ø¸Ø© Ø§Ù„Ø¥Ø¯Ø§Ø±Ø© Ø¨Ù†Ø¬Ø§Ø­';
             showAlertModal(message);
             closeAdminNoteModal();
         })
         .catch((error) => {
             if (errorEl) {
-                const defaultMessage = errorEl.getAttribute('data-default-text') || 'تعذر حفظ الملاحظة، حاول مرة أخرى.';
+                const defaultMessage = errorEl.getAttribute('data-default-text') || 'ØªØ¹Ø°Ø± Ø­ÙØ¸ Ø§Ù„Ù…Ù„Ø§Ø­Ø¸Ø©ØŒ Ø­Ø§ÙˆÙ„ Ù…Ø±Ø© Ø£Ø®Ø±Ù‰.';
                 const finalMessage = typeof error?.message === 'string' ? error.message : defaultMessage;
                 errorEl.innerHTML = `<i class="fas fa-exclamation-circle"></i><span>${finalMessage}</span>`;
                 errorEl.classList.remove('hidden');
@@ -1629,8 +1629,8 @@ function saveAdminNote() {
 }
 function confirmBooking(bookingId) {
     showConfirmationModal(
-        'تأكيد الحجز',
-        'هل أنت متأكد من تأكيد هذا الحجز؟',
+        'ØªØ£ÙƒÙŠØ¯ Ø§Ù„Ø­Ø¬Ø²',
+        'Ù‡Ù„ Ø£Ù†Øª Ù…ØªØ£ÙƒØ¯ Ù…Ù† ØªØ£ÙƒÙŠØ¯ Ù‡Ø°Ø§ Ø§Ù„Ø­Ø¬Ø²ØŸ',
         () => {
             const button = event.target.closest('button');
             const originalContent = button.innerHTML;
@@ -1656,7 +1656,7 @@ function confirmBooking(bookingId) {
             })
             .catch(error => {
                 console.error('Error:', error);
-                showAlertModal('حدث خطأ أثناء تأكيد الحجز');
+                showAlertModal('Ø­Ø¯Ø« Ø®Ø·Ø£ Ø£Ø«Ù†Ø§Ø¡ ØªØ£ÙƒÙŠØ¯ Ø§Ù„Ø­Ø¬Ø²');
                 button.innerHTML = originalContent;
                 button.disabled = false;
             });
@@ -1753,22 +1753,22 @@ function showCancellationModal(bookingId) {
                 
                 <!-- Title -->
                 <h3 class="text-lg font-medium text-gray-900 mb-2">
-                    إلغاء الحجز
+                    Ø¥Ù„ØºØ§Ø¡ Ø§Ù„Ø­Ø¬Ø²
                 </h3>
                 
                 <!-- Message -->
                 <div class="mt-2 px-7 py-3">
                     <p class="text-sm text-gray-500 mb-4">
-                        يرجى إدخال سبب الإلغاء:
+                        ÙŠØ±Ø¬Ù‰ Ø¥Ø¯Ø®Ø§Ù„ Ø³Ø¨Ø¨ Ø§Ù„Ø¥Ù„ØºØ§Ø¡:
                     </p>
                     <textarea id="cancellationReason" 
                         class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500" 
                         rows="3" 
-                        placeholder="أدخل سبب الإلغاء هنا..."
+                        placeholder="Ø£Ø¯Ø®Ù„ Ø³Ø¨Ø¨ Ø§Ù„Ø¥Ù„ØºØ§Ø¡ Ù‡Ù†Ø§..."
                         required></textarea>
                     <div id="cancellationError" class="hidden mt-2 text-sm text-red-600 flex items-center">
                         <i class="fas fa-exclamation-circle ml-1"></i>
-                        يرجى إدخال سبب الإلغاء
+                        ÙŠØ±Ø¬Ù‰ Ø¥Ø¯Ø®Ø§Ù„ Ø³Ø¨Ø¨ Ø§Ù„Ø¥Ù„ØºØ§Ø¡
                     </div>
                 </div>
                 
@@ -1777,11 +1777,11 @@ function showCancellationModal(bookingId) {
                     <div class="flex justify-center space-x-4 space-x-reverse">
                         <button id="cancelCancel" class="modal-button px-4 py-2 bg-gray-500 text-white text-base font-medium rounded-md shadow-sm hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-300 transition-colors duration-200">
                             <i class="fas fa-times ml-2"></i>
-                            إلغاء
+                            Ø¥Ù„ØºØ§Ø¡
                         </button>
                         <button id="cancelConfirm" class="modal-button px-4 py-2 bg-red-600 text-white text-base font-medium rounded-md shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 transition-colors duration-200">
                             <i class="fas fa-check ml-2"></i>
-                            تأكيد الإلغاء
+                            ØªØ£ÙƒÙŠØ¯ Ø§Ù„Ø¥Ù„ØºØ§Ø¡
                         </button>
                     </div>
                 </div>
@@ -1839,7 +1839,7 @@ function showCancellationModal(bookingId) {
         })
         .catch(error => {
             console.error('Error:', error);
-            showAlertModal('حدث خطأ أثناء إلغاء الحجز');
+            showAlertModal('Ø­Ø¯Ø« Ø®Ø·Ø£ Ø£Ø«Ù†Ø§Ø¡ Ø¥Ù„ØºØ§Ø¡ Ø§Ù„Ø­Ø¬Ø²');
             button.innerHTML = originalContent;
             button.disabled = false;
         });
@@ -1848,7 +1848,7 @@ function showCancellationModal(bookingId) {
     });
 }
 
-// تحسين وظائف الفلترة
+// ØªØ­Ø³ÙŠÙ† ÙˆØ¸Ø§Ø¦Ù Ø§Ù„ÙÙ„ØªØ±Ø©
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('bookingFiltersForm');
     if (!form) {
@@ -1906,7 +1906,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
 
-    // التحقق من صحة التواريخ الأساسية
+    // Ø§Ù„ØªØ­Ù‚Ù‚ Ù…Ù† ØµØ­Ø© Ø§Ù„ØªÙˆØ§Ø±ÙŠØ® Ø§Ù„Ø£Ø³Ø§Ø³ÙŠØ©
     function validateDates() {
         if (!dateFromInput || !dateToInput) {
             return true;
@@ -1916,7 +1916,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const dateTo = dateToInput.value;
 
         if (dateFrom && dateTo && new Date(dateFrom) > new Date(dateTo)) {
-            showAlertModal('تاريخ البداية يجب أن يكون قبل تاريخ النهاية');
+            showAlertModal('ØªØ§Ø±ÙŠØ® Ø§Ù„Ø¨Ø¯Ø§ÙŠØ© ÙŠØ¬Ø¨ Ø£Ù† ÙŠÙƒÙˆÙ† Ù‚Ø¨Ù„ ØªØ§Ø±ÙŠØ® Ø§Ù„Ù†Ù‡Ø§ÙŠØ©');
             dateToInput.value = '';
             return false;
         }
@@ -1942,7 +1942,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const isHidden = advancedFiltersSection.classList.toggle('hidden');
             toggleAdvancedFiltersButton.setAttribute('aria-expanded', (!isHidden).toString());
             if (advancedFiltersLabel) {
-                advancedFiltersLabel.textContent = isHidden ? 'عرض الفلاتر المتقدمة' : 'إخفاء الفلاتر المتقدمة';
+                advancedFiltersLabel.textContent = isHidden ? 'Ø¹Ø±Ø¶ Ø§Ù„ÙÙ„Ø§ØªØ± Ø§Ù„Ù…ØªÙ‚Ø¯Ù…Ø©' : 'Ø¥Ø®ÙØ§Ø¡ Ø§Ù„ÙÙ„Ø§ØªØ± Ø§Ù„Ù…ØªÙ‚Ø¯Ù…Ø©';
             }
         });
     }
@@ -1956,7 +1956,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // التحقق من صحة تواريخ الورشة
+    // Ø§Ù„ØªØ­Ù‚Ù‚ Ù…Ù† ØµØ­Ø© ØªÙˆØ§Ø±ÙŠØ® Ø§Ù„ÙˆØ±Ø´Ø©
     function validateWorkshopDates() {
         if (!workshopDateFromInput || !workshopDateToInput) {
             return true;
@@ -1966,7 +1966,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const dateTo = workshopDateToInput.value;
 
         if (dateFrom && dateTo && new Date(dateFrom) > new Date(dateTo)) {
-            showAlertModal('تاريخ بداية الورشة يجب أن يكون قبل تاريخ نهاية الورشة');
+            showAlertModal('ØªØ§Ø±ÙŠØ® Ø¨Ø¯Ø§ÙŠØ© Ø§Ù„ÙˆØ±Ø´Ø© ÙŠØ¬Ø¨ Ø£Ù† ÙŠÙƒÙˆÙ† Ù‚Ø¨Ù„ ØªØ§Ø±ÙŠØ® Ù†Ù‡Ø§ÙŠØ© Ø§Ù„ÙˆØ±Ø´Ø©');
             workshopDateToInput.value = '';
             return false;
         }
@@ -1987,7 +1987,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // البحث مع تأخير
+    // Ø§Ù„Ø¨Ø­Ø« Ù…Ø¹ ØªØ£Ø®ÙŠØ±
     const searchInput = form.querySelector('input[name="search"]');
     if (searchInput) {
         let searchTimeout;
@@ -2001,7 +2001,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // الفلاتر السريعة للحالة
+    // Ø§Ù„ÙÙ„Ø§ØªØ± Ø§Ù„Ø³Ø±ÙŠØ¹Ø© Ù„Ù„Ø­Ø§Ù„Ø©
     quickFilterChips.forEach(chip => {
         chip.addEventListener('click', () => {
             quickFilterChips.forEach(btn => btn.classList.remove('is-active'));
@@ -2037,6 +2037,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 @endsection
+
 
 
 

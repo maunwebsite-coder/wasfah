@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Tool;
 use App\Services\ImageCompressionService;
 use App\Services\SimpleImageCompressionService;
+use App\Support\Currency;
 use App\Support\ImageUploadConstraints;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -30,12 +31,12 @@ class AdminToolsController extends Controller
     public function create(): View
     {
         $categories = [
-            'أجهزة الخبز',
-            'أدوات القياس',
-            'قوالب الحلويات',
-            'أدوات الخلط',
-            'أدوات التزيين',
-            'أدوات أخرى'
+            'Ø£Ø¬Ù‡Ø²Ø© Ø§Ù„Ø®Ø¨Ø²',
+            'Ø£Ø¯ÙˆØ§Øª Ø§Ù„Ù‚ÙŠØ§Ø³',
+            'Ù‚ÙˆØ§Ù„Ø¨ Ø§Ù„Ø­Ù„ÙˆÙŠØ§Øª',
+            'Ø£Ø¯ÙˆØ§Øª Ø§Ù„Ø®Ù„Ø·',
+            'Ø£Ø¯ÙˆØ§Øª Ø§Ù„ØªØ²ÙŠÙŠÙ†',
+            'Ø£Ø¯ÙˆØ§Øª Ø£Ø®Ø±Ù‰'
         ];
         
         return view('admin.tools.create', compact('categories'));
@@ -63,7 +64,7 @@ class AdminToolsController extends Controller
                     'sort_order' => 'nullable|integer|min:0'
                 ],
                 ImageUploadConstraints::messages('image', [
-                    'ar' => 'صورة الأداة',
+                    'ar' => 'ØµÙˆØ±Ø© Ø§Ù„Ø£Ø¯Ø§Ø©',
                     'en' => 'tool image',
                 ])
             );
@@ -72,17 +73,17 @@ class AdminToolsController extends Controller
 
             // Handle image upload with compression
             if ($request->hasFile('image')) {
-                // محاولة استخدام ضغط الصور المتقدم أولاً
+                // Ù…Ø­Ø§ÙˆÙ„Ø© Ø§Ø³ØªØ®Ø¯Ø§Ù… Ø¶ØºØ· Ø§Ù„ØµÙˆØ± Ø§Ù„Ù…ØªÙ‚Ø¯Ù… Ø£ÙˆÙ„Ø§Ù‹
                 if (extension_loaded('gd')) {
                     $data['image'] = ImageCompressionService::compressAndStore(
                         $request->file('image'),
                         'tools',
-                        80, // جودة 80%
-                        1200, // أقصى عرض
-                        1200  // أقصى ارتفاع
+                        80, // Ø¬ÙˆØ¯Ø© 80%
+                        1200, // Ø£Ù‚ØµÙ‰ Ø¹Ø±Ø¶
+                        1200  // Ø£Ù‚ØµÙ‰ Ø§Ø±ØªÙØ§Ø¹
                     );
                 } else {
-                    // استخدام الحفظ المباشر إذا لم يكن GD متوفراً
+                    // Ø§Ø³ØªØ®Ø¯Ø§Ù… Ø§Ù„Ø­ÙØ¸ Ø§Ù„Ù…Ø¨Ø§Ø´Ø± Ø¥Ø°Ø§ Ù„Ù… ÙŠÙƒÙ† GD Ù…ØªÙˆÙØ±Ø§Ù‹
                     $data['image'] = SimpleImageCompressionService::compressAndStore(
                         $request->file('image'),
                         'tools',
@@ -148,7 +149,7 @@ class AdminToolsController extends Controller
             \Log::info('Tool created successfully with ID:', ['id' => $tool->id]);
 
             return redirect()->route('admin.tools.index')
-                ->with('success', 'تم إضافة الأداة بنجاح!');
+                ->with('success', 'ØªÙ… Ø¥Ø¶Ø§ÙØ© Ø§Ù„Ø£Ø¯Ø§Ø© Ø¨Ù†Ø¬Ø§Ø­!');
 
         } catch (\Illuminate\Validation\ValidationException $e) {
             \Log::error('Validation error:', $e->errors());
@@ -158,7 +159,7 @@ class AdminToolsController extends Controller
         } catch (\Exception $e) {
             \Log::error('Error creating tool:', ['error' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
             return redirect()->back()
-                ->with('error', 'حدث خطأ أثناء حفظ الأداة: ' . $e->getMessage())
+                ->with('error', 'Ø­Ø¯Ø« Ø®Ø·Ø£ Ø£Ø«Ù†Ø§Ø¡ Ø­ÙØ¸ Ø§Ù„Ø£Ø¯Ø§Ø©: ' . $e->getMessage())
                 ->withInput();
         }
     }
@@ -177,12 +178,12 @@ class AdminToolsController extends Controller
     public function edit(Tool $tool): View
     {
         $categories = [
-            'أجهزة الخبز',
-            'أدوات القياس',
-            'قوالب الحلويات',
-            'أدوات الخلط',
-            'أدوات التزيين',
-            'أدوات أخرى'
+            'Ø£Ø¬Ù‡Ø²Ø© Ø§Ù„Ø®Ø¨Ø²',
+            'Ø£Ø¯ÙˆØ§Øª Ø§Ù„Ù‚ÙŠØ§Ø³',
+            'Ù‚ÙˆØ§Ù„Ø¨ Ø§Ù„Ø­Ù„ÙˆÙŠØ§Øª',
+            'Ø£Ø¯ÙˆØ§Øª Ø§Ù„Ø®Ù„Ø·',
+            'Ø£Ø¯ÙˆØ§Øª Ø§Ù„ØªØ²ÙŠÙŠÙ†',
+            'Ø£Ø¯ÙˆØ§Øª Ø£Ø®Ø±Ù‰'
         ];
         
         return view('admin.tools.edit', compact('tool', 'categories'));
@@ -209,7 +210,7 @@ class AdminToolsController extends Controller
                 'sort_order' => 'nullable|integer|min:0'
             ],
             ImageUploadConstraints::messages('image', [
-                'ar' => 'صورة الأداة',
+                'ar' => 'ØµÙˆØ±Ø© Ø§Ù„Ø£Ø¯Ø§Ø©',
                 'en' => 'tool image',
             ])
         );
@@ -227,17 +228,17 @@ class AdminToolsController extends Controller
                 }
             }
             
-            // محاولة استخدام ضغط الصور المتقدم أولاً
+            // Ù…Ø­Ø§ÙˆÙ„Ø© Ø§Ø³ØªØ®Ø¯Ø§Ù… Ø¶ØºØ· Ø§Ù„ØµÙˆØ± Ø§Ù„Ù…ØªÙ‚Ø¯Ù… Ø£ÙˆÙ„Ø§Ù‹
             if (extension_loaded('gd')) {
                 $data['image'] = ImageCompressionService::compressAndStore(
                     $request->file('image'),
                     'tools',
-                    80, // جودة 80%
-                    1200, // أقصى عرض
-                    1200  // أقصى ارتفاع
+                    80, // Ø¬ÙˆØ¯Ø© 80%
+                    1200, // Ø£Ù‚ØµÙ‰ Ø¹Ø±Ø¶
+                    1200  // Ø£Ù‚ØµÙ‰ Ø§Ø±ØªÙØ§Ø¹
                 );
             } else {
-                // استخدام الحفظ المباشر إذا لم يكن GD متوفراً
+                // Ø§Ø³ØªØ®Ø¯Ø§Ù… Ø§Ù„Ø­ÙØ¸ Ø§Ù„Ù…Ø¨Ø§Ø´Ø± Ø¥Ø°Ø§ Ù„Ù… ÙŠÙƒÙ† GD Ù…ØªÙˆÙØ±Ø§Ù‹
                 $data['image'] = SimpleImageCompressionService::compressAndStore(
                     $request->file('image'),
                     'tools',
@@ -314,7 +315,7 @@ class AdminToolsController extends Controller
         $tool->update($data);
 
         return redirect()->route('admin.tools.index')
-            ->with('success', 'تم تحديث الأداة بنجاح!');
+            ->with('success', 'ØªÙ… ØªØ­Ø¯ÙŠØ« Ø§Ù„Ø£Ø¯Ø§Ø© Ø¨Ù†Ø¬Ø§Ø­!');
     }
 
     /**
@@ -332,7 +333,7 @@ class AdminToolsController extends Controller
         $tool->delete();
 
         return redirect()->route('admin.tools.index')
-            ->with('success', 'تم حذف الأداة بنجاح!');
+            ->with('success', 'ØªÙ… Ø­Ø°Ù Ø§Ù„Ø£Ø¯Ø§Ø© Ø¨Ù†Ø¬Ø§Ø­!');
     }
 
     /**
@@ -342,9 +343,9 @@ class AdminToolsController extends Controller
     {
         $tool->update(['is_active' => !$tool->is_active]);
         
-        $status = $tool->is_active ? 'تفعيل' : 'إلغاء تفعيل';
+        $status = $tool->is_active ? 'ØªÙØ¹ÙŠÙ„' : 'Ø¥Ù„ØºØ§Ø¡ ØªÙØ¹ÙŠÙ„';
         return redirect()->back()
-            ->with('success', "تم {$status} الأداة بنجاح!");
+            ->with('success', "ØªÙ… {$status} Ø§Ù„Ø£Ø¯Ø§Ø© Ø¨Ù†Ø¬Ø§Ø­!");
     }
 
     /**
@@ -365,7 +366,7 @@ class AdminToolsController extends Controller
                 if (!$url) {
                     return response()->json([
                         'success' => false,
-                        'message' => 'فشل في حل الرابط المختصر'
+                        'message' => 'ÙØ´Ù„ ÙÙŠ Ø­Ù„ Ø§Ù„Ø±Ø§Ø¨Ø· Ø§Ù„Ù…Ø®ØªØµØ±'
                     ]);
                 }
             }
@@ -376,7 +377,7 @@ class AdminToolsController extends Controller
             if (!$html) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'فشل في تحميل صفحة Amazon'
+                    'message' => 'ÙØ´Ù„ ÙÙŠ ØªØ­Ù…ÙŠÙ„ ØµÙØ­Ø© Amazon'
                 ]);
             }
 
@@ -390,7 +391,7 @@ class AdminToolsController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'حدث خطأ أثناء استخراج البيانات: ' . $e->getMessage()
+                'message' => 'Ø­Ø¯Ø« Ø®Ø·Ø£ Ø£Ø«Ù†Ø§Ø¡ Ø§Ø³ØªØ®Ø±Ø§Ø¬ Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª: ' . $e->getMessage()
             ]);
         }
     }
@@ -534,7 +535,7 @@ class AdminToolsController extends Controller
                 }
 
                 $currency = null;
-                if (stripos($cleanValue, 'AED') !== false || stripos($cleanValue, 'د.إ') !== false || stripos($cleanValue, 'درهم') !== false) {
+                if (stripos($cleanValue, 'AED') !== false || stripos($cleanValue, 'Ø¯.Ø¥') !== false || stripos($cleanValue, 'Ø¯Ø±Ù‡Ù…') !== false) {
                     $currency = 'AED';
                 } elseif (strpos($cleanValue, '$') !== false || stripos($cleanValue, 'USD') !== false) {
                     $currency = 'USD';
@@ -617,22 +618,21 @@ class AdminToolsController extends Controller
         }
 
         if (!is_null($price)) {
-            if ($priceCurrency === 'AED' || (!$priceCurrency && (stripos($html, 'AED') !== false || stripos($html, 'درهم') !== false))) {
-                $data['price'] = round($price, 2);
+            if ($priceCurrency === 'AED' || (!$priceCurrency && (stripos($html, 'AED') !== false || stripos($html, 'Ø¯Ø±Ù‡Ù…') !== false))) {
+                $data['price'] = Currency::convert((float) $price, 'AED', 'JOD');
                 $data['original_price_aed'] = round($price, 2);
             } elseif ($priceCurrency === 'USD' || (!$priceCurrency && strpos($html, '$') !== false)) {
-                $converted = round($price * 3.67, 2);
-                $data['price'] = $converted;
+                $data['price'] = Currency::convert((float) $price, 'USD', 'JOD');
                 $data['original_price_usd'] = round($price, 2);
             } else {
-                $data['price'] = round($price, 2);
+                $data['price'] = Currency::round((float) $price, 'JOD');
             }
         }
         
         // Extract rating - multiple patterns
         if (preg_match('/<span[^>]*class="a-icon-alt"[^>]*>([0-9.]+) out of 5 stars<\/span>/', $html, $matches)) {
             $data['rating'] = floatval($matches[1]);
-        } elseif (preg_match('/<span[^>]*class="a-icon-alt"[^>]*>([0-9.]+) من 5 نجوم<\/span>/', $html, $matches)) {
+        } elseif (preg_match('/<span[^>]*class="a-icon-alt"[^>]*>([0-9.]+) Ù…Ù† 5 Ù†Ø¬ÙˆÙ…<\/span>/', $html, $matches)) {
             $data['rating'] = floatval($matches[1]);
         } elseif (preg_match('/<span[^>]*class="a-icon-alt"[^>]*>([0-9.]+) de 5 estrellas<\/span>/', $html, $matches)) {
             $data['rating'] = floatval($matches[1]);
@@ -734,17 +734,17 @@ class AdminToolsController extends Controller
                 return null;
             }
 
-            // محاولة استخدام ضغط الصور المتقدم أولاً
+            // Ù…Ø­Ø§ÙˆÙ„Ø© Ø§Ø³ØªØ®Ø¯Ø§Ù… Ø¶ØºØ· Ø§Ù„ØµÙˆØ± Ø§Ù„Ù…ØªÙ‚Ø¯Ù… Ø£ÙˆÙ„Ø§Ù‹
             if (extension_loaded('gd')) {
                 return ImageCompressionService::compressFromUrl(
                     $sanitizedUrl,
                     'tools',
-                    80, // جودة 80%
-                    1200, // أقصى عرض
-                    1200  // أقصى ارتفاع
+                    80, // Ø¬ÙˆØ¯Ø© 80%
+                    1200, // Ø£Ù‚ØµÙ‰ Ø¹Ø±Ø¶
+                    1200  // Ø£Ù‚ØµÙ‰ Ø§Ø±ØªÙØ§Ø¹
                 );
             } else {
-                // استخدام الحفظ المباشر إذا لم يكن GD متوفراً
+                // Ø§Ø³ØªØ®Ø¯Ø§Ù… Ø§Ù„Ø­ÙØ¸ Ø§Ù„Ù…Ø¨Ø§Ø´Ø± Ø¥Ø°Ø§ Ù„Ù… ÙŠÙƒÙ† GD Ù…ØªÙˆÙØ±Ø§Ù‹
                 return SimpleImageCompressionService::compressFromUrl(
                     $sanitizedUrl,
                     'tools'

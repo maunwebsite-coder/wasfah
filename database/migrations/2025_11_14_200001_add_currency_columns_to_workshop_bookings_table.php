@@ -13,7 +13,7 @@ return new class extends Migration
         Schema::table('workshop_bookings', function (Blueprint $table) {
             if (! Schema::hasColumn('workshop_bookings', 'payment_currency')) {
                 $table->string('payment_currency', 3)
-                    ->default(config('finance.default_currency', 'USD'))
+                    ->default(config('finance.default_currency', 'JOD'))
                     ->after('payment_amount');
             }
 
@@ -85,3 +85,4 @@ return new class extends Migration
         });
     }
 };
+

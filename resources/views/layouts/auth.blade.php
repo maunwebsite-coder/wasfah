@@ -29,11 +29,12 @@
     @php
         $vite = app(\Illuminate\Foundation\Vite::class);
         $isViteHot = \App\Support\ViteHot::shouldUseHotReload();
+        $hasViteManifest = \App\Support\ViteHot::hasBuildManifest();
     @endphp
 
     @if ($isViteHot)
         @vite(['resources/css/app.css', 'resources/js/app.js'])
-    @else
+    @elseif ($hasViteManifest)
         @php
             $appCss = $vite->asset('resources/css/app.css');
         @endphp
@@ -44,9 +45,9 @@
     <style>
     body {
         font-family: 'Tajawal', 'Cairo', sans-serif;
-        background: radial-gradient(circle at top right, rgba(8, 25, 255, 0.18), transparent 50%),
-            radial-gradient(circle at bottom left, rgba(251, 146, 60, 0.15), transparent 40%),
-            #fdeee2;
+        background: radial-gradient(circle at top right, rgba(111, 28, 56, 0.2), transparent 52%),
+            radial-gradient(circle at bottom left, rgba(176, 74, 109, 0.16), transparent 42%),
+            #fbf2f6;
     }
     </style>
     <script>
@@ -62,14 +63,14 @@
             <form
                 method="POST"
                 action="{{ route('locale.switch') }}"
-                class="flex flex-col gap-2 rounded-2xl border border-white/70 bg-white/80 px-4 py-3 shadow-2xl shadow-orange-100/60 backdrop-blur {{ $isRtl ? 'text-right items-end' : 'text-left items-start' }}"
+                class="flex flex-col gap-2 rounded-2xl border border-white/70 bg-white/80 px-4 py-3 shadow-2xl shadow-rose-100/70 backdrop-blur {{ $isRtl ? 'text-right items-end' : 'text-left items-start' }}"
             >
                 @csrf
                 <input type="hidden" name="locale" value="{{ $alternateLocale }}">
                 <p class="text-[11px] font-semibold uppercase tracking-[0.35em] text-slate-400">{{ data_get($languageCopy, 'label', 'Language') }}</p>
                 <button
                     type="submit"
-                    class="inline-flex items-center gap-2 rounded-full border border-orange-100 bg-gradient-to-r from-amber-50 to-white px-4 py-2 text-xs font-semibold uppercase tracking-wide text-amber-600 shadow-sm transition hover:from-white hover:to-amber-50 focus:outline-none focus:ring-2 focus:ring-orange-200"
+                    class="inline-flex items-center gap-2 rounded-full border border-rose-100 bg-gradient-to-r from-rose-50 to-white px-4 py-2 text-xs font-semibold uppercase tracking-wide text-rose-700 shadow-sm transition hover:from-white hover:to-rose-50 focus:outline-none focus:ring-2 focus:ring-rose-200"
                     aria-label="{{ data_get($languageCopy, 'switch_to.' . $alternateLocale, 'Switch language') }}"
                 >
                     <span>{{ data_get($languageCopy, 'short.' . $alternateLocale, strtoupper($alternateLocale)) }}</span>

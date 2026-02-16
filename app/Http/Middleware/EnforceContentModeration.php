@@ -26,7 +26,7 @@ class EnforceContentModeration
         $blockedKeys = config('content_moderation.excluded_input_keys', []);
         $compressedTempPaths = [];
 
-        $maxKilobytes = (int) config('content_moderation.image.max_kilobytes', 2048);
+        $maxKilobytes = (int) config('content_moderation.image.max_kilobytes', 25600);
         $maxBytes = $maxKilobytes * 1024;
         $processing = config('content_moderation.image.processing', []);
         $targetQuality = (int) ($processing['quality'] ?? 85);

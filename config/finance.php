@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'default_currency' => strtoupper(env('FINANCE_DEFAULT_CURRENCY', 'USD')),
+    'default_currency' => strtoupper(env('FINANCE_DEFAULT_CURRENCY', 'JOD')),
 
     /*
     |--------------------------------------------------------------------------

@@ -147,7 +147,7 @@ class ReferralProgramService
             'commission_amount' => $commissionAmount,
             'currency' => $partner->referral_commission_currency
                 ?? $workshop->currency
-                ?? config('referrals.default_currency', 'USD'),
+                ?? config('referrals.default_currency', 'JOD'),
         ]);
 
         if ($commission->status !== ReferralCommission::STATUS_PAID) {
@@ -182,3 +182,4 @@ class ReferralProgramService
         $commission->save();
     }
 }
+

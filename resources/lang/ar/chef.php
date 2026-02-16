@@ -430,6 +430,7 @@ return [
     'workshop_form' => [
         'currencies' => [
             'usd' => 'دولار أمريكي',
+            'jod' => 'دينار أردني',
         ],
         'sections' => [
             'basics' => [
@@ -462,7 +463,7 @@ return [
             'image' => [
                 'eyebrow' => 'صورة الورشة',
                 'title' => 'إبهار بصري',
-                'description' => 'حمّل صوراً عالية الجودة (حتى 5 ميجابايت) لتحفيز الحجز.',
+                'description' => 'حمّل صوراً عالية الجودة (حتى 25 ميجابايت) لتحفيز الحجز.',
                 'preview_placeholder' => 'ستظهر المعاينة هنا بعد رفع الصورة.',
                 'preview_alt' => 'معاينة غلاف الورشة',
             ],
@@ -582,7 +583,7 @@ return [
             'calendar_connected_title' => 'تم ربط Google Calendar',
             'calendar_connected_body' => 'سنقوم بتوليد رابط Google Meet من تقويمك وإضافته تلقائياً.',
             'calendar_connected_body_with_email' => 'سنقوم بتوليد رابط Google Meet من تقويمك (:email) وإضافته تلقائياً.',
-            'image_max_size' => 'لا يمكن رفع صورة أكبر من 5 ميجابايت.',
+            'image_max_size' => 'لا يمكن رفع صورة أكبر من 25 ميجابايت.',
         ],
         'js' => [
             'title_required' => 'يرجى إدخال عنوان الورشة أولاً.',
@@ -634,8 +635,8 @@ return [
                 'description' => 'يمكنك رفع حتى 5 صور بجودة عالية لإبراز جمال الوصفة.',
                 'primary' => 'الصورة الرئيسية',
                 'additional' => 'صورة إضافية :number',
-                'max_size_message' => 'لا يمكن رفع صورة أكبر من 5 ميجابايت.',
-                'max_size_hint' => 'الحد الأقصى لحجم الصورة هو 5 ميجابايت.',
+                'max_size_message' => 'لا يمكن رفع صورة أكبر من 25 ميجابايت.',
+                'max_size_hint' => 'الحد الأقصى لحجم الصورة هو 25 ميجابايت.',
                 'current_alt' => 'صورة الوصفة',
                 'remove_current' => 'إزالة هذه الصورة',
             ],

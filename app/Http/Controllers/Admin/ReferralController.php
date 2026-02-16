@@ -70,7 +70,7 @@ class ReferralController extends Controller
     {
         $supportedCurrencies = array_keys(config('referrals.currencies', []));
         if (empty($supportedCurrencies)) {
-            $supportedCurrencies = [config('referrals.default_currency', 'USD')];
+            $supportedCurrencies = [config('referrals.default_currency', 'JOD')];
         }
 
         $data = $request->validate([
@@ -91,7 +91,7 @@ class ReferralController extends Controller
 
         if (!$user) {
             return back()->withErrors([
-                'user_lookup' => 'لم يتم العثور على مستخدم يطابق البيانات المدخلة.',
+                'user_lookup' => 'Ù„Ù… ÙŠØªÙ… Ø§Ù„Ø¹Ø«ÙˆØ± Ø¹Ù„Ù‰ Ù…Ø³ØªØ®Ø¯Ù… ÙŠØ·Ø§Ø¨Ù‚ Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„Ù…Ø¯Ø®Ù„Ø©.',
             ])->withInput();
         }
 
@@ -99,7 +99,7 @@ class ReferralController extends Controller
             'is_referral_partner' => true,
             'referral_commission_rate' => $data['referral_commission_rate']
                 ?? ($user->referral_commission_rate ?? config('referrals.default_rate')),
-            'referral_commission_currency' => $data['referral_commission_currency'] ?? config('referrals.default_currency', 'USD'),
+            'referral_commission_currency' => $data['referral_commission_currency'] ?? config('referrals.default_currency', 'JOD'),
         ]);
 
         $user->ensureReferralCode();
@@ -107,7 +107,7 @@ class ReferralController extends Controller
 
         return redirect()
             ->route('admin.referrals.show', $user)
-            ->with('success', 'تم تفعيل المستخدم كشريك إحالات بنجاح.');
+            ->with('success', 'ØªÙ… ØªÙØ¹ÙŠÙ„ Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù… ÙƒØ´Ø±ÙŠÙƒ Ø¥Ø­Ø§Ù„Ø§Øª Ø¨Ù†Ø¬Ø§Ø­.');
     }
 
     public function show(User $user, Request $request): View
@@ -166,7 +166,7 @@ class ReferralController extends Controller
         }
 
         if ($commission->status === ReferralCommission::STATUS_CANCELLED) {
-            return back()->with('error', 'لا يمكن تحديث حالة عمولة تم إلغاؤها.');
+            return back()->with('error', 'Ù„Ø§ ÙŠÙ…ÙƒÙ† ØªØ­Ø¯ÙŠØ« Ø­Ø§Ù„Ø© Ø¹Ù…ÙˆÙ„Ø© ØªÙ… Ø¥Ù„ØºØ§Ø¤Ù‡Ø§.');
         }
 
         $data = $request->validate([
@@ -183,21 +183,21 @@ class ReferralController extends Controller
                 $commission->notes = $notes;
                 $commission->save();
 
-                return back()->with('success', 'تم تحديث ملاحظات العمولة.');
+                return back()->with('success', 'ØªÙ… ØªØ­Ø¯ÙŠØ« Ù…Ù„Ø§Ø­Ø¸Ø§Øª Ø§Ù„Ø¹Ù…ÙˆÙ„Ø©.');
             }
 
-            return back()->with('success', 'الحالة مختارة مسبقاً لهذا السجل.');
+            return back()->with('success', 'Ø§Ù„Ø­Ø§Ù„Ø© Ù…Ø®ØªØ§Ø±Ø© Ù…Ø³Ø¨Ù‚Ø§Ù‹ Ù„Ù‡Ø°Ø§ Ø§Ù„Ø³Ø¬Ù„.');
         }
 
         if ($targetStatus === ReferralCommission::STATUS_PAID) {
             $commission->markPaid($notes);
-            $message = 'تم تعليم العمولة كمحوّلة/مدفوعة.';
+            $message = 'ØªÙ… ØªØ¹Ù„ÙŠÙ… Ø§Ù„Ø¹Ù…ÙˆÙ„Ø© ÙƒÙ…Ø­ÙˆÙ‘Ù„Ø©/Ù…Ø¯ÙÙˆØ¹Ø©.';
         } else {
             $commission->status = ReferralCommission::STATUS_READY;
             $commission->paid_at = null;
             $commission->notes = $notes;
             $commission->save();
-            $message = 'تمت إعادة العمولة إلى حالة جاهزة للتحويل.';
+            $message = 'ØªÙ…Øª Ø¥Ø¹Ø§Ø¯Ø© Ø§Ù„Ø¹Ù…ÙˆÙ„Ø© Ø¥Ù„Ù‰ Ø­Ø§Ù„Ø© Ø¬Ø§Ù‡Ø²Ø© Ù„Ù„ØªØ­ÙˆÙŠÙ„.';
         }
 
         return back()->with('success', $message);
@@ -207,7 +207,7 @@ class ReferralController extends Controller
     {
         $supportedCurrencies = array_keys(config('referrals.currencies', []));
         if (empty($supportedCurrencies)) {
-            $supportedCurrencies = [config('referrals.default_currency', 'USD')];
+            $supportedCurrencies = [config('referrals.default_currency', 'JOD')];
         }
 
         $data = $request->validate([
@@ -234,6 +234,7 @@ class ReferralController extends Controller
 
         $user->save();
 
-        return back()->with('success', 'تم تحديث بيانات برنامج الإحالات لهذا المستخدم.');
+        return back()->with('success', 'ØªÙ… ØªØ­Ø¯ÙŠØ« Ø¨ÙŠØ§Ù†Ø§Øª Ø¨Ø±Ù†Ø§Ù…Ø¬ Ø§Ù„Ø¥Ø­Ø§Ù„Ø§Øª Ù„Ù‡Ø°Ø§ Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù….');
     }
 }
+

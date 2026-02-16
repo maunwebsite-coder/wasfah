@@ -555,7 +555,7 @@
             `,
             icon: 'question',
             showCancelButton: true,
-            confirmButtonColor: '#1296d9',
+            confirmButtonColor: '#8f4a50',
             cancelButtonColor: '#6b7280',
             confirmButtonText: '<i class="fas fa-crown ml-2"></i>نعم، اجعلها مميزة',
             cancelButtonText: '<i class="fas fa-times ml-2"></i>إلغاء',

@@ -58,7 +58,7 @@ class ImageUploadConstraints
      */
     public static function maxKilobytes(): int
     {
-        return (int) config('content_moderation.image.max_kilobytes', 5120);
+        return (int) config('content_moderation.image.max_kilobytes', 25600);
     }
 
     /**

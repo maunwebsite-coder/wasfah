@@ -55,7 +55,7 @@ class BookingFinancialService
         }
 
         $currency = $booking->payment_currency
-            ?: ($workshop->currency ?? config('finance.default_currency', 'USD'));
+            ?: ($workshop->currency ?? config('finance.default_currency', 'JOD'));
         $this->activeCurrency = $currency;
         $metadataBase = [
             'payment_amount' => $paymentAmount,
@@ -356,3 +356,4 @@ class BookingFinancialService
         cache()->forget('booking_stats');
     }
 }
+

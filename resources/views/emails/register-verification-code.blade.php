@@ -20,11 +20,11 @@
             background-color: #ffffff;
             border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 20px 60px rgba(8, 25, 255, 0.15);
-            border: 1px solid rgba(8, 25, 255, 0.12);
+            box-shadow: 0 20px 60px rgba(107, 46, 48, 0.15);
+            border: 1px solid rgba(107, 46, 48, 0.12);
         }
         .header {
-            background: linear-gradient(135deg, #0819ff, #16c3ff);
+            background: linear-gradient(135deg, #6b2e30, #9f5e63);
             color: #ffffff;
             padding: 2rem;
             text-align: center;
@@ -39,7 +39,7 @@
             letter-spacing: 0.5rem;
             font-weight: 800;
             text-align: center;
-            color: #0f78ad;
+            color: #7f3a3d;
         }
         .footer {
             padding: 1.5rem 2.5rem 2.5rem;
@@ -48,7 +48,7 @@
             line-height: 1.6;
         }
         .highlight {
-            color: #0f78ad;
+            color: #7f3a3d;
             font-weight: 700;
         }
     </style>

@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('title', __('search.meta_title'))
 
@@ -51,7 +51,7 @@
 <style>
     .SearchHighlight {
         background-color: rgba(251, 146, 60, 0.18);
-        color: #0b344f;
+        color: #4d1f22;
         border-radius: 0.45rem;
         padding: 0 0.35rem;
     }
@@ -254,7 +254,7 @@
                                             <img src="{{ $workshopImage }}" alt="{{ $workshop->title }}" class="h-full w-full object-cover transition duration-300 group-hover:scale-105" onerror="this.src='{{ \App\Support\BrandAssets::logoAsset('webp') }}';" loading="lazy">
                                             <div class="absolute inset-x-0 top-4 flex items-start justify-between px-4">
                                                 <span class="rounded-full bg-orange-500/90 px-3 py-1 text-xs font-semibold text-white shadow">
-                                                    {{ $workshop->formatted_price ?? number_format($workshop->price ?? 0, 2) . ' ' . ($workshop->currency ?? 'USD') }}
+                                                    {{ $workshop->formatted_price ?? number_format($workshop->price ?? 0, 2) . ' ' . ($workshop->currency ?? config('finance.default_currency', 'JOD')) }}
                                                 </span>
                                                 @if($workshop->is_featured)
                                                     <span class="rounded-full bg-amber-400/90 px-3 py-1 text-xs font-semibold text-white shadow">
@@ -339,6 +339,7 @@
     </div>
 </div>
 @endsection
+
 
 
 

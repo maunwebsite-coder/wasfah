@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('title', __('chef.meta.title', ['name' => $chef->name ?? '']))
 
@@ -16,7 +16,7 @@
 
     $statsAverage = $ratedWorkshopsCount > 0 && $stats['average_rating']
         ? number_format((float) $stats['average_rating'], 1)
-        : '—';
+        : 'â€”';
 
     $wasfahFollowers = max(
         0,
@@ -57,16 +57,16 @@
         : false;
     $smartDatePlaceholder = 'mm/dd/yyyy --:-- --';
     $registrationAutoNote = $locale === 'ar'
-        ? 'يغلق التسجيل تلقائياً قبل بدء الورشة بدقيقتين وفق توقيت المضيف.'
+        ? 'ÙŠØºÙ„Ù‚ Ø§Ù„ØªØ³Ø¬ÙŠÙ„ ØªÙ„Ù‚Ø§Ø¦ÙŠØ§Ù‹ Ù‚Ø¨Ù„ Ø¨Ø¯Ø¡ Ø§Ù„ÙˆØ±Ø´Ø© Ø¨Ø¯Ù‚ÙŠÙ‚ØªÙŠÙ† ÙˆÙÙ‚ ØªÙˆÙ‚ÙŠØª Ø§Ù„Ù…Ø¶ÙŠÙ.'
         : 'Registration closes automatically 2 minutes before the workshop starts, based on the host timezone.';
-    $smartSuggestionCta = $locale === 'ar' ? 'اقتراح وقت ذكي' : 'Smart time suggestion';
+    $smartSuggestionCta = $locale === 'ar' ? 'Ø§Ù‚ØªØ±Ø§Ø­ ÙˆÙ‚Øª Ø°ÙƒÙŠ' : 'Smart time suggestion';
     $smartSuggestionInfo = $locale === 'ar'
-        ? 'سنقترح وقتاً مناسباً بالاعتماد على توقيتك الحالي وتوقيت المضيف.'
+        ? 'Ø³Ù†Ù‚ØªØ±Ø­ ÙˆÙ‚ØªØ§Ù‹ Ù…Ù†Ø§Ø³Ø¨Ø§Ù‹ Ø¨Ø§Ù„Ø§Ø¹ØªÙ…Ø§Ø¯ Ø¹Ù„Ù‰ ØªÙˆÙ‚ÙŠØªÙƒ Ø§Ù„Ø­Ø§Ù„ÙŠ ÙˆØªÙˆÙ‚ÙŠØª Ø§Ù„Ù…Ø¶ÙŠÙ.'
         : 'We will suggest a suitable slot based on your timezone and the host timezone.';
-    $startLabelText = $locale === 'ar' ? 'تاريخ البداية *' : 'Start date *';
-    $endLabelText = $locale === 'ar' ? 'تاريخ النهاية *' : 'End date *';
-    $deadlineLabelText = $locale === 'ar' ? 'موعد إغلاق التسجيل' : 'Registration deadline';
-    $locationLabelText = $locale === 'ar' ? 'الموقع' : 'Location';
+    $startLabelText = $locale === 'ar' ? 'ØªØ§Ø±ÙŠØ® Ø§Ù„Ø¨Ø¯Ø§ÙŠØ© *' : 'Start date *';
+    $endLabelText = $locale === 'ar' ? 'ØªØ§Ø±ÙŠØ® Ø§Ù„Ù†Ù‡Ø§ÙŠØ© *' : 'End date *';
+    $deadlineLabelText = $locale === 'ar' ? 'Ù…ÙˆØ¹Ø¯ Ø¥ØºÙ„Ø§Ù‚ Ø§Ù„ØªØ³Ø¬ÙŠÙ„' : 'Registration deadline';
+    $locationLabelText = $locale === 'ar' ? 'Ø§Ù„Ù…ÙˆÙ‚Ø¹' : 'Location';
 @endphp
 
 @push('styles')
@@ -272,7 +272,7 @@
                         <i class="fa-solid fa-bookmark text-orange-500"></i>
                         {{ __('chef.recipes.saves', ['count' => number_format((int) $stats['total_saves'])]) }}
                     </span>
-                    @if ($ratedWorkshopsCount > 0 && $statsAverage !== '—')
+                    @if ($ratedWorkshopsCount > 0 && $statsAverage !== 'â€”')
                         <span class="chef-chip">
                             <i class="fa-solid fa-star text-amber-400"></i>
                             {{ __('chef.recipes.rated_workshops_average', [
@@ -428,7 +428,7 @@
                                             ? __('chef.workshops.online_live')
                                             : ($workshop->location ?: __('chef.workshops.location_tbd'));
                                         $priceLabel = $workshop->formatted_price
-                                            ?? (number_format((float) ($workshop->price ?? 0), 2) . ' ' . ($workshop->currency ?? 'USD'));
+                                            ?? (number_format((float) ($workshop->price ?? 0), 2) . ' ' . ($workshop->currency ?? config('finance.default_currency', 'JOD')));
                                         $currentBookings = number_format((int) ($workshop->bookings_count ?? 0));
                                         $maxParticipants = $workshop->max_participants ? number_format((int) $workshop->max_participants) : null;
                                         $capacityLabel = $workshop->max_participants
@@ -500,7 +500,7 @@
                                                     <div class="space-y-1">
                                                         <p class="text-xs font-semibold text-slate-500">{{ $deadlineLabelText }}</p>
                                                         <p class="font-semibold text-slate-900">
-                                                            {{ $deadlineLabel ? __('chef.workshops.register_until', ['date' => $deadlineLabel]) : ($locale === 'ar' ? 'يغلق قبل بدء الورشة' : 'Closes before the workshop starts') }}
+                                                            {{ $deadlineLabel ? __('chef.workshops.register_until', ['date' => $deadlineLabel]) : ($locale === 'ar' ? 'ÙŠØºÙ„Ù‚ Ù‚Ø¨Ù„ Ø¨Ø¯Ø¡ Ø§Ù„ÙˆØ±Ø´Ø©' : 'Closes before the workshop starts') }}
                                                         </p>
                                                         <p class="text-xs leading-relaxed text-slate-500">
                                                             {{ $registrationAutoNote }} ({{ $hostTimezoneLabel }})
@@ -561,7 +561,7 @@
                                             ? __('chef.workshops.online_live')
                                             : ($workshop->location ?: __('chef.workshops.location_tbd'));
                                         $priceLabel = $workshop->formatted_price
-                                            ?? (number_format((float) ($workshop->price ?? 0), 2) . ' ' . ($workshop->currency ?? 'USD'));
+                                            ?? (number_format((float) ($workshop->price ?? 0), 2) . ' ' . ($workshop->currency ?? config('finance.default_currency', 'JOD')));
                                     @endphp
                                     <article class="flex h-full flex-col overflow-hidden rounded-2xl border border-gray-200 bg-gray-50 shadow-sm">
                                         <div class="h-40 w-full overflow-hidden bg-gray-200">
@@ -786,9 +786,9 @@
                     });
 
                     const parts = [
-                        locale.startsWith('ar') ? 'اقتراح وقت للورشة' : 'Suggested workshop time',
+                        locale.startsWith('ar') ? 'Ø§Ù‚ØªØ±Ø§Ø­ ÙˆÙ‚Øª Ù„Ù„ÙˆØ±Ø´Ø©' : 'Suggested workshop time',
                         `${formatter.format(displayDate)} (${timezone})`,
-                        `${locale.startsWith('ar') ? 'عندك' : 'Your time'}: ${userFormatter.format(displayDate)} (${userTimezone})`,
+                        `${locale.startsWith('ar') ? 'Ø¹Ù†Ø¯Ùƒ' : 'Your time'}: ${userFormatter.format(displayDate)} (${userTimezone})`,
                     ];
 
                     if (endIso) {
@@ -796,7 +796,7 @@
                         if (!Number.isNaN(endDate.getTime())) {
                             parts.push(
                                 locale.startsWith('ar')
-                                    ? `ينتهي تقريباً في ${formatter.format(endDate)}`
+                                    ? `ÙŠÙ†ØªÙ‡ÙŠ ØªÙ‚Ø±ÙŠØ¨Ø§Ù‹ ÙÙŠ ${formatter.format(endDate)}`
                                     : `Ends around ${formatter.format(endDate)}`
                             );
                         }
@@ -812,3 +812,4 @@
         });
     </script>
 @endpush
+
