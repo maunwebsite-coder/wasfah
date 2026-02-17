@@ -18,13 +18,14 @@ class AdminStorefrontController extends Controller
     {
         return view('thedolci.admin.storefront.edit', [
             'hero' => ThedolciStorefrontSetting::heroContent(),
-            'dbReady' => Schema::hasTable('thedolci_storefront_settings'),
+            'instagram' => ThedolciStorefrontSetting::instagramContent(),
+            'dbReady' => $this->storefrontTableReady(),
         ]);
     }
 
     public function update(Request $request): RedirectResponse
     {
-        if (! Schema::hasTable('thedolci_storefront_settings')) {
+        if (! $this->storefrontTableReady()) {
             return back()->withErrors(['db' => 'Run migrations first to manage storefront content.']);
         }
 
@@ -49,6 +50,13 @@ class AdminStorefrontController extends Controller
             'hero_metric_3_subtitle' => ['nullable', 'string', 'max:120'],
             'hero_image_file' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp,avif', 'max:25600'],
             'hero_image_alt' => ['nullable', 'string', 'max:180'],
+            'instagram_section_title' => ['nullable', 'string', 'max:120'],
+            'instagram_handle' => ['nullable', 'string', 'max:80'],
+            'instagram_profile_url' => ['nullable', 'string', 'max:2048'],
+            'instagram_posts' => ['nullable', 'array', 'max:12'],
+            'instagram_posts.*.image' => ['nullable', 'string', 'max:2048'],
+            'instagram_posts.*.url' => ['nullable', 'string', 'max:2048'],
+            'instagram_posts.*.caption' => ['nullable', 'string', 'max:180'],
         ]);
 
         $settings = ThedolciStorefrontSetting::query()->firstOrNew(['id' => 1]);
@@ -68,6 +76,10 @@ class AdminStorefrontController extends Controller
             // Keep the currently saved image unless a new file is uploaded.
             'hero_image_url' => $this->emptyToNull($settings->hero_image_url),
             'hero_image_alt' => $this->emptyToNull($validated['hero_image_alt'] ?? null),
+            'instagram_section_title' => $this->emptyToNull($validated['instagram_section_title'] ?? null),
+            'instagram_handle' => $this->emptyToNull($validated['instagram_handle'] ?? null),
+            'instagram_profile_url' => $this->emptyToNull($validated['instagram_profile_url'] ?? null),
+            'instagram_posts' => $this->normalizeInstagramPosts($validated['instagram_posts'] ?? []),
         ];
 
         if ($request->hasFile('hero_image_file')) {
@@ -87,7 +99,7 @@ class AdminStorefrontController extends Controller
 
         return redirect()
             ->route('thedolci.admin.storefront.edit')
-            ->with('success', 'Storefront hero updated.');
+            ->with('success', 'Storefront content updated.');
     }
 
     private function emptyToNull(?string $value): ?string
@@ -128,6 +140,39 @@ class AdminStorefrontController extends Controller
         return 'Image upload failed. Please try again.';
     }
 
+    /**
+     * @param mixed $posts
+     * @return array<int, array{image: string, url: string, caption: string}>|null
+     */
+    private function normalizeInstagramPosts($posts): ?array
+    {
+        $normalized = collect(is_array($posts) ? $posts : [])
+            ->map(function ($post) {
+                if (! is_array($post)) {
+                    return null;
+                }
+
+                $image = trim((string) ($post['image'] ?? ''));
+                $url = trim((string) ($post['url'] ?? ''));
+                $caption = trim((string) ($post['caption'] ?? ''));
+
+                if ($image === '' || $url === '' || $caption === '') {
+                    return null;
+                }
+
+                return [
+                    'image' => $image,
+                    'url' => $url,
+                    'caption' => $caption,
+                ];
+            })
+            ->filter()
+            ->values()
+            ->all();
+
+        return empty($normalized) ? null : $normalized;
+    }
+
     private function storeHeroImage(UploadedFile $file): ?string
     {
         if ($this->publicStorageIsWebAccessible()) {
@@ -159,5 +204,40 @@ class AdminStorefrontController extends Controller
         $publicStoragePath = public_path('storage');
 
         return is_link($publicStoragePath) || is_dir($publicStoragePath);
+    }
+
+    private function storefrontTableReady(): bool
+    {
+        if (! Schema::hasTable('thedolci_storefront_settings')) {
+            return false;
+        }
+
+        $requiredColumns = [
+            'hero_kicker',
+            'hero_title',
+            'hero_description',
+            'hero_primary_button_text',
+            'hero_secondary_button_text',
+            'hero_metric_1_title',
+            'hero_metric_1_subtitle',
+            'hero_metric_2_title',
+            'hero_metric_2_subtitle',
+            'hero_metric_3_title',
+            'hero_metric_3_subtitle',
+            'hero_image_url',
+            'hero_image_alt',
+            'instagram_section_title',
+            'instagram_handle',
+            'instagram_profile_url',
+            'instagram_posts',
+        ];
+
+        foreach ($requiredColumns as $column) {
+            if (! Schema::hasColumn('thedolci_storefront_settings', $column)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

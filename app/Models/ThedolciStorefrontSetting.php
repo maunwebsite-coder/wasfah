@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\ThedolciCatalog;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\QueryException;
@@ -28,6 +29,14 @@ class ThedolciStorefrontSetting extends Model
         'hero_metric_3_subtitle',
         'hero_image_url',
         'hero_image_alt',
+        'instagram_section_title',
+        'instagram_handle',
+        'instagram_profile_url',
+        'instagram_posts',
+    ];
+
+    protected $casts = [
+        'instagram_posts' => 'array',
     ];
 
     /**
@@ -99,6 +108,87 @@ class ThedolciStorefrontSetting extends Model
 
                 $defaults[$key] = $cleanedValue;
             }
+        }
+
+        return $defaults;
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public static function instagramDefaults(): array
+    {
+        return [
+            'section_title' => 'From Instagram',
+            'handle' => '@thedolci.jo',
+            'profile_url' => 'https://www.instagram.com/thedolci.jo/',
+            'posts' => ThedolciCatalog::instagramFeed()->values()->all(),
+        ];
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public static function instagramContent(): array
+    {
+        $defaults = self::instagramDefaults();
+
+        if (! Schema::hasTable((new self())->getTable())) {
+            return $defaults;
+        }
+
+        try {
+            $settings = self::query()->first();
+        } catch (QueryException) {
+            return $defaults;
+        }
+
+        if (! $settings) {
+            return $defaults;
+        }
+
+        $sectionTitle = trim((string) $settings->instagram_section_title);
+        $handle = trim((string) $settings->instagram_handle);
+        $profileUrl = trim((string) $settings->instagram_profile_url);
+
+        if ($sectionTitle !== '') {
+            $defaults['section_title'] = $sectionTitle;
+        }
+
+        if ($handle !== '') {
+            $defaults['handle'] = $handle;
+        }
+
+        if ($profileUrl !== '') {
+            $defaults['profile_url'] = $profileUrl;
+        }
+
+        $posts = collect($settings->instagram_posts ?? [])
+            ->map(function ($post) {
+                if (! is_array($post)) {
+                    return null;
+                }
+
+                $image = trim((string) ($post['image'] ?? ''));
+                $url = trim((string) ($post['url'] ?? ''));
+                $caption = trim((string) ($post['caption'] ?? ''));
+
+                if ($image === '' || $url === '' || $caption === '') {
+                    return null;
+                }
+
+                return [
+                    'image' => $image,
+                    'url' => $url,
+                    'caption' => $caption,
+                ];
+            })
+            ->filter()
+            ->values()
+            ->all();
+
+        if (! empty($posts)) {
+            $defaults['posts'] = $posts;
         }
 
         return $defaults;

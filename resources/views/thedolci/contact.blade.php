@@ -1,23 +1,31 @@
-﻿@extends('thedolci.layouts.store')
+@extends('thedolci.layouts.store')
 
 @section('title', 'Contact | thedolci')
 
 @section('content')
+@php
+    $whatsappRaw = (string) config('services.whatsapp_booking.number', '962790553680');
+    $whatsappDigits = preg_replace('/\D+/', '', $whatsappRaw) ?: '962790553680';
+    $instagramHandle = '@thedolci.jo';
+    $instagramUrl = 'https://www.instagram.com/thedolci.jo/';
+@endphp
 <section class="dolci-section dolci-section-tight">
-    <div class="dolci-container dolci-split">
-        <div>
-            <h1>Contact thedolci</h1>
-            <p>Need help with your order, delivery slot, or corporate gifting? Our team is ready to assist.</p>
-            <ul class="dolci-contact-list">
-                <li>Email: hello@thedolci.com</li>
-                <li>Phone: +1 (555) 120-9080</li>
-                <li>Hours: 9:00 AM - 11:00 PM</li>
-            </ul>
-        </div>
-        <div>
-            <img src="https://images.unsplash.com/photo-1517433367423-c7e5b0f35086?auto=format&fit=crop&w=1200&q=80" alt="thedolci support" class="dolci-rounded-img">
-        </div>
+    <div class="dolci-container">
+        <h1>Contact Us</h1>
+        <ul class="dolci-contact-list">
+            <li>
+                WhatsApp:
+                <a href="https://wa.me/{{ $whatsappDigits }}" target="_blank" rel="noopener">
+                    +{{ $whatsappDigits }}
+                </a>
+            </li>
+            <li>
+                Instagram:
+                <a href="{{ $instagramUrl }}" target="_blank" rel="noopener">
+                    {{ $instagramHandle }}
+                </a>
+            </li>
+        </ul>
     </div>
 </section>
 @endsection
-

@@ -13,7 +13,7 @@
         <div class="dolci-cart-hero">
             <p class="dolci-kicker">Ready to checkout</p>
             <h1>Your Cart</h1>
-            <p>Adjust quantities, apply your coupon, and continue to secure checkout.</p>
+            <p>Adjust quantities and continue to secure checkout.</p>
             <div class="dolci-cart-hero-stats">
                 <article>
                     <strong>{{ $itemCount }}</strong>
@@ -46,7 +46,14 @@
                         @php
                             $pepperPrice = (float) ($item['customizations']['pepper_price'] ?? 0);
                             $packagingPrice = (float) ($item['customizations']['packaging_price'] ?? 0);
+                            $packagingType = trim((string) ($item['customizations']['packaging_type'] ?? ''));
                             $hasExtras = !empty($item['customizations']['add_pepper']) || !empty($item['customizations']['packaging_type']);
+                            $availablePackagingOptions = collect($item['available_packaging_options'] ?? [])
+                                ->filter(fn ($option) => is_array($option) && trim((string) ($option['name'] ?? '')) !== '')
+                                ->values();
+                            $hasSelectedPackagingInOptions = $packagingType !== ''
+                                && $availablePackagingOptions->contains(fn ($option) => strtolower((string) ($option['name'] ?? '')) === strtolower($packagingType));
+                            $canUpdatePackaging = $availablePackagingOptions->isNotEmpty() || $packagingType !== '';
                         @endphp
                         <article class="dolci-cart-item dolci-cart-item-card">
                             <div class="dolci-cart-media">
@@ -70,7 +77,7 @@
                                     @endif
                                     @if(!empty($item['customizations']['packaging_type']))
                                         <span>
-                                            Packaging: {{ $item['customizations']['packaging_type'] }}
+                                            Packaging: {{ $packagingType }}
                                             @if($packagingPrice > 0)
                                                 (+JOD {{ number_format($packagingPrice, 2) }})
                                             @endif
@@ -123,6 +130,35 @@
                                     <button type="submit" class="dolci-btn dolci-btn-compact">Update</button>
                                 </form>
 
+                                @if($canUpdatePackaging)
+                                    <form method="POST" action="{{ route('thedolci.cart.post', $item['key']) }}" class="dolci-qty-form" novalidate>
+                                        @csrf
+                                        <input type="hidden" name="action" value="update-packaging">
+                                        <div class="dolci-qty-row">
+                                            <label for="packaging-{{ $item['key'] }}" class="dolci-cart-label">Packaging</label>
+                                            <select id="packaging-{{ $item['key'] }}" name="packaging_type" class="dolci-packaging-select">
+                                                <option value="" {{ $packagingType === '' ? 'selected' : '' }}>No packaging</option>
+                                                @foreach($availablePackagingOptions as $option)
+                                                    @php
+                                                        $optionName = trim((string) ($option['name'] ?? ''));
+                                                        $optionPrice = round(max(0, (float) ($option['price'] ?? 0)), 2);
+                                                    @endphp
+                                                    @continue($optionName === '')
+                                                    <option value="{{ $optionName }}" {{ strtolower($packagingType) === strtolower($optionName) ? 'selected' : '' }}>
+                                                        {{ $optionName }}{{ $optionPrice > 0 ? ' (+' . 'JOD ' . number_format($optionPrice, 2) . ')' : '' }}
+                                                    </option>
+                                                @endforeach
+                                                @if($packagingType !== '' && !$hasSelectedPackagingInOptions)
+                                                    <option value="{{ $packagingType }}" selected>
+                                                        {{ $packagingType }}{{ $packagingPrice > 0 ? ' (+' . 'JOD ' . number_format($packagingPrice, 2) . ')' : '' }}
+                                                    </option>
+                                                @endif
+                                            </select>
+                                        </div>
+                                        <button type="submit" class="dolci-btn dolci-btn-compact">Update packaging</button>
+                                    </form>
+                                @endif
+
                                 <form method="POST" action="{{ route('thedolci.cart.post', $item['key']) }}" class="dolci-remove-form">
                                     @csrf
                                     <input type="hidden" name="action" value="remove">
@@ -136,24 +172,27 @@
                 <aside class="dolci-order-summary dolci-cart-summary">
                     <h3>Order Summary</h3>
                     <div class="dolci-summary-row"><span>Subtotal</span><span>JOD {{ number_format((float)$subtotal, 2) }}</span></div>
-                    <div class="dolci-summary-row"><span>Discount</span><span>- JOD {{ number_format((float)$discount, 2) }}</span></div>
-                    @if(!empty($coupon['code']))
-                        <div class="dolci-summary-row"><span>Coupon</span><span>{{ $coupon['code'] }}</span></div>
+                    @if($couponsEnabled)
+                        <div class="dolci-summary-row"><span>Discount</span><span>- JOD {{ number_format((float)$discount, 2) }}</span></div>
+                        @if(!empty($coupon['code']))
+                            <div class="dolci-summary-row"><span>Coupon</span><span>{{ $coupon['code'] }}</span></div>
+                        @endif
                     @endif
                     <div class="dolci-summary-row dolci-summary-total"><span>Total</span><span>JOD {{ number_format((float)$total, 2) }}</span></div>
 
-                    <form method="POST" action="{{ route('thedolci.cart.coupon') }}" class="dolci-coupon-form dolci-coupon-form-compact">
-                        @csrf
-                        <input
-                            type="text"
-                            name="coupon_code"
-                            placeholder="Coupon code"
-                            value="{{ old('coupon_code', $coupon['code'] ?? session('thedolci.preferred_coupon', '')) }}"
-                            maxlength="30"
-                        >
-                        <button type="submit" class="dolci-btn dolci-btn-secondary">Apply Coupon</button>
-                    </form>
-                    <p class="dolci-secure-note">Tip: Try coupon <strong>FIRST10</strong> on orders above JOD 20.</p>
+                    @if($couponsEnabled)
+                        <form method="POST" action="{{ route('thedolci.cart.coupon') }}" class="dolci-coupon-form dolci-coupon-form-compact">
+                            @csrf
+                            <input
+                                type="text"
+                                name="coupon_code"
+                                placeholder="Coupon code"
+                                value="{{ old('coupon_code', $coupon['code'] ?? session('thedolci.preferred_coupon', '')) }}"
+                                maxlength="30"
+                            >
+                            <button type="submit" class="dolci-btn dolci-btn-secondary">Apply Coupon</button>
+                        </form>
+                    @endif
 
                     <a href="{{ route('thedolci.checkout') }}" class="dolci-btn dolci-btn-primary dolci-btn-block">Proceed to Checkout</a>
                     <a href="{{ route('thedolci.shop') }}" class="dolci-btn dolci-btn-secondary dolci-btn-block">Continue Shopping</a>

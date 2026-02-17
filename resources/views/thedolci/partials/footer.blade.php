@@ -17,14 +17,14 @@
         </div>
 
         <div>
-            <h4>Get Offers</h4>
-            <p>Subscribe to unlock <strong>FIRST10</strong> and get first access to limited flavor drops and discount codes.</p>
+            <h4>Newsletter</h4>
+            <p>Subscribe for first access to limited flavor drops, product updates, and seasonal announcements.</p>
             <form action="{{ route('thedolci.subscribe') }}" method="POST" class="dolci-subscribe-form">
                 @csrf
                 <input type="email" name="email" placeholder="you@example.com" required>
-                <button type="submit">Activate Code</button>
+                <button type="submit">Subscribe</button>
             </form>
-            <small class="dolci-footer-note">Code is saved automatically and activates once your cart is eligible.</small>
+            <small class="dolci-footer-note">We only send relevant updates and launch announcements.</small>
         </div>
     </div>
     <div class="dolci-footer-bottom">

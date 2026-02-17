@@ -208,8 +208,93 @@ const initHeaderMenu = () => {
     });
 };
 
+const initScrollSliderWithDots = ({ sliderSelector, slideSelector, dotSelector }) => {
+    const slider = document.querySelector(sliderSelector);
+
+    if (!slider) {
+        return;
+    }
+
+    const slides = Array.from(slider.querySelectorAll(slideSelector));
+    const dots = Array.from(document.querySelectorAll(dotSelector));
+
+    if (!slides.length || !dots.length) {
+        return;
+    }
+
+    const setActiveDot = (index) => {
+        dots.forEach((dot, dotIndex) => {
+            const isActive = dotIndex === index;
+            dot.classList.toggle('is-active', isActive);
+            dot.setAttribute('aria-current', isActive ? 'true' : 'false');
+        });
+    };
+
+    let scrollUpdateTimer = null;
+
+    const updateActiveFromScroll = () => {
+        const sliderLeft = slider.getBoundingClientRect().left;
+        let activeIndex = 0;
+        let minDistance = Number.POSITIVE_INFINITY;
+
+        slides.forEach((slide, index) => {
+            const distance = Math.abs(slide.getBoundingClientRect().left - sliderLeft);
+
+            if (distance < minDistance) {
+                minDistance = distance;
+                activeIndex = index;
+            }
+        });
+
+        setActiveDot(activeIndex);
+    };
+
+    dots.forEach((dot, index) => {
+        dot.addEventListener('click', () => {
+            slides[index]?.scrollIntoView({
+                behavior: 'smooth',
+                block: 'nearest',
+                inline: 'start',
+            });
+        });
+    });
+
+    slider.addEventListener(
+        'scroll',
+        () => {
+            if (scrollUpdateTimer) {
+                window.clearTimeout(scrollUpdateTimer);
+            }
+
+            scrollUpdateTimer = window.setTimeout(updateActiveFromScroll, 60);
+        },
+        { passive: true }
+    );
+
+    window.addEventListener('resize', updateActiveFromScroll);
+    updateActiveFromScroll();
+};
+
+const initTrustSlider = () => {
+    initScrollSliderWithDots({
+        sliderSelector: '[data-trust-slider]',
+        slideSelector: '[data-trust-slide]',
+        dotSelector: '[data-trust-dot]',
+    });
+};
+
+const initInstagramSlider = () => {
+    initScrollSliderWithDots({
+        sliderSelector: '[data-instagram-slider]',
+        slideSelector: '[data-instagram-slide]',
+        dotSelector: '[data-instagram-dot]',
+    });
+};
+
 document.addEventListener('DOMContentLoaded', () => {
     initHeaderMenu();
+    initTrustSlider();
+    initInstagramSlider();
     initCountdowns();
     initFirstOrderPopup();
     initProductGallery();

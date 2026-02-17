@@ -23,8 +23,8 @@
                 <p>Yes. Add name on box, gift message, sugar level, and candles before adding to cart.</p>
             </article>
             <article>
-                <h3>What payment options are available?</h3>
-                <p>Card, Apple Pay, and Cash on Delivery.</p>
+                <h3>What payment option is available?</h3>
+                <p>Click payment only.</p>
             </article>
         </div>
     </div>

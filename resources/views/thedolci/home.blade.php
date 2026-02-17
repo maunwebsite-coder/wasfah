@@ -131,11 +131,17 @@
 
 <section class="dolci-section dolci-home-trust">
     <div class="dolci-container">
-        <div class="dolci-trust-row">
-            <div><strong>Fresh Daily</strong><span>Small-batch production</span></div>
-            <div><strong>Premium Ingredients</strong><span>Authentic mascarpone and cocoa</span></div>
-            <div><strong>Flexible Delivery</strong><span>Delivery or pickup scheduling</span></div>
-            <div><strong>WhatsApp Confirmation</strong><span>Pay via Click after placing order</span></div>
+        <div class="dolci-trust-row" data-trust-slider>
+            <div data-trust-slide><strong>Fresh Daily</strong><span>Small-batch production</span></div>
+            <div data-trust-slide><strong>Premium Ingredients</strong><span>Authentic mascarpone and cocoa</span></div>
+            <div data-trust-slide><strong>Flexible Delivery</strong><span>Delivery or pickup scheduling</span></div>
+            <div data-trust-slide><strong>WhatsApp Confirmation</strong><span>Pay via Click after placing order</span></div>
+        </div>
+        <div class="dolci-trust-dots" aria-label="Trust highlights slider navigation">
+            <button type="button" class="is-active" data-trust-dot="0" aria-label="Fresh Daily" aria-current="true"></button>
+            <button type="button" data-trust-dot="1" aria-label="Premium Ingredients"></button>
+            <button type="button" data-trust-dot="2" aria-label="Flexible Delivery"></button>
+            <button type="button" data-trust-dot="3" aria-label="WhatsApp Confirmation"></button>
         </div>
     </div>
 </section>
@@ -162,17 +168,35 @@
 <section class="dolci-section dolci-home-social">
     <div class="dolci-container">
         <div class="dolci-section-head">
-            <h2>From Instagram</h2>
-            <a href="https://www.instagram.com/thedolci.jo/" target="_blank" rel="noopener">@thedolci.jo</a>
+            <h2>{{ $instagram['section_title'] ?? 'From Instagram' }}</h2>
+            <a href="{{ $instagram['profile_url'] ?? 'https://www.instagram.com/thedolci.jo/' }}" target="_blank" rel="noopener">
+                {{ $instagram['handle'] ?? '@thedolci.jo' }}
+            </a>
         </div>
 
-        <div class="dolci-instagram-grid">
-            @foreach($instagramPosts as $post)
-                <a href="{{ $post['url'] }}" target="_blank" rel="noopener" class="dolci-instagram-item">
-                    <img src="{{ $post['image'] }}" alt="{{ $post['caption'] }}" loading="lazy">
+        @php($instagramPostCount = $instagramPosts->count())
+
+        <div class="dolci-instagram-grid" data-instagram-slider>
+            @foreach($instagramPosts as $index => $post)
+                <a href="{{ $post['url'] }}" target="_blank" rel="noopener" class="dolci-instagram-item" data-instagram-slide>
+                    <img src="{{ $post['image'] }}" alt="{{ $post['caption'] ?? 'Instagram post' }}" loading="lazy">
                 </a>
             @endforeach
         </div>
+
+        @if($instagramPostCount > 1)
+            <div class="dolci-trust-dots dolci-instagram-dots" aria-label="Instagram slider navigation">
+                @foreach($instagramPosts as $index => $post)
+                    <button
+                        type="button"
+                        data-instagram-dot="{{ $index }}"
+                        aria-label="Instagram post {{ $index + 1 }}"
+                        @class(['is-active' => $index === 0])
+                        @if($index === 0) aria-current="true" @endif
+                    ></button>
+                @endforeach
+            </div>
+        @endif
     </div>
 </section>
 
@@ -180,8 +204,8 @@
     <div class="dolci-popup-card">
         <button id="close-first-order-popup" class="dolci-popup-close" type="button" aria-label="Close">x</button>
         <p class="dolci-kicker">Welcome to thedolci</p>
-        <h3>Get 10% off your first order</h3>
-        <p>Use code <strong>FIRST10</strong> at checkout.</p>
+        <h3>Fresh tiramisu made daily</h3>
+        <p>Explore the menu and place your first order today.</p>
         <a href="{{ route('thedolci.shop') }}" class="dolci-btn dolci-btn-primary">Start Ordering</a>
     </div>
 </div>

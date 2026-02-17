@@ -1746,6 +1746,59 @@ body.dolci-body:not(.dolci-admin-body) {
         width: calc(100% - 1.2rem);
     }
 
+    .dolci-home-products .dolci-product-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .dolci-home-bestsellers .dolci-product-grid {
+        display: flex;
+        gap: 0.75rem;
+        overflow-x: auto;
+        padding: 0.05rem 0.1rem 0.3rem;
+        margin: 0 -0.1rem;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+    }
+
+    .dolci-home-bestsellers .dolci-product-grid::-webkit-scrollbar {
+        display: none;
+    }
+
+    .dolci-home-bestsellers .dolci-product-card {
+        flex: 0 0 min(78%, 14.5rem);
+        scroll-snap-align: start;
+        scroll-snap-stop: always;
+    }
+
+    .dolci-home-bestsellers .dolci-product-card-body {
+        padding: 0.8rem;
+    }
+
+    .dolci-home-bestsellers .dolci-product-card h3 {
+        font-size: 1rem;
+        margin-bottom: 0.35rem;
+    }
+
+    .dolci-home-bestsellers .dolci-product-card-body p {
+        font-size: 0.82rem;
+        min-height: 2.4rem;
+    }
+
+    .dolci-home-bestsellers .dolci-product-card-bottom {
+        gap: 0.45rem;
+    }
+
+    .dolci-home-bestsellers .dolci-product-card-bottom span {
+        font-size: 0.82rem;
+    }
+
+    .dolci-home-bestsellers .dolci-product-card .dolci-btn-compact {
+        min-height: 2rem;
+        padding: 0.42rem 0.65rem;
+        font-size: 0.78rem;
+    }
+
     .dolci-hero-copy {
         padding: 1rem;
     }
@@ -1811,6 +1864,13 @@ body.dolci-body:not(.dolci-admin-body) {
     .dolci-hero-copy,
     .dolci-hero-media img {
         border-radius: 1.1rem;
+    }
+
+    .dolci-hero-media img {
+        width: 100%;
+        aspect-ratio: 1 / 1;
+        height: auto;
+        min-height: 0;
     }
 
     .dolci-page-intro {
@@ -2517,6 +2577,17 @@ header.dolci-topbar-v2 {
     margin: 0;
 }
 
+.dolci-page-cart .dolci-packaging-select {
+    width: 100%;
+    margin: 0 0 0.45rem;
+    border: 1px solid rgba(107, 46, 48, 0.26);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.94);
+    padding: 0.52rem 0.78rem;
+    color: #6b2e30;
+    font-weight: 700;
+}
+
 .dolci-page-cart .dolci-qty-input:focus-visible {
     outline: 2px solid rgba(107, 46, 48, 0.22);
     outline-offset: -2px;
@@ -2622,5 +2693,101 @@ header.dolci-topbar-v2 {
 
     .dolci-page-cart .dolci-coupon-form-compact {
         grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+.dolci-trust-dots {
+    display: none;
+}
+
+.dolci-instagram-dots {
+    display: none;
+}
+
+@media (max-width: 639px) {
+    .dolci-home-trust .dolci-trust-row {
+        display: flex;
+        gap: 0.65rem;
+        overflow-x: auto;
+        padding: 0.1rem 0.1rem 0.42rem;
+        margin: 0 -0.1rem;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+    }
+
+    .dolci-home-trust .dolci-trust-row::-webkit-scrollbar {
+        display: none;
+    }
+
+    .dolci-home-trust .dolci-trust-row > div {
+        flex: 0 0 calc(100% - 0.2rem);
+        scroll-snap-align: start;
+        scroll-snap-stop: always;
+    }
+
+    .dolci-home-trust .dolci-trust-dots {
+        display: flex;
+        justify-content: center;
+        gap: 0.38rem;
+        margin-top: 0.4rem;
+    }
+
+    .dolci-home-trust .dolci-trust-dots button {
+        width: 0.5rem;
+        height: 0.5rem;
+        border: 0;
+        border-radius: 999px;
+        padding: 0;
+        background: rgba(107, 46, 48, 0.25);
+        cursor: pointer;
+    }
+
+    .dolci-home-trust .dolci-trust-dots button.is-active {
+        width: 1rem;
+        background: #6b2e30;
+    }
+
+    .dolci-home-social .dolci-instagram-grid {
+        display: flex;
+        gap: 0.65rem;
+        overflow-x: auto;
+        padding: 0.1rem 0.1rem 0.42rem;
+        margin: 0 -0.1rem;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+    }
+
+    .dolci-home-social .dolci-instagram-grid::-webkit-scrollbar {
+        display: none;
+    }
+
+    .dolci-home-social .dolci-instagram-item {
+        flex: 0 0 calc(100% - 0.2rem);
+        scroll-snap-align: start;
+        scroll-snap-stop: always;
+    }
+
+    .dolci-home-social .dolci-instagram-dots {
+        display: flex;
+        justify-content: center;
+        gap: 0.38rem;
+        margin-top: 0.4rem;
+    }
+
+    .dolci-home-social .dolci-instagram-dots button {
+        width: 0.5rem;
+        height: 0.5rem;
+        border: 0;
+        border-radius: 999px;
+        padding: 0;
+        background: rgba(107, 46, 48, 0.25);
+        cursor: pointer;
+    }
+
+    .dolci-home-social .dolci-instagram-dots button.is-active {
+        width: 1rem;
+        background: #6b2e30;
     }
 }

@@ -53,8 +53,10 @@
                     </div>
                 </div>
 
-                <label>Coupon Code</label>
-                <input type="text" name="coupon_code" value="{{ old('coupon_code', $coupon['code'] ?? session('thedolci.preferred_coupon', '')) }}" placeholder="FIRST10">
+                @if($couponsEnabled)
+                    <label>Coupon Code</label>
+                    <input type="text" name="coupon_code" value="{{ old('coupon_code', $coupon['code'] ?? session('thedolci.preferred_coupon', '')) }}" placeholder="FIRST10">
+                @endif
 
                 <label>Order Notes</label>
                 <textarea name="notes" rows="3" placeholder="Optional">{{ old('notes') }}</textarea>
@@ -79,7 +81,9 @@
                     </div>
                 @endforeach
                 <div class="dolci-summary-row"><span>Subtotal</span><span>JOD {{ number_format((float)$subtotal, 2) }}</span></div>
-                <div class="dolci-summary-row"><span>Discount</span><span>- JOD {{ number_format((float)$discount, 2) }}</span></div>
+                @if($couponsEnabled)
+                    <div class="dolci-summary-row"><span>Discount</span><span>- JOD {{ number_format((float)$discount, 2) }}</span></div>
+                @endif
                 <div class="dolci-summary-row dolci-summary-total"><span>Total</span><span>JOD {{ number_format((float)$total, 2) }}</span></div>
                 <p class="dolci-secure-note">Payment status will stay pending until you confirm via WhatsApp.</p>
             </aside>

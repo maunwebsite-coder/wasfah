@@ -29,8 +29,15 @@ class CheckoutController extends Controller
         }
 
         $subtotal = ThedolciCart::subtotal();
-        $coupon = ThedolciCart::coupon();
-        $discount = (float) ($coupon['discount'] ?? 0);
+        $couponsEnabled = $this->couponsEnabledForCurrentUser();
+
+        if (! $couponsEnabled) {
+            ThedolciCart::clearCoupon();
+            session()->forget('thedolci.preferred_coupon');
+        }
+
+        $coupon = $couponsEnabled ? ThedolciCart::coupon() : null;
+        $discount = $couponsEnabled ? (float) ($coupon['discount'] ?? 0) : 0;
         $total = max(0, round($subtotal - $discount, 2));
 
         return view('thedolci.checkout', [
@@ -41,6 +48,7 @@ class CheckoutController extends Controller
             'discount' => $discount,
             'total' => $total,
             'deliverySlots' => ThedolciCatalog::deliverySlots(),
+            'couponsEnabled' => $couponsEnabled,
         ]);
     }
 
@@ -71,42 +79,48 @@ class CheckoutController extends Controller
         $subtotal = ThedolciCart::subtotal();
         $discount = 0;
         $couponCode = null;
+        $couponsEnabled = $this->couponsEnabledForCurrentUser();
 
-        $requestCoupon = trim((string) ($data['coupon_code'] ?? ''));
-        $sessionCoupon = ThedolciCart::coupon();
-        $preferredCoupon = trim((string) session('thedolci.preferred_coupon', ''));
+        if ($couponsEnabled) {
+            $requestCoupon = trim((string) ($data['coupon_code'] ?? ''));
+            $sessionCoupon = ThedolciCart::coupon();
+            $preferredCoupon = trim((string) session('thedolci.preferred_coupon', ''));
 
-        if ($requestCoupon !== '') {
-            $validation = ThedolciCatalog::validateCoupon($requestCoupon, $subtotal);
+            if ($requestCoupon !== '') {
+                $validation = ThedolciCatalog::validateCoupon($requestCoupon, $subtotal);
 
-            if (! $validation['valid']) {
-                return back()->withErrors(['coupon_code' => $validation['message']])->withInput();
+                if (! $validation['valid']) {
+                    return back()->withErrors(['coupon_code' => $validation['message']])->withInput();
+                }
+
+                $discount = (float) $validation['discount'];
+                $couponCode = $validation['code'];
+                ThedolciCart::setCoupon(['code' => $couponCode, 'discount' => $discount]);
+            } elseif ($sessionCoupon && isset($sessionCoupon['code'])) {
+                $revalidation = ThedolciCatalog::validateCoupon((string) $sessionCoupon['code'], $subtotal);
+
+                if ($revalidation['valid']) {
+                    $discount = (float) $revalidation['discount'];
+                    $couponCode = (string) $revalidation['code'];
+                } else {
+                    ThedolciCart::clearCoupon();
+                }
+            } elseif ($preferredCoupon !== '') {
+                $preferredValidation = ThedolciCatalog::validateCoupon($preferredCoupon, $subtotal);
+
+                if ($preferredValidation['valid']) {
+                    $discount = (float) $preferredValidation['discount'];
+                    $couponCode = (string) $preferredValidation['code'];
+
+                    ThedolciCart::setCoupon([
+                        'code' => $couponCode,
+                        'discount' => $discount,
+                    ]);
+                }
             }
-
-            $discount = (float) $validation['discount'];
-            $couponCode = $validation['code'];
-            ThedolciCart::setCoupon(['code' => $couponCode, 'discount' => $discount]);
-        } elseif ($sessionCoupon && isset($sessionCoupon['code'])) {
-            $revalidation = ThedolciCatalog::validateCoupon((string) $sessionCoupon['code'], $subtotal);
-
-            if ($revalidation['valid']) {
-                $discount = (float) $revalidation['discount'];
-                $couponCode = (string) $revalidation['code'];
-            } else {
-                ThedolciCart::clearCoupon();
-            }
-        } elseif ($preferredCoupon !== '') {
-            $preferredValidation = ThedolciCatalog::validateCoupon($preferredCoupon, $subtotal);
-
-            if ($preferredValidation['valid']) {
-                $discount = (float) $preferredValidation['discount'];
-                $couponCode = (string) $preferredValidation['code'];
-
-                ThedolciCart::setCoupon([
-                    'code' => $couponCode,
-                    'discount' => $discount,
-                ]);
-            }
+        } else {
+            ThedolciCart::clearCoupon();
+            session()->forget('thedolci.preferred_coupon');
         }
 
         $total = max(0, round($subtotal - $discount, 2));
@@ -252,6 +266,15 @@ class CheckoutController extends Controller
 
     public function validateCoupon(Request $request): JsonResponse
     {
+        if (! $this->couponsEnabledForCurrentUser()) {
+            return response()->json([
+                'valid' => false,
+                'code' => null,
+                'discount' => 0,
+                'message' => 'Coupons are available for admin only.',
+            ], 403);
+        }
+
         $data = $request->validate([
             'coupon_code' => ['required', 'string', 'max:30'],
             'subtotal' => ['required', 'numeric', 'min:0'],
@@ -275,6 +298,11 @@ class CheckoutController extends Controller
         } catch (QueryException) {
             // No-op fallback.
         }
+    }
+
+    private function couponsEnabledForCurrentUser(): bool
+    {
+        return (bool) auth()->user()?->isAdmin();
     }
 
     private function generateOrderNumber(): string

@@ -28,7 +28,7 @@ Route::post('/subscribe', [StorefrontController::class, 'subscribe'])->name('the
 Route::get('/cart', [CartController::class, 'index'])->name('thedolci.cart');
 Route::post('/cart/add', [CartController::class, 'add'])->name('thedolci.cart.add');
 Route::get('/cart/coupon', fn () => redirect()->route('thedolci.cart'));
-Route::post('/cart/coupon', [CartController::class, 'applyCoupon'])->name('thedolci.cart.coupon');
+Route::post('/cart/coupon', [CartController::class, 'applyCoupon'])->middleware(['auth', 'admin'])->name('thedolci.cart.coupon');
 Route::post('/cart/{key}', [CartController::class, 'post'])->name('thedolci.cart.post');
 Route::patch('/cart/{key}', [CartController::class, 'update'])->name('thedolci.cart.update');
 Route::delete('/cart/{key}', [CartController::class, 'remove'])->name('thedolci.cart.remove');
@@ -38,7 +38,7 @@ Route::post('/checkout', [CheckoutController::class, 'place'])->name('thedolci.c
 Route::get('/order/success/{orderNumber?}', [CheckoutController::class, 'success'])->name('thedolci.order.success');
 Route::match(['GET', 'POST'], '/track-order', [CheckoutController::class, 'track'])->name('thedolci.track-order');
 
-Route::post('/api/coupons/validate', [CheckoutController::class, 'validateCoupon'])->name('thedolci.api.coupon');
+Route::post('/api/coupons/validate', [CheckoutController::class, 'validateCoupon'])->middleware(['auth', 'admin'])->name('thedolci.api.coupon');
 Route::get('/api/delivery-slots', [CheckoutController::class, 'deliverySlots'])->name('thedolci.api.delivery-slots');
 Route::get('/api/instagram-feed', [StorefrontController::class, 'instagramFeed'])->name('thedolci.api.instagram');
 Route::get('/api/reviews/featured', [StorefrontController::class, 'featuredReviews'])->name('thedolci.api.reviews');
