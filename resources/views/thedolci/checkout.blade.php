@@ -64,22 +64,67 @@
                 <button type="submit" class="dolci-btn dolci-btn-primary dolci-btn-block">Confirm Order</button>
             </form>
 
+            @php
+                $baseItemsSubtotal = 0.0;
+                $pepperAddonsTotal = 0.0;
+                $packagingAddonsTotal = 0.0;
+
+                foreach ($items as $summaryItem) {
+                    $quantity = max(1, (int) ($summaryItem['quantity'] ?? 1));
+                    $lineTotal = (float) ($summaryItem['line_total'] ?? 0);
+                    $pepperUnitPrice = !empty(data_get($summaryItem, 'customizations.add_pepper'))
+                        ? max(0, (float) data_get($summaryItem, 'customizations.pepper_price', 0))
+                        : 0.0;
+                    $packagingUnitPrice = !empty(data_get($summaryItem, 'customizations.packaging_type'))
+                        ? max(0, (float) data_get($summaryItem, 'customizations.packaging_price', 0))
+                        : 0.0;
+
+                    $pepperLineTotal = round($pepperUnitPrice * $quantity, 2);
+                    $packagingLineTotal = round($packagingUnitPrice * $quantity, 2);
+                    $addonsLineTotal = round($pepperLineTotal + $packagingLineTotal, 2);
+                    $baseLineTotal = round(max(0, $lineTotal - $addonsLineTotal), 2);
+
+                    $baseItemsSubtotal += $baseLineTotal;
+                    $pepperAddonsTotal += $pepperLineTotal;
+                    $packagingAddonsTotal += $packagingLineTotal;
+                }
+
+                $baseItemsSubtotal = round($baseItemsSubtotal, 2);
+                $pepperAddonsTotal = round($pepperAddonsTotal, 2);
+                $packagingAddonsTotal = round($packagingAddonsTotal, 2);
+                $addonsTotal = round($pepperAddonsTotal + $packagingAddonsTotal, 2);
+            @endphp
             <aside class="dolci-order-summary">
                 <h3>Order Summary</h3>
                 @foreach($items as $item)
+                    @php
+                        $lineQuantity = max(1, (int) ($item['quantity'] ?? 1));
+                        $pepperUnitPrice = !empty(data_get($item, 'customizations.add_pepper'))
+                            ? max(0, (float) data_get($item, 'customizations.pepper_price', 0))
+                            : 0.0;
+                        $packagingUnitPrice = !empty(data_get($item, 'customizations.packaging_type'))
+                            ? max(0, (float) data_get($item, 'customizations.packaging_price', 0))
+                            : 0.0;
+                        $pepperLineTotal = round($pepperUnitPrice * $lineQuantity, 2);
+                        $packagingLineTotal = round($packagingUnitPrice * $lineQuantity, 2);
+                    @endphp
                     <div class="dolci-summary-line-item">
                         <span>
                             {{ $item['name'] }} ({{ $item['size'] }}) x {{ $item['quantity'] }}
                             @if(!empty($item['customizations']['add_pepper']))
-                                <br><small>+ Pepper</small>
+                                <br><small>+ Pepper (JOD {{ number_format($pepperUnitPrice, 2) }} x {{ $lineQuantity }} = JOD {{ number_format($pepperLineTotal, 2) }})</small>
                             @endif
                             @if(!empty($item['customizations']['packaging_type']))
-                                <br><small>Packaging: {{ $item['customizations']['packaging_type'] }}</small>
+                                <br><small>Packaging: {{ $item['customizations']['packaging_type'] }} (JOD {{ number_format($packagingUnitPrice, 2) }} x {{ $lineQuantity }} = JOD {{ number_format($packagingLineTotal, 2) }})</small>
                             @endif
                         </span>
                         <span>JOD {{ number_format((float)$item['line_total'], 2) }}</span>
                     </div>
                 @endforeach
+                <div class="dolci-summary-row"><span>Base items</span><span>JOD {{ number_format($baseItemsSubtotal, 2) }}</span></div>
+                <div class="dolci-summary-row"><span>Pepper add-ons</span><span>JOD {{ number_format($pepperAddonsTotal, 2) }}</span></div>
+                <div class="dolci-summary-row"><span>Packaging add-ons</span><span>JOD {{ number_format($packagingAddonsTotal, 2) }}</span></div>
+                <div class="dolci-summary-row"><span>Total add-ons</span><span>JOD {{ number_format($addonsTotal, 2) }}</span></div>
                 <div class="dolci-summary-row"><span>Subtotal</span><span>JOD {{ number_format((float)$subtotal, 2) }}</span></div>
                 @if($couponsEnabled)
                     <div class="dolci-summary-row"><span>Discount</span><span>- JOD {{ number_format((float)$discount, 2) }}</span></div>

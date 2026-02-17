@@ -7,6 +7,34 @@
 @php
     $itemCount = (int) $items->sum('quantity');
     $uniqueItems = (int) $items->count();
+    $baseItemsSubtotal = 0.0;
+    $pepperAddonsTotal = 0.0;
+    $packagingAddonsTotal = 0.0;
+
+    foreach ($items as $summaryItem) {
+        $quantity = max(1, (int) ($summaryItem['quantity'] ?? 1));
+        $lineTotal = (float) ($summaryItem['line_total'] ?? 0);
+        $pepperUnitPrice = !empty(data_get($summaryItem, 'customizations.add_pepper'))
+            ? max(0, (float) data_get($summaryItem, 'customizations.pepper_price', 0))
+            : 0.0;
+        $packagingUnitPrice = !empty(data_get($summaryItem, 'customizations.packaging_type'))
+            ? max(0, (float) data_get($summaryItem, 'customizations.packaging_price', 0))
+            : 0.0;
+
+        $pepperLineTotal = round($pepperUnitPrice * $quantity, 2);
+        $packagingLineTotal = round($packagingUnitPrice * $quantity, 2);
+        $addonsLineTotal = round($pepperLineTotal + $packagingLineTotal, 2);
+        $baseLineTotal = round(max(0, $lineTotal - $addonsLineTotal), 2);
+
+        $baseItemsSubtotal += $baseLineTotal;
+        $pepperAddonsTotal += $pepperLineTotal;
+        $packagingAddonsTotal += $packagingLineTotal;
+    }
+
+    $baseItemsSubtotal = round($baseItemsSubtotal, 2);
+    $pepperAddonsTotal = round($pepperAddonsTotal, 2);
+    $packagingAddonsTotal = round($packagingAddonsTotal, 2);
+    $addonsTotal = round($pepperAddonsTotal + $packagingAddonsTotal, 2);
 @endphp
 <section class="dolci-section dolci-section-tight dolci-cart-section">
     <div class="dolci-container">
@@ -169,6 +197,10 @@
 
                 <aside class="dolci-order-summary dolci-cart-summary">
                     <h3>Order Summary</h3>
+                    <div class="dolci-summary-row"><span>Base items</span><span>JOD {{ number_format($baseItemsSubtotal, 2) }}</span></div>
+                    <div class="dolci-summary-row"><span>Pepper add-ons</span><span>JOD {{ number_format($pepperAddonsTotal, 2) }}</span></div>
+                    <div class="dolci-summary-row"><span>Packaging add-ons</span><span>JOD {{ number_format($packagingAddonsTotal, 2) }}</span></div>
+                    <div class="dolci-summary-row"><span>Total add-ons</span><span>JOD {{ number_format($addonsTotal, 2) }}</span></div>
                     <div class="dolci-summary-row"><span>Subtotal</span><span>JOD {{ number_format((float)$subtotal, 2) }}</span></div>
                     @if($couponsEnabled)
                         <div class="dolci-summary-row"><span>Discount</span><span>- JOD {{ number_format((float)$discount, 2) }}</span></div>
@@ -215,13 +247,64 @@ document.addEventListener('DOMContentLoaded', () => {
         input.value = String(clamped);
     };
 
-    const submitForm = (form) => {
+    const syncPageFromHtml = (html) => {
+        const parser = new DOMParser();
+        const nextDocument = parser.parseFromString(html, 'text/html');
+        const currentMain = document.querySelector('main.dolci-main');
+        const nextMain = nextDocument.querySelector('main.dolci-main');
+
+        if (!currentMain || !nextMain) {
+            window.location.reload();
+            return;
+        }
+
+        currentMain.innerHTML = nextMain.innerHTML;
+
+        const nextCartCounts = Array.from(nextDocument.querySelectorAll('.dolci-cart-count'));
+        const currentCartCounts = Array.from(document.querySelectorAll('.dolci-cart-count'));
+
+        if (nextCartCounts.length === 0 || currentCartCounts.length === 0) {
+            return;
+        }
+
+        const fallbackCount = nextCartCounts[0].textContent ?? '0';
+        currentCartCounts.forEach((el, index) => {
+            const source = nextCartCounts[index] ?? nextCartCounts[0];
+            el.textContent = source.textContent ?? fallbackCount;
+        });
+    };
+
+    const submitForm = async (form) => {
         if (!form || form.dataset.isSubmitting === '1') {
             return;
         }
 
         form.dataset.isSubmitting = '1';
-        form.submit();
+
+        try {
+            const response = await fetch(form.action, {
+                method: (form.method || 'POST').toUpperCase(),
+                body: new FormData(form),
+                credentials: 'same-origin',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'text/html',
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error('Cart request failed');
+            }
+
+            const html = await response.text();
+            syncPageFromHtml(html);
+        } catch (error) {
+            form.submit();
+        } finally {
+            if (form.isConnected) {
+                form.dataset.isSubmitting = '0';
+            }
+        }
     };
 
     const scheduleQuantitySubmit = (form) => {
@@ -242,47 +325,66 @@ document.addEventListener('DOMContentLoaded', () => {
         submitTimers.set(form, timer);
     };
 
-    document.querySelectorAll('[data-qty-step]').forEach((button) => {
-        button.addEventListener('click', () => {
-            const targetId = button.getAttribute('data-target');
-            const input = targetId ? document.getElementById(targetId) : null;
+    document.addEventListener('click', (event) => {
+        const button = event.target.closest('[data-qty-step]');
+        if (!button) {
+            return;
+        }
 
-            if (!input) {
-                return;
-            }
+        const targetId = button.getAttribute('data-target');
+        const input = targetId ? document.getElementById(targetId) : null;
 
-            const min = Number(input.getAttribute('min') || 1);
-            const max = Number(input.getAttribute('max') || 30);
-            const step = Number(button.getAttribute('data-qty-step') || 0);
-            const current = Number(input.value || min);
-            const next = Math.min(max, Math.max(min, current + step));
+        if (!input) {
+            return;
+        }
 
-            input.value = String(next);
-            scheduleQuantitySubmit(input.form);
-        });
+        const min = Number(input.getAttribute('min') || 1);
+        const max = Number(input.getAttribute('max') || 30);
+        const step = Number(button.getAttribute('data-qty-step') || 0);
+        const current = Number(input.value || min);
+        const next = Math.min(max, Math.max(min, current + step));
+
+        input.value = String(next);
+        scheduleQuantitySubmit(input.form);
     });
 
-    document.querySelectorAll('.dolci-qty-form[data-auto-submit="quantity"] .dolci-qty-input').forEach((input) => {
-        input.addEventListener('change', () => {
+    document.addEventListener('change', (event) => {
+        const target = event.target;
+        if (!(target instanceof HTMLElement)) {
+            return;
+        }
+
+        if (target.matches('.dolci-qty-form[data-auto-submit="quantity"] .dolci-qty-input')) {
+            const input = target;
             clampQuantity(input);
             submitForm(input.form);
-        });
+            return;
+        }
 
-        input.addEventListener('keydown', (event) => {
-            if (event.key !== 'Enter') {
-                return;
-            }
-
-            event.preventDefault();
-            clampQuantity(input);
-            submitForm(input.form);
-        });
-    });
-
-    document.querySelectorAll('.dolci-qty-form[data-auto-submit="packaging"] .dolci-packaging-select').forEach((select) => {
-        select.addEventListener('change', () => {
+        if (target.matches('.dolci-qty-form[data-auto-submit="packaging"] .dolci-packaging-select')) {
+            const select = target;
             submitForm(select.form);
-        });
+        }
+    });
+
+    document.addEventListener('keydown', (event) => {
+        const target = event.target;
+        if (!(target instanceof HTMLElement)) {
+            return;
+        }
+
+        if (!target.matches('.dolci-qty-form[data-auto-submit="quantity"] .dolci-qty-input')) {
+            return;
+        }
+
+        if (event.key !== 'Enter') {
+            return;
+        }
+
+        event.preventDefault();
+        const input = target;
+        clampQuantity(input);
+        submitForm(input.form);
     });
 });
 </script>
