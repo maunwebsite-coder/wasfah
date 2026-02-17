@@ -1488,7 +1488,7 @@ body.dolci-body:not(.dolci-admin-body) {
 }
 
 .dolci-product-card img {
-    aspect-ratio: 4 / 4.8;
+    aspect-ratio: 4 / 4.6;
     transition: transform 0.35s ease;
 }
 
@@ -1497,12 +1497,12 @@ body.dolci-body:not(.dolci-admin-body) {
 }
 
 .dolci-product-card-body {
-    padding: 0.92rem;
+    padding: 0.86rem;
 }
 
 .dolci-product-card-body p {
     font-size: 0.9rem;
-    min-height: 2.5rem;
+    min-height: 2.35rem;
 }
 
 .dolci-product-card-bottom span {
@@ -1893,11 +1893,11 @@ body.dolci-body:not(.dolci-admin-body) {
     }
 
     .dolci-product-card img {
-        aspect-ratio: 4 / 4.7;
+        aspect-ratio: 4 / 4.6;
     }
 
     .dolci-product-card-body {
-        padding: 0.9rem;
+        padding: 0.84rem;
     }
 
     .dolci-home-bestsellers .dolci-product-grid {

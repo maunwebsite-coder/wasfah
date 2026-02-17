@@ -165,10 +165,12 @@
     </div>
 </section>
 
+@if(auth()->user()?->isAdmin())
 @include('thedolci.partials.home-instagram', [
     'instagram' => $instagram,
     'instagramPosts' => $instagramPosts,
 ])
+@endif
 
 <div id="first-order-popup" class="dolci-popup" aria-hidden="true">
     <div class="dolci-popup-card">
