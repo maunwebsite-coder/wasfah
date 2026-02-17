@@ -1797,6 +1797,26 @@ body.dolci-body:not(.dolci-admin-body) {
         grid-template-columns: minmax(0, 1fr);
     }
 
+    .dolci-hero-metrics {
+        display: flex;
+        gap: 0.62rem;
+        overflow-x: auto;
+        padding: 0 0.08rem 0.1rem;
+        margin-inline: -0.08rem;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+    }
+
+    .dolci-hero-metrics::-webkit-scrollbar {
+        display: none;
+    }
+
+    .dolci-hero-metrics article {
+        flex: 0 0 min(84%, 15.5rem);
+        scroll-snap-align: start;
+    }
+
     .dolci-about-timeline article {
         padding: 0.82rem 0.88rem;
     }
@@ -2197,6 +2217,367 @@ header.dolci-topbar-v2 {
     }
 
     .dolci-topbar-v2 .dolci-mobile-nav-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+/* Cart page refresh */
+.dolci-page-cart .dolci-main {
+    background:
+        radial-gradient(circle at 10% 8%, rgba(255, 255, 255, 0.26), transparent 34%),
+        radial-gradient(circle at 84% 14%, rgba(255, 244, 225, 0.24), transparent 40%),
+        radial-gradient(circle at 76% 88%, rgba(199, 166, 106, 0.16), transparent 40%);
+}
+
+.dolci-page-cart .dolci-cart-section {
+    padding-top: 1.4rem;
+}
+
+.dolci-page-cart .dolci-cart-hero {
+    margin-bottom: 1.15rem;
+    border-radius: 1.25rem;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.9), rgba(251, 241, 226, 0.76));
+    box-shadow: 0 18px 38px rgba(107, 46, 48, 0.12);
+    padding: 1.1rem 1.15rem;
+}
+
+.dolci-page-cart .dolci-cart-hero p {
+    margin-bottom: 0.85rem;
+}
+
+.dolci-page-cart .dolci-cart-hero-stats {
+    display: grid;
+    gap: 0.6rem;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.dolci-page-cart .dolci-cart-hero-stats article {
+    border-radius: 0.95rem;
+    border: 1px solid rgba(107, 46, 48, 0.18);
+    background: rgba(255, 255, 255, 0.72);
+    padding: 0.65rem 0.7rem;
+}
+
+.dolci-page-cart .dolci-cart-hero-stats strong {
+    display: block;
+    color: var(--dolci-espresso);
+    font-size: 1.02rem;
+    line-height: 1.25;
+}
+
+.dolci-page-cart .dolci-cart-hero-stats span {
+    display: block;
+    color: var(--dolci-muted);
+    font-size: 0.8rem;
+}
+
+.dolci-page-cart .dolci-cart-layout {
+    gap: 1rem;
+    align-items: start;
+}
+
+.dolci-page-cart .dolci-cart-items {
+    display: grid;
+    gap: 0.85rem;
+}
+
+.dolci-page-cart .dolci-cart-item {
+    border-bottom: 0;
+    padding: 0;
+}
+
+.dolci-page-cart .dolci-cart-item-card {
+    display: grid;
+    grid-template-columns: 104px minmax(0, 1fr) minmax(210px, 240px);
+    gap: 0.9rem;
+    align-items: start;
+    border: 1px solid rgba(255, 255, 255, 0.82);
+    border-radius: 1rem;
+    padding: 0.82rem;
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.9), rgba(255, 250, 242, 0.8));
+    box-shadow: 0 16px 32px rgba(107, 46, 48, 0.1);
+}
+
+.dolci-page-cart .dolci-cart-media {
+    position: relative;
+}
+
+.dolci-page-cart .dolci-cart-media img {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    height: auto;
+    border-radius: 0.85rem;
+    border: 1px solid rgba(107, 46, 48, 0.16);
+}
+
+.dolci-page-cart .dolci-cart-qty-badge {
+    position: absolute;
+    right: 0.35rem;
+    bottom: 0.35rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.55rem;
+    height: 1.55rem;
+    border-radius: 999px;
+    padding: 0 0.45rem;
+    color: #fff;
+    background: linear-gradient(135deg, #6b2e30, #7f3a3d);
+    font-size: 0.72rem;
+    font-weight: 800;
+}
+
+.dolci-page-cart .dolci-cart-item-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.45rem;
+    margin-bottom: 0.5rem;
+}
+
+.dolci-page-cart .dolci-cart-item-head h3 {
+    margin: 0;
+    font-size: 1.3rem;
+}
+
+.dolci-page-cart .dolci-cart-item-body {
+    min-width: 0;
+}
+
+.dolci-page-cart .dolci-cart-option-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+}
+
+.dolci-page-cart .dolci-cart-option-list span {
+    border: 1px solid rgba(107, 46, 48, 0.2);
+    border-radius: 999px;
+    padding: 0.3rem 0.56rem;
+    font-size: 0.74rem;
+    font-weight: 700;
+    color: #6b2e30;
+    background: rgba(255, 255, 255, 0.84);
+}
+
+.dolci-page-cart .dolci-cart-actions {
+    margin-left: 0;
+    min-width: 0;
+    align-items: stretch;
+    gap: 0.55rem;
+}
+
+.dolci-page-cart .dolci-cart-price-stack {
+    border: 1px solid rgba(107, 46, 48, 0.18);
+    border-radius: 0.85rem;
+    background: rgba(255, 255, 255, 0.76);
+    padding: 0.48rem 0.58rem;
+}
+
+.dolci-page-cart .dolci-cart-line-label {
+    display: block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--dolci-muted);
+    margin-bottom: 0.15rem;
+}
+
+.dolci-page-cart .dolci-cart-line-total {
+    font-size: 1.05rem;
+}
+
+.dolci-page-cart .dolci-qty-form {
+    max-width: none;
+}
+
+.dolci-page-cart .dolci-qty-form .dolci-btn-compact {
+    width: 100%;
+    min-height: 2.2rem;
+    border-radius: 999px;
+}
+
+.dolci-page-cart .dolci-qty-row {
+    display: grid;
+    gap: 0.35rem;
+}
+
+.dolci-page-cart .dolci-cart-label {
+    margin-bottom: 0;
+    font-size: 0.74rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: rgba(107, 46, 48, 0.74);
+}
+
+.dolci-page-cart .dolci-qty-stepper {
+    margin-bottom: 0.5rem;
+    grid-template-columns: 2.35rem minmax(0, 1fr) 2.35rem;
+    gap: 0.3rem;
+    align-items: center;
+    border: 1px solid rgba(107, 46, 48, 0.26);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.94);
+    padding: 0.24rem;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.74);
+}
+
+.dolci-page-cart .dolci-qty-btn {
+    height: 2.1rem;
+    border: 1px solid rgba(107, 46, 48, 0.24);
+    border-radius: 999px;
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.96), rgba(246, 231, 212, 0.84));
+    color: #6b2e30;
+    font-size: 1.05rem;
+    line-height: 1;
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.dolci-page-cart .dolci-qty-btn:hover {
+    transform: translateY(-1px);
+    border-color: rgba(107, 46, 48, 0.38);
+    box-shadow: 0 6px 14px rgba(107, 46, 48, 0.14);
+}
+
+.dolci-page-cart .dolci-qty-btn:focus-visible {
+    outline: 2px solid rgba(107, 46, 48, 0.35);
+    outline-offset: 1px;
+}
+
+.dolci-page-cart .dolci-qty-btn-minus {
+    color: #8f3a3d;
+}
+
+.dolci-page-cart .dolci-qty-btn-plus {
+    color: #2f7a4a;
+}
+
+.dolci-page-cart .dolci-qty-input {
+    width: 100%;
+    min-width: 0;
+    margin: 0;
+    border: 0;
+    border-radius: 0.7rem;
+    background: transparent;
+    font-size: 1rem;
+    font-weight: 800;
+    text-align: center;
+    color: #6b2e30;
+    appearance: textfield;
+    -moz-appearance: textfield;
+}
+
+.dolci-page-cart .dolci-qty-input::-webkit-outer-spin-button,
+.dolci-page-cart .dolci-qty-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.dolci-page-cart .dolci-qty-input:focus-visible {
+    outline: 2px solid rgba(107, 46, 48, 0.22);
+    outline-offset: -2px;
+    border-radius: 0.55rem;
+}
+
+.dolci-page-cart .dolci-remove-form {
+    margin-top: 0.05rem;
+}
+
+.dolci-page-cart .dolci-remove-form .dolci-btn-link {
+    font-size: 0.82rem;
+    font-weight: 700;
+}
+
+.dolci-page-cart .dolci-cart-summary {
+    position: sticky;
+    top: 5.2rem;
+    border-color: rgba(255, 255, 255, 0.82);
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.9), rgba(255, 250, 241, 0.82));
+    box-shadow: 0 16px 34px rgba(107, 46, 48, 0.12);
+}
+
+.dolci-page-cart .dolci-coupon-form-compact {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0.45rem;
+    margin-bottom: 0.72rem;
+}
+
+.dolci-page-cart .dolci-coupon-form-compact input {
+    margin-bottom: 0;
+    background: rgba(255, 255, 255, 0.92);
+}
+
+.dolci-page-cart .dolci-coupon-form-compact .dolci-btn {
+    min-height: 2.5rem;
+    white-space: nowrap;
+}
+
+.dolci-page-cart .dolci-cart-summary .dolci-btn + .dolci-btn {
+    margin-top: 0.5rem;
+}
+
+.dolci-page-cart .dolci-empty-cart {
+    text-align: center;
+    border-color: rgba(255, 255, 255, 0.82);
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.9), rgba(255, 249, 238, 0.82));
+    box-shadow: 0 18px 36px rgba(107, 46, 48, 0.12);
+    padding: 1.4rem 1.2rem;
+}
+
+.dolci-page-cart .dolci-empty-cart h2 {
+    margin-bottom: 0.35rem;
+}
+
+.dolci-page-cart .dolci-empty-actions {
+    margin-top: 0.8rem;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+}
+
+@media (max-width: 1023px) {
+    .dolci-page-cart .dolci-cart-hero-stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .dolci-page-cart .dolci-cart-item-card {
+        grid-template-columns: 94px minmax(0, 1fr);
+    }
+
+    .dolci-page-cart .dolci-cart-actions {
+        grid-column: 1 / -1;
+    }
+
+    .dolci-page-cart .dolci-cart-summary {
+        position: static;
+    }
+}
+
+@media (max-width: 639px) {
+    .dolci-page-cart .dolci-cart-hero {
+        padding: 0.95rem;
+    }
+
+    .dolci-page-cart .dolci-cart-hero-stats {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .dolci-page-cart .dolci-cart-item-card {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .dolci-page-cart .dolci-cart-media {
+        width: 92px;
+    }
+
+    .dolci-page-cart .dolci-qty-stepper {
+        grid-template-columns: 2.2rem minmax(0, 1fr) 2.2rem;
+    }
+
+    .dolci-page-cart .dolci-coupon-form-compact {
         grid-template-columns: minmax(0, 1fr);
     }
 }

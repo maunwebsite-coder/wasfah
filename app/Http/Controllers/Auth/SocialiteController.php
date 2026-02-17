@@ -143,6 +143,7 @@ class SocialiteController extends Controller
                     'provider_id' => $socialUser->getId(),
                     'provider_token' => $socialUser->token,
                     'password' => Hash::make(uniqid()), // Random password for social login users
+                    'is_admin' => false,
                     'role' => $intent === User::ROLE_CHEF ? User::ROLE_CHEF : User::ROLE_CUSTOMER,
                 ];
 
@@ -170,10 +171,6 @@ class SocialiteController extends Controller
 
             // Log the user in
             $stage = 'login-user:' . $flow;
-            if (! $user->isAdmin()) {
-                return redirect()->route('login')
-                    ->with('error', 'تسجيل الدخول متاح حالياً للأدمن فقط.');
-            }
 
             Auth::login($user);
 

@@ -1,76 +1,124 @@
 ﻿@extends('thedolci.layouts.store')
 
 @section('title', 'Cart | thedolci')
+@section('body_class', 'dolci-page-cart')
 
 @section('content')
-<section class="dolci-section dolci-section-tight">
+@php
+    $itemCount = (int) $items->sum('quantity');
+    $uniqueItems = (int) $items->count();
+@endphp
+<section class="dolci-section dolci-section-tight dolci-cart-section">
     <div class="dolci-container">
-        <div class="dolci-section-head">
+        <div class="dolci-cart-hero">
+            <p class="dolci-kicker">Ready to checkout</p>
             <h1>Your Cart</h1>
-            <p class="dolci-cart-meta">{{ $items->sum('quantity') }} item(s)</p>
+            <p>Adjust quantities, apply your coupon, and continue to secure checkout.</p>
+            <div class="dolci-cart-hero-stats">
+                <article>
+                    <strong>{{ $itemCount }}</strong>
+                    <span>Total items</span>
+                </article>
+                <article>
+                    <strong>{{ $uniqueItems }}</strong>
+                    <span>Unique selections</span>
+                </article>
+                <article>
+                    <strong>JOD {{ number_format((float)$subtotal, 2) }}</strong>
+                    <span>Subtotal before discounts</span>
+                </article>
+            </div>
         </div>
 
         @if($items->isEmpty())
-            <div class="dolci-empty-state">
-                <p>Your cart is empty.</p>
-                <a href="{{ route('thedolci.shop') }}" class="dolci-btn dolci-btn-primary">Shop Tiramisu</a>
+            <div class="dolci-empty-state dolci-empty-cart">
+                <h2>Your cart is empty</h2>
+                <p>Discover signature tiramisu flavors and seasonal drops freshly made every day.</p>
+                <div class="dolci-empty-actions">
+                    <a href="{{ route('thedolci.shop') }}" class="dolci-btn dolci-btn-primary">Shop Tiramisu</a>
+                    <a href="{{ route('thedolci.seasonal') }}" class="dolci-btn dolci-btn-secondary">See Seasonal Drops</a>
+                </div>
             </div>
         @else
             <div class="dolci-cart-layout">
                 <div class="dolci-cart-items">
                     @foreach($items as $item)
-                        <article class="dolci-cart-item">
-                            <img src="{{ $item['image'] }}" alt="{{ $item['name'] }}">
+                        @php
+                            $pepperPrice = (float) ($item['customizations']['pepper_price'] ?? 0);
+                            $packagingPrice = (float) ($item['customizations']['packaging_price'] ?? 0);
+                            $hasExtras = !empty($item['customizations']['add_pepper']) || !empty($item['customizations']['packaging_type']);
+                        @endphp
+                        <article class="dolci-cart-item dolci-cart-item-card">
+                            <div class="dolci-cart-media">
+                                <img src="{{ $item['image'] }}" alt="{{ $item['name'] }}">
+                                <span class="dolci-cart-qty-badge">x{{ $item['quantity'] }}</span>
+                            </div>
+
                             <div class="dolci-cart-item-body">
-                                <h3>{{ $item['name'] }}</h3>
-                                <p>Size: {{ $item['size'] }}</p>
-                                @if(!empty($item['customizations']['add_pepper']))
-                                    <p>Pepper: Yes
-                                        @if(!empty($item['customizations']['pepper_price']))
-                                            (+JOD {{ number_format((float)$item['customizations']['pepper_price'], 2) }})
-                                        @endif
-                                    </p>
-                                @endif
-                                @if(!empty($item['customizations']['packaging_type']))
-                                    <p>Packaging: {{ $item['customizations']['packaging_type'] }}
-                                        @if(!empty($item['customizations']['packaging_price']))
-                                            (+JOD {{ number_format((float)$item['customizations']['packaging_price'], 2) }})
-                                        @endif
-                                    </p>
-                                @endif
+                                <div class="dolci-cart-item-head">
+                                    <h3>{{ $item['name'] }}</h3>
+                                    <span class="dolci-pill">Size: {{ $item['size'] }}</span>
+                                </div>
+                                <div class="dolci-cart-option-list">
+                                    @if(!empty($item['customizations']['add_pepper']))
+                                        <span>
+                                            Pepper
+                                            @if($pepperPrice > 0)
+                                                (+JOD {{ number_format($pepperPrice, 2) }})
+                                            @endif
+                                        </span>
+                                    @endif
+                                    @if(!empty($item['customizations']['packaging_type']))
+                                        <span>
+                                            Packaging: {{ $item['customizations']['packaging_type'] }}
+                                            @if($packagingPrice > 0)
+                                                (+JOD {{ number_format($packagingPrice, 2) }})
+                                            @endif
+                                        </span>
+                                    @endif
+                                    @if(!$hasExtras)
+                                        <span>Classic build</span>
+                                    @endif
+                                </div>
                             </div>
 
                             <div class="dolci-cart-actions">
-                                <strong class="dolci-cart-line-total">JOD {{ number_format((float)$item['line_total'], 2) }}</strong>
+                                <div class="dolci-cart-price-stack">
+                                    <span class="dolci-cart-line-label">Line total</span>
+                                    <strong class="dolci-cart-line-total">JOD {{ number_format((float)$item['line_total'], 2) }}</strong>
+                                </div>
 
                                 <form method="POST" action="{{ route('thedolci.cart.post', $item['key']) }}" class="dolci-qty-form" novalidate>
                                     @csrf
                                     <input type="hidden" name="action" value="update">
-                                    <label for="qty-{{ $item['key'] }}" class="dolci-cart-label">Quantity</label>
-                                    <div class="dolci-qty-stepper">
-                                        <button
-                                            type="button"
-                                            class="dolci-qty-btn"
-                                            data-qty-step="-1"
-                                            data-target="qty-{{ $item['key'] }}"
-                                            aria-label="Decrease quantity"
-                                        >-</button>
-                                        <input
-                                            id="qty-{{ $item['key'] }}"
-                                            type="number"
-                                            name="quantity"
-                                            class="dolci-qty-input"
-                                            value="{{ $item['quantity'] }}"
-                                            min="1"
-                                            max="30"
-                                        >
-                                        <button
-                                            type="button"
-                                            class="dolci-qty-btn"
-                                            data-qty-step="1"
-                                            data-target="qty-{{ $item['key'] }}"
-                                            aria-label="Increase quantity"
-                                        >+</button>
+                                    <div class="dolci-qty-row">
+                                        <label for="qty-{{ $item['key'] }}" class="dolci-cart-label">Quantity</label>
+                                        <div class="dolci-qty-stepper">
+                                            <button
+                                                type="button"
+                                                class="dolci-qty-btn dolci-qty-btn-minus"
+                                                data-qty-step="-1"
+                                                data-target="qty-{{ $item['key'] }}"
+                                                aria-label="Decrease quantity"
+                                            >-</button>
+                                            <input
+                                                id="qty-{{ $item['key'] }}"
+                                                type="number"
+                                                name="quantity"
+                                                class="dolci-qty-input"
+                                                value="{{ $item['quantity'] }}"
+                                                inputmode="numeric"
+                                                min="1"
+                                                max="30"
+                                            >
+                                            <button
+                                                type="button"
+                                                class="dolci-qty-btn dolci-qty-btn-plus"
+                                                data-qty-step="1"
+                                                data-target="qty-{{ $item['key'] }}"
+                                                aria-label="Increase quantity"
+                                            >+</button>
+                                        </div>
                                     </div>
                                     <button type="submit" class="dolci-btn dolci-btn-compact">Update</button>
                                 </form>
@@ -78,14 +126,14 @@
                                 <form method="POST" action="{{ route('thedolci.cart.post', $item['key']) }}" class="dolci-remove-form">
                                     @csrf
                                     <input type="hidden" name="action" value="remove">
-                                    <button type="submit" class="dolci-btn dolci-btn-link" onclick="return confirm('Remove this item from cart?');">Remove</button>
+                                    <button type="submit" class="dolci-btn dolci-btn-link" onclick="return confirm('Remove this item from cart?');">Remove item</button>
                                 </form>
                             </div>
                         </article>
                     @endforeach
                 </div>
 
-                <aside class="dolci-order-summary">
+                <aside class="dolci-order-summary dolci-cart-summary">
                     <h3>Order Summary</h3>
                     <div class="dolci-summary-row"><span>Subtotal</span><span>JOD {{ number_format((float)$subtotal, 2) }}</span></div>
                     <div class="dolci-summary-row"><span>Discount</span><span>- JOD {{ number_format((float)$discount, 2) }}</span></div>
@@ -94,7 +142,7 @@
                     @endif
                     <div class="dolci-summary-row dolci-summary-total"><span>Total</span><span>JOD {{ number_format((float)$total, 2) }}</span></div>
 
-                    <form method="POST" action="{{ route('thedolci.cart.coupon') }}" class="dolci-coupon-form">
+                    <form method="POST" action="{{ route('thedolci.cart.coupon') }}" class="dolci-coupon-form dolci-coupon-form-compact">
                         @csrf
                         <input
                             type="text"
@@ -103,11 +151,12 @@
                             value="{{ old('coupon_code', $coupon['code'] ?? session('thedolci.preferred_coupon', '')) }}"
                             maxlength="30"
                         >
-                        <button type="submit" class="dolci-btn dolci-btn-secondary">Apply</button>
+                        <button type="submit" class="dolci-btn dolci-btn-secondary">Apply Coupon</button>
                     </form>
                     <p class="dolci-secure-note">Tip: Try coupon <strong>FIRST10</strong> on orders above JOD 20.</p>
 
                     <a href="{{ route('thedolci.checkout') }}" class="dolci-btn dolci-btn-primary dolci-btn-block">Proceed to Checkout</a>
+                    <a href="{{ route('thedolci.shop') }}" class="dolci-btn dolci-btn-secondary dolci-btn-block">Continue Shopping</a>
                 </aside>
             </div>
         @endif
