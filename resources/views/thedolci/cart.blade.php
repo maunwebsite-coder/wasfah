@@ -95,7 +95,7 @@
                                     <strong class="dolci-cart-line-total">JOD {{ number_format((float)$item['line_total'], 2) }}</strong>
                                 </div>
 
-                                <form method="POST" action="{{ route('thedolci.cart.post', $item['key']) }}" class="dolci-qty-form" novalidate>
+                                <form method="POST" action="{{ route('thedolci.cart.post', $item['key']) }}" class="dolci-qty-form" novalidate data-auto-submit="quantity">
                                     @csrf
                                     <input type="hidden" name="action" value="update">
                                     <div class="dolci-qty-row">
@@ -127,11 +127,10 @@
                                             >+</button>
                                         </div>
                                     </div>
-                                    <button type="submit" class="dolci-btn dolci-btn-compact">Update</button>
                                 </form>
 
                                 @if($canUpdatePackaging)
-                                    <form method="POST" action="{{ route('thedolci.cart.post', $item['key']) }}" class="dolci-qty-form" novalidate>
+                                    <form method="POST" action="{{ route('thedolci.cart.post', $item['key']) }}" class="dolci-qty-form" novalidate data-auto-submit="packaging">
                                         @csrf
                                         <input type="hidden" name="action" value="update-packaging">
                                         <div class="dolci-qty-row">
@@ -155,7 +154,6 @@
                                                 @endif
                                             </select>
                                         </div>
-                                        <button type="submit" class="dolci-btn dolci-btn-compact">Update packaging</button>
                                     </form>
                                 @endif
 
@@ -206,6 +204,44 @@
 @push('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', () => {
+    const submitTimers = new WeakMap();
+    const qtySubmitDelayMs = 350;
+
+    const clampQuantity = (input) => {
+        const min = Number(input.getAttribute('min') || 1);
+        const max = Number(input.getAttribute('max') || 30);
+        const current = Number(input.value || min);
+        const clamped = Math.min(max, Math.max(min, current));
+        input.value = String(clamped);
+    };
+
+    const submitForm = (form) => {
+        if (!form || form.dataset.isSubmitting === '1') {
+            return;
+        }
+
+        form.dataset.isSubmitting = '1';
+        form.submit();
+    };
+
+    const scheduleQuantitySubmit = (form) => {
+        if (!form) {
+            return;
+        }
+
+        const previous = submitTimers.get(form);
+        if (previous) {
+            window.clearTimeout(previous);
+        }
+
+        const timer = window.setTimeout(() => {
+            submitTimers.delete(form);
+            submitForm(form);
+        }, qtySubmitDelayMs);
+
+        submitTimers.set(form, timer);
+    };
+
     document.querySelectorAll('[data-qty-step]').forEach((button) => {
         button.addEventListener('click', () => {
             const targetId = button.getAttribute('data-target');
@@ -222,6 +258,30 @@ document.addEventListener('DOMContentLoaded', () => {
             const next = Math.min(max, Math.max(min, current + step));
 
             input.value = String(next);
+            scheduleQuantitySubmit(input.form);
+        });
+    });
+
+    document.querySelectorAll('.dolci-qty-form[data-auto-submit="quantity"] .dolci-qty-input').forEach((input) => {
+        input.addEventListener('change', () => {
+            clampQuantity(input);
+            submitForm(input.form);
+        });
+
+        input.addEventListener('keydown', (event) => {
+            if (event.key !== 'Enter') {
+                return;
+            }
+
+            event.preventDefault();
+            clampQuantity(input);
+            submitForm(input.form);
+        });
+    });
+
+    document.querySelectorAll('.dolci-qty-form[data-auto-submit="packaging"] .dolci-packaging-select').forEach((select) => {
+        select.addEventListener('change', () => {
+            submitForm(select.form);
         });
     });
 });

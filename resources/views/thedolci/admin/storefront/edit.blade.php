@@ -86,45 +86,10 @@
                 <img src="{{ $hero['image_url'] }}" alt="{{ $hero['image_alt'] ?? 'Hero image' }}" class="dolci-rounded-img" loading="lazy">
             @endif
 
-            @php
-                $instagramPosts = old('instagram_posts', $instagram['posts'] ?? []);
-                if (! is_array($instagramPosts)) {
-                    $instagramPosts = [];
-                }
-                $instagramPosts = array_values($instagramPosts);
-                $minimumInstagramPosts = 6;
-
-                while (count($instagramPosts) < $minimumInstagramPosts) {
-                    $instagramPosts[] = ['image' => '', 'url' => '', 'caption' => ''];
-                }
-            @endphp
-
-            <h3>Instagram Section</h3>
-            <label>Section Title</label>
-            <input type="text" name="instagram_section_title" value="{{ old('instagram_section_title', $instagram['section_title'] ?? '') }}" {{ $dbReady ? '' : 'disabled' }}>
-
-            <div class="dolci-form-grid-2">
-                <div>
-                    <label>Instagram Handle</label>
-                    <input type="text" name="instagram_handle" value="{{ old('instagram_handle', $instagram['handle'] ?? '') }}" {{ $dbReady ? '' : 'disabled' }}>
-                </div>
-                <div>
-                    <label>Instagram Profile URL</label>
-                    <input type="text" name="instagram_profile_url" value="{{ old('instagram_profile_url', $instagram['profile_url'] ?? '') }}" {{ $dbReady ? '' : 'disabled' }}>
-                </div>
-            </div>
-
-            @foreach($instagramPosts as $index => $post)
-                <h3>Instagram Post {{ $index + 1 }}</h3>
-                <label>Image URL</label>
-                <input type="text" name="instagram_posts[{{ $index }}][image]" value="{{ old("instagram_posts.$index.image", $post['image'] ?? '') }}" {{ $dbReady ? '' : 'disabled' }}>
-
-                <label>Post URL</label>
-                <input type="text" name="instagram_posts[{{ $index }}][url]" value="{{ old("instagram_posts.$index.url", $post['url'] ?? '') }}" {{ $dbReady ? '' : 'disabled' }}>
-
-                <label>Caption</label>
-                <input type="text" name="instagram_posts[{{ $index }}][caption]" value="{{ old("instagram_posts.$index.caption", $post['caption'] ?? '') }}" {{ $dbReady ? '' : 'disabled' }}>
-            @endforeach
+            @include('thedolci.admin.storefront.partials.instagram-section', [
+                'instagram' => $instagram,
+                'dbReady' => $dbReady,
+            ])
 
             <button type="submit" class="dolci-btn dolci-btn-primary" {{ $dbReady ? '' : 'disabled' }}>Save Storefront Content</button>
         </form>

@@ -78,10 +78,18 @@ class CartController extends Controller
             $unitPrice += $pepperPrice;
         }
 
+        $requestedPackagingType = trim((string) ($data['packaging_type'] ?? ''));
         [$packagingType, $packagingPrice] = $this->resolvePackagingSelection(
             $product['packaging_options'] ?? [],
-            $data['packaging_type'] ?? null
+            $requestedPackagingType,
+            false
         );
+
+        if ($requestedPackagingType !== '' && $packagingType === '') {
+            return back()
+                ->withErrors(['packaging_type' => 'Selected packaging is not available.'])
+                ->withInput();
+        }
 
         if ($packagingPrice > 0) {
             $unitPrice += $packagingPrice;

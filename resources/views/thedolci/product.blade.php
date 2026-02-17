@@ -108,6 +108,7 @@
                     @if(!empty($packagingOptions))
                         <label>Packaging Type</label>
                         <select name="packaging_type" data-packaging-select>
+                            <option value="" data-price="0" {{ old('packaging_type', '') === '' ? 'selected' : '' }}>No packaging</option>
                             @foreach($packagingOptions as $option)
                                 @php
                                     $packagingName = trim((string) ($option['name'] ?? ''));
@@ -115,7 +116,7 @@
                                 @endphp
                                 @continue($packagingName === '')
                                 <option value="{{ $packagingName }}" data-price="{{ number_format($packagingPrice, 2, '.', '') }}" {{ old('packaging_type') === $packagingName ? 'selected' : '' }}>
-                                    {{ $packagingName }}{{ $packagingPrice > 0 ? ' (+' . '$' . number_format($packagingPrice, 2) . ')' : '' }}
+                                    {{ $packagingName }}{{ $packagingPrice > 0 ? ' (+' . 'JOD ' . number_format($packagingPrice, 2) . ')' : '' }}
                                 </option>
                             @endforeach
                         </select>

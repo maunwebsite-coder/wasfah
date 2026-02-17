@@ -114,4 +114,74 @@ class ThedolciPackagingOptionsTest extends TestCase
         $this->assertSame(3.0, (float) data_get($cart, $key . '.customizations.packaging_price'));
         $this->assertSame('Premium Box', (string) data_get($cart, $key . '.customizations.packaging_type'));
     }
+
+    public function test_admin_update_parses_packaging_fields_with_separate_name_and_price_inputs(): void
+    {
+        $admin = User::factory()->create([
+            'is_admin' => true,
+        ]);
+
+        $product = ThedolciProduct::query()->create([
+            'slug' => 'packaging-admin-separated-fields',
+            'name' => 'Packaging Admin Separate Fields',
+            'cover_image' => 'https://example.com/cover.jpg',
+            'size_prices' => ['Small' => 10.00, 'Medium' => 15.00],
+            'packaging_options' => [],
+            'is_active' => true,
+        ]);
+
+        $response = $this->actingAs($admin)->put(route('thedolci.admin.products.update', $product), [
+            'slug' => 'packaging-admin-separated-fields',
+            'name' => 'Packaging Admin Separate Fields',
+            'headline' => 'Headline',
+            'description' => 'Description',
+            'story' => 'Story',
+            'cover_image' => 'https://example.com/cover.jpg',
+            'gallery_images' => '',
+            'size_prices_input' => "Small|10\nMedium|15",
+            'pepper_price' => 0,
+            'packaging_names' => ['Classic Box', 'Gift Box', ''],
+            'packaging_prices' => ['0', '2.50', ''],
+            'sort_order' => 0,
+            'is_active' => '1',
+        ]);
+
+        $response->assertRedirect(route('thedolci.admin.products.index'));
+
+        $product->refresh();
+        $giftOption = collect($product->packaging_options ?? [])->firstWhere('name', 'Gift Box');
+
+        $this->assertIsArray($giftOption);
+        $this->assertSame(2.5, (float) ($giftOption['price'] ?? 0));
+    }
+
+    public function test_cart_add_does_not_force_first_packaging_option_when_none_is_selected(): void
+    {
+        ThedolciProduct::query()->create([
+            'slug' => 'packaging-not-forced',
+            'name' => 'Packaging Not Forced',
+            'cover_image' => 'https://example.com/cover.jpg',
+            'size_prices' => ['Small' => 10.00],
+            'packaging_options' => [
+                ['name' => 'Gift Box', 'price' => 2.50],
+            ],
+            'is_active' => true,
+        ]);
+
+        $response = $this->post(route('thedolci.cart.add'), [
+            'slug' => 'packaging-not-forced',
+            'size' => 'Small',
+            'quantity' => 1,
+        ]);
+
+        $response->assertRedirect(route('thedolci.cart'));
+
+        $cart = session(ThedolciCart::CART_KEY, []);
+        $key = array_key_first($cart);
+
+        $this->assertIsString($key);
+        $this->assertSame(10.0, (float) data_get($cart, $key . '.unit_price'));
+        $this->assertSame(0.0, (float) data_get($cart, $key . '.customizations.packaging_price'));
+        $this->assertSame('', (string) data_get($cart, $key . '.customizations.packaging_type'));
+    }
 }

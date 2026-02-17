@@ -151,6 +151,10 @@ class AdminProductController extends Controller
             'gallery_image_files.*' => ['image', 'mimes:jpg,jpeg,png,webp,avif', 'max:25600'],
             'size_prices_input' => ['required', 'string', 'max:2500'],
             'pepper_price' => ['nullable', 'numeric', 'min:0'],
+            'packaging_names' => ['nullable', 'array', 'max:60'],
+            'packaging_names.*' => ['nullable', 'string', 'max:120'],
+            'packaging_prices' => ['nullable', 'array', 'max:60'],
+            'packaging_prices.*' => ['nullable', 'string', 'max:30'],
             'packaging_options_input' => ['nullable', 'string', 'max:2500'],
             'is_best_seller' => ['nullable', 'boolean'],
             'is_seasonal' => ['nullable', 'boolean'],
@@ -169,7 +173,16 @@ class AdminProductController extends Controller
             ->all();
 
         $sizePrices = $this->parseSizePrices((string) $validated['size_prices_input']);
-        $packagingOptions = $this->parsePackagingOptions($validated['packaging_options_input'] ?? null);
+        $packagingOptions = $this->parsePackagingOptionsFromFields(
+            (array) ($validated['packaging_names'] ?? []),
+            (array) ($validated['packaging_prices'] ?? [])
+        );
+
+        // Keep backward compatibility for legacy submissions using Name|Price text input.
+        if (empty($packagingOptions) && filled($validated['packaging_options_input'] ?? null)) {
+            $packagingOptions = $this->parsePackagingOptions($validated['packaging_options_input'] ?? null);
+        }
+
         $coverImage = $this->normalizeImageReference($validated['cover_image'] ?? null);
 
         if ($request->hasFile('cover_image_file')) {
@@ -382,6 +395,54 @@ class AdminProductController extends Controller
         }
 
         return $sizePrices;
+    }
+
+    /**
+     * @return array<int, array{name: string, price: float}>
+     */
+    private function parsePackagingOptionsFromFields(array $names, array $prices): array
+    {
+        $rowCount = max(count($names), count($prices));
+
+        if ($rowCount === 0) {
+            return [];
+        }
+
+        $options = [];
+
+        for ($index = 0; $index < $rowCount; $index++) {
+            $name = trim((string) ($names[$index] ?? ''));
+            $rawPrice = trim((string) ($prices[$index] ?? ''));
+
+            if ($name === '' && $rawPrice === '') {
+                continue;
+            }
+
+            if ($name === '') {
+                throw ValidationException::withMessages([
+                    "packaging_names.{$index}" => 'Packaging option name is required when price is provided.',
+                ]);
+            }
+
+            if ($rawPrice === '') {
+                $rawPrice = '0';
+            }
+
+            $normalizedPrice = str_replace(',', '.', $rawPrice);
+
+            if (! is_numeric($normalizedPrice) || (float) $normalizedPrice < 0) {
+                throw ValidationException::withMessages([
+                    "packaging_prices.{$index}" => "Invalid packaging price for option: {$name}",
+                ]);
+            }
+
+            $options[$name] = [
+                'name' => $name,
+                'price' => round((float) $normalizedPrice, 2),
+            ];
+        }
+
+        return array_values($options);
     }
 
     /**

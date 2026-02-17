@@ -15,19 +15,42 @@
                 $sizeLinesDefault = implode(PHP_EOL, ['Small|0', 'Medium|0']);
             }
 
-            $packagingLinesDefault = collect($product->packaging_options ?? [])
+            $packagingRowsDefault = collect($product->packaging_options ?? [])
                 ->map(function ($option) {
                     if (is_array($option)) {
                         $name = trim((string) ($option['name'] ?? ''));
                         $price = (float) ($option['price'] ?? 0);
 
-                        return $name !== '' ? ($name . '|' . number_format($price, 2, '.', '')) : null;
+                        return $name !== ''
+                            ? ['name' => $name, 'price' => number_format($price, 2, '.', '')]
+                            : null;
                     }
 
                     return null;
                 })
                 ->filter()
-                ->implode(PHP_EOL);
+                ->values();
+
+            $oldPackagingNames = old('packaging_names');
+            $oldPackagingPrices = old('packaging_prices');
+
+            if (is_array($oldPackagingNames) || is_array($oldPackagingPrices)) {
+                $oldPackagingNames = is_array($oldPackagingNames) ? array_values($oldPackagingNames) : [];
+                $oldPackagingPrices = is_array($oldPackagingPrices) ? array_values($oldPackagingPrices) : [];
+                $rowCount = max(count($oldPackagingNames), count($oldPackagingPrices));
+                $packagingRowsDefault = collect();
+
+                for ($index = 0; $index < $rowCount; $index++) {
+                    $packagingRowsDefault->push([
+                        'name' => trim((string) ($oldPackagingNames[$index] ?? '')),
+                        'price' => trim((string) ($oldPackagingPrices[$index] ?? '')),
+                    ]);
+                }
+            }
+
+            if ($packagingRowsDefault->isEmpty()) {
+                $packagingRowsDefault = collect([['name' => '', 'price' => '']]);
+            }
 
             $galleryImagesDefault = is_array($product->gallery_images ?? null) ? $product->gallery_images : [];
         @endphp
@@ -70,7 +93,7 @@
                 <img src="{{ $product->cover_image }}" alt="{{ $product->name ?: 'Product cover image' }}" class="dolci-rounded-img" loading="lazy">
             @endif
 
-            <label>Gallery Images (comma or new line separated URLs)</label>
+            <label>Gallery Images</label>
             <textarea name="gallery_images" rows="4">{{ old('gallery_images', implode(PHP_EOL, $galleryImagesDefault)) }}</textarea>
 
             <label>Gallery Image Files (Multiple Upload)</label>
@@ -90,8 +113,39 @@
             <label>Sizes & Prices (one per line: Size|Price)</label>
             <textarea name="size_prices_input" rows="5" required>{{ old('size_prices_input', $sizeLinesDefault) }}</textarea>
 
-            <label>Packaging Options (one per line: Name|Price)</label>
-            <textarea name="packaging_options_input" rows="5" placeholder="Classic Box|0&#10;Gift Box|2.5">{{ old('packaging_options_input', $packagingLinesDefault) }}</textarea>
+            <label>Packaging Options</label>
+            <p class="dolci-limited">Add packaging item and price in separate fields.</p>
+            <div data-packaging-rows>
+                @foreach($packagingRowsDefault as $row)
+                    <div class="dolci-packaging-row" data-packaging-row>
+                        <div>
+                            <label>Packaging Item</label>
+                            <input type="text" name="packaging_names[]" value="{{ $row['name'] ?? '' }}" placeholder="Gift Box">
+                        </div>
+                        <div class="dolci-packaging-price">
+                            <label>Price (JOD)</label>
+                            <input type="number" name="packaging_prices[]" value="{{ $row['price'] ?? '' }}" min="0" step="0.01" placeholder="0.00">
+                        </div>
+                        <button type="button" class="dolci-btn dolci-btn-link dolci-packaging-remove" data-packaging-remove>Remove</button>
+                    </div>
+                @endforeach
+            </div>
+
+            <template id="packaging-row-template">
+                <div class="dolci-packaging-row" data-packaging-row>
+                    <div>
+                        <label>Packaging Item</label>
+                        <input type="text" name="packaging_names[]" value="" placeholder="Gift Box">
+                    </div>
+                    <div class="dolci-packaging-price">
+                        <label>Price (JOD)</label>
+                        <input type="number" name="packaging_prices[]" value="" min="0" step="0.01" placeholder="0.00">
+                    </div>
+                    <button type="button" class="dolci-btn dolci-btn-link dolci-packaging-remove" data-packaging-remove>Remove</button>
+                </div>
+            </template>
+
+            <button type="button" class="dolci-btn dolci-btn-secondary dolci-btn-compact" data-packaging-add>Add packaging option</button>
 
             <div class="dolci-form-grid-2">
                 <div>
@@ -122,5 +176,64 @@
         </form>
     </div>
 </section>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const rowsContainer = document.querySelector('[data-packaging-rows]');
+    const addButton = document.querySelector('[data-packaging-add]');
+    const rowTemplate = document.getElementById('packaging-row-template');
+
+    if (!rowsContainer || !addButton || !rowTemplate) {
+        return;
+    }
+
+    const clearRowInputs = (row) => {
+        const nameInput = row.querySelector('input[name="packaging_names[]"]');
+        const priceInput = row.querySelector('input[name="packaging_prices[]"]');
+
+        if (nameInput) {
+            nameInput.value = '';
+        }
+
+        if (priceInput) {
+            priceInput.value = '';
+        }
+    };
+
+    const bindRemoveButton = (row) => {
+        const removeButton = row.querySelector('[data-packaging-remove]');
+
+        if (!removeButton) {
+            return;
+        }
+
+        removeButton.addEventListener('click', () => {
+            const rows = rowsContainer.querySelectorAll('[data-packaging-row]');
+
+            if (rows.length <= 1) {
+                clearRowInputs(row);
+                return;
+            }
+
+            row.remove();
+        });
+    };
+
+    rowsContainer.querySelectorAll('[data-packaging-row]').forEach((row) => {
+        bindRemoveButton(row);
+    });
+
+    addButton.addEventListener('click', () => {
+        const fragment = rowTemplate.content.cloneNode(true);
+        const row = fragment.querySelector('[data-packaging-row]');
+
+        if (!row) {
+            return;
+        }
+
+        bindRemoveButton(row);
+        rowsContainer.appendChild(fragment);
+    });
+});
+</script>
 @endsection
 

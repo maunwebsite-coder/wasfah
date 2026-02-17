@@ -562,6 +562,27 @@ img {
     margin: 0 0.4rem 0 0;
 }
 
+.dolci-packaging-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 0.75rem;
+    margin-bottom: 0.45rem;
+}
+
+.dolci-packaging-row > div {
+    flex: 1 1 220px;
+    min-width: 0;
+}
+
+.dolci-packaging-row .dolci-packaging-price {
+    flex: 0 1 180px;
+}
+
+.dolci-packaging-row .dolci-packaging-remove {
+    margin-bottom: 0.85rem;
+}
+
 .dolci-form-grid-4 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
 }
@@ -668,6 +689,91 @@ img {
 .dolci-order-summary h3,
 .dolci-form-card h3 {
     margin-top: 0;
+}
+
+.dolci-admin-section {
+    margin-top: 1.25rem;
+    padding-top: 1rem;
+    border-top: 1px dashed var(--dolci-border);
+}
+
+.dolci-admin-section-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 0.85rem;
+    margin-bottom: 0.8rem;
+}
+
+.dolci-admin-section-head h3,
+.dolci-admin-section-head h4 {
+    margin: 0;
+}
+
+.dolci-admin-section-head > a {
+    font-size: 0.86rem;
+    font-weight: 700;
+}
+
+.dolci-admin-subsection-head {
+    margin-top: 0.3rem;
+}
+
+.dolci-admin-instagram-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+}
+
+.dolci-instagram-admin-list {
+    display: grid;
+    gap: 0.85rem;
+}
+
+.dolci-instagram-admin-item {
+    border: 1px solid var(--dolci-border);
+    border-radius: 14px;
+    padding: 0.85rem;
+    background: #fffaf3;
+}
+
+.dolci-instagram-admin-item-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.65rem;
+    margin-bottom: 0.75rem;
+}
+
+.dolci-instagram-admin-item-head h4 {
+    margin: 0;
+}
+
+.dolci-instagram-admin-preview {
+    border: 1px dashed var(--dolci-border);
+    border-radius: 12px;
+    background: #fff;
+    min-height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    padding: 0.35rem;
+    margin-bottom: 0.85rem;
+}
+
+.dolci-instagram-admin-preview span {
+    color: var(--dolci-muted);
+    font-size: 0.84rem;
+    text-align: center;
+}
+
+.dolci-instagram-admin-preview img {
+    width: 100%;
+    height: 100%;
+    max-height: 190px;
+    object-fit: cover;
+    border-radius: 8px;
 }
 
 .dolci-summary-row,
@@ -871,6 +977,16 @@ img {
 
     .dolci-qty-form {
         max-width: 100%;
+    }
+
+    .dolci-packaging-row > div,
+    .dolci-packaging-row .dolci-packaging-price {
+        flex: 1 1 100%;
+    }
+
+    .dolci-packaging-row .dolci-packaging-remove {
+        width: 100%;
+        margin-bottom: 0;
     }
 }
 
@@ -1372,6 +1488,7 @@ body.dolci-body:not(.dolci-admin-body) {
 }
 
 .dolci-product-card img {
+    aspect-ratio: 4 / 4.8;
     transition: transform 0.35s ease;
 }
 
@@ -1380,12 +1497,12 @@ body.dolci-body:not(.dolci-admin-body) {
 }
 
 .dolci-product-card-body {
-    padding: 1.05rem;
+    padding: 0.92rem;
 }
 
 .dolci-product-card-body p {
     font-size: 0.9rem;
-    min-height: 2.9rem;
+    min-height: 2.5rem;
 }
 
 .dolci-product-card-bottom span {
@@ -1444,6 +1561,8 @@ body.dolci-body:not(.dolci-admin-body) {
 }
 
 .dolci-instagram-item {
+    position: relative;
+    display: block;
     border-radius: 0.95rem;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.64);
@@ -1451,12 +1570,35 @@ body.dolci-body:not(.dolci-admin-body) {
 }
 
 .dolci-instagram-item img {
+    width: 100%;
     transition: transform 0.28s ease, filter 0.28s ease;
 }
 
 .dolci-instagram-item:hover img {
     transform: scale(1.06);
     filter: saturate(1.08);
+}
+
+.dolci-instagram-item::after {
+    content: '';
+    position: absolute;
+    inset: auto 0 0;
+    height: 58%;
+    background: linear-gradient(180deg, rgba(14, 8, 4, 0), rgba(14, 8, 4, 0.72));
+    pointer-events: none;
+}
+
+.dolci-instagram-caption {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+    color: #fff;
+    font-size: 0.83rem;
+    font-weight: 600;
+    line-height: 1.3;
+    padding: 0.6rem 0.68rem;
 }
 
 .dolci-footer {
@@ -1748,6 +1890,14 @@ body.dolci-body:not(.dolci-admin-body) {
 
     .dolci-home-products .dolci-product-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .dolci-product-card img {
+        aspect-ratio: 4 / 4.7;
+    }
+
+    .dolci-product-card-body {
+        padding: 0.9rem;
     }
 
     .dolci-home-bestsellers .dolci-product-grid {
@@ -2789,5 +2939,15 @@ header.dolci-topbar-v2 {
     .dolci-home-social .dolci-instagram-dots button.is-active {
         width: 1rem;
         background: #6b2e30;
+    }
+
+    .dolci-admin-section-head {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .dolci-admin-instagram-actions {
+        width: 100%;
+        justify-content: space-between;
     }
 }

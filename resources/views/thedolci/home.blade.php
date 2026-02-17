@@ -165,40 +165,10 @@
     </div>
 </section>
 
-<section class="dolci-section dolci-home-social">
-    <div class="dolci-container">
-        <div class="dolci-section-head">
-            <h2>{{ $instagram['section_title'] ?? 'From Instagram' }}</h2>
-            <a href="{{ $instagram['profile_url'] ?? 'https://www.instagram.com/thedolci.jo/' }}" target="_blank" rel="noopener">
-                {{ $instagram['handle'] ?? '@thedolci.jo' }}
-            </a>
-        </div>
-
-        @php($instagramPostCount = $instagramPosts->count())
-
-        <div class="dolci-instagram-grid" data-instagram-slider>
-            @foreach($instagramPosts as $index => $post)
-                <a href="{{ $post['url'] }}" target="_blank" rel="noopener" class="dolci-instagram-item" data-instagram-slide>
-                    <img src="{{ $post['image'] }}" alt="{{ $post['caption'] ?? 'Instagram post' }}" loading="lazy">
-                </a>
-            @endforeach
-        </div>
-
-        @if($instagramPostCount > 1)
-            <div class="dolci-trust-dots dolci-instagram-dots" aria-label="Instagram slider navigation">
-                @foreach($instagramPosts as $index => $post)
-                    <button
-                        type="button"
-                        data-instagram-dot="{{ $index }}"
-                        aria-label="Instagram post {{ $index + 1 }}"
-                        @class(['is-active' => $index === 0])
-                        @if($index === 0) aria-current="true" @endif
-                    ></button>
-                @endforeach
-            </div>
-        @endif
-    </div>
-</section>
+@include('thedolci.partials.home-instagram', [
+    'instagram' => $instagram,
+    'instagramPosts' => $instagramPosts,
+])
 
 <div id="first-order-popup" class="dolci-popup" aria-hidden="true">
     <div class="dolci-popup-card">

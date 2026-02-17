@@ -291,10 +291,127 @@ const initInstagramSlider = () => {
     });
 };
 
+const initAdminInstagramEditor = () => {
+    const section = document.querySelector('[data-instagram-admin]');
+
+    if (!section) {
+        return;
+    }
+
+    const list = section.querySelector('[data-instagram-list]');
+    const addButton = section.querySelector('[data-instagram-add]');
+    const template = section.querySelector('[data-instagram-template]');
+    const countTarget = section.querySelector('[data-instagram-count]');
+    const maxPosts = Number(section.getAttribute('data-max-posts') || 12);
+    const isDisabled = section.getAttribute('data-disabled') === '1';
+
+    if (!list || !template) {
+        return;
+    }
+
+    const updatePreview = (item) => {
+        const imageInput = item.querySelector('[data-instagram-image]');
+        const preview = item.querySelector('[data-instagram-preview]');
+        const placeholder = item.querySelector('[data-instagram-placeholder]');
+
+        if (!imageInput || !preview || !placeholder) {
+            return;
+        }
+
+        const imageUrl = imageInput.value.trim();
+        const hasImage = imageUrl !== '';
+
+        preview.src = imageUrl;
+        preview.hidden = !hasImage;
+        placeholder.hidden = hasImage;
+    };
+
+    const bindItem = (item) => {
+        const imageInput = item.querySelector('[data-instagram-image]');
+        const removeButton = item.querySelector('[data-instagram-remove]');
+
+        imageInput?.addEventListener('input', () => updatePreview(item));
+        removeButton?.addEventListener('click', () => {
+            item.remove();
+            reindexItems();
+        });
+
+        updatePreview(item);
+    };
+
+    const reindexItems = () => {
+        const items = Array.from(list.querySelectorAll('[data-instagram-item]'));
+
+        if (items.length === 0) {
+            addInstagramPost();
+            return;
+        }
+
+        items.forEach((item, index) => {
+            item.setAttribute('data-index', String(index));
+
+            const title = item.querySelector('[data-instagram-item-title]');
+            if (title) {
+                title.textContent = `Post ${index + 1}`;
+            }
+
+            item.querySelectorAll('[data-field]').forEach((field) => {
+                const key = field.getAttribute('data-field');
+
+                if (key) {
+                    field.setAttribute('name', `instagram_posts[${index}][${key}]`);
+                }
+            });
+        });
+
+        const canAdd = !isDisabled && items.length < maxPosts;
+        if (addButton) {
+            addButton.disabled = !canAdd;
+        }
+
+        items.forEach((item) => {
+            const removeButton = item.querySelector('[data-instagram-remove]');
+            if (removeButton) {
+                removeButton.disabled = isDisabled || items.length <= 1;
+            }
+        });
+
+        if (countTarget) {
+            countTarget.textContent = String(items.length);
+        }
+    };
+
+    const addInstagramPost = () => {
+        const itemCount = list.querySelectorAll('[data-instagram-item]').length;
+
+        if (itemCount >= maxPosts) {
+            return;
+        }
+
+        const baseItem = template.content.firstElementChild;
+
+        if (!baseItem) {
+            return;
+        }
+
+        const newItem = baseItem.cloneNode(true);
+        list.appendChild(newItem);
+        bindItem(newItem);
+        reindexItems();
+    };
+
+    Array.from(list.querySelectorAll('[data-instagram-item]')).forEach(bindItem);
+
+    addButton?.addEventListener('click', addInstagramPost);
+
+    reindexItems();
+};
+
 document.addEventListener('DOMContentLoaded', () => {
     initHeaderMenu();
     initTrustSlider();
     initInstagramSlider();
+    initAdminInstagramEditor();
     initCountdowns();
     initFirstOrderPopup();
     initProductGallery();
