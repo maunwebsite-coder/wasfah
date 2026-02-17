@@ -200,6 +200,7 @@ class AdminProductController extends Controller
 
         $galleryImages = collect($galleryImages)
             ->filter()
+            ->reject(fn (string $image) => $coverImage !== '' && $image === $coverImage)
             ->unique()
             ->values()
             ->all();
@@ -398,7 +399,18 @@ class AdminProductController extends Controller
 
         $options = $rows
             ->reduce(function (array $carry, string $line) {
-                [$name, $price] = array_map('trim', array_pad(explode('|', $line, 2), 2, '0'));
+                if (str_contains($line, '|')) {
+                    [$name, $price] = array_map('trim', array_pad(explode('|', $line, 2), 2, '0'));
+                } else {
+                    $name = trim($line);
+                    $price = '0';
+
+                    $extracted = $this->extractTrailingPackagingPrice($line);
+                    if ($extracted !== null) {
+                        $name = $extracted['name'];
+                        $price = $extracted['price'];
+                    }
+                }
 
                 if ($name === '') {
                     return $carry;
@@ -407,6 +419,8 @@ class AdminProductController extends Controller
                 if ($price === '') {
                     $price = '0';
                 }
+
+                $price = str_replace(',', '.', $price);
 
                 if (! is_numeric($price) || (float) $price < 0) {
                     throw ValidationException::withMessages([
@@ -423,5 +437,35 @@ class AdminProductController extends Controller
             }, []);
 
         return array_values($options);
+    }
+
+    /**
+     * Accepts legacy lines like "Premium Box3.00" and extracts trailing decimal price.
+     *
+     * @return array{name: string, price: string}|null
+     */
+    private function extractTrailingPackagingPrice(string $value): ?array
+    {
+        $cleaned = trim($value);
+
+        if ($cleaned === '') {
+            return null;
+        }
+
+        if (! preg_match('/^(?<name>.+?)\s*(?:\(?\s*\+?\s*(?:JOD|JD|\$)?\s*)?(?<price>\d+[.,]\d{1,2})\s*\)?$/iu', $cleaned, $matches)) {
+            return null;
+        }
+
+        $name = trim((string) ($matches['name'] ?? ''));
+        $price = trim((string) ($matches['price'] ?? ''));
+
+        if ($name === '' || $price === '') {
+            return null;
+        }
+
+        return [
+            'name' => $name,
+            'price' => str_replace(',', '.', $price),
+        ];
     }
 }

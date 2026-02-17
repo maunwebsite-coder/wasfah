@@ -477,6 +477,11 @@ class ProfileController extends Controller
             'avatar' => array_merge(['nullable'], ImageUploadConstraints::rules()),
         ];
 
+        if ($user->isAdmin() || $user->isChef()) {
+            $rules['instagram_url'] = 'nullable|url|max:255';
+            $rules['youtube_url'] = 'nullable|url|max:255';
+        }
+
         $messages = ImageUploadConstraints::messages('avatar', [
             'ar' => 'الصورة الشخصية',
             'en' => 'profile photo',
@@ -495,6 +500,11 @@ class ProfileController extends Controller
             'phone' => $request->phone,
             'timezone' => $request->input('timezone') ?: null,
         ];
+
+        if ($user->isAdmin() || $user->isChef()) {
+            $updateData['instagram_url'] = $request->input('instagram_url') ?: null;
+            $updateData['youtube_url'] = $request->input('youtube_url') ?: null;
+        }
 
         if ($request->hasFile('avatar')) {
             $avatarPath = $request->file('avatar')->store(

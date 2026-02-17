@@ -163,7 +163,7 @@
     <div class="dolci-container">
         <div class="dolci-section-head">
             <h2>From Instagram</h2>
-            <a href="https://instagram.com" target="_blank" rel="noopener">@thedolci</a>
+            <a href="https://www.instagram.com/thedolci.jo/" target="_blank" rel="noopener">@thedolci.jo</a>
         </div>
 
         <div class="dolci-instagram-grid">

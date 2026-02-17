@@ -32,7 +32,7 @@ class LinkPageController extends Controller
                 'title' => 'حسابي على إنستغرام',
                 'subtitle' => 'تابع قصصي اليومية ووصفاتي السريعة',
                 'icon' => 'fab fa-instagram',
-                'url' => 'https://instagram.com/',
+                'url' => 'https://www.instagram.com/thedolci.jo/',
             ],
             [
                 'label' => 'قناة يوتيوب',

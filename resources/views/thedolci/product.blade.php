@@ -14,18 +14,29 @@
             <strong>{{ $product['name'] }}</strong>
         </nav>
 
+        @php
+            $productImages = collect(array_merge([$product['cover_image'] ?? null], $product['gallery_images'] ?? []))
+                ->map(static fn ($image) => trim((string) $image))
+                ->filter()
+                ->unique()
+                ->values();
+            $primaryImage = (string) ($productImages->first() ?? '');
+        @endphp
+
         <div class="dolci-product-layout">
             <div class="dolci-product-gallery">
                 <div class="dolci-product-main-image">
-                    <img id="main-product-image" src="{{ $product['cover_image'] }}" alt="{{ $product['name'] }}">
+                    <img id="main-product-image" src="{{ $primaryImage }}" alt="{{ $product['name'] }}">
                 </div>
-                <div class="dolci-thumb-grid">
-                    @foreach(array_merge([$product['cover_image']], $product['gallery_images'] ?? []) as $image)
-                        <button type="button" class="dolci-thumb" data-product-thumb data-image="{{ $image }}">
-                            <img src="{{ $image }}" alt="{{ $product['name'] }} thumbnail">
-                        </button>
-                    @endforeach
-                </div>
+                @if($productImages->count() > 1)
+                    <div class="dolci-thumb-grid">
+                        @foreach($productImages as $image)
+                            <button type="button" class="dolci-thumb" data-product-thumb data-image="{{ $image }}">
+                                <img src="{{ $image }}" alt="{{ $product['name'] }} thumbnail">
+                            </button>
+                        @endforeach
+                    </div>
+                @endif
             </div>
 
             <div class="dolci-product-panel">

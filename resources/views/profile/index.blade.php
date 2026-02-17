@@ -649,6 +649,38 @@
                         @enderror
                     </div>
 
+                    @if($user->isAdmin() || $user->isChef())
+                        <div class="space-y-2">
+                            <label for="instagram_url" class="text-sm font-semibold text-gray-700">Instagram URL</label>
+                            <input
+                                type="url"
+                                id="instagram_url"
+                                name="instagram_url"
+                                value="{{ old('instagram_url', $user->instagram_url) }}"
+                                class="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-2.5 text-gray-800 focus:border-orange-400 focus:outline-none focus:ring-2 focus:ring-orange-100"
+                                placeholder="https://www.instagram.com/username"
+                            >
+                            @error('instagram_url')
+                                <p class="text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <div class="space-y-2">
+                            <label for="youtube_url" class="text-sm font-semibold text-gray-700">YouTube URL</label>
+                            <input
+                                type="url"
+                                id="youtube_url"
+                                name="youtube_url"
+                                value="{{ old('youtube_url', $user->youtube_url) }}"
+                                class="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-2.5 text-gray-800 focus:border-orange-400 focus:outline-none focus:ring-2 focus:ring-orange-100"
+                                placeholder="https://www.youtube.com/channel/..."
+                            >
+                            @error('youtube_url')
+                                <p class="text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+                    @endif
+
                     <div class="space-y-2">
                         <label for="timezone" class="text-sm font-semibold text-gray-700">
                             Preferred timezone

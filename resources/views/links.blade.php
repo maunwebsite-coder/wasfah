@@ -189,7 +189,7 @@
                 </div>
                 <div class="flex items-center gap-3">
                     <a class="inline-flex h-12 w-12 items-center justify-center rounded-xl border border-gray-200 text-pink-600 hover:border-orange-200 hover:text-orange-600"
-                       href="https://www.instagram.com/wasfah.jo/"
+                       href="https://www.instagram.com/thedolci.jo/"
                        target="_blank"
                        rel="noopener">
                         <i class="fab fa-instagram text-xl"></i>

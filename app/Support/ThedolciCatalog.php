@@ -102,32 +102,32 @@ class ThedolciCatalog
         return collect([
             [
                 'image' => 'https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?auto=format&fit=crop&w=900&q=80',
-                'url' => 'https://instagram.com',
+                'url' => 'https://www.instagram.com/thedolci.jo/',
                 'caption' => 'Classic layers, fresh mascarpone.',
             ],
             [
                 'image' => 'https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=900&q=80',
-                'url' => 'https://instagram.com',
+                'url' => 'https://www.instagram.com/thedolci.jo/',
                 'caption' => 'Seasonal strawberry collection.',
             ],
             [
                 'image' => 'https://images.unsplash.com/photo-1551024601-bec78aea704b?auto=format&fit=crop&w=900&q=80',
-                'url' => 'https://instagram.com',
+                'url' => 'https://www.instagram.com/thedolci.jo/',
                 'caption' => 'Gift-ready tiramisu boxes.',
             ],
             [
                 'image' => 'https://images.unsplash.com/photo-1464305795204-6f5bbfc7fb81?auto=format&fit=crop&w=900&q=80',
-                'url' => 'https://instagram.com',
+                'url' => 'https://www.instagram.com/thedolci.jo/',
                 'caption' => 'Daily fresh production.',
             ],
             [
                 'image' => 'https://images.unsplash.com/photo-1488477181946-6428a0291777?auto=format&fit=crop&w=900&q=80',
-                'url' => 'https://instagram.com',
+                'url' => 'https://www.instagram.com/thedolci.jo/',
                 'caption' => 'Chocolate tiramisu moment.',
             ],
             [
                 'image' => 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=900&q=80',
-                'url' => 'https://instagram.com',
+                'url' => 'https://www.instagram.com/thedolci.jo/',
                 'caption' => 'Cloud kitchen, artisan quality.',
             ],
         ]);
@@ -397,6 +397,15 @@ class ThedolciCatalog
 
     private static function mapProductModel(ThedolciProduct $product): array
     {
+        $coverImage = self::normalizeProductImageUrl($product->cover_image);
+        $galleryImages = collect($product->gallery_images ?? [])
+            ->map(fn ($image) => self::normalizeProductImageUrl((string) $image))
+            ->filter()
+            ->reject(fn (string $image) => $image === $coverImage)
+            ->unique()
+            ->values()
+            ->all();
+
         return [
             'id' => $product->id,
             'slug' => $product->slug,
@@ -404,12 +413,8 @@ class ThedolciCatalog
             'headline' => $product->headline,
             'description' => $product->description,
             'story' => $product->story,
-            'cover_image' => self::normalizeProductImageUrl($product->cover_image),
-            'gallery_images' => collect($product->gallery_images ?? [])
-                ->map(fn ($image) => self::normalizeProductImageUrl((string) $image))
-                ->filter()
-                ->values()
-                ->all(),
+            'cover_image' => $coverImage,
+            'gallery_images' => $galleryImages,
             'size_prices' => self::normalizeSizePrices($product->size_prices ?? []),
             'pepper_price' => round((float) ($product->pepper_price ?? 0), 2),
             'packaging_options' => self::normalizePackagingOptions($product->packaging_options ?? []),
@@ -509,6 +514,15 @@ class ThedolciCatalog
                         return null;
                     }
 
+                    if ($price <= 0) {
+                        $extracted = self::extractTrailingPackagingPrice($name);
+
+                        if ($extracted !== null) {
+                            $name = $extracted['name'];
+                            $price = $extracted['price'];
+                        }
+                    }
+
                     return ['name' => $name, 'price' => $price];
                 }
 
@@ -533,6 +547,34 @@ class ThedolciCatalog
             ->all();
 
         return $normalized;
+    }
+
+    /**
+     * @return array{name: string, price: float}|null
+     */
+    private static function extractTrailingPackagingPrice(string $value): ?array
+    {
+        $cleaned = trim($value);
+
+        if ($cleaned === '') {
+            return null;
+        }
+
+        if (! preg_match('/^(?<name>.+?)\s*(?:\(?\s*\+?\s*(?:JOD|JD|\$)?\s*)?(?<price>\d+[.,]\d{1,2})\s*\)?$/iu', $cleaned, $matches)) {
+            return null;
+        }
+
+        $name = trim((string) ($matches['name'] ?? ''));
+        $rawPrice = str_replace(',', '.', trim((string) ($matches['price'] ?? '')));
+
+        if ($name === '' || $rawPrice === '' || ! is_numeric($rawPrice)) {
+            return null;
+        }
+
+        return [
+            'name' => $name,
+            'price' => round(max(0, (float) $rawPrice), 2),
+        ];
     }
 
     private static function couponsTableReady(): bool

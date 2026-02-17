@@ -31,6 +31,28 @@ class ThedolciProductImageTest extends TestCase
         $this->assertSame('/storage/thedolci/products/legacy-cover.png', $catalogProduct['cover_image']);
     }
 
+    public function test_catalog_excludes_cover_image_from_gallery_images(): void
+    {
+        ThedolciProduct::query()->create([
+            'slug' => 'gallery-dedup-product',
+            'name' => 'Gallery Dedup Product',
+            'cover_image' => '/storage/thedolci/products/cover.png',
+            'gallery_images' => [
+                '/storage/thedolci/products/cover.png',
+                '/storage/thedolci/products/detail-1.png',
+                '/storage/thedolci/products/detail-1.png',
+            ],
+            'size_prices' => ['Small' => 10.00, 'Medium' => 15.00],
+            'is_active' => true,
+        ]);
+
+        $catalogProduct = ThedolciCatalog::products(true)->firstWhere('slug', 'gallery-dedup-product');
+
+        $this->assertIsArray($catalogProduct);
+        $this->assertSame('/storage/thedolci/products/cover.png', $catalogProduct['cover_image']);
+        $this->assertSame(['/storage/thedolci/products/detail-1.png'], $catalogProduct['gallery_images']);
+    }
+
     public function test_admin_can_save_local_cover_image_path_for_single_product(): void
     {
         $this->withoutMiddleware(\Illuminate\Foundation\Http\Middleware\ValidateCsrfToken::class);

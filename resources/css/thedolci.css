@@ -1512,6 +1512,10 @@ body.dolci-body:not(.dolci-admin-body) {
     box-shadow: var(--dolci-shadow-strong);
 }
 
+.dolci-product-gallery .dolci-thumb-grid {
+    grid-template-columns: repeat(auto-fit, minmax(84px, 1fr));
+}
+
 .dolci-thumb {
     transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
@@ -1742,6 +1746,36 @@ body.dolci-body:not(.dolci-admin-body) {
         width: calc(100% - 1.2rem);
     }
 
+    .dolci-hero-copy {
+        padding: 1rem;
+    }
+
+    .dolci-hero-copy .dolci-kicker {
+        font-size: 0.62rem;
+        letter-spacing: 0.14em;
+        padding: 0.2rem 0.52rem;
+    }
+
+    .dolci-hero-copy h1 {
+        font-size: clamp(1.65rem, 7vw, 2rem);
+        line-height: 1.15;
+    }
+
+    .dolci-hero-copy > p {
+        font-size: 0.9rem;
+        margin-bottom: 0.8rem;
+    }
+
+    .dolci-hero-actions {
+        gap: 0.5rem;
+        margin-top: 0.85rem;
+    }
+
+    .dolci-hero-actions .dolci-btn {
+        padding: 0.58rem 0.8rem;
+        font-size: 0.82rem;
+    }
+
     .dolci-header-inner {
         padding: 0.45rem 0.5rem;
     }
@@ -1815,6 +1849,15 @@ body.dolci-body:not(.dolci-admin-body) {
     .dolci-hero-metrics article {
         flex: 0 0 min(84%, 15.5rem);
         scroll-snap-align: start;
+        padding: 0.48rem 0.55rem;
+    }
+
+    .dolci-hero-metrics strong {
+        font-size: 0.85rem;
+    }
+
+    .dolci-hero-metrics span {
+        font-size: 0.7rem;
     }
 
     .dolci-about-timeline article {
