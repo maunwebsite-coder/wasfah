@@ -99,11 +99,9 @@ class CartController extends Controller
 
     public function update(Request $request, string $key): RedirectResponse
     {
-        $data = $request->validate([
-            'quantity' => ['required', 'integer', 'min:1', 'max:30'],
-        ]);
+        $quantity = $this->validatedQuantity($request);
 
-        ThedolciCart::updateQuantity($key, (int) $data['quantity']);
+        ThedolciCart::updateQuantity($key, $quantity);
 
         return back()->with('success', 'Cart updated.');
     }
@@ -113,6 +111,26 @@ class CartController extends Controller
         ThedolciCart::remove($key);
 
         return back()->with('success', 'Item removed from cart.');
+    }
+
+    public function post(Request $request, string $key): RedirectResponse
+    {
+        $action = strtolower(trim((string) $request->input('action', '')));
+
+        if ($action === 'remove') {
+            return $this->remove($key);
+        }
+
+        if ($action === 'update' || $request->has('quantity')) {
+            $quantity = $this->validatedQuantity($request);
+            ThedolciCart::updateQuantity($key, $quantity);
+
+            return back()->with('success', 'Cart updated.');
+        }
+
+        return back()->withErrors([
+            'cart' => 'Unknown cart action.',
+        ]);
     }
 
     public function applyCoupon(Request $request): RedirectResponse
@@ -185,5 +203,14 @@ class CartController extends Controller
         $fallback = $normalized->first();
 
         return [$fallback['name'], (float) $fallback['price']];
+    }
+
+    private function validatedQuantity(Request $request): int
+    {
+        $data = $request->validate([
+            'quantity' => ['required', 'integer', 'min:1', 'max:30'],
+        ]);
+
+        return (int) $data['quantity'];
     }
 }

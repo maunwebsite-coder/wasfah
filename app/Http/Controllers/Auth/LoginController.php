@@ -7,8 +7,8 @@ use App\Models\User;
 use App\Models\Workshop;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Validation\ValidationException;
 
 class LoginController extends Controller
 {
@@ -36,9 +36,9 @@ class LoginController extends Controller
         }
 
         if (!Auth::attempt($credentials, $remember)) {
-            throw ValidationException::withMessages([
-                'email' => __('auth.validation.credentials'),
-            ]);
+            return back()
+                ->withErrors(['email' => __('auth.validation.credentials')])
+                ->withInput($request->except('password'));
         }
 
         $request->session()->regenerate();
@@ -51,9 +51,9 @@ class LoginController extends Controller
             $request->session()->invalidate();
             $request->session()->regenerateToken();
 
-            throw ValidationException::withMessages([
-                'email' => 'تسجيل الدخول متاح حالياً للأدمن فقط.',
-            ]);
+            return back()
+                ->withErrors(['email' => 'Admin access only. Please sign in with an administrator account.'])
+                ->withInput($request->except('password'));
         }
 
         $this->updateLoginMetadata($user, $request);
@@ -65,11 +65,18 @@ class LoginController extends Controller
         if ($pendingWorkshop = session('pending_workshop_booking')) {
             session()->forget('pending_workshop_booking');
 
-            $workshop = Workshop::find($pendingWorkshop);
-            if ($workshop) {
-                return redirect()
-                    ->route('workshop.show', $workshop->slug)
-                    ->with('success', __('auth.flash.workshop_success'));
+            try {
+                $workshop = Workshop::find($pendingWorkshop);
+                if ($workshop) {
+                    return redirect()
+                        ->route('workshop.show', $workshop->slug)
+                        ->with('success', __('auth.flash.workshop_success'));
+                }
+            } catch (\Throwable $exception) {
+                Log::warning('Pending workshop redirect skipped after login.', [
+                    'workshop_id' => $pendingWorkshop,
+                    'exception' => $exception->getMessage(),
+                ]);
             }
         }
 
@@ -105,25 +112,32 @@ class LoginController extends Controller
      */
     private function updateLoginMetadata(User $user, Request $request): void
     {
-        static $userColumns;
+        try {
+            static $userColumns;
 
-        if ($userColumns === null) {
-            $userColumns = Schema::connection($user->getConnectionName())
-                ->getColumnListing($user->getTable());
-        }
+            if ($userColumns === null) {
+                $userColumns = Schema::connection($user->getConnectionName())
+                    ->getColumnListing($user->getTable());
+            }
 
-        $data = [];
+            $data = [];
 
-        if (in_array('last_login_at', $userColumns, true)) {
-            $data['last_login_at'] = now();
-        }
+            if (in_array('last_login_at', $userColumns, true)) {
+                $data['last_login_at'] = now();
+            }
 
-        if (in_array('last_login_ip', $userColumns, true)) {
-            $data['last_login_ip'] = $request->ip();
-        }
+            if (in_array('last_login_ip', $userColumns, true)) {
+                $data['last_login_ip'] = $request->ip();
+            }
 
-        if (!empty($data)) {
-            $user->forceFill($data)->save();
+            if (!empty($data)) {
+                $user->forceFill($data)->save();
+            }
+        } catch (\Throwable $exception) {
+            Log::warning('Login metadata update skipped.', [
+                'user_id' => $user->id,
+                'exception' => $exception->getMessage(),
+            ]);
         }
     }
 }

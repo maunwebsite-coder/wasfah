@@ -18,6 +18,8 @@ class SocialiteController extends Controller
 {
     private const ALLOWED_FLOWS = [
         'login',
+        'register_customer',
+        'register_chef',
     ];
 
     public function __construct(
@@ -38,7 +40,10 @@ class SocialiteController extends Controller
             session(['pending_workshop_booking' => $pendingWorkshopId]);
         }
 
-        $flow = 'login';
+        $flow = $request->input('flow', 'login');
+        if (!in_array($flow, self::ALLOWED_FLOWS, true)) {
+            $flow = 'login';
+        }
 
         $intent = $request->input('intent', User::ROLE_CUSTOMER);
         if (!in_array($intent, [User::ROLE_CUSTOMER, User::ROLE_CHEF], true)) {

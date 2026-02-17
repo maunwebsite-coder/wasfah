@@ -593,6 +593,13 @@ img {
     object-fit: cover;
 }
 
+.dolci-cart-meta {
+    margin: 0;
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: var(--dolci-muted);
+}
+
 .dolci-cart-item {
     align-items: flex-start;
     border-bottom: 1px solid var(--dolci-border);
@@ -603,10 +610,59 @@ img {
     border-bottom: 0;
 }
 
+.dolci-cart-item-body p {
+    margin-bottom: 0.35rem;
+}
+
 .dolci-cart-actions {
     margin-left: auto;
     flex-direction: column;
     align-items: flex-start;
+    min-width: 190px;
+}
+
+.dolci-cart-line-total {
+    font-size: 1rem;
+}
+
+.dolci-qty-form {
+    width: 100%;
+    max-width: 180px;
+}
+
+.dolci-cart-label {
+    display: block;
+    margin-bottom: 0.35rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+.dolci-qty-stepper {
+    display: grid;
+    grid-template-columns: 2rem 1fr 2rem;
+    gap: 0.4rem;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.dolci-qty-btn {
+    border: 1px solid var(--dolci-border);
+    border-radius: 10px;
+    background: #fff;
+    color: var(--dolci-text);
+    height: 2rem;
+    cursor: pointer;
+    font-weight: 800;
+}
+
+.dolci-qty-input {
+    text-align: center;
+    margin: 0;
+    padding: 0.4rem 0.35rem;
+}
+
+.dolci-remove-form {
+    margin: 0;
 }
 
 .dolci-order-summary h3,
@@ -801,6 +857,20 @@ img {
 
     .dolci-subscribe-form button {
         width: 100%;
+    }
+
+    .dolci-cart-item {
+        flex-direction: column;
+    }
+
+    .dolci-cart-actions {
+        margin-left: 0;
+        min-width: 0;
+        width: 100%;
+    }
+
+    .dolci-qty-form {
+        max-width: 100%;
     }
 }
 
@@ -1752,7 +1822,7 @@ body.dolci-body.dolci-lock-scroll {
 .dolci-topbar-v2 {
     position: sticky;
     top: 0;
-    margin-top: 0;
+    margin: 0;
     z-index: 80;
     height: 60px;
     display: flex;
@@ -1765,7 +1835,13 @@ body.dolci-body.dolci-lock-scroll {
     box-shadow: none;
 }
 
+header.dolci-topbar-v2 {
+    padding-block: 0;
+}
+
+.dolci-topbar-v2::before,
 .dolci-topbar-v2::after {
+    content: none;
     display: none;
 }
 
@@ -1784,14 +1860,20 @@ body.dolci-body.dolci-lock-scroll {
 }
 
 .dolci-topbar-v2 .dolci-logo {
-    line-height: normal;
+    margin: 0;
+    line-height: 1;
+}
+
+.dolci-topbar-v2 .dolci-logo * {
+    margin: 0;
+    line-height: 1;
 }
 
 .dolci-topbar-v2 .dolci-logo-v2 {
-    display: inline-grid;
+    display: grid;
     gap: 0.02rem;
     align-items: center;
-    line-height: normal;
+    line-height: 1;
     padding: 0.32rem 0.48rem 0.32rem 0.38rem;
 }
 

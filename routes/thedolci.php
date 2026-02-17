@@ -27,11 +27,11 @@ Route::post('/subscribe', [StorefrontController::class, 'subscribe'])->name('the
 
 Route::get('/cart', [CartController::class, 'index'])->name('thedolci.cart');
 Route::post('/cart/add', [CartController::class, 'add'])->name('thedolci.cart.add');
+Route::get('/cart/coupon', fn () => redirect()->route('thedolci.cart'));
+Route::post('/cart/coupon', [CartController::class, 'applyCoupon'])->name('thedolci.cart.coupon');
 Route::post('/cart/{key}', [CartController::class, 'post'])->name('thedolci.cart.post');
 Route::patch('/cart/{key}', [CartController::class, 'update'])->name('thedolci.cart.update');
 Route::delete('/cart/{key}', [CartController::class, 'remove'])->name('thedolci.cart.remove');
-Route::get('/cart/coupon', fn () => redirect()->route('thedolci.cart'));
-Route::post('/cart/coupon', [CartController::class, 'applyCoupon'])->name('thedolci.cart.coupon');
 
 Route::get('/checkout', [CheckoutController::class, 'show'])->name('thedolci.checkout');
 Route::post('/checkout', [CheckoutController::class, 'place'])->name('thedolci.checkout.place');
