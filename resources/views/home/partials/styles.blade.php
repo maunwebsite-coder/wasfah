@@ -11,8 +11,7 @@
         /* Keep navbar flush to the top on home page */
         header[data-navbar-layer] {
             top: 0 !important;
-            margin-top: -4px !important; /* Nudge header slightly upward */
-            padding-top: 4px !important; /* Preserve internal spacing */
+            margin-top: 0 !important;
             padding-bottom: 0 !important;
         }
 

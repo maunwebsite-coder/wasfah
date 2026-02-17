@@ -67,7 +67,7 @@
 
                     <form method="POST" action="{{ route('thedolci.cart.coupon') }}" class="dolci-coupon-form">
                         @csrf
-                        <input type="text" name="coupon_code" placeholder="Coupon code" value="{{ $coupon['code'] ?? '' }}">
+                        <input type="text" name="coupon_code" placeholder="Coupon code" value="{{ $coupon['code'] ?? session('thedolci.preferred_coupon', '') }}">
                         <button type="submit" class="dolci-btn dolci-btn-secondary">Apply</button>
                     </form>
 

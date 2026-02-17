@@ -14,6 +14,8 @@ use Illuminate\View\View;
 
 class StorefrontController extends Controller
 {
+    private const NEWSLETTER_COUPON_CODE = 'FIRST10';
+
     public function home(): View
     {
         ThedolciCatalog::bootstrapDefaultsInDatabase();
@@ -134,8 +136,28 @@ class StorefrontController extends Controller
             ->all();
 
         session(['thedolci.newsletter' => $subscribers]);
+        session(['thedolci.preferred_coupon' => self::NEWSLETTER_COUPON_CODE]);
 
-        return back()->with('success', 'Subscribed successfully. You will receive new flavor drops and offers.');
+        $couponCode = self::NEWSLETTER_COUPON_CODE;
+        $activeCoupon = ThedolciCart::coupon();
+        $activeCouponCode = strtoupper((string) ($activeCoupon['code'] ?? ''));
+
+        if ($activeCouponCode === $couponCode && ((float) ($activeCoupon['discount'] ?? 0)) > 0) {
+            return back()->with('success', 'Subscribed successfully. Your FIRST10 discount is already active.');
+        }
+
+        $validation = ThedolciCatalog::validateCoupon($couponCode, ThedolciCart::subtotal());
+
+        if ($validation['valid']) {
+            ThedolciCart::setCoupon([
+                'code' => $validation['code'],
+                'discount' => $validation['discount'],
+            ]);
+
+            return back()->with('success', 'Subscribed successfully. FIRST10 has been activated for your cart.');
+        }
+
+        return back()->with('success', 'Subscribed successfully. FIRST10 is saved and ready when your cart qualifies.');
     }
 
     public function instagramFeed(): JsonResponse

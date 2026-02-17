@@ -59,7 +59,7 @@
     }
 
     $showBreadcrumbs = (bool) ($showBreadcrumbs ?? false);
-    $headerClasses = 'sticky top-0';
+    $headerClasses = 'fixed inset-x-0 top-0 w-full';
 @endphp
 
 <header class="{{ $headerClasses }} thedolci-navbar" data-navbar-layer data-header>

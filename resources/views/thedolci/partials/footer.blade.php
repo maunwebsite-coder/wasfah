@@ -18,12 +18,13 @@
 
         <div>
             <h4>Get Offers</h4>
-            <p>Subscribe and get first access to limited flavor drops and discount codes.</p>
+            <p>Subscribe to unlock <strong>FIRST10</strong> and get first access to limited flavor drops and discount codes.</p>
             <form action="{{ route('thedolci.subscribe') }}" method="POST" class="dolci-subscribe-form">
                 @csrf
                 <input type="email" name="email" placeholder="you@example.com" required>
-                <button type="submit">Subscribe</button>
+                <button type="submit">Activate Code</button>
             </form>
+            <small class="dolci-footer-note">Code is saved automatically and activates once your cart is eligible.</small>
         </div>
     </div>
     <div class="dolci-footer-bottom">

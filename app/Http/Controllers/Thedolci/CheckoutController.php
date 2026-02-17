@@ -74,6 +74,7 @@ class CheckoutController extends Controller
 
         $requestCoupon = trim((string) ($data['coupon_code'] ?? ''));
         $sessionCoupon = ThedolciCart::coupon();
+        $preferredCoupon = trim((string) session('thedolci.preferred_coupon', ''));
 
         if ($requestCoupon !== '') {
             $validation = ThedolciCatalog::validateCoupon($requestCoupon, $subtotal);
@@ -93,6 +94,18 @@ class CheckoutController extends Controller
                 $couponCode = (string) $revalidation['code'];
             } else {
                 ThedolciCart::clearCoupon();
+            }
+        } elseif ($preferredCoupon !== '') {
+            $preferredValidation = ThedolciCatalog::validateCoupon($preferredCoupon, $subtotal);
+
+            if ($preferredValidation['valid']) {
+                $discount = (float) $preferredValidation['discount'];
+                $couponCode = (string) $preferredValidation['code'];
+
+                ThedolciCart::setCoupon([
+                    'code' => $couponCode,
+                    'discount' => $discount,
+                ]);
             }
         }
 

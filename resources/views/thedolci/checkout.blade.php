@@ -54,7 +54,7 @@
                 </div>
 
                 <label>Coupon Code</label>
-                <input type="text" name="coupon_code" value="{{ old('coupon_code', $coupon['code'] ?? '') }}" placeholder="FIRST10">
+                <input type="text" name="coupon_code" value="{{ old('coupon_code', $coupon['code'] ?? session('thedolci.preferred_coupon', '')) }}" placeholder="FIRST10">
 
                 <label>Order Notes</label>
                 <textarea name="notes" rows="3" placeholder="Optional">{{ old('notes') }}</textarea>

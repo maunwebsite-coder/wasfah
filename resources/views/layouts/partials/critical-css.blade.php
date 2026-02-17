@@ -47,7 +47,7 @@
         right: 0;
         z-index: 9999 !important;
         margin: 0 !important;
-        padding-top: env(safe-area-inset-top, 0px);
+        padding-top: 0 !important;
         width: 100%;
         background: transparent;
         border-bottom: 0;

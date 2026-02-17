@@ -111,4 +111,10 @@
         --brand-teal-rgb: 143, 74, 80;
         --brand-gold-rgb: 215, 165, 172;
     }
+
+    html,
+    body {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
 }
