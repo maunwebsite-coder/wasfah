@@ -541,6 +541,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
+            if (field instanceof HTMLInputElement && field.type === 'hidden') {
+                return;
+            }
+
             if ('disabled' in field) {
                 field.disabled = isBusy;
             }
@@ -554,6 +558,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
+        const formData = new FormData(form);
         clearScheduledSubmit(form);
         form.dataset.isSubmitting = '1';
         setFormBusy(form, true);
@@ -568,7 +573,7 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const response = await fetch(form.action, {
                 method: (form.method || 'POST').toUpperCase(),
-                body: new FormData(form),
+                body: formData,
                 credentials: 'same-origin',
                 signal: controller.signal,
                 headers: {
