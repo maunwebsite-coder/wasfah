@@ -1,4 +1,4 @@
-﻿@php
+@php
     $homeActive = request()->routeIs('home');
     $shopActive = request()->routeIs('thedolci.shop') || request()->routeIs('thedolci.product');
     $seasonalActive = request()->routeIs('thedolci.seasonal');
