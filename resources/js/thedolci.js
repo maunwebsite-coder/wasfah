@@ -302,6 +302,12 @@ const initAdminInstagramEditor = () => {
     const addButton = section.querySelector('[data-instagram-add]');
     const template = section.querySelector('[data-instagram-template]');
     const countTarget = section.querySelector('[data-instagram-count]');
+    const summaryTarget = section.querySelector('[data-instagram-summary]');
+    const incompleteWarning = section.querySelector('[data-instagram-incomplete-warning]');
+    const handleInput = section.querySelector('[data-instagram-handle]');
+    const profileUrlInput = section.querySelector('[data-instagram-profile-url]');
+    const profileLink = section.querySelector('[data-instagram-profile-link]');
+    const syncProfileButton = section.querySelector('[data-instagram-sync-profile]');
     const maxPosts = Number(section.getAttribute('data-max-posts') || 12);
     const isDisabled = section.getAttribute('data-disabled') === '1';
 
@@ -309,41 +315,245 @@ const initAdminInstagramEditor = () => {
         return;
     }
 
+    const boundItems = new WeakSet();
+
+    const normalizeUrl = (value) => {
+        const trimmed = String(value || '').trim();
+
+        if (trimmed === '') {
+            return '';
+        }
+
+        if (/^https?:\/\//i.test(trimmed)) {
+            return trimmed;
+        }
+
+        if (/^\/\//.test(trimmed)) {
+            return `https:${trimmed}`;
+        }
+
+        if (/^[\w.-]+\.[a-z]{2,}(?:\/.*)?$/i.test(trimmed)) {
+            return `https://${trimmed}`;
+        }
+
+        return trimmed;
+    };
+
+    const normalizeHandle = (value) => {
+        let cleaned = String(value || '').trim();
+
+        if (cleaned === '') {
+            return '';
+        }
+
+        const profileMatch = cleaned.match(/(?:instagram\.com|instagr\.am)\/@?([^/?#]+)/i);
+        if (profileMatch && profileMatch[1]) {
+            cleaned = profileMatch[1];
+        }
+
+        cleaned = cleaned.replace(/^@+/, '');
+        cleaned = cleaned.replace(/\s+/g, '');
+        cleaned = cleaned.replace(/\/+$/, '');
+
+        if (cleaned.includes('/')) {
+            [cleaned] = cleaned.split('/');
+        }
+
+        if (cleaned === '') {
+            return '';
+        }
+
+        return `@${cleaned}`;
+    };
+
+    const buildProfileUrlFromHandle = (value) => {
+        const normalizedHandle = normalizeHandle(value).replace(/^@/, '');
+
+        if (normalizedHandle === '') {
+            return '';
+        }
+
+        return `https://www.instagram.com/${normalizedHandle}/`;
+    };
+
+    const updateProfileLink = () => {
+        let profileUrl = normalizeUrl(profileUrlInput?.value || '');
+
+        if (profileUrl === '') {
+            profileUrl = buildProfileUrlFromHandle(handleInput?.value || '');
+        }
+
+        if (profileLink) {
+            profileLink.href = profileUrl || 'https://www.instagram.com/';
+        }
+    };
+
+    const updateCaptionCount = (item) => {
+        const captionInput = item.querySelector('[data-instagram-caption]');
+        const counter = item.querySelector('[data-instagram-caption-count]');
+
+        if (!captionInput || !counter) {
+            return;
+        }
+
+        counter.textContent = String(captionInput.value.length);
+    };
+
+    const updatePostLink = (item) => {
+        const postUrlInput = item.querySelector('[data-instagram-post-url]');
+        const openPostLink = item.querySelector('[data-instagram-open-post]');
+
+        if (!postUrlInput || !openPostLink) {
+            return;
+        }
+
+        const normalizedUrl = normalizeUrl(postUrlInput.value);
+        const hasUrl = normalizedUrl !== '';
+
+        openPostLink.hidden = !hasUrl;
+
+        if (hasUrl) {
+            openPostLink.href = normalizedUrl;
+        }
+    };
+
     const updatePreview = (item) => {
         const imageInput = item.querySelector('[data-instagram-image]');
         const preview = item.querySelector('[data-instagram-preview]');
         const placeholder = item.querySelector('[data-instagram-placeholder]');
+        const imageError = item.querySelector('[data-instagram-image-error]');
 
-        if (!imageInput || !preview || !placeholder) {
+        if (!imageInput || !preview || !placeholder || !imageError) {
             return;
         }
 
-        const imageUrl = imageInput.value.trim();
+        const imageUrl = normalizeUrl(imageInput.value);
         const hasImage = imageUrl !== '';
 
-        preview.src = imageUrl;
-        preview.hidden = !hasImage;
-        placeholder.hidden = hasImage;
+        imageError.hidden = true;
+
+        if (!hasImage) {
+            preview.hidden = true;
+            placeholder.hidden = false;
+            preview.removeAttribute('src');
+            return;
+        }
+
+        if (preview.getAttribute('src') !== imageUrl) {
+            preview.setAttribute('src', imageUrl);
+        }
+
+        preview.hidden = false;
+        placeholder.hidden = true;
     };
 
-    const bindItem = (item) => {
-        const imageInput = item.querySelector('[data-instagram-image]');
-        const removeButton = item.querySelector('[data-instagram-remove]');
+    const getMissingFields = (item) => {
+        const imageValue = item.querySelector('[data-field="image"]')?.value.trim() || '';
+        const urlValue = item.querySelector('[data-field="url"]')?.value.trim() || '';
+        const captionValue = item.querySelector('[data-field="caption"]')?.value.trim() || '';
+        const missing = [];
 
-        imageInput?.addEventListener('input', () => updatePreview(item));
-        removeButton?.addEventListener('click', () => {
-            item.remove();
-            reindexItems();
+        if (imageValue === '') {
+            missing.push('image URL');
+        }
+
+        if (urlValue === '') {
+            missing.push('post URL');
+        }
+
+        if (captionValue === '') {
+            missing.push('caption');
+        }
+
+        return missing;
+    };
+
+    const updateItemState = (item) => {
+        const missingFields = getMissingFields(item);
+        const statusTarget = item.querySelector('[data-instagram-item-status]');
+        const missingTarget = item.querySelector('[data-instagram-missing]');
+        const isComplete = missingFields.length === 0;
+
+        item.classList.toggle('is-incomplete', !isComplete);
+        item.classList.toggle('is-complete', isComplete);
+
+        if (statusTarget) {
+            statusTarget.textContent = isComplete ? 'Ready' : 'Incomplete';
+            statusTarget.classList.toggle('is-ready', isComplete);
+            statusTarget.classList.toggle('is-incomplete', !isComplete);
+        }
+
+        if (missingTarget) {
+            missingTarget.hidden = isComplete;
+
+            if (!isComplete) {
+                missingTarget.textContent = `Missing fields: ${missingFields.join(', ')}.`;
+            }
+        }
+
+        return isComplete;
+    };
+
+    const refreshSummary = () => {
+        const items = Array.from(list.querySelectorAll('[data-instagram-item]'));
+        let readyCount = 0;
+
+        items.forEach((item) => {
+            updatePreview(item);
+            updatePostLink(item);
+            updateCaptionCount(item);
+
+            if (updateItemState(item)) {
+                readyCount += 1;
+            }
         });
 
-        updatePreview(item);
+        const incompleteCount = items.length - readyCount;
+        const isAtLimit = items.length >= maxPosts;
+
+        if (countTarget) {
+            countTarget.textContent = String(items.length);
+        }
+
+        if (summaryTarget) {
+            if (incompleteCount === 0) {
+                const postWord = readyCount === 1 ? 'post' : 'posts';
+                const limitSuffix = isAtLimit ? ' (max reached).' : '.';
+                summaryTarget.textContent = `${readyCount} ${postWord} ready to publish${limitSuffix}`;
+            } else {
+                summaryTarget.textContent = `${readyCount} ready, ${incompleteCount} incomplete. Incomplete posts will not be saved.`;
+            }
+        }
+
+        if (incompleteWarning) {
+            incompleteWarning.hidden = incompleteCount === 0;
+        }
+    };
+
+    const createItemFromTemplate = () => {
+        const baseItem = template.content.firstElementChild;
+
+        if (!baseItem) {
+            return null;
+        }
+
+        return baseItem.cloneNode(true);
     };
 
     const reindexItems = () => {
-        const items = Array.from(list.querySelectorAll('[data-instagram-item]'));
+        let items = Array.from(list.querySelectorAll('[data-instagram-item]'));
 
         if (items.length === 0) {
-            addInstagramPost();
+            const fallbackItem = createItemFromTemplate();
+
+            if (fallbackItem) {
+                list.appendChild(fallbackItem);
+                bindItem(fallbackItem);
+                items = [fallbackItem];
+            }
+        }
+
+        if (!items.length) {
             return;
         }
 
@@ -362,48 +572,210 @@ const initAdminInstagramEditor = () => {
                     field.setAttribute('name', `instagram_posts[${index}][${key}]`);
                 }
             });
-        });
 
-        const canAdd = !isDisabled && items.length < maxPosts;
-        if (addButton) {
-            addButton.disabled = !canAdd;
-        }
-
-        items.forEach((item) => {
             const removeButton = item.querySelector('[data-instagram-remove]');
+            const moveUpButton = item.querySelector('[data-instagram-move-up]');
+            const moveDownButton = item.querySelector('[data-instagram-move-down]');
+            const duplicateButton = item.querySelector('[data-instagram-duplicate]');
+            const isOnlyItem = items.length <= 1;
+            const isAtTop = index === 0;
+            const isAtBottom = index === items.length - 1;
+            const isAtLimit = items.length >= maxPosts;
+
             if (removeButton) {
-                removeButton.disabled = isDisabled || items.length <= 1;
+                removeButton.disabled = isDisabled || isOnlyItem;
+            }
+
+            if (moveUpButton) {
+                moveUpButton.disabled = isDisabled || isAtTop;
+            }
+
+            if (moveDownButton) {
+                moveDownButton.disabled = isDisabled || isAtBottom;
+            }
+
+            if (duplicateButton) {
+                duplicateButton.disabled = isDisabled || isAtLimit;
             }
         });
 
-        if (countTarget) {
-            countTarget.textContent = String(items.length);
+        if (addButton) {
+            addButton.disabled = isDisabled || items.length >= maxPosts;
         }
+
+        refreshSummary();
     };
 
-    const addInstagramPost = () => {
+    const addInstagramPost = (options = {}) => {
+        const sourceItem = options.sourceItem instanceof HTMLElement ? options.sourceItem : null;
+        const afterItem = options.afterItem instanceof HTMLElement ? options.afterItem : null;
         const itemCount = list.querySelectorAll('[data-instagram-item]').length;
 
-        if (itemCount >= maxPosts) {
-            return;
+        if (isDisabled || itemCount >= maxPosts) {
+            return null;
         }
 
-        const baseItem = template.content.firstElementChild;
+        const newItem = sourceItem ? sourceItem.cloneNode(true) : createItemFromTemplate();
 
-        if (!baseItem) {
-            return;
+        if (!newItem) {
+            return null;
         }
 
-        const newItem = baseItem.cloneNode(true);
-        list.appendChild(newItem);
+        if (afterItem && afterItem.parentElement === list) {
+            list.insertBefore(newItem, afterItem.nextElementSibling);
+        } else {
+            list.appendChild(newItem);
+        }
+
         bindItem(newItem);
         reindexItems();
+
+        return newItem;
+    };
+
+    const bindItem = (item) => {
+        if (!item || boundItems.has(item)) {
+            return;
+        }
+
+        boundItems.add(item);
+
+        const imageInput = item.querySelector('[data-instagram-image]');
+        const postUrlInput = item.querySelector('[data-instagram-post-url]');
+        const captionInput = item.querySelector('[data-instagram-caption]');
+        const removeButton = item.querySelector('[data-instagram-remove]');
+        const moveUpButton = item.querySelector('[data-instagram-move-up]');
+        const moveDownButton = item.querySelector('[data-instagram-move-down]');
+        const duplicateButton = item.querySelector('[data-instagram-duplicate]');
+        const preview = item.querySelector('[data-instagram-preview]');
+        const placeholder = item.querySelector('[data-instagram-placeholder]');
+        const imageError = item.querySelector('[data-instagram-image-error]');
+
+        const updateItem = () => {
+            updatePreview(item);
+            updatePostLink(item);
+            updateCaptionCount(item);
+            updateItemState(item);
+            refreshSummary();
+        };
+
+        imageInput?.addEventListener('input', updateItem);
+        postUrlInput?.addEventListener('input', updateItem);
+        captionInput?.addEventListener('input', updateItem);
+
+        imageInput?.addEventListener('blur', () => {
+            imageInput.value = normalizeUrl(imageInput.value);
+            updateItem();
+        });
+
+        postUrlInput?.addEventListener('blur', () => {
+            postUrlInput.value = normalizeUrl(postUrlInput.value);
+            updateItem();
+        });
+
+        removeButton?.addEventListener('click', () => {
+            const hasAnyContent = getMissingFields(item).length < 3;
+
+            if (hasAnyContent && !window.confirm('Remove this post?')) {
+                return;
+            }
+
+            item.remove();
+            reindexItems();
+        });
+
+        moveUpButton?.addEventListener('click', () => {
+            const previousItem = item.previousElementSibling;
+
+            if (!previousItem) {
+                return;
+            }
+
+            list.insertBefore(item, previousItem);
+            reindexItems();
+            item.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        });
+
+        moveDownButton?.addEventListener('click', () => {
+            const nextItem = item.nextElementSibling;
+
+            if (!nextItem) {
+                return;
+            }
+
+            list.insertBefore(nextItem, item);
+            reindexItems();
+            item.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        });
+
+        duplicateButton?.addEventListener('click', () => {
+            const duplicatedItem = addInstagramPost({
+                sourceItem: item,
+                afterItem: item,
+            });
+
+            if (duplicatedItem) {
+                duplicatedItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        });
+
+        if (preview && placeholder && imageError) {
+            preview.addEventListener('load', () => {
+                imageError.hidden = true;
+                preview.hidden = false;
+                placeholder.hidden = true;
+            });
+
+            preview.addEventListener('error', () => {
+                preview.hidden = true;
+                placeholder.hidden = true;
+                imageError.hidden = false;
+            });
+        }
+
+        updateItem();
     };
 
     Array.from(list.querySelectorAll('[data-instagram-item]')).forEach(bindItem);
 
     addButton?.addEventListener('click', addInstagramPost);
 
+    handleInput?.addEventListener('blur', () => {
+        handleInput.value = normalizeHandle(handleInput.value);
+        updateProfileLink();
+    });
+
+    profileUrlInput?.addEventListener('input', updateProfileLink);
+    profileUrlInput?.addEventListener('blur', () => {
+        profileUrlInput.value = normalizeUrl(profileUrlInput.value);
+
+        if (handleInput && handleInput.value.trim() === '') {
+            handleInput.value = normalizeHandle(profileUrlInput.value);
+        }
+
+        updateProfileLink();
+    });
+
+    syncProfileButton?.addEventListener('click', () => {
+        const normalizedHandle = normalizeHandle(handleInput?.value || '');
+
+        if (handleInput) {
+            handleInput.value = normalizedHandle;
+        }
+
+        if (!profileUrlInput) {
+            return;
+        }
+
+        const profileUrl = buildProfileUrlFromHandle(normalizedHandle);
+        if (profileUrl !== '') {
+            profileUrlInput.value = profileUrl;
+        }
+
+        updateProfileLink();
+    });
+
+    updateProfileLink();
     reindexItems();
 };
 

@@ -9,17 +9,63 @@
         ?? request()->input('pending_workshop_booking');
     $currentLocale = app()->getLocale();
     $isArabic = $currentLocale === 'ar';
+    $isAdminLoginMode = request()->query('mode') === 'admin';
     $alternateLocale = $isArabic ? 'en' : 'ar';
     $languageLabel = data_get(\Illuminate\Support\Facades\Lang::get('navbar.language'), 'short.' . $alternateLocale, strtoupper($alternateLocale));
-    $authQuickLinks = [
-        ['href' => route('thedolci.shop'), 'label' => 'Shop'],
-        ['href' => route('thedolci.seasonal'), 'label' => 'Seasonal'],
-        ['href' => route('about'), 'label' => 'About Thedolci'],
-        ['href' => route('contact'), 'label' => 'Contact us'],
-        ['href' => route('thedolci.track-order'), 'label' => 'Track order'],
-        ['href' => route('legal.terms'), 'label' => 'Legal terms'],
-        ['href' => route('legal.privacy'), 'label' => 'Privacy Policy'],
-    ];
+    $authQuickLinks = $isAdminLoginMode
+        ? [
+            ['href' => route('home'), 'label' => 'Storefront'],
+            ['href' => route('thedolci.track-order'), 'label' => 'Track order'],
+            ['href' => route('contact'), 'label' => 'Support'],
+            ['href' => route('legal.terms'), 'label' => 'Terms'],
+            ['href' => route('legal.privacy'), 'label' => 'Privacy'],
+        ]
+        : [
+            ['href' => route('thedolci.shop'), 'label' => 'Shop'],
+            ['href' => route('thedolci.seasonal'), 'label' => 'Seasonal'],
+            ['href' => route('about'), 'label' => 'About Thedolci'],
+            ['href' => route('contact'), 'label' => 'Contact us'],
+            ['href' => route('thedolci.track-order'), 'label' => 'Track order'],
+            ['href' => route('legal.terms'), 'label' => 'Legal terms'],
+            ['href' => route('legal.privacy'), 'label' => 'Privacy Policy'],
+        ];
+    $authNavAriaLabel = $isAdminLoginMode ? 'Thedolci admin quick links' : 'Thedolci account links';
+
+    if ($isAdminLoginMode) {
+        $storyKicker = 'Thedolci Admin Gateway';
+        $storyHeadline = 'Sign in to access the new storefront admin workspace.';
+        $storySubcopy = 'A focused workspace for orders, products, reviews, and storefront content in one place.';
+        $storyIntroDefault = 'This entry point is tailored for administrator accounts only.';
+        $storyPoints = [
+            __('auth.google.flags.secure'),
+            'Role-based admin access',
+            'Fast storefront content control',
+        ];
+        $storyChips = ['Admin Panel', 'Orders', 'Storefront'];
+        $panelKicker = 'Admin Sign In';
+        $panelHeadline = 'Sign in to admin';
+        $panelSubcopy = 'Password sign-in is available for approved administrator accounts.';
+        $googleCallToAction = 'Continue with Google (existing account)';
+        $emailDividerLabel = 'Or use administrator email and password';
+        $submitLabel = 'Sign in to admin';
+    } else {
+        $storyKicker = __('auth.brand.eyebrow');
+        $storyHeadline = __('auth.brand.headline');
+        $storySubcopy = __('auth.brand.subcopy');
+        $storyIntroDefault = __('auth.intro.default');
+        $storyPoints = [
+            __('auth.google.flags.secure'),
+            __('auth.google.flags.support'),
+            __('auth.form.remember'),
+        ];
+        $storyChips = [__('auth.intent.customer'), __('auth.intent.chef')];
+        $panelKicker = __('auth.brand.eyebrow');
+        $panelHeadline = __('auth.form.submit');
+        $panelSubcopy = __('auth.brand.headline');
+        $googleCallToAction = __('auth.google.cta');
+        $emailDividerLabel = __('auth.divider.email');
+        $submitLabel = __('auth.form.submit');
+    }
 @endphp
 
 @push('preloads')
@@ -167,6 +213,40 @@
     grid-template-columns: minmax(360px, 1.08fr) minmax(320px, 0.92fr);
     gap: clamp(0.95rem, 2vw, 1.4rem);
     align-items: stretch;
+}
+
+.auth-grid[data-auth-mode="admin"] {
+    grid-template-columns: minmax(340px, 0.95fr) minmax(360px, 1.05fr);
+}
+
+.auth-grid[data-auth-mode="admin"] .auth-story {
+    background:
+        radial-gradient(circle at 82% 18%, rgba(199, 166, 106, 0.22), transparent 42%),
+        linear-gradient(155deg, rgba(255, 255, 255, 0.95), rgba(247, 236, 224, 0.9));
+}
+
+.auth-grid[data-auth-mode="admin"] .story-kicker,
+.auth-grid[data-auth-mode="admin"] .panel-kicker,
+.auth-grid[data-auth-mode="admin"] .micro-flag {
+    color: #6b2e30;
+}
+
+.auth-grid[data-auth-mode="admin"] .google-btn {
+    background: linear-gradient(145deg, #fffdf9, #f4e8db);
+    border-color: rgba(107, 46, 48, 0.28);
+    color: #4d1f22;
+}
+
+.auth-grid[data-auth-mode="admin"] .primary-action {
+    background: linear-gradient(135deg, #6b2e30, #7f3a3d);
+}
+
+.auth-grid[data-auth-mode="admin"] .ghost-link {
+    color: #6b2e30;
+}
+
+.auth-grid[data-auth-mode="admin"] .ghost-link:hover {
+    color: #3d2418;
 }
 
 .auth-story,
@@ -740,7 +820,7 @@
                 <button type="submit" class="auth-language-btn">{{ $languageLabel }}</button>
             </form>
 
-            <nav class="auth-nav" aria-label="Thedolci account links">
+            <nav class="auth-nav" aria-label="{{ $authNavAriaLabel }}">
                 @foreach ($authQuickLinks as $link)
                     @if (! $loop->first)
                         <span class="auth-nav-separator" aria-hidden="true">&bull;</span>
@@ -750,38 +830,41 @@
             </nav>
         </div>
 
-        <div class="auth-grid" data-intent-state="customer">
+        <div class="auth-grid" data-auth-mode="{{ $isAdminLoginMode ? 'admin' : 'default' }}" data-intent-state="{{ $isAdminLoginMode ? 'admin' : 'customer' }}">
             <section class="auth-story">
                 <a href="{{ route('home') }}" class="brand-logo" aria-label="{{ __('auth.logo_alt') }}">
                     <span class="brand-logo__lead">the</span><span class="brand-logo__accent">dolci</span><span class="brand-logo__dot" aria-hidden="true"></span>
                 </a>
 
-                <p class="story-kicker">{{ __('auth.brand.eyebrow') }}</p>
-                <h1 class="story-headline">{{ __('auth.brand.headline') }}</h1>
-                <p class="story-subcopy">{{ __('auth.brand.subcopy') }}</p>
+                <p class="story-kicker">{{ $storyKicker }}</p>
+                <h1 class="story-headline">{{ $storyHeadline }}</h1>
+                <p class="story-subcopy">{{ $storySubcopy }}</p>
 
                 <div class="story-intro">
-                    <p data-text-switch="intro-default">{{ __('auth.intro.default') }}</p>
-                    <p class="hidden" data-text-switch="intro-chef">{{ __('auth.intro.chef') }}</p>
+                    <p data-text-switch="intro-default">{{ $storyIntroDefault }}</p>
+                    @unless($isAdminLoginMode)
+                        <p class="hidden" data-text-switch="intro-chef">{{ __('auth.intro.chef') }}</p>
+                    @endunless
                 </div>
 
                 <ul class="story-points">
-                    <li><i class="fa-solid fa-shield-halved" aria-hidden="true"></i> {{ __('auth.google.flags.secure') }}</li>
-                    <li><i class="fa-solid fa-comments" aria-hidden="true"></i> {{ __('auth.google.flags.support') }}</li>
-                    <li><i class="fa-solid fa-circle-check" aria-hidden="true"></i> {{ __('auth.form.remember') }}</li>
+                    @foreach ($storyPoints as $point)
+                        <li><i class="fa-solid fa-shield-halved" aria-hidden="true"></i> {{ $point }}</li>
+                    @endforeach
                 </ul>
 
                 <div class="story-chips">
-                    <span class="story-chip">{{ __('auth.intent.customer') }}</span>
-                    <span class="story-chip">{{ __('auth.intent.chef') }}</span>
+                    @foreach ($storyChips as $chip)
+                        <span class="story-chip">{{ $chip }}</span>
+                    @endforeach
                 </div>
             </section>
 
             <section class="auth-panel">
                 <div class="panel-head">
-                    <p class="panel-kicker">{{ __('auth.brand.eyebrow') }}</p>
-                    <h2 class="panel-headline">{{ __('auth.form.submit') }}</h2>
-                    <p class="panel-subcopy">{{ __('auth.brand.headline') }}</p>
+                    <p class="panel-kicker">{{ $panelKicker }}</p>
+                    <h2 class="panel-headline">{{ $panelHeadline }}</h2>
+                    <p class="panel-subcopy">{{ $panelSubcopy }}</p>
                 </div>
 
                 <div class="inline-alerts" aria-live="polite" data-copy-switch>
@@ -822,16 +905,18 @@
                     @endif
                 </div>
 
-                <div class="intent-switch" data-intent-switch="login">
-                    <button type="button" class="intent-pill is-active" data-role="customer">{{ __('auth.intent.customer') }}</button>
-                    <button type="button" class="intent-pill" data-role="chef">{{ __('auth.intent.chef') }}</button>
-                </div>
+                @unless($isAdminLoginMode)
+                    <div class="intent-switch" data-intent-switch="login">
+                        <button type="button" class="intent-pill is-active" data-role="customer">{{ __('auth.intent.customer') }}</button>
+                        <button type="button" class="intent-pill" data-role="chef">{{ __('auth.intent.chef') }}</button>
+                    </div>
+                @endunless
 
                 <div class="google-stack">
                     <p class="google-label">Google</p>
-                    <button type="button" class="google-btn" data-google-button data-sync-role="hybrid">
+                    <button type="button" class="google-btn" data-google-button data-sync-role="{{ $isAdminLoginMode ? 'login' : 'hybrid' }}">
                         <img src="https://img.icons8.com/color/48/google-logo.png" alt="Google" loading="lazy" width="48" height="48" decoding="async">
-                        <span>{{ __('auth.google.cta') }}</span>
+                        <span>{{ $googleCallToAction }}</span>
                     </button>
                     <div class="google-meta">
                         <span class="micro-flag">{{ __('auth.google.flags.secure') }}</span>
@@ -839,7 +924,7 @@
                     </div>
                 </div>
 
-                <div class="divider">{{ __('auth.divider.email') }}</div>
+                <div class="divider">{{ $emailDividerLabel }}</div>
 
                 <form action="{{ route('login.password') }}" method="POST" class="auth-form" novalidate>
                     @csrf
@@ -891,7 +976,7 @@
                         <a href="{{ route('contact') }}" class="ghost-link">{{ __('auth.form.help') }}</a>
                     </div>
 
-                    <button type="submit" class="primary-action">{{ __('auth.form.submit') }}</button>
+                    <button type="submit" class="primary-action">{{ $submitLabel }}</button>
                 </form>
             </section>
         </div>

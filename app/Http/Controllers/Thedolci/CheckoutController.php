@@ -22,7 +22,8 @@ class CheckoutController extends Controller
 
     public function show(): View|RedirectResponse
     {
-        $items = ThedolciCart::items();
+        $syncResult = ThedolciCart::reconcileWithCatalog();
+        $items = $syncResult['items'];
 
         if ($items->isEmpty()) {
             return redirect()->route('thedolci.shop')->withErrors(['cart' => 'Your cart is empty.']);
@@ -49,15 +50,34 @@ class CheckoutController extends Controller
             'total' => $total,
             'deliverySlots' => ThedolciCatalog::deliverySlots(),
             'couponsEnabled' => $couponsEnabled,
+            'cartSyncMessages' => (array) ($syncResult['messages'] ?? []),
         ]);
     }
 
     public function place(Request $request): RedirectResponse
     {
-        $items = ThedolciCart::items();
+        $syncResult = ThedolciCart::reconcileWithCatalog();
+        $items = $syncResult['items'];
 
         if ($items->isEmpty()) {
             return redirect()->route('thedolci.shop')->withErrors(['cart' => 'Your cart is empty.']);
+        }
+
+        if ($syncResult['changed']) {
+            $warningMessage = collect((array) ($syncResult['messages'] ?? []))
+                ->map(fn ($message) => trim((string) $message))
+                ->filter()
+                ->unique()
+                ->implode(' ');
+
+            $response = redirect()->route('thedolci.cart')
+                ->withErrors(['cart' => 'Your cart was updated based on latest availability. Please review it before checkout.']);
+
+            if ($warningMessage !== '') {
+                $response->with('warning', $warningMessage);
+            }
+
+            return $response;
         }
 
         $data = $request->validate([

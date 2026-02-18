@@ -27,6 +27,7 @@ Route::post('/subscribe', [StorefrontController::class, 'subscribe'])->name('the
 
 Route::get('/cart', [CartController::class, 'index'])->name('thedolci.cart');
 Route::post('/cart/add', [CartController::class, 'add'])->name('thedolci.cart.add');
+Route::delete('/cart', [CartController::class, 'clear'])->name('thedolci.cart.clear');
 Route::get('/cart/coupon', fn () => redirect()->route('thedolci.cart'));
 Route::post('/cart/coupon', [CartController::class, 'applyCoupon'])->middleware(['auth', 'admin'])->name('thedolci.cart.coupon');
 Route::post('/cart/{key}', [CartController::class, 'post'])->name('thedolci.cart.post');

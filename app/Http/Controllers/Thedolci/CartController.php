@@ -14,25 +14,45 @@ class CartController extends Controller
 {
     public function index(): View
     {
-        $productsBySlug = ThedolciCatalog::products()->keyBy('slug');
+        $products = ThedolciCatalog::products();
+        $productsBySlug = $products->keyBy('slug');
+        $syncResult = ThedolciCart::reconcileWithCatalog($products);
+        $availabilityBySlug = (array) ($syncResult['available_by_slug'] ?? []);
+        $allocatedBySlug = [];
 
-        $items = ThedolciCart::items()->map(function (array $item) use ($productsBySlug) {
+        $items = $syncResult['items']->map(function (array $item) use ($productsBySlug, $availabilityBySlug, &$allocatedBySlug) {
             $slug = trim((string) ($item['slug'] ?? ''));
+            $quantity = max(1, (int) ($item['quantity'] ?? 1));
+            $availableForProduct = $availabilityBySlug[$slug] ?? null;
+            $allocatedBefore = (int) ($allocatedBySlug[$slug] ?? 0);
+            $availableForLine = $availableForProduct !== null
+                ? max(0, $availableForProduct - $allocatedBefore)
+                : null;
+
+            $allocatedBySlug[$slug] = $allocatedBefore + $quantity;
+
+            $remainingAfterLine = $availableForProduct !== null
+                ? max(0, $availableForProduct - (int) $allocatedBySlug[$slug])
+                : null;
+
             $item['available_packaging_options'] = $this->normalizePackagingOptions(
                 (array) data_get($productsBySlug, $slug . '.packaging_options', [])
             )->all();
+            $item['inventory'] = [
+                'is_limited' => $availableForProduct !== null,
+                'available_for_product' => $availableForProduct,
+                'available_for_line' => $availableForLine,
+                'remaining_after_line' => $remainingAfterLine,
+            ];
 
             return $item;
         });
 
         $subtotal = ThedolciCart::subtotal();
         $couponsEnabled = $this->couponsEnabledForCurrentUser();
+        $couponMessages = [];
+        $coupon = $this->resolveActiveCoupon($subtotal, $couponsEnabled, $couponMessages);
 
-        if (! $couponsEnabled) {
-            ThedolciCart::clearCoupon();
-        }
-
-        $coupon = $couponsEnabled ? ThedolciCart::coupon() : null;
         $discount = $couponsEnabled ? (float) ($coupon['discount'] ?? 0) : 0;
         $total = max(0, round($subtotal - $discount, 2));
 
@@ -44,6 +64,10 @@ class CartController extends Controller
             'discount' => $discount,
             'total' => $total,
             'couponsEnabled' => $couponsEnabled,
+            'cartSyncMessages' => collect(array_merge(
+                (array) ($syncResult['messages'] ?? []),
+                $couponMessages
+            ))->filter()->unique()->values()->all(),
         ]);
     }
 
@@ -58,9 +82,10 @@ class CartController extends Controller
             'redirect_to' => ['nullable', 'in:cart,checkout,back'],
         ]);
 
-        $product = ThedolciCatalog::findProduct($data['slug']);
+        $products = ThedolciCatalog::products();
+        $product = $products->firstWhere('slug', $data['slug']);
 
-        if (! $product) {
+        if (! is_array($product)) {
             return back()->withErrors(['product' => 'Selected product is not available.']);
         }
 
@@ -71,6 +96,26 @@ class CartController extends Controller
             : (array_key_first($prices) ?? 'Standard');
 
         $unitPrice = (float) ($prices[$size] ?? 0);
+        $requestedQuantity = (int) ($data['quantity'] ?? 1);
+        $stockWarning = null;
+        $availabilityBySlug = ThedolciCart::availableQuantitiesBySlug($products);
+        $availableForProduct = $availabilityBySlug[(string) $product['slug']] ?? null;
+
+        if ($availableForProduct !== null) {
+            $alreadyInCart = ThedolciCart::quantityForSlug((string) $product['slug']);
+            $remainingForAdd = max(0, $availableForProduct - $alreadyInCart);
+
+            if ($remainingForAdd <= 0) {
+                return back()
+                    ->withErrors(['product' => 'This limited item is currently out of stock.'])
+                    ->withInput();
+            }
+
+            if ($requestedQuantity > $remainingForAdd) {
+                $requestedQuantity = $remainingForAdd;
+                $stockWarning = $this->limitedStockWarning($requestedQuantity, (string) ($product['name'] ?? 'this item'));
+            }
+        }
 
         $pepperPrice = round(max(0, (float) ($product['pepper_price'] ?? 0)), 2);
         $addPepper = (bool) ($data['add_pepper'] ?? false);
@@ -100,7 +145,7 @@ class CartController extends Controller
             'name' => $product['name'],
             'image' => $product['cover_image'],
             'size' => $size,
-            'quantity' => (int) ($data['quantity'] ?? 1),
+            'quantity' => $requestedQuantity,
             'unit_price' => $unitPrice,
             'customizations' => [
                 'add_pepper' => $addPepper,
@@ -110,17 +155,22 @@ class CartController extends Controller
             ],
         ]);
 
+        $syncResult = ThedolciCart::reconcileWithCatalog($products);
         $redirect = $data['redirect_to'] ?? 'cart';
+        $response = $this->redirectByPreference($redirect)
+            ->with('success', 'Item added to cart.');
 
-        if ($redirect === 'checkout') {
-            return redirect()->route('thedolci.checkout')->with('success', 'Item added to cart.');
-        }
+        return $this->withWarning($response, array_merge(
+            $stockWarning ? [$stockWarning] : [],
+            (array) ($syncResult['messages'] ?? [])
+        ));
+    }
 
-        if ($redirect === 'back') {
-            return back()->with('success', 'Item added to cart.');
-        }
+    public function clear(): RedirectResponse
+    {
+        ThedolciCart::clear();
 
-        return redirect()->route('thedolci.cart')->with('success', 'Item added to cart.');
+        return back()->with('success', 'Cart cleared.');
     }
 
     public function update(Request $request, string $key): RedirectResponse
@@ -128,15 +178,23 @@ class CartController extends Controller
         $quantity = $this->validatedQuantity($request);
 
         ThedolciCart::updateQuantity($key, $quantity);
+        $syncResult = ThedolciCart::reconcileWithCatalog();
 
-        return back()->with('success', 'Cart updated.');
+        return $this->withWarning(
+            back()->with('success', 'Cart updated.'),
+            (array) ($syncResult['messages'] ?? [])
+        );
     }
 
     public function remove(string $key): RedirectResponse
     {
         ThedolciCart::remove($key);
+        $syncResult = ThedolciCart::reconcileWithCatalog();
 
-        return back()->with('success', 'Item removed from cart.');
+        return $this->withWarning(
+            back()->with('success', 'Item removed from cart.'),
+            (array) ($syncResult['messages'] ?? [])
+        );
     }
 
     public function updatePackaging(Request $request, string $key): RedirectResponse
@@ -199,7 +257,12 @@ class CartController extends Controller
             ],
         ]);
 
-        return back()->with('success', 'Packaging updated.');
+        $syncResult = ThedolciCart::reconcileWithCatalog();
+
+        return $this->withWarning(
+            back()->with('success', 'Packaging updated.'),
+            (array) ($syncResult['messages'] ?? [])
+        );
     }
 
     public function post(Request $request, string $key): RedirectResponse
@@ -217,8 +280,12 @@ class CartController extends Controller
         if ($action === 'update' || $request->has('quantity')) {
             $quantity = $this->validatedQuantity($request);
             ThedolciCart::updateQuantity($key, $quantity);
+            $syncResult = ThedolciCart::reconcileWithCatalog();
 
-            return back()->with('success', 'Cart updated.');
+            return $this->withWarning(
+                back()->with('success', 'Cart updated.'),
+                (array) ($syncResult['messages'] ?? [])
+            );
         }
 
         return back()->withErrors([
@@ -238,6 +305,7 @@ class CartController extends Controller
             'coupon_code' => ['required', 'string', 'max:30'],
         ]);
 
+        $syncResult = ThedolciCart::reconcileWithCatalog();
         $subtotal = ThedolciCart::subtotal();
         $result = ThedolciCatalog::validateCoupon($data['coupon_code'], $subtotal);
 
@@ -252,12 +320,104 @@ class CartController extends Controller
             'discount' => $result['discount'],
         ]);
 
-        return back()->with('success', 'Coupon applied.');
+        return $this->withWarning(
+            back()->with('success', 'Coupon applied.'),
+            (array) ($syncResult['messages'] ?? [])
+        );
     }
 
     private function couponsEnabledForCurrentUser(): bool
     {
         return (bool) auth()->user()?->isAdmin();
+    }
+
+    private function redirectByPreference(string $redirect): RedirectResponse
+    {
+        if ($redirect === 'checkout') {
+            return redirect()->route('thedolci.checkout');
+        }
+
+        if ($redirect === 'back') {
+            return back();
+        }
+
+        return redirect()->route('thedolci.cart');
+    }
+
+    /**
+     * @param array<int, string> $warnings
+     */
+    private function withWarning(RedirectResponse $response, array $warnings): RedirectResponse
+    {
+        $message = collect($warnings)
+            ->map(fn ($warning) => trim((string) $warning))
+            ->filter()
+            ->unique()
+            ->implode(' ');
+
+        if ($message === '') {
+            return $response;
+        }
+
+        return $response->with('warning', $message);
+    }
+
+    private function limitedStockWarning(int $availableUnits, string $productName): string
+    {
+        $unitLabel = $availableUnits === 1 ? 'unit' : 'units';
+
+        return sprintf(
+            'Limited stock update: only %d %s currently available for %s, so your quantity was adjusted.',
+            $availableUnits,
+            $unitLabel,
+            trim($productName) === '' ? 'this item' : $productName
+        );
+    }
+
+    /**
+     * @param array<int, string> $messages
+     * @return array{code: string, discount: float}|null
+     */
+    private function resolveActiveCoupon(float $subtotal, bool $couponsEnabled, array &$messages): ?array
+    {
+        if (! $couponsEnabled) {
+            ThedolciCart::clearCoupon();
+
+            return null;
+        }
+
+        $coupon = ThedolciCart::coupon();
+
+        if (! is_array($coupon) || empty($coupon['code'])) {
+            return null;
+        }
+
+        $result = ThedolciCatalog::validateCoupon((string) $coupon['code'], $subtotal);
+
+        if (! $result['valid']) {
+            ThedolciCart::clearCoupon();
+            $messages[] = 'Coupon was removed because current cart total does not meet coupon rules.';
+
+            return null;
+        }
+
+        $currentDiscount = round((float) ($coupon['discount'] ?? 0), 2);
+        $resolvedDiscount = round((float) ($result['discount'] ?? 0), 2);
+        $resolvedCode = (string) ($result['code'] ?? '');
+
+        if ($resolvedCode !== '' && ($resolvedCode !== (string) $coupon['code'] || abs($currentDiscount - $resolvedDiscount) > 0.001)) {
+            ThedolciCart::setCoupon([
+                'code' => $resolvedCode,
+                'discount' => $resolvedDiscount,
+            ]);
+
+            $messages[] = 'Coupon discount was recalculated to match your latest cart total.';
+        }
+
+        return [
+            'code' => $resolvedCode,
+            'discount' => $resolvedDiscount,
+        ];
     }
 
     /**
