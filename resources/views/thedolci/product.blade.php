@@ -133,7 +133,6 @@
 
                 <div class="dolci-trust-mini">
                     <p>Freshly prepared daily</p>
-                    <p>No online payment required</p>
                     <p>Delivery or pickup scheduling</p>
                 </div>
             </div>

@@ -200,10 +200,10 @@
                                     </form>
                                 @endif
 
-                                <form method="POST" action="{{ route('thedolci.cart.post', $item['key']) }}" class="dolci-remove-form">
+                                <form method="POST" action="{{ route('thedolci.cart.post', $item['key']) }}" class="dolci-remove-form" data-auto-submit="remove">
                                     @csrf
                                     <input type="hidden" name="action" value="remove">
-                                    <button type="submit" class="dolci-btn dolci-btn-link" onclick="return confirm('Remove this item from cart?');">Remove item</button>
+                                    <button type="submit" class="dolci-btn dolci-btn-link">Remove item</button>
                                 </form>
                             </div>
                         </article>
@@ -275,7 +275,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const nextCartContainer = nextDocument.querySelector('.dolci-cart-section .dolci-container');
 
         if (!currentCartContainer || !nextCartContainer) {
-            window.location.reload();
             return;
         }
 
@@ -341,7 +340,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const html = await response.text();
             syncPageFromHtml(html);
         } catch (error) {
-            form.submit();
+            console.error('Cart async update failed:', error);
         } finally {
             if (form.isConnected) {
                 form.dataset.isSubmitting = '0';
@@ -435,7 +434,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        if (!target.matches('.dolci-qty-form[data-auto-submit="quantity"], .dolci-qty-form[data-auto-submit="packaging"]')) {
+        if (!target.matches('.dolci-qty-form[data-auto-submit="quantity"], .dolci-qty-form[data-auto-submit="packaging"], .dolci-remove-form[data-auto-submit="remove"]')) {
             return;
         }
 
@@ -445,6 +444,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const qtyInput = target.querySelector('.dolci-qty-input');
             if (qtyInput instanceof HTMLInputElement) {
                 clampQuantity(qtyInput);
+            }
+        }
+
+        if (target.matches('.dolci-remove-form[data-auto-submit="remove"]')) {
+            if (!window.confirm('Remove this item from cart?')) {
+                return;
             }
         }
 
