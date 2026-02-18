@@ -1,4 +1,4 @@
-﻿@php
+@php
     $currentLocale = $currentLocale ?? app()->getLocale();
     $isRtl = $isRtl ?? ($currentLocale === 'ar');
     $alternateLocale = $currentLocale === 'ar' ? 'en' : 'ar';

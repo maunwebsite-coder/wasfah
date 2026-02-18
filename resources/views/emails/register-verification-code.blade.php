@@ -1,4 +1,4 @@
-﻿@php
+@php
     $formattedCode = implode(' ', str_split($code));
 @endphp
 

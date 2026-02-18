@@ -1,4 +1,4 @@
-﻿@extends('thedolci.layouts.store')
+@extends('thedolci.layouts.store')
 
 @section('title', 'Shop | thedolci')
 @section('body_class', 'dolci-page-shop')

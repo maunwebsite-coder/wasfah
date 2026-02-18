@@ -1,4 +1,4 @@
-﻿@extends('layouts.app')
+@extends('layouts.app')
 
 @section('title', __('chef.dashboard.workshops.host_room.meta_title', ['title' => $workshop->title]))
 

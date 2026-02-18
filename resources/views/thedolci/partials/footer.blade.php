@@ -1,4 +1,4 @@
-﻿<footer class="dolci-footer">
+<footer class="dolci-footer">
     <div class="dolci-container dolci-footer-grid">
         <div>
             <h3>thedolci</h3>

@@ -31,7 +31,7 @@
 
             <div class="dolci-hero-actions">
                 @if(!empty($whatsappUrl))
-                    <a href="{{ $whatsappUrl }}" target="_blank" rel="noopener" class="dolci-btn dolci-btn-primary">Ø§Ù„Ø§Ø³ØªÙ…Ø±Ø§Ø± ÙÙŠ Ø§Ù„Ø·Ù„Ø¨ Ø¹Ø¨Ø± Ø§Ù„ÙˆØ§ØªØ³Ø§Ø¨</a>
+                    <a href="{{ $whatsappUrl }}" target="_blank" rel="noopener" class="dolci-btn dolci-btn-primary">Continue on WhatsApp</a>
                 @endif
                 <a href="{{ route('thedolci.track-order') }}" class="dolci-btn dolci-btn-secondary">Track Order</a>
                 <a href="{{ route('thedolci.shop') }}" class="dolci-btn dolci-btn-secondary">Order Again</a>

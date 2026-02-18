@@ -1,4 +1,4 @@
-﻿@extends('thedolci.layouts.admin')
+@extends('thedolci.layouts.admin')
 
 @section('title', ($isEdit ? 'Edit' : 'Create') . ' Review | thedolci Admin')
 

@@ -1,4 +1,4 @@
-﻿@extends('layouts.app')
+@extends('layouts.app')
 
 @section('title', 'Ø¥Ø¯Ø§Ø±Ø© Ø£Ø¯ÙˆØ§Øª Ø§Ù„Ø´ÙŠÙ - Ù„ÙˆØ­Ø© Ø§Ù„Ø¥Ø¯Ø§Ø±Ø©')
 

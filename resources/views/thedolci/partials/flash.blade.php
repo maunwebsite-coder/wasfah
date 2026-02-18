@@ -1,4 +1,4 @@
-﻿@if(session('success'))
+@if(session('success'))
     <div class="dolci-alert dolci-alert-success">{{ session('success') }}</div>
 @endif
 

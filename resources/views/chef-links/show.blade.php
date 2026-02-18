@@ -1,4 +1,4 @@
-﻿@php
+@php
     $locale = app()->getLocale();
     $isRtl = $locale === 'ar';
     $chefName = $page->user->name ?? __('chef_links.footer.brand');

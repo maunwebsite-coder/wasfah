@@ -1,4 +1,4 @@
-﻿@extends('layouts.app')
+@extends('layouts.app')
 
 @section('title', 'Ù…Ù„Ù Ø§Ù„Ø´ÙŠÙ ' . ($chef->name ?? ''))
 

@@ -1,4 +1,4 @@
-﻿@extends('thedolci.layouts.store')
+@extends('thedolci.layouts.store')
 
 @section('title', 'Loyalty Rewards | thedolci')
 

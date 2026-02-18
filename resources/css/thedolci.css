@@ -2825,8 +2825,38 @@ header.dolci-topbar-v2 {
         padding: 0.95rem;
     }
 
+    .dolci-page-cart .dolci-cart-hero .dolci-kicker {
+        font-size: 0.62rem;
+        margin-bottom: 0.35rem;
+    }
+
+    .dolci-page-cart .dolci-cart-hero h1 {
+        font-size: clamp(1.45rem, 6.8vw, 1.75rem);
+        margin-bottom: 0.35rem;
+        line-height: 1.14;
+    }
+
+    .dolci-page-cart .dolci-cart-hero p {
+        font-size: 0.85rem;
+        margin-bottom: 0.6rem;
+        line-height: 1.45;
+    }
+
     .dolci-page-cart .dolci-cart-hero-stats {
         grid-template-columns: minmax(0, 1fr);
+        gap: 0.5rem;
+    }
+
+    .dolci-page-cart .dolci-cart-hero-stats article {
+        padding: 0.55rem 0.62rem;
+    }
+
+    .dolci-page-cart .dolci-cart-hero-stats strong {
+        font-size: 0.94rem;
+    }
+
+    .dolci-page-cart .dolci-cart-hero-stats span {
+        font-size: 0.74rem;
     }
 
     .dolci-page-cart .dolci-cart-item-card {

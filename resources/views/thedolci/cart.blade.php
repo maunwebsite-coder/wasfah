@@ -1,4 +1,4 @@
-﻿@extends('thedolci.layouts.store')
+@extends('thedolci.layouts.store')
 
 @section('title', 'Cart | thedolci')
 @section('body_class', 'dolci-page-cart')
@@ -10,14 +10,18 @@
     $baseItemsSubtotal = 0.0;
     $pepperAddonsTotal = 0.0;
     $packagingAddonsTotal = 0.0;
+    $pepperAddonsSelectedCount = 0;
+    $packagingAddonsSelectedCount = 0;
 
     foreach ($items as $summaryItem) {
         $quantity = max(1, (int) ($summaryItem['quantity'] ?? 1));
         $lineTotal = (float) ($summaryItem['line_total'] ?? 0);
-        $pepperUnitPrice = !empty(data_get($summaryItem, 'customizations.add_pepper'))
+        $hasPepperAddon = !empty(data_get($summaryItem, 'customizations.add_pepper'));
+        $hasPackagingAddon = trim((string) data_get($summaryItem, 'customizations.packaging_type', '')) !== '';
+        $pepperUnitPrice = $hasPepperAddon
             ? max(0, (float) data_get($summaryItem, 'customizations.pepper_price', 0))
             : 0.0;
-        $packagingUnitPrice = !empty(data_get($summaryItem, 'customizations.packaging_type'))
+        $packagingUnitPrice = $hasPackagingAddon
             ? max(0, (float) data_get($summaryItem, 'customizations.packaging_price', 0))
             : 0.0;
 
@@ -29,12 +33,23 @@
         $baseItemsSubtotal += $baseLineTotal;
         $pepperAddonsTotal += $pepperLineTotal;
         $packagingAddonsTotal += $packagingLineTotal;
+
+        if ($hasPepperAddon) {
+            $pepperAddonsSelectedCount += $quantity;
+        }
+
+        if ($hasPackagingAddon) {
+            $packagingAddonsSelectedCount += $quantity;
+        }
     }
 
     $baseItemsSubtotal = round($baseItemsSubtotal, 2);
     $pepperAddonsTotal = round($pepperAddonsTotal, 2);
     $packagingAddonsTotal = round($packagingAddonsTotal, 2);
     $addonsTotal = round($pepperAddonsTotal + $packagingAddonsTotal, 2);
+    $showPepperAddonsRow = $pepperAddonsSelectedCount > 0;
+    $showPackagingAddonsRow = $packagingAddonsSelectedCount > 0;
+    $showAddonsTotalRow = $showPepperAddonsRow && $showPackagingAddonsRow;
 @endphp
 <section class="dolci-section dolci-section-tight dolci-cart-section">
     <div class="dolci-container">
@@ -198,9 +213,15 @@
                 <aside class="dolci-order-summary dolci-cart-summary">
                     <h3>Order Summary</h3>
                     <div class="dolci-summary-row"><span>Base items</span><span>JOD {{ number_format($baseItemsSubtotal, 2) }}</span></div>
-                    <div class="dolci-summary-row"><span>Pepper add-ons</span><span>JOD {{ number_format($pepperAddonsTotal, 2) }}</span></div>
-                    <div class="dolci-summary-row"><span>Packaging add-ons</span><span>JOD {{ number_format($packagingAddonsTotal, 2) }}</span></div>
-                    <div class="dolci-summary-row"><span>Total add-ons</span><span>JOD {{ number_format($addonsTotal, 2) }}</span></div>
+                    @if($showPepperAddonsRow)
+                        <div class="dolci-summary-row"><span>Pepper add-ons</span><span>JOD {{ number_format($pepperAddonsTotal, 2) }}</span></div>
+                    @endif
+                    @if($showPackagingAddonsRow)
+                        <div class="dolci-summary-row"><span>Packaging add-ons</span><span>JOD {{ number_format($packagingAddonsTotal, 2) }}</span></div>
+                    @endif
+                    @if($showAddonsTotalRow)
+                        <div class="dolci-summary-row"><span>Total add-ons</span><span>JOD {{ number_format($addonsTotal, 2) }}</span></div>
+                    @endif
                     <div class="dolci-summary-row"><span>Subtotal</span><span>JOD {{ number_format((float)$subtotal, 2) }}</span></div>
                     @if($couponsEnabled)
                         <div class="dolci-summary-row"><span>Discount</span><span>- JOD {{ number_format((float)$discount, 2) }}</span></div>
@@ -250,15 +271,36 @@ document.addEventListener('DOMContentLoaded', () => {
     const syncPageFromHtml = (html) => {
         const parser = new DOMParser();
         const nextDocument = parser.parseFromString(html, 'text/html');
-        const currentMain = document.querySelector('main.dolci-main');
-        const nextMain = nextDocument.querySelector('main.dolci-main');
+        const currentCartContainer = document.querySelector('.dolci-cart-section .dolci-container');
+        const nextCartContainer = nextDocument.querySelector('.dolci-cart-section .dolci-container');
 
-        if (!currentMain || !nextMain) {
+        if (!currentCartContainer || !nextCartContainer) {
             window.location.reload();
             return;
         }
 
-        currentMain.innerHTML = nextMain.innerHTML;
+        const currentHeroStats = currentCartContainer.querySelector('.dolci-cart-hero-stats');
+        const nextHeroStats = nextCartContainer.querySelector('.dolci-cart-hero-stats');
+        if (currentHeroStats && nextHeroStats) {
+            currentHeroStats.replaceWith(nextHeroStats);
+        }
+
+        const currentCartState = currentCartContainer.querySelector('.dolci-cart-layout, .dolci-empty-state.dolci-empty-cart');
+        const nextCartState = nextCartContainer.querySelector('.dolci-cart-layout, .dolci-empty-state.dolci-empty-cart');
+        if (nextCartState) {
+            if (currentCartState) {
+                currentCartState.replaceWith(nextCartState);
+            } else {
+                const hero = currentCartContainer.querySelector('.dolci-cart-hero');
+                if (hero) {
+                    hero.insertAdjacentElement('afterend', nextCartState);
+                } else {
+                    currentCartContainer.appendChild(nextCartState);
+                }
+            }
+        } else if (currentCartState) {
+            currentCartState.remove();
+        }
 
         const nextCartCounts = Array.from(nextDocument.querySelectorAll('.dolci-cart-count'));
         const currentCartCounts = Array.from(document.querySelectorAll('.dolci-cart-count'));
@@ -385,6 +427,28 @@ document.addEventListener('DOMContentLoaded', () => {
         const input = target;
         clampQuantity(input);
         submitForm(input.form);
+    });
+
+    document.addEventListener('submit', (event) => {
+        const target = event.target;
+        if (!(target instanceof HTMLFormElement)) {
+            return;
+        }
+
+        if (!target.matches('.dolci-qty-form[data-auto-submit="quantity"], .dolci-qty-form[data-auto-submit="packaging"]')) {
+            return;
+        }
+
+        event.preventDefault();
+
+        if (target.matches('.dolci-qty-form[data-auto-submit="quantity"]')) {
+            const qtyInput = target.querySelector('.dolci-qty-input');
+            if (qtyInput instanceof HTMLInputElement) {
+                clampQuantity(qtyInput);
+            }
+        }
+
+        submitForm(target);
     });
 });
 </script>

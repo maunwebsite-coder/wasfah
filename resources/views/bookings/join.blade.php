@@ -1,4 +1,4 @@
-﻿@extends('layouts.app')
+@extends('layouts.app')
 
 @section('title', __('bookings.join.meta_title', ['workshop' => $workshop->title]))
 

@@ -1,4 +1,4 @@
-﻿@extends('layouts.app')
+@extends('layouts.app')
 
 @section('title', 'ÙØ§ØªÙˆØ±Ø© ' . $invoice->invoice_number)
 

@@ -1,4 +1,4 @@
-﻿@php
+@php
     use App\Support\Timezones;
     use Illuminate\Support\Carbon;
     use Illuminate\Support\Facades\Storage;

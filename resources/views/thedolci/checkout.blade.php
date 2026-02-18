@@ -1,4 +1,4 @@
-﻿@extends('thedolci.layouts.store')
+@extends('thedolci.layouts.store')
 
 @section('title', 'Checkout | thedolci')
 
@@ -68,14 +68,18 @@
                 $baseItemsSubtotal = 0.0;
                 $pepperAddonsTotal = 0.0;
                 $packagingAddonsTotal = 0.0;
+                $pepperAddonsSelectedCount = 0;
+                $packagingAddonsSelectedCount = 0;
 
                 foreach ($items as $summaryItem) {
                     $quantity = max(1, (int) ($summaryItem['quantity'] ?? 1));
                     $lineTotal = (float) ($summaryItem['line_total'] ?? 0);
-                    $pepperUnitPrice = !empty(data_get($summaryItem, 'customizations.add_pepper'))
+                    $hasPepperAddon = !empty(data_get($summaryItem, 'customizations.add_pepper'));
+                    $hasPackagingAddon = trim((string) data_get($summaryItem, 'customizations.packaging_type', '')) !== '';
+                    $pepperUnitPrice = $hasPepperAddon
                         ? max(0, (float) data_get($summaryItem, 'customizations.pepper_price', 0))
                         : 0.0;
-                    $packagingUnitPrice = !empty(data_get($summaryItem, 'customizations.packaging_type'))
+                    $packagingUnitPrice = $hasPackagingAddon
                         ? max(0, (float) data_get($summaryItem, 'customizations.packaging_price', 0))
                         : 0.0;
 
@@ -87,12 +91,23 @@
                     $baseItemsSubtotal += $baseLineTotal;
                     $pepperAddonsTotal += $pepperLineTotal;
                     $packagingAddonsTotal += $packagingLineTotal;
+
+                    if ($hasPepperAddon) {
+                        $pepperAddonsSelectedCount += $quantity;
+                    }
+
+                    if ($hasPackagingAddon) {
+                        $packagingAddonsSelectedCount += $quantity;
+                    }
                 }
 
                 $baseItemsSubtotal = round($baseItemsSubtotal, 2);
                 $pepperAddonsTotal = round($pepperAddonsTotal, 2);
                 $packagingAddonsTotal = round($packagingAddonsTotal, 2);
                 $addonsTotal = round($pepperAddonsTotal + $packagingAddonsTotal, 2);
+                $showPepperAddonsRow = $pepperAddonsSelectedCount > 0;
+                $showPackagingAddonsRow = $packagingAddonsSelectedCount > 0;
+                $showAddonsTotalRow = $showPepperAddonsRow && $showPackagingAddonsRow;
             @endphp
             <aside class="dolci-order-summary">
                 <h3>Order Summary</h3>
@@ -122,9 +137,15 @@
                     </div>
                 @endforeach
                 <div class="dolci-summary-row"><span>Base items</span><span>JOD {{ number_format($baseItemsSubtotal, 2) }}</span></div>
-                <div class="dolci-summary-row"><span>Pepper add-ons</span><span>JOD {{ number_format($pepperAddonsTotal, 2) }}</span></div>
-                <div class="dolci-summary-row"><span>Packaging add-ons</span><span>JOD {{ number_format($packagingAddonsTotal, 2) }}</span></div>
-                <div class="dolci-summary-row"><span>Total add-ons</span><span>JOD {{ number_format($addonsTotal, 2) }}</span></div>
+                @if($showPepperAddonsRow)
+                    <div class="dolci-summary-row"><span>Pepper add-ons</span><span>JOD {{ number_format($pepperAddonsTotal, 2) }}</span></div>
+                @endif
+                @if($showPackagingAddonsRow)
+                    <div class="dolci-summary-row"><span>Packaging add-ons</span><span>JOD {{ number_format($packagingAddonsTotal, 2) }}</span></div>
+                @endif
+                @if($showAddonsTotalRow)
+                    <div class="dolci-summary-row"><span>Total add-ons</span><span>JOD {{ number_format($addonsTotal, 2) }}</span></div>
+                @endif
                 <div class="dolci-summary-row"><span>Subtotal</span><span>JOD {{ number_format((float)$subtotal, 2) }}</span></div>
                 @if($couponsEnabled)
                     <div class="dolci-summary-row"><span>Discount</span><span>- JOD {{ number_format((float)$discount, 2) }}</span></div>

@@ -1,4 +1,4 @@
-﻿@extends('layouts.app')
+@extends('layouts.app')
 
 @section('title', 'صفحة روابط ' . config('app.name', 'Peahskill') . ' الخاصة بي')
 

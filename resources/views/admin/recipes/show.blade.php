@@ -1,4 +1,4 @@
-﻿@extends('layouts.app')
+@extends('layouts.app')
 
 @section('title', $recipe->title . ' - إدارة الفيديوهات القصيرة')
 

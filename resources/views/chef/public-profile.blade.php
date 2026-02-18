@@ -1,4 +1,4 @@
-﻿@extends('layouts.app')
+@extends('layouts.app')
 
 @section('title', __('chef.meta.title', ['name' => $chef->name ?? '']))
 
