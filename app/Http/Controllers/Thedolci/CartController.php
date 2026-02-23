@@ -14,60 +14,8 @@ class CartController extends Controller
 {
     public function index(): View
     {
-        $products = ThedolciCatalog::products();
-        $productsBySlug = $products->keyBy('slug');
-        $syncResult = ThedolciCart::reconcileWithCatalog($products);
-        $availabilityBySlug = (array) ($syncResult['available_by_slug'] ?? []);
-        $allocatedBySlug = [];
-
-        $items = $syncResult['items']->map(function (array $item) use ($productsBySlug, $availabilityBySlug, &$allocatedBySlug) {
-            $slug = trim((string) ($item['slug'] ?? ''));
-            $quantity = max(1, (int) ($item['quantity'] ?? 1));
-            $availableForProduct = $availabilityBySlug[$slug] ?? null;
-            $allocatedBefore = (int) ($allocatedBySlug[$slug] ?? 0);
-            $availableForLine = $availableForProduct !== null
-                ? max(0, $availableForProduct - $allocatedBefore)
-                : null;
-
-            $allocatedBySlug[$slug] = $allocatedBefore + $quantity;
-
-            $remainingAfterLine = $availableForProduct !== null
-                ? max(0, $availableForProduct - (int) $allocatedBySlug[$slug])
-                : null;
-
-            $item['available_packaging_options'] = $this->normalizePackagingOptions(
-                (array) data_get($productsBySlug, $slug . '.packaging_options', [])
-            )->all();
-            $item['inventory'] = [
-                'is_limited' => $availableForProduct !== null,
-                'available_for_product' => $availableForProduct,
-                'available_for_line' => $availableForLine,
-                'remaining_after_line' => $remainingAfterLine,
-            ];
-
-            return $item;
-        });
-
-        $subtotal = ThedolciCart::subtotal();
-        $couponsEnabled = $this->couponsEnabledForCurrentUser();
-        $couponMessages = [];
-        $coupon = $this->resolveActiveCoupon($subtotal, $couponsEnabled, $couponMessages);
-
-        $discount = $couponsEnabled ? (float) ($coupon['discount'] ?? 0) : 0;
-        $total = max(0, round($subtotal - $discount, 2));
-
         return view('thedolci.cart', [
             'cartCount' => ThedolciCart::count(),
-            'items' => $items,
-            'subtotal' => $subtotal,
-            'coupon' => $coupon,
-            'discount' => $discount,
-            'total' => $total,
-            'couponsEnabled' => $couponsEnabled,
-            'cartSyncMessages' => collect(array_merge(
-                (array) ($syncResult['messages'] ?? []),
-                $couponMessages
-            ))->filter()->unique()->values()->all(),
         ]);
     }
 

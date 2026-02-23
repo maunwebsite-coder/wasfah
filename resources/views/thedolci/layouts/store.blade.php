@@ -31,6 +31,7 @@
     @elseif($hasFallbackManifestEntries)
         @vite($fallbackAssets)
     @endif
+    @livewireStyles
 </head>
 <body class="dolci-body @yield('body_class')">
     @include('thedolci.partials.header', ['cartCount' => $cartCount ?? 0])
@@ -42,6 +43,7 @@
 
     @include('thedolci.partials.footer')
 
+    @livewireScripts
     @stack('scripts')
 </body>
 </html>
