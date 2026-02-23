@@ -104,6 +104,7 @@
 
     <!-- PAGE_STYLES:START -->
     @stack('styles')
+    @livewireStyles
     <!-- PAGE_STYLES:END -->
 </head>
 <body class="bg-gray-100 font-sans pb-24 md:pb-0" data-user-id="@auth{{ Auth::id() }}@endauth" style="margin:0;padding:0;">
@@ -1055,6 +1056,7 @@
             document.addEventListener('input', handleFileInput);
         })();
     </script>
+    @livewireScripts
     <div id="page-script-stack" data-page-scripts>
         @stack('scripts')
     </div>

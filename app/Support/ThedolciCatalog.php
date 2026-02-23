@@ -303,6 +303,91 @@ class ThedolciCatalog
                 'is_active' => true,
                 'sort_order' => 4,
             ],
+            [
+                'slug' => 'ramadan-package',
+                'name' => 'Ramadan Package',
+                'headline' => 'Large Tiramisu - Serves 8-10 people.',
+                'description' => 'Special Ramadan package crafted for sharing moments with family and friends.',
+                'story' => 'Designed for gatherings with a generous portion and rich classic tiramisu flavor.',
+                'cover_image' => 'https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?auto=format&fit=crop&w=1300&q=80',
+                'gallery_images' => [
+                    'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=1300&q=80',
+                    'https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=1300&q=80',
+                    'https://images.unsplash.com/photo-1551024601-bec78aea704b?auto=format&fit=crop&w=1300&q=80',
+                ],
+                'size_prices' => ['Large Tiramisu (Serves 8-10 people)' => 23.00],
+                'pepper_price' => 0.00,
+                'packaging_options' => [
+                    ['name' => 'Classic Box', 'price' => 0],
+                    ['name' => 'Gift Bag', 'price' => 2.00],
+                ],
+                'is_best_seller' => true,
+                'is_seasonal' => true,
+                'show_limited_edition' => true,
+                'seasonal_ends_at' => self::DEFAULT_SEASONAL_END,
+                'limited_quantity' => null,
+                'preorder_enabled' => true,
+                'is_active' => true,
+                'sort_order' => 5,
+            ],
+            [
+                'slug' => 'tiramisu-by-size',
+                'name' => 'Tiramisu by Size',
+                'headline' => 'Pick your preferred serving size for every occasion.',
+                'description' => 'Available in Small, Medium, and Large portions with clear serving guidance.',
+                'story' => 'Built as a simple menu option for quick ordering by serving size.',
+                'cover_image' => 'https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=1300&q=80',
+                'gallery_images' => [
+                    'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=1300&q=80',
+                    'https://images.unsplash.com/photo-1519864600265-abb23847ef2c?auto=format&fit=crop&w=1300&q=80',
+                    'https://images.unsplash.com/photo-1488477181946-6428a0291777?auto=format&fit=crop&w=1300&q=80',
+                ],
+                'size_prices' => [
+                    'Small Tiramisu (Serves 2-3 people)' => 12.00,
+                    'Medium Tiramisu (Serves 6-8 people)' => 15.00,
+                    'Large Tiramisu (Serves 8-10 people)' => 19.00,
+                ],
+                'pepper_price' => 0.00,
+                'packaging_options' => [
+                    ['name' => 'Classic Box', 'price' => 0],
+                    ['name' => 'Gift Bag', 'price' => 2.00],
+                ],
+                'is_best_seller' => true,
+                'is_seasonal' => false,
+                'show_limited_edition' => false,
+                'seasonal_ends_at' => null,
+                'limited_quantity' => null,
+                'preorder_enabled' => false,
+                'is_active' => true,
+                'sort_order' => 6,
+            ],
+            [
+                'slug' => 'cake-style-tiramisu',
+                'name' => 'Cake Style',
+                'headline' => 'Large Tiramisu - Serves 8-10 people.',
+                'description' => 'Cake-style tiramisu presentation for celebrations and premium table serving.',
+                'story' => 'An elegant cake-style finish with rich cream layers and balanced espresso notes.',
+                'cover_image' => 'https://images.unsplash.com/photo-1551024601-bec78aea704b?auto=format&fit=crop&w=1300&q=80',
+                'gallery_images' => [
+                    'https://images.unsplash.com/photo-1517433367423-c7e5b0f35086?auto=format&fit=crop&w=1300&q=80',
+                    'https://images.unsplash.com/photo-1541782814456-5f6ee0cfd7b3?auto=format&fit=crop&w=1300&q=80',
+                    'https://images.unsplash.com/photo-1559622214-f8a9850965bb?auto=format&fit=crop&w=1300&q=80',
+                ],
+                'size_prices' => ['Large Tiramisu (Serves 8-10 people)' => 21.00],
+                'pepper_price' => 0.00,
+                'packaging_options' => [
+                    ['name' => 'Classic Box', 'price' => 0],
+                    ['name' => 'Gift Bag', 'price' => 2.00],
+                ],
+                'is_best_seller' => true,
+                'is_seasonal' => false,
+                'show_limited_edition' => false,
+                'seasonal_ends_at' => null,
+                'limited_quantity' => null,
+                'preorder_enabled' => false,
+                'is_active' => true,
+                'sort_order' => 7,
+            ],
         ];
     }
 
@@ -343,16 +428,17 @@ class ThedolciCatalog
         }
 
         try {
-            if (ThedolciProduct::query()->count() === 0) {
-                $hasLimitedEditionColumn = Schema::hasColumn('thedolci_products', 'show_limited_edition');
+            $hasLimitedEditionColumn = Schema::hasColumn('thedolci_products', 'show_limited_edition');
 
-                foreach (self::defaultProducts() as $product) {
-                    if (! $hasLimitedEditionColumn) {
-                        unset($product['show_limited_edition']);
-                    }
-
-                    ThedolciProduct::query()->create($product);
+            foreach (self::defaultProducts() as $product) {
+                if (! $hasLimitedEditionColumn) {
+                    unset($product['show_limited_edition']);
                 }
+
+                ThedolciProduct::query()->firstOrCreate(
+                    ['slug' => (string) ($product['slug'] ?? '')],
+                    $product
+                );
             }
         } catch (QueryException) {
             return;

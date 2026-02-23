@@ -16,10 +16,7 @@ class CartController extends Controller
      */
     public function index(): View
     {
-        $cartItems = $this->getCartItems();
-        $total = round($cartItems->sum('total_price'), 2);
-        
-        return view('cart', compact('cartItems', 'total'));
+        return view('cart');
     }
 
     /**
@@ -88,6 +85,13 @@ class CartController extends Controller
             'quantity' => 'required|integer|min:1|max:10'
         ]);
 
+        if (!$this->cartItemBelongsToCurrentUser($cart)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Cart item not found.'
+            ], 404);
+        }
+
         $cart->update(['quantity' => $request->quantity]);
 
         $cartCount = $this->getCartCount();
@@ -107,6 +111,13 @@ class CartController extends Controller
      */
     public function remove(Cart $cart): JsonResponse
     {
+        if (!$this->cartItemBelongsToCurrentUser($cart)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Cart item not found.'
+            ], 404);
+        }
+
         $cart->delete();
 
         $cartCount = $this->getCartCount();
@@ -193,6 +204,19 @@ class CartController extends Controller
         }
 
         return $cartItems;
+    }
+
+    /**
+     * Ensure current user/session owns the target cart item
+     */
+    private function cartItemBelongsToCurrentUser(Cart $cart): bool
+    {
+        $userId = auth()->id();
+        $sessionId = $userId ? null : session()->getId();
+
+        return Cart::forUser($userId, $sessionId)
+            ->whereKey($cart->id)
+            ->exists();
     }
 
     /**

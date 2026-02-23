@@ -320,6 +320,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const qtySubmitDelayMs = 220;
     const currencyPrefix = 'JOD ';
     let activeController = null;
+    const supportsAbortController = typeof AbortController !== 'undefined';
+    const cartPageUrl = @json(route('thedolci.cart'));
 
     const readNumber = (value, fallback = 0) => {
         const parsed = Number(value);
@@ -335,6 +337,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const formatMoney = (amount) => `${currencyPrefix}${amount.toFixed(2)}`;
     const formatDiscount = (amount) => `- ${currencyPrefix}${Math.abs(amount).toFixed(2)}`;
+    const fallbackToCartPage = () => {
+        window.location.href = cartPageUrl;
+    };
 
     const clampQuantity = (input) => {
         const min = readNumber(input.getAttribute('min'), 1);
@@ -511,6 +516,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const nextCartContainer = nextDocument.querySelector('.dolci-cart-section .dolci-container');
 
         if (!currentCartContainer || !nextCartContainer) {
+            fallbackToCartPage();
             return;
         }
 
@@ -563,24 +569,32 @@ document.addEventListener('DOMContentLoaded', () => {
         form.dataset.isSubmitting = '1';
         setFormBusy(form, true);
 
-        if (activeController) {
-            activeController.abort();
+        let controller = null;
+        if (supportsAbortController) {
+            if (activeController) {
+                activeController.abort();
+            }
+
+            controller = new AbortController();
+            activeController = controller;
         }
 
-        const controller = new AbortController();
-        activeController = controller;
-
         try {
-            const response = await fetch(form.action, {
+            const requestInit = {
                 method: (form.method || 'POST').toUpperCase(),
                 body: formData,
                 credentials: 'same-origin',
-                signal: controller.signal,
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest',
                     'Accept': 'text/html',
                 },
-            });
+            };
+
+            if (controller) {
+                requestInit.signal = controller.signal;
+            }
+
+            const response = await fetch(form.action, requestInit);
 
             if (!response.ok) {
                 throw new Error('Cart request failed');
@@ -589,13 +603,14 @@ document.addEventListener('DOMContentLoaded', () => {
             const html = await response.text();
             syncPageFromHtml(html);
         } catch (error) {
-            if (error instanceof DOMException && error.name === 'AbortError') {
+            if (supportsAbortController && error instanceof DOMException && error.name === 'AbortError') {
                 return;
             }
 
             console.error('Cart async update failed:', error);
+            fallbackToCartPage();
         } finally {
-            if (activeController === controller) {
+            if (supportsAbortController && activeController === controller) {
                 activeController = null;
             }
 
