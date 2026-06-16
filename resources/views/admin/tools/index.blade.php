@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
-@section('title', 'إدارة أدوات الشيف - لوحة الإدارة')
+@section('title', 'Ø¥Ø¯Ø§Ø±Ø© Ø£Ø¯ÙˆØ§Øª Ø§Ù„Ø´ÙŠÙ - Ù„ÙˆØ­Ø© Ø§Ù„Ø¥Ø¯Ø§Ø±Ø©')
 
 @push('styles')
 <style>
     .admin-card {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #a56970 0%, #8a4348 100%);
     }
     .tool-status-active {
         background: linear-gradient(135deg, #10b981, #059669);
@@ -30,14 +30,14 @@
         <div class="container mx-auto px-4">
             <div class="flex flex-col md:flex-row justify-between items-center">
                 <div>
-                    <h1 class="text-3xl font-bold mb-2">إدارة أدوات الشيف</h1>
-                    <p class="text-blue-100">إدارة أدوات الشيف الاحترافية لصناعة الحلويات</p>
+                    <h1 class="text-3xl font-bold mb-2">Ø¥Ø¯Ø§Ø±Ø© Ø£Ø¯ÙˆØ§Øª Ø§Ù„Ø´ÙŠÙ</h1>
+                    <p class="text-blue-100">Ø¥Ø¯Ø§Ø±Ø© Ø£Ø¯ÙˆØ§Øª Ø§Ù„Ø´ÙŠÙ Ø§Ù„Ø§Ø­ØªØ±Ø§ÙÙŠØ© Ù„ØµÙ†Ø§Ø¹Ø© Ø§Ù„Ø­Ù„ÙˆÙŠØ§Øª</p>
                 </div>
                 <div class="mt-4 md:mt-0">
                     <a href="{{ route('admin.tools.create') }}" 
                        class="bg-white text-purple-600 hover:bg-gray-100 font-bold py-3 px-6 rounded-lg transition-all duration-300 flex items-center">
                         <i class="fas fa-plus ml-2"></i>
-                        إضافة أداة شيف جديدة
+                        Ø¥Ø¶Ø§ÙØ© Ø£Ø¯Ø§Ø© Ø´ÙŠÙ Ø¬Ø¯ÙŠØ¯Ø©
                     </a>
                 </div>
             </div>
@@ -51,13 +51,13 @@
                 <table class="w-full">
                     <thead class="bg-gray-50">
                         <tr>
-                            <th class="px-6 py-4 text-right text-sm font-semibold text-gray-900">الصورة</th>
-                            <th class="px-6 py-4 text-right text-sm font-semibold text-gray-900">الاسم</th>
-                            <th class="px-6 py-4 text-right text-sm font-semibold text-gray-900">الفئة</th>
-                            <th class="px-6 py-4 text-right text-sm font-semibold text-gray-900">السعر</th>
-                            <th class="px-6 py-4 text-right text-sm font-semibold text-gray-900">التقييم</th>
-                            <th class="px-6 py-4 text-right text-sm font-semibold text-gray-900">الحالة</th>
-                            <th class="px-6 py-4 text-right text-sm font-semibold text-gray-900">الإجراءات</th>
+                            <th class="px-6 py-4 text-right text-sm font-semibold text-gray-900">Ø§Ù„ØµÙˆØ±Ø©</th>
+                            <th class="px-6 py-4 text-right text-sm font-semibold text-gray-900">Ø§Ù„Ø§Ø³Ù…</th>
+                            <th class="px-6 py-4 text-right text-sm font-semibold text-gray-900">Ø§Ù„ÙØ¦Ø©</th>
+                            <th class="px-6 py-4 text-right text-sm font-semibold text-gray-900">Ø§Ù„Ø³Ø¹Ø±</th>
+                            <th class="px-6 py-4 text-right text-sm font-semibold text-gray-900">Ø§Ù„ØªÙ‚ÙŠÙŠÙ…</th>
+                            <th class="px-6 py-4 text-right text-sm font-semibold text-gray-900">Ø§Ù„Ø­Ø§Ù„Ø©</th>
+                            <th class="px-6 py-4 text-right text-sm font-semibold text-gray-900">Ø§Ù„Ø¥Ø¬Ø±Ø§Ø¡Ø§Øª</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-200">
@@ -88,7 +88,7 @@
                                     </span>
                                 </td>
                                 <td class="px-6 py-4 text-sm text-gray-900">
-                                    {{ number_format($tool->price, 2) }} درهم
+                                    {{ number_format($tool->price, 2) }} Ø¯Ø±Ù‡Ù…
                                 </td>
                                 <td class="px-6 py-4">
                                     <div class="flex items-center">
@@ -106,7 +106,7 @@
                                         <button type="submit" 
                                                 class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium transition-all {{ $tool->is_active ? 'tool-status-active text-white' : 'tool-status-inactive text-white' }}">
                                             <i class="fas {{ $tool->is_active ? 'fa-check' : 'fa-times' }} ml-1"></i>
-                                            {{ $tool->is_active ? 'نشط' : 'غير نشط' }}
+                                            {{ $tool->is_active ? 'Ù†Ø´Ø·' : 'ØºÙŠØ± Ù†Ø´Ø·' }}
                                         </button>
                                     </form>
                                 </td>
@@ -114,23 +114,23 @@
                                     <div class="flex items-center space-x-2 rtl:space-x-reverse">
                                         <a href="{{ route('admin.tools.show', $tool) }}" 
                                            class="action-btn bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-lg" 
-                                           title="عرض">
+                                           title="Ø¹Ø±Ø¶">
                                             <i class="fas fa-eye"></i>
                                         </a>
                                         <a href="{{ route('admin.tools.edit', $tool) }}" 
                                            class="action-btn bg-yellow-500 hover:bg-yellow-600 text-white p-2 rounded-lg" 
-                                           title="تعديل">
+                                           title="ØªØ¹Ø¯ÙŠÙ„">
                                             <i class="fas fa-edit"></i>
                                         </a>
                                         <form action="{{ route('admin.tools.destroy', $tool) }}" 
                                               method="POST" 
                                               class="inline"
-                                              onsubmit="return confirm('هل أنت متأكد من حذف هذه الأداة؟')">
+                                              onsubmit="return confirm('Ù‡Ù„ Ø£Ù†Øª Ù…ØªØ£ÙƒØ¯ Ù…Ù† Ø­Ø°Ù Ù‡Ø°Ù‡ Ø§Ù„Ø£Ø¯Ø§Ø©ØŸ')">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" 
                                                     class="action-btn bg-red-500 hover:bg-red-600 text-white p-2 rounded-lg" 
-                                                    title="حذف">
+                                                    title="Ø­Ø°Ù">
                                                 <i class="fas fa-trash"></i>
                                             </button>
                                         </form>
@@ -142,8 +142,8 @@
                                 <td colspan="7" class="px-6 py-12 text-center">
                                     <div class="text-gray-500">
                                         <i class="fas fa-tools text-4xl mb-4"></i>
-                                        <p class="text-lg">لا توجد أدوات شيف متاحة</p>
-                                        <p class="text-sm">ابدأ بإضافة أول أداة شيف لك</p>
+                                        <p class="text-lg">Ù„Ø§ ØªÙˆØ¬Ø¯ Ø£Ø¯ÙˆØ§Øª Ø´ÙŠÙ Ù…ØªØ§Ø­Ø©</p>
+                                        <p class="text-sm">Ø§Ø¨Ø¯Ø£ Ø¨Ø¥Ø¶Ø§ÙØ© Ø£ÙˆÙ„ Ø£Ø¯Ø§Ø© Ø´ÙŠÙ Ù„Ùƒ</p>
                                     </div>
                                 </td>
                             </tr>
@@ -162,5 +162,6 @@
     </div>
 </div>
 @endsection
+
 
 

@@ -1,4 +1,4 @@
-﻿@extends('layouts.app')
+@extends('layouts.app')
 
 @section('title', 'Test Recipe JavaScript')
 
@@ -7,8 +7,8 @@
     body { font-family: Arial, sans-serif; margin: 20px; }
     .debug-section { margin: 20px 0; padding: 20px; border: 1px solid #ccc; }
     .tool-card {
-        background: linear-gradient(135deg, #f4f6ff 0%, #c8d6ff 100%);
-        border: 1px solid #16c3ff;
+        background: linear-gradient(135deg, #ffffff 0%, #f1d8da 100%);
+        border: 1px solid #9f5e63;
         border-radius: 12px;
         padding: 1.5rem;
         margin: 10px;
@@ -18,7 +18,7 @@
     .tool-icon {
         width: 3rem;
         height: 3rem;
-        background: linear-gradient(135deg, #0819ff, #16c3ff);
+        background: linear-gradient(135deg, #6b2e30, #9f5e63);
         border-radius: 50%;
         display: flex;
         align-items: center;

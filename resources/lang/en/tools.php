@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 return [
     'meta' => [
@@ -6,7 +6,7 @@ return [
     ],
     'hero' => [
         'title' => 'Tools & resources picked by Peahskill',
-        'subtitle' => 'Essentials and upgrades our experts trust for kitchens, studios, and small projects—curated with reliable purchase links.',
+        'subtitle' => 'Essentials and upgrades our experts trust for kitchens, studios, and small projectsâ€”curated with reliable purchase links.',
         'cta' => [
             'browse' => 'Browse tools',
             'saved' => 'Saved items',
@@ -21,7 +21,7 @@ return [
     ],
     'cards' => [
         'image_fallback_alt' => 'Placeholder image',
-        'currency' => 'AED',
+        'currency' => 'JOD',
         'unavailable' => 'Unavailable',
         'buttons' => [
             'details' => 'View full details',
@@ -63,3 +63,4 @@ return [
         'remove_detailed_error' => 'Something went wrong while removing the product from saved items',
     ],
 ];
+

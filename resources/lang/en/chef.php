@@ -364,6 +364,7 @@ return [
     'workshop_form' => [
         'currencies' => [
             'usd' => 'US Dollar',
+            'jod' => 'Jordanian Dinar',
         ],
         'sections' => [
             'basics' => [
@@ -396,7 +397,7 @@ return [
             'image' => [
                 'eyebrow' => 'Workshop image',
                 'title' => 'Visual impact',
-                'description' => 'Upload sharp imagery (up to 5 MB) to encourage bookings.',
+                'description' => 'Upload sharp imagery (up to 25 MB) to encourage bookings.',
                 'preview_placeholder' => 'The preview will appear here after you upload an image.',
                 'preview_alt' => 'Workshop cover preview',
             ],
@@ -516,7 +517,7 @@ return [
             'calendar_connected_title' => 'Google Calendar connected',
             'calendar_connected_body' => 'We will generate the Google Meet link from your calendar and add it automatically.',
             'calendar_connected_body_with_email' => 'We will generate the Google Meet link from your calendar (:email) and add it automatically.',
-            'image_max_size' => 'You cannot upload an image larger than 5 MB.',
+            'image_max_size' => 'You cannot upload an image larger than 25 MB.',
         ],
         'js' => [
             'title_required' => 'Please enter the workshop title first.',
@@ -634,8 +635,8 @@ return [
                 'description' => 'Upload up to 5 high-quality images to showcase your dish.',
                 'primary' => 'Main image',
                 'additional' => 'Additional image :number',
-                'max_size_message' => 'Images must be 5 MB or less.',
-                'max_size_hint' => 'Maximum file size per image is 5 MB.',
+                'max_size_message' => 'Images must be 25 MB or less.',
+                'max_size_hint' => 'Maximum file size per image is 25 MB.',
                 'current_alt' => 'Recipe image',
                 'remove_current' => 'Remove this image',
             ],

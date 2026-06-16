@@ -3,262 +3,255 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Recipe;
-use App\Models\ReferralCommission;
-use App\Models\User;
-use App\Models\Workshop;
-use Illuminate\Support\Carbon;
+use App\Models\ThedolciOrder;
+use App\Models\ThedolciProduct;
+use App\Models\ThedolciReview;
+use Illuminate\Support\Facades\Schema;
 
 class AdminAreaController extends Controller
 {
     /**
-     * عرض صفحة منطقة الإدمن الرئيسية
+     * Display thedolci-focused admin area page.
      */
     public function index()
     {
-        $recipeCount = Recipe::count();
-        $pendingRecipeCount = Recipe::where('status', Recipe::STATUS_PENDING)->count();
+        $hasProductsTable = Schema::hasTable('thedolci_products');
+        $hasOrdersTable = Schema::hasTable('thedolci_orders');
+        $hasReviewsTable = Schema::hasTable('thedolci_reviews');
+        $hasLimitedEditionColumn = $hasProductsTable && Schema::hasColumn('thedolci_products', 'show_limited_edition');
 
-        $chefCount = User::where('role', User::ROLE_CHEF)->count();
+        $productCount = $hasProductsTable ? ThedolciProduct::query()->count() : 0;
+        $activeProductCount = $hasProductsTable ? ThedolciProduct::query()->where('is_active', true)->count() : 0;
+        $limitedEditionCount = $hasLimitedEditionColumn
+            ? ThedolciProduct::query()->where('show_limited_edition', true)->count()
+            : 0;
 
-        $workshopCount = Workshop::count();
-        $activeWorkshopCount = Workshop::where('is_active', true)->count();
+        $orderCount = $hasOrdersTable ? ThedolciOrder::query()->count() : 0;
+        $newOrderCount = $hasOrdersTable ? ThedolciOrder::query()->where('status', 'new')->count() : 0;
+        $completedOrderCount = $hasOrdersTable ? ThedolciOrder::query()->where('status', 'completed')->count() : 0;
+        $pendingPaymentCount = $hasOrdersTable ? ThedolciOrder::query()->where('payment_status', 'pending')->count() : 0;
+        $revenue = $hasOrdersTable
+            ? (float) ThedolciOrder::query()
+                ->where('status', '!=', 'cancelled')
+                ->sum('total')
+            : 0;
 
-        $referralPartnerCount = User::where('is_referral_partner', true)->count();
-        $pendingReferralAmount = ReferralCommission::where('status', ReferralCommission::STATUS_READY)->sum('commission_amount');
+        $reviewCount = $hasReviewsTable ? ThedolciReview::query()->count() : 0;
+        $activeReviewCount = $hasReviewsTable ? ThedolciReview::query()->where('is_active', true)->count() : 0;
+        $featuredReviewCount = $hasReviewsTable ? ThedolciReview::query()->where('is_featured', true)->count() : 0;
 
-        $metrics = [
-            [
-                'label' => 'إجمالي الوصفات',
-                'value' => $recipeCount,
-                'icon' => 'fa-utensils',
-                'route' => 'admin.recipes.index',
-                'hint' => 'الوصفات المنشورة على المنصة',
-            ],
-            [
-                'label' => 'ورشات العمل',
-                'value' => $workshopCount,
-                'icon' => 'fa-chalkboard-teacher',
-                'route' => 'admin.workshops.index',
-                'hint' => 'جميع الورشات النشطة والمنتهية',
-            ],
-            [
-                'label' => 'الشيفات المعتمدون',
-                'value' => $chefCount,
-                'icon' => 'fa-user-tie',
-                'route' => 'admin.chefs.requests',
-                'hint' => 'إدارة ملفات الشيفات',
-            ],
-            [
-                'label' => 'ورشات نشطة',
-                'value' => $activeWorkshopCount,
-                'icon' => 'fa-bolt',
-                'route' => 'admin.workshops.index',
-                'hint' => 'ورشات متاحة للحجوزات',
-            ],
-            [
-                'label' => 'شركاء الإحالات',
-                'value' => $referralPartnerCount,
-                'icon' => 'fa-link',
-                'route' => 'admin.referrals.index',
-                'hint' => 'برنامج الشركاء ومراقبة العمولات',
-            ],
-        ];
+        $schemaWarnings = [];
+
+        if (! $hasProductsTable) {
+            $schemaWarnings[] = 'The thedolci products table is not available yet.';
+        }
+
+        if (! $hasOrdersTable) {
+            $schemaWarnings[] = 'The thedolci orders table is not available yet.';
+        }
+
+        if (! $hasReviewsTable) {
+            $schemaWarnings[] = 'The thedolci reviews table is not available yet.';
+        }
 
         $attentionItems = [
             [
-                'label' => 'وصفات تنتظر الموافقة',
-                'value' => $pendingRecipeCount,
-                'icon' => 'fa-clipboard-list',
-                'route' => 'admin.recipes.index',
-                'route_params' => ['status' => Recipe::STATUS_PENDING],
-                'cta' => 'مراجعة الوصفات',
-                'empty_state' => 'كل الوصفات منشورة',
+                'label' => 'New Orders',
+                'value' => $newOrderCount,
+                'route' => 'thedolci.admin.orders.index',
+                'cta' => 'Process now',
+                'empty_state' => 'No new orders',
             ],
             [
-                'label' => 'عمولات جاهزة للتحويل',
-                'value' => $pendingReferralAmount,
-                'icon' => 'fa-coins',
-                'route' => 'admin.referrals.index',
-                'cta' => 'مراجعة العمولات',
-                'empty_state' => 'لا توجد مبالغ جاهزة',
-                'format' => 'currency',
+                'label' => 'Pending Payments',
+                'value' => $pendingPaymentCount,
+                'route' => 'thedolci.admin.orders.index',
+                'cta' => 'Review payments',
+                'empty_state' => 'No pending payments',
+            ],
+            [
+                'label' => 'Limited Edition Items',
+                'value' => $limitedEditionCount,
+                'route' => 'thedolci.admin.products.index',
+                'cta' => 'Manage visibility',
+                'empty_state' => 'No limited items enabled',
             ],
         ];
 
-        $recentRecipes = Recipe::latest()
-            ->take(4)
-            ->get(['recipe_id', 'title', 'status', 'created_at', 'slug']);
+        $metrics = [
+            [
+                'label' => 'Products',
+                'value' => $productCount,
+                'route' => 'thedolci.admin.products.index',
+                'hint' => 'Total products in catalog',
+            ],
+            [
+                'label' => 'Active Products',
+                'value' => $activeProductCount,
+                'route' => 'thedolci.admin.products.index',
+                'hint' => 'Visible on storefront',
+            ],
+            [
+                'label' => 'Orders',
+                'value' => $orderCount,
+                'route' => 'thedolci.admin.orders.index',
+                'hint' => 'All order records',
+            ],
+            [
+                'label' => 'Completed Orders',
+                'value' => $completedOrderCount,
+                'route' => 'thedolci.admin.orders.index',
+                'hint' => 'Delivered or fulfilled orders',
+            ],
+            [
+                'label' => 'Revenue',
+                'value' => $revenue,
+                'route' => 'thedolci.admin.orders.index',
+                'format' => 'currency',
+                'hint' => 'Excluding cancelled orders',
+            ],
+            [
+                'label' => 'Reviews',
+                'value' => $reviewCount,
+                'route' => 'thedolci.admin.reviews.index',
+                'hint' => 'Total customer testimonials',
+            ],
+            [
+                'label' => 'Active Reviews',
+                'value' => $activeReviewCount,
+                'route' => 'thedolci.admin.reviews.index',
+                'hint' => 'Currently published',
+            ],
+            [
+                'label' => 'Featured Reviews',
+                'value' => $featuredReviewCount,
+                'route' => 'thedolci.admin.reviews.index',
+                'hint' => 'Pinned on storefront sections',
+            ],
+        ];
 
-        $upcomingWorkshops = Workshop::whereNotNull('start_date')
-            ->where('start_date', '>=', Carbon::now()->subDay())
-            ->orderBy('start_date')
-            ->take(4)
-            ->get(['id', 'title', 'start_date', 'is_online', 'slug']);
+        $latestOrders = $hasOrdersTable
+            ? ThedolciOrder::query()->latest()->take(6)->get([
+                'id',
+                'order_number',
+                'customer_name',
+                'status',
+                'payment_status',
+                'total',
+                'created_at',
+            ])
+            : collect();
+
+        $latestReviews = $hasReviewsTable
+            ? ThedolciReview::query()->latest()->take(6)->get([
+                'id',
+                'customer_name',
+                'rating',
+                'review_text',
+                'is_featured',
+                'is_active',
+                'created_at',
+            ])
+            : collect();
 
         $quickActions = [
             [
-                'label' => 'وصفة جديدة',
-                'icon' => 'fa-plus-circle',
-                'route' => 'admin.recipes.create',
+                'label' => 'Dashboard',
+                'route' => 'thedolci.admin.dashboard',
             ],
             [
-                'label' => 'ورشة جديدة',
-                'icon' => 'fa-chalkboard',
-                'route' => 'admin.workshops.create',
+                'label' => 'Storefront',
+                'route' => 'thedolci.admin.storefront.edit',
             ],
             [
-                'label' => 'حجز يدوي',
-                'icon' => 'fa-user-plus',
-                'route' => 'admin.bookings.manual',
+                'label' => 'Products',
+                'route' => 'thedolci.admin.products.index',
             ],
             [
-                'label' => 'إضافة أداة',
-                'icon' => 'fa-tools',
-                'route' => 'admin.tools.create',
+                'label' => 'Add Product',
+                'route' => 'thedolci.admin.products.create',
             ],
             [
-                'label' => 'شريحة هيرو',
-                'icon' => 'fa-images',
-                'route' => 'admin.hero-slides.create',
+                'label' => 'Reviews',
+                'route' => 'thedolci.admin.reviews.index',
             ],
             [
-                'label' => 'برنامج الإحالات',
-                'icon' => 'fa-link',
-                'route' => 'admin.referrals.index',
+                'label' => 'Add Review',
+                'route' => 'thedolci.admin.reviews.create',
             ],
             [
-                'label' => 'النظام المالي',
-                'icon' => 'fa-file-invoice-dollar',
-                'route' => 'admin.finance.dashboard',
+                'label' => 'Orders',
+                'route' => 'thedolci.admin.orders.index',
             ],
             [
-                'label' => 'إدارة المستخدمين',
-                'icon' => 'fa-users',
-                'route' => 'admin.users.index',
+                'label' => 'Open Store',
+                'route' => 'thedolci.shop',
             ],
         ];
 
         $managementSections = [
             [
-                'title' => 'الوصفات والمحتوى',
-                'description' => 'إدارة الوصفات ومراجعة المحتوى التحريري قبل نشره.',
-                'icon' => 'fa-book',
+                'title' => 'Catalog',
+                'description' => 'Manage products, visibility, pricing, and limited edition stock.',
+                'icon' => 'fa-plus-circle',
                 'items' => [
                     [
-                        'label' => 'عرض جميع الوصفات',
-                        'route' => 'admin.recipes.index',
+                        'label' => 'All Products',
+                        'route' => 'thedolci.admin.products.index',
                     ],
                     [
-                        'label' => 'الوصفات المعلقة',
-                        'route' => 'admin.recipes.index',
-                        'params' => ['status' => Recipe::STATUS_PENDING],
-                    ],
-                    [
-                        'label' => 'إدارة أدوات الشيف',
-                        'route' => 'admin.tools.index',
+                        'label' => 'Add Product',
+                        'route' => 'thedolci.admin.products.create',
                     ],
                 ],
             ],
             [
-                'title' => 'ورشات العمل والحجوزات',
-                'description' => 'متابعة الورشات والطلبات والحجوزات اليومية.',
-                'icon' => 'fa-users',
+                'title' => 'Orders',
+                'description' => 'Track order flow, payment state, and fulfillment progress.',
+                'icon' => 'fa-receipt',
                 'items' => [
                     [
-                        'label' => 'كل الورشات',
-                        'route' => 'admin.workshops.index',
-                    ],
-                    [
-                        'label' => 'إنشاء ورشة جديدة',
-                        'route' => 'admin.workshops.create',
-                    ],
-                    [
-                        'label' => 'الحجوزات',
-                        'route' => 'admin.bookings.index',
-                    ],
-                    [
-                        'label' => 'إضافة حجز يدوي',
-                        'route' => 'admin.bookings.manual',
+                        'label' => 'All Orders',
+                        'route' => 'thedolci.admin.orders.index',
                     ],
                 ],
             ],
             [
-                'title' => 'إدارة المنصة',
-                'description' => 'ضبط إعدادات المنصة السريعة والصفحات العامة.',
-                'icon' => 'fa-sliders',
+                'title' => 'Reviews',
+                'description' => 'Moderate testimonials and control featured storefront social proof.',
+                'icon' => 'fa-star',
                 'items' => [
                     [
-                        'label' => 'لوحة التحكم',
-                        'route' => 'admin.dashboard',
+                        'label' => 'All Reviews',
+                        'route' => 'thedolci.admin.reviews.index',
                     ],
                     [
-                        'label' => 'إعدادات الرؤية',
-                        'route' => 'admin.visibility.index',
-                    ],
-                    [
-                        'label' => 'صفحة روابط Peahskill',
-                        'url' => 'https://peahskill.com/peahskill-links',
-                    ],
-                    [
-                        'label' => 'إدارة سلايدر الهيرو',
-                        'route' => 'admin.hero-slides.index',
+                        'label' => 'Add Review',
+                        'route' => 'thedolci.admin.reviews.create',
                     ],
                 ],
             ],
             [
-                'title' => 'المستخدمون',
-                'description' => 'متابعة المشتركين، الشيفات، وشركاء الإحالات.',
-                'icon' => 'fa-users',
+                'title' => 'Storefront Content',
+                'description' => 'Edit hero content and landing copy shown on the store homepage.',
+                'icon' => 'fa-store',
                 'items' => [
                     [
-                        'label' => 'جميع المستخدمين',
-                        'route' => 'admin.users.index',
-                    ],
-                    [
-                        'label' => 'طلبات الشيفات',
-                        'route' => 'admin.chefs.requests',
-                    ],
-                    [
-                        'label' => 'شركاء الإحالات',
-                        'route' => 'admin.referrals.index',
+                        'label' => 'Storefront Settings',
+                        'route' => 'thedolci.admin.storefront.edit',
                     ],
                 ],
             ],
-            [
-                'title' => 'برنامج الإحالات',
-                'description' => 'إدارة الشركاء ومتابعة العمولات الجاهزة للدفع.',
-                'icon' => 'fa-link',
-                'items' => [
-                    [
-                        'label' => 'إحصائيات الشركاء',
-                        'route' => 'admin.referrals.index',
-                    ],
-                    [
-                        'label' => 'تفعيل شريك جديد',
-                        'route' => 'admin.referrals.index',
-                        'params' => ['open' => 'activate'],
-                    ],
-                ],
-            ],
-        ];
-
-        $recipeStatusLabels = [
-            Recipe::STATUS_APPROVED => 'منشورة',
-            Recipe::STATUS_PENDING => 'بانتظار المراجعة',
-            Recipe::STATUS_DRAFT => 'مسودة',
-            Recipe::STATUS_REJECTED => 'مرفوضة',
         ];
 
         return view('admin.admin-area', compact(
+            'schemaWarnings',
             'metrics',
             'attentionItems',
-            'recentRecipes',
-            'upcomingWorkshops',
+            'latestOrders',
+            'latestReviews',
             'quickActions',
-            'managementSections',
-            'recipeStatusLabels'
+            'managementSections'
         ));
     }
 }
-

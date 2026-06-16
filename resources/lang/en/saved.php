@@ -1,9 +1,9 @@
-<?php
+﻿<?php
 
 return [
     'title' => 'Saved Tools',
     'subtitle' => "Products you've saved to buy later",
-    'price_currency' => 'AED',
+    'price_currency' => 'JOD',
     'buttons' => [
         'amazon' => 'Continue buying on Amazon',
         'remove' => 'Remove from saved',
@@ -21,3 +21,4 @@ return [
     ],
     'placeholder_alt' => 'Placeholder image',
 ];
+

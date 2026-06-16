@@ -21,7 +21,7 @@ return new class extends Migration
                 ->nullOnDelete();
             $table->string('type', 20)->default('booking');
             $table->string('status', 20)->default('draft');
-            $table->string('currency', 3)->default(config('finance.default_currency', 'USD'));
+            $table->string('currency', 3)->default(config('finance.default_currency', 'JOD'));
             $table->decimal('subtotal', 10, 2)->default(0);
             $table->decimal('tax_amount', 10, 2)->default(0);
             $table->decimal('total', 10, 2)->default(0);
@@ -44,3 +44,4 @@ return new class extends Migration
         Schema::dropIfExists('finance_invoices');
     }
 };
+

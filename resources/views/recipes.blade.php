@@ -1,4 +1,4 @@
-﻿@extends('layouts.app')
+@extends('layouts.app')
 
 @section('title', __('recipes.meta.title'))
 
@@ -13,10 +13,10 @@
 @push('styles')
 <style>
 :root {
-    --peah-navy: #0f1f3d;
-    --peah-teal: #16c3ff;
+    --peah-navy: #3b1a1f;
+    --peah-teal: #9f5e63;
     --peah-yellow: #f7c948;
-    --peah-ink: #0b1f33;
+    --peah-ink: #321417;
     --peah-cloud: #f4f7fb;
     --mobile-tab-bar-height: 72px;
     --navbar-safe-offset: 72px;
@@ -105,7 +105,7 @@
     padding: 1.2rem 1.4rem 1.5rem;
     display: grid;
     gap: 1rem;
-    background: radial-gradient(circle at 16% 20%, rgba(26, 184, 255, 0.06), transparent 34%),
+    background: radial-gradient(circle at 16% 20%, rgba(143, 74, 80, 0.06), transparent 34%),
         radial-gradient(circle at 80% 10%, rgba(15, 31, 61, 0.04), transparent 42%);
 }
 
@@ -136,15 +136,15 @@
     padding: 0.75rem 0.9rem;
     background: #fff;
     font-size: 0.97rem;
-    color: #0f1f3d;
+    color: #3b1a1f;
     transition: border-color 0.12s ease, box-shadow 0.12s ease;
 }
 
 .composer-field input:focus,
 .composer-field textarea:focus {
     outline: none;
-    border-color: rgba(26, 184, 255, 0.45);
-    box-shadow: 0 0 0 3px rgba(26, 184, 255, 0.15);
+    border-color: rgba(143, 74, 80, 0.45);
+    box-shadow: 0 0 0 3px rgba(143, 74, 80, 0.15);
 }
 
 .composer-field textarea {
@@ -166,7 +166,7 @@
 
 .composer-upload__label {
     font-weight: 800;
-    color: #0f1f3d;
+    color: #3b1a1f;
     display: inline-flex;
     align-items: center;
     gap: 0.35rem;
@@ -193,9 +193,9 @@
 }
 
 .composer-upload__label.has-file {
-    background: #0f1f3d;
+    background: #3b1a1f;
     color: #fff;
-    border-color: #0f1f3d;
+    border-color: #3b1a1f;
 }
 
 .composer-chip {
@@ -204,7 +204,7 @@
     gap: 0.35rem;
     padding: 0.45rem 0.65rem;
     border-radius: 10px;
-    background: rgba(26, 184, 255, 0.12);
+    background: rgba(143, 74, 80, 0.12);
     color: #0c8f78;
     font-weight: 800;
     font-size: 0.9rem;
@@ -234,14 +234,14 @@
 
 .composer-btn--ghost {
     background: #f1f5f9;
-    color: #0f1f3d;
+    color: #3b1a1f;
     border: 1px solid #e2e8f0;
 }
 
 .composer-btn--primary {
-    background: linear-gradient(135deg, #16c3ff, #0c8f78);
+    background: linear-gradient(135deg, #9f5e63, #0c8f78);
     color: #fff;
-    box-shadow: 0 12px 24px rgba(26, 184, 255, 0.24);
+    box-shadow: 0 12px 24px rgba(143, 74, 80, 0.24);
 }
 
 .composer-modal__close {
@@ -250,7 +250,7 @@
     border-radius: 10px;
     border: 1px solid #e2e8f0;
     background: #fff;
-    color: #0f1f3d;
+    color: #3b1a1f;
     display: grid;
     place-items: center;
     cursor: pointer;
@@ -314,7 +314,7 @@ body.is-modal-open {
     height: 46px;
     border-radius: 50%;
     overflow: hidden;
-    background: linear-gradient(135deg, rgba(26, 184, 255, 0.14), rgba(15, 31, 61, 0.12));
+    background: linear-gradient(135deg, rgba(143, 74, 80, 0.14), rgba(15, 31, 61, 0.12));
     display: grid;
     place-items: center;
     font-weight: 900;
@@ -352,7 +352,7 @@ body.is-modal-open {
 }
 
 .post-composer__trigger:hover {
-    border-color: rgba(26, 184, 255, 0.28);
+    border-color: rgba(143, 74, 80, 0.28);
     box-shadow: 0 6px 14px rgba(15, 31, 61, 0.08);
     transform: translateY(-1px);
 }
@@ -390,7 +390,7 @@ body.is-modal-open {
 }
 
 .composer-action--photo i {
-    color: #0819ff;
+    color: #6b2e30;
 }
 
 .composer-action--article i {
@@ -398,7 +398,7 @@ body.is-modal-open {
 }
 
 .composer-action:hover {
-    background: rgba(26, 184, 255, 0.08);
+    background: rgba(143, 74, 80, 0.08);
     transform: translateY(-1px);
 }
 
@@ -427,7 +427,7 @@ body:has([data-navbar-layer]) .feed-page {
     position: absolute;
     inset: 0;
     background:
-        radial-gradient(circle at 15% 20%, rgba(26, 184, 255, 0.08), transparent 28%),
+        radial-gradient(circle at 15% 20%, rgba(143, 74, 80, 0.08), transparent 28%),
         radial-gradient(circle at 85% 30%, rgba(247, 201, 72, 0.07), transparent 32%),
         radial-gradient(circle at 70% 80%, rgba(12, 143, 120, 0.08), transparent 32%);
     opacity: 0.75;
@@ -696,7 +696,7 @@ body:has([data-navbar-layer]) .feed-page {
     position: absolute;
     inset: 0;
     border: none;
-    background: #0f1f3d;
+    background: #3b1a1f;
 }
 
 .feed-card__overlay {
@@ -783,13 +783,13 @@ body:has([data-navbar-layer]) .feed-page {
     padding: 0.4rem 0.65rem;
     border-radius: 10px;
     background: rgba(15, 31, 61, 0.06);
-    color: #0b1f33;
+    color: #321417;
     font-weight: 700;
     font-size: 0.9rem;
 }
 
 .value-chip i {
-    color: #16c3ff;
+    color: #9f5e63;
 }
 
 .feed-pill {
@@ -799,13 +799,13 @@ body:has([data-navbar-layer]) .feed-page {
     padding: 0.35rem 0.6rem;
     border-radius: 10px;
     background: rgba(15, 31, 61, 0.05);
-    color: #0f1f3d;
+    color: #3b1a1f;
     font-weight: 700;
     font-size: 0.88rem;
 }
 
 .feed-pill i {
-    color: #16c3ff;
+    color: #9f5e63;
 }
 
 .feed-card__info {
@@ -920,15 +920,15 @@ body:has([data-navbar-layer]) .feed-page {
     gap: 0.35rem;
     padding: 0.75rem 0.95rem;
     border-radius: 12px;
-    background: rgba(26, 184, 255, 0.12);
+    background: rgba(143, 74, 80, 0.12);
     color: #0c8f78;
     font-weight: 800;
-    border: 1px solid rgba(26, 184, 255, 0.25);
+    border: 1px solid rgba(143, 74, 80, 0.25);
     transition: background 0.15s ease;
 }
 
 .cta-secondary:hover {
-    background: rgba(26, 184, 255, 0.18);
+    background: rgba(143, 74, 80, 0.18);
 }
 
 .feed-empty {
@@ -964,7 +964,7 @@ body:has([data-navbar-layer]) .feed-page {
     width: 42px;
     height: 42px;
     border: 4px solid rgba(255, 255, 255, 0.14);
-    border-top-color: #16c3ff;
+    border-top-color: #9f5e63;
     border-radius: 50%;
     margin: 0 auto 0.4rem;
     animation: spin 0.9s linear infinite;
@@ -976,7 +976,7 @@ body:has([data-navbar-layer]) .feed-page {
 
 @media (min-width: 1024px) {
     .feed-page {
-        background: radial-gradient(circle at 10% 20%, rgba(26, 184, 255, 0.08), transparent 30%),
+        background: radial-gradient(circle at 10% 20%, rgba(143, 74, 80, 0.08), transparent 30%),
             radial-gradient(circle at 88% 16%, rgba(247, 201, 72, 0.08), transparent 36%),
             radial-gradient(circle at 65% 78%, rgba(12, 143, 120, 0.06), transparent 32%),
             #030712;
@@ -1127,7 +1127,7 @@ body:has([data-navbar-layer]) .feed-page {
         border-radius: 8px;
         background: #e6f7f3;
         color: #0c8f78;
-        border: 1px solid rgba(26, 184, 255, 0.25);
+        border: 1px solid rgba(143, 74, 80, 0.25);
         font-weight: 800;
         font-size: 0.8rem;
     }
@@ -1167,6 +1167,192 @@ body:has([data-navbar-layer]) .feed-page {
         padding: 0 1rem 1rem;
     }
 }
+
+/* Modern glass refresh */
+:root {
+    --feed-glass-surface: linear-gradient(145deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.07));
+    --feed-glass-border: rgba(255, 255, 255, 0.2);
+    --feed-glass-shadow: 0 26px 62px rgba(2, 6, 23, 0.5);
+}
+
+.feed-page-modern {
+    background:
+        radial-gradient(circle at 12% 14%, rgba(143, 74, 80, 0.14), transparent 30%),
+        radial-gradient(circle at 88% 9%, rgba(124, 58, 237, 0.12), transparent 36%),
+        radial-gradient(circle at 52% 86%, rgba(15, 118, 110, 0.08), transparent 30%),
+        #020617;
+}
+
+.feed-shell-modern {
+    position: relative;
+}
+
+.feed-shell-modern::before {
+    content: "";
+    position: absolute;
+    inset: -8% -3%;
+    border-radius: 2rem;
+    pointer-events: none;
+    background: radial-gradient(circle at 18% 24%, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0));
+    z-index: 0;
+}
+
+.feed-card-modern {
+    position: relative;
+    border: 1px solid var(--feed-glass-border);
+    box-shadow: var(--feed-glass-shadow);
+    backdrop-filter: blur(10px) saturate(130%);
+    -webkit-backdrop-filter: blur(10px) saturate(130%);
+}
+
+.feed-card-modern::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(140deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0));
+    z-index: 1;
+}
+
+.feed-card-modern .feed-card__overlay {
+    background: linear-gradient(180deg, rgba(2, 6, 23, 0.24) 0%, rgba(2, 6, 23, 0) 22%, rgba(2, 6, 23, 0) 58%, rgba(2, 6, 23, 0.84) 100%);
+}
+
+.feed-card-modern .feed-card__info {
+    background: linear-gradient(145deg, rgba(2, 6, 23, 0.5), rgba(15, 23, 42, 0.3));
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 1rem;
+    padding: 0.9rem 1rem;
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.28);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.feed-card-modern .feed-card__actions {
+    background: linear-gradient(160deg, rgba(2, 6, 23, 0.52), rgba(15, 23, 42, 0.36));
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 1.1rem;
+    padding: 0.7rem 0.45rem;
+    box-shadow: 0 18px 34px rgba(0, 0, 0, 0.34);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.feed-card-modern .action-btn > div {
+    background: rgba(255, 255, 255, 0.16);
+    border: 1px solid rgba(255, 255, 255, 0.24);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.24);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+}
+
+.feed-card-modern .action-btn:hover > div {
+    background: rgba(255, 255, 255, 0.24);
+    border-color: rgba(255, 255, 255, 0.38);
+    transform: translateY(-2px);
+}
+
+.feed-card-modern .action-btn span {
+    color: rgba(255, 255, 255, 0.92);
+}
+
+.feed-card-modern .feed-card__more,
+.feed-card-modern .feed-card__detail-link,
+.feed-card-modern .feed-card__back {
+    background: rgba(255, 255, 255, 0.16);
+    border: 1px solid rgba(255, 255, 255, 0.26);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.28);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.feed-card-modern .feed-card__more:hover,
+.feed-card-modern .feed-card__detail-link:hover,
+.feed-card-modern .feed-card__back:hover {
+    background: rgba(255, 255, 255, 0.26);
+}
+
+.feed-loader,
+.feed-end {
+    width: fit-content;
+    margin-inline: auto;
+    padding: 0.65rem 0.95rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.14);
+    border: 1px solid rgba(255, 255, 255, 0.26);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+.feed-card-modern,
+.feed-card-modern .feed-card__info,
+.feed-card-modern .feed-card__actions {
+    animation: feed-card-reveal 0.64s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+.feed-card-modern .feed-card__actions {
+    animation-delay: 0.06s;
+}
+
+@keyframes feed-card-reveal {
+    0% {
+        opacity: 0;
+        transform: translate3d(0, 14px, 0) scale(0.99);
+    }
+    100% {
+        opacity: 1;
+        transform: translate3d(0, 0, 0) scale(1);
+    }
+}
+
+@media (min-width: 1024px) {
+    .feed-card-modern .feed-card__overlay {
+        grid-template-columns: minmax(0, 1fr) 108px;
+    }
+
+    .feed-card-modern .feed-card__actions {
+        padding: 0.9rem 0.55rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .feed-card-modern {
+        border: none;
+        border-radius: 0;
+        box-shadow: none;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+    }
+
+    .feed-card-modern::after {
+        display: none;
+    }
+
+    .feed-card-modern .feed-card__overlay {
+        padding: 0.8rem;
+        padding-bottom: calc(var(--mobile-tab-bar-height, 72px) + 0.9rem);
+    }
+
+    .feed-card-modern .feed-card__info {
+        border-radius: 0.9rem;
+        padding: 0.7rem 0.8rem;
+    }
+
+    .feed-card-modern .feed-card__actions {
+        border-radius: 0.9rem;
+        padding: 0.55rem 0.35rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .feed-card-modern,
+    .feed-card-modern .feed-card__info,
+    .feed-card-modern .feed-card__actions {
+        animation: none !important;
+    }
+}
 </style>
 @endpush
 
@@ -1178,26 +1364,26 @@ body:has([data-navbar-layer]) .feed-page {
         $skillTracks = [
             'cooking' => [
                 'label' => 'Cooking Skills',
-                'subtitle' => 'Recipes · Quick meals · Kitchen hacks',
-                'color' => '#0f1f3d',
-                'accent' => '#16c3ff',
+                'subtitle' => 'Recipes � Quick meals � Kitchen hacks',
+                'color' => '#3b1a1f',
+                'accent' => '#9f5e63',
             ],
             'content' => [
                 'label' => 'Content Creation',
-                'subtitle' => 'Lighting · Editing · Camera skills',
-                'color' => '#0b2239',
-                'accent' => '#8f7ee7',
+                'subtitle' => 'Lighting � Editing � Camera skills',
+                'color' => '#3b1a1f',
+                'accent' => '#b2767d',
             ],
             'business' => [
                 'label' => 'Business Skills',
-                'subtitle' => 'Pricing · Branding · Selling',
-                'color' => '#0f1f3d',
+                'subtitle' => 'Pricing � Branding � Selling',
+                'color' => '#3b1a1f',
                 'accent' => '#f7c948',
             ],
             'crafts' => [
                 'label' => 'Crafts & DIY',
-                'subtitle' => 'Home projects · Handmade items',
-                'color' => '#0f1f3d',
+                'subtitle' => 'Home projects � Handmade items',
+                'color' => '#3b1a1f',
                 'accent' => '#e46f4d',
             ],
         ];
@@ -1205,10 +1391,10 @@ body:has([data-navbar-layer]) .feed-page {
 
     if (!isset($sourceLabels)) {
         $sourceLabels = [
-            'creator' => ['label' => 'Creator', 'hint' => 'مدرب معتمد'],
-            'partner' => ['label' => 'Partner', 'hint' => 'محتوى شريك'],
-            'peah' => ['label' => 'Peah Official', 'hint' => 'حصري Peahskill'],
-            'community' => ['label' => 'Community Post', 'hint' => 'من مجتمع Wasfah'],
+            'creator' => ['label' => 'Creator', 'hint' => '???? ?????'],
+            'partner' => ['label' => 'Partner', 'hint' => '????? ????'],
+            'peah' => ['label' => 'Peah Official', 'hint' => '???? Peahskill'],
+            'community' => ['label' => 'Community Post', 'hint' => '?? ????? Wasfah'],
         ];
     }
 
@@ -1216,10 +1402,10 @@ body:has([data-navbar-layer]) .feed-page {
         $classifyTrack = function ($recipe) {
             $categoryName = Str::of($recipe->category->name ?? '')->lower();
             $map = [
-                'cooking' => ['cook', 'cooking', 'وصفات', 'مطبخ', 'recipe', 'kitchen', 'طهي', 'طبخ', 'meal', 'أكل'],
-                'content' => ['محتوى', 'تصوير', 'فيديو', 'اضاءة', 'lighting', 'editing', 'مونتاج', 'كاميرا', 'content'],
-                'business' => ['business', 'عمل', 'تسويق', 'branding', 'براند', 'سعر', 'pricing', 'بيع', 'selling'],
-                'crafts' => ['حرف', 'diy', 'منزلي', 'مشروع', 'handmade', 'craft', 'منزل', 'ديكور'],
+                'cooking' => ['cook', 'cooking', '?????', '????', 'recipe', 'kitchen', '???', '???', 'meal', '???'],
+                'content' => ['?????', '?????', '?????', '?????', 'lighting', 'editing', '??????', '??????', 'content'],
+                'business' => ['business', '???', '?????', 'branding', '?????', '???', 'pricing', '???', 'selling'],
+                'crafts' => ['???', 'diy', '?????', '?????', 'handmade', 'craft', '????', '?????'],
             ];
 
             foreach ($map as $trackKey => $keywords) {
@@ -1256,15 +1442,15 @@ body:has([data-navbar-layer]) .feed-page {
 
     $latestUpdated = optional($recipes->first())->created_at
         ? optional($recipes->first())->created_at->locale(app()->getLocale())->diffForHumans(null, null, false, 2)
-        : '—';
+        : '�';
 @endphp
-<div class="feed-page min-h-screen pb-16">
+<div class="feed-page feed-page-modern min-h-screen pb-16">
     <div class="feed-pattern" aria-hidden="true"></div>
 
-    <section class="feed-stream px-4">
+    <section class="feed-stream feed-stream-modern px-4">
         <div
             id="recipe-feed"
-            class="feed-shell"
+            class="feed-shell feed-shell-modern"
             data-next-page="{{ $recipes->nextPageUrl() }}"
             data-track="all"
         >
@@ -1272,10 +1458,10 @@ body:has([data-navbar-layer]) .feed-page {
                 @php
                     // Fallbacks in case helpers are not defined
                     $skillTracks = $skillTracks ?? [
-                        'cooking' => ['label' => 'Cooking Skills', 'accent' => '#16c3ff', 'color' => '#0f1f3d'],
-                        'content' => ['label' => 'Content Creation', 'accent' => '#8f7ee7', 'color' => '#0b2239'],
-                        'business' => ['label' => 'Business Skills', 'accent' => '#f7c948', 'color' => '#0f1f3d'],
-                        'crafts' => ['label' => 'Crafts & DIY', 'accent' => '#e46f4d', 'color' => '#0f1f3d'],
+                        'cooking' => ['label' => 'Cooking Skills', 'accent' => '#9f5e63', 'color' => '#3b1a1f'],
+                        'content' => ['label' => 'Content Creation', 'accent' => '#b2767d', 'color' => '#3b1a1f'],
+                        'business' => ['label' => 'Business Skills', 'accent' => '#f7c948', 'color' => '#3b1a1f'],
+                        'crafts' => ['label' => 'Crafts & DIY', 'accent' => '#e46f4d', 'color' => '#3b1a1f'],
                     ];
                     $sourceLabels = $sourceLabels ?? [
                         'creator' => ['label' => 'Creator', 'hint' => ''],
@@ -1304,7 +1490,7 @@ body:has([data-navbar-layer]) .feed-page {
                         $embedProvider = class_exists(\App\Support\VideoEmbed::class)
                             ? \App\Support\VideoEmbed::provider($recipe->video_url)
                             : null;
-                        $chefName = $recipe->chef->name ?? 'ضيف Wasfah';
+                        $chefName = $recipe->chef->name ?? '??? Wasfah';
                         $categoryName = $recipe->category->name ?? __('recipes.cards.category_fallback');
                         $publishedAgo = optional($recipe->created_at)->locale(app()->getLocale())->diffForHumans(null, null, false, 1);
                         $avatarUrl = optional($recipe->chef)->avatar ?? optional($recipe->chef)->profile_photo_url ?? null;
@@ -1315,7 +1501,7 @@ body:has([data-navbar-layer]) .feed-page {
                     @endphp
                     <article
                         id="feed-card-{{ $recipe->slug }}"
-                        class="feed-card"
+                        class="feed-card feed-card-modern"
                         data-track="{{ $trackKey }}"
                         data-source="{{ $sourceType }}"
                         data-recipe-id="{{ $recipe->recipe_id }}"
@@ -1323,7 +1509,7 @@ body:has([data-navbar-layer]) .feed-page {
                         data-recipe-slug="{{ $recipe->slug }}"
                         style="--track-bg: {{ $track['accent'] }};"
                     >
-                        <a href="{{ route('recipe.show', $recipe->slug) }}" class="feed-card__detail-link" aria-label="شاهد التفاصيل">
+                        <a href="{{ route('recipe.show', $recipe->slug) }}" class="feed-card__detail-link" aria-label="???? ????????">
                             <i class="fas fa-arrow-up-right"></i>
                         </a>
                         <button
@@ -1331,7 +1517,7 @@ body:has([data-navbar-layer]) .feed-page {
                             class="feed-card__back"
                             data-feed-action="go-back"
                             data-back-url="{{ route('home') }}"
-                            aria-label="رجوع"
+                            aria-label="????"
                         >
                             <i class="fas fa-arrow-left"></i>
                         </button>
@@ -1360,7 +1546,7 @@ body:has([data-navbar-layer]) .feed-page {
                                 @if($recipe->video_url)
                                     <span class="feed-card__play">
                                         <i class="fas fa-play"></i>
-                                        فيديو قصير
+                                        ????? ????
                                     </span>
                                 @endif
                             @endif
@@ -1410,7 +1596,7 @@ body:has([data-navbar-layer]) .feed-page {
                                         <div class="p-2 rounded-full bg-black/20 group-hover:bg-black/40 transition-colors">
                                             <i class="fas fa-share text-2xl text-white"></i>
                                         </div>
-                                        <span>مشاركة</span>
+                                        <span>??????</span>
                                     </button>
 
                                     <button
@@ -1422,7 +1608,7 @@ body:has([data-navbar-layer]) .feed-page {
                                         <div class="p-2 rounded-full bg-black/20 group-hover:bg-black/40 transition-colors">
                                             <i class="fas fa-volume-mute text-2xl text-white"></i>
                                         </div>
-                                        <span data-sound-label>بدون صوت</span>
+                                        <span data-sound-label>???? ???</span>
                                     </button>
                                 </div>
                             </div>
@@ -1434,7 +1620,7 @@ body:has([data-navbar-layer]) .feed-page {
                         <p>{{ __('recipes.empty.subtitle') }}</p>
                         <a href="{{ route('recipes') }}" class="cta-secondary">
                             <i class="fas fa-rotate-right"></i>
-                            إعادة التصفح
+                            ????? ??????
                         </a>
                     </div>
                 @endforelse
@@ -1442,11 +1628,11 @@ body:has([data-navbar-layer]) .feed-page {
 
             <div id="feed-loader" class="feed-loader {{ $recipes->hasMorePages() ? '' : 'hidden' }}">
                 <div class="spinner"></div>
-                جاري جلب المزيد...
+                ???? ??? ??????...
             </div>
             <div id="feed-end" class="feed-end {{ $recipes->hasMorePages() ? 'hidden' : '' }}">
                 <i class="fas fa-check-circle text-emerald-500"></i>
-                وصلنا لآخر البطاقات المتاحة
+                ????? ???? ???????? ???????
             </div>
             <div id="feed-sentinel" style="height: 1px;"></div>
 
@@ -1924,7 +2110,7 @@ document.addEventListener('DOMContentLoaded', () => {
             icon.classList.toggle('fa-volume-up', !isMuted);
         }
         if (label) {
-            label.textContent = isMuted ? 'بدون صوت' : 'صوت';
+            label.textContent = isMuted ? '???? ???' : '???';
         }
     };
 
@@ -1964,7 +2150,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const target = video || youtube;
 
         if (!target) {
-            showToast('لا يوجد فيديو في هذه الوصفة', 'error');
+            showToast('?? ???? ????? ?? ??? ??????', 'error');
             return;
         }
 
@@ -1978,7 +2164,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (currentUserId && currentUserId !== 'null') {
             return true;
         }
-        showToast('يجب تسجيل الدخول أولاً', 'error');
+        showToast('??? ????? ?????? ?????', 'error');
         window.location.href = '/login';
         return false;
     };
@@ -2037,7 +2223,7 @@ document.addEventListener('DOMContentLoaded', () => {
             button.dataset.made = wasMade.toString();
             toggleIconState(button, wasMade, 'text-red-500');
             updateActionCount(button, baseCount);
-            showToast('تعذر تسجيل الإعجاب الآن', 'error');
+            showToast('???? ????? ??????? ????', 'error');
         }
     };
 
@@ -2090,13 +2276,13 @@ document.addEventListener('DOMContentLoaded', () => {
             button.dataset.saved = finalState.toString();
             toggleIconState(button, finalState, 'text-yellow-400');
             updateActionCount(button, finalCount);
-            showToast(finalState ? 'تم حفظ الوصفة' : 'تم إلغاء الحفظ', 'success');
+            showToast(finalState ? '?? ??? ??????' : '?? ????? ?????', 'success');
         } catch (error) {
             console.error(error);
             button.dataset.saved = wasSaved.toString();
             toggleIconState(button, wasSaved, 'text-yellow-400');
             updateActionCount(button, baseCount);
-            showToast('تعذر تحديث قائمة الحفظ', 'error');
+            showToast('???? ????? ????? ?????', 'error');
         }
     };
 
@@ -2121,10 +2307,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 tempInput.remove();
             }
 
-            showToast('تم نسخ الرابط للمشاركة', 'success');
+            showToast('?? ??? ?????? ????????', 'success');
         } catch (error) {
             console.error(error);
-            showToast('تعذر مشاركة الرابط الآن', 'error');
+            showToast('???? ?????? ?????? ????', 'error');
         }
     };
 
@@ -2224,7 +2410,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const submitQuickPost = async ({ formData, button, successMessage }) => {
-        setButtonLoading(button, true, 'جاري النشر...');
+        setButtonLoading(button, true, '???? ?????...');
 
         try {
             const response = await fetch(quickPostEndpoint, {
@@ -2238,17 +2424,17 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = await response.json();
 
             if (response.ok) {
-                showToast(successMessage || 'تم النشر بنجاح!');
+                showToast(successMessage || '?? ????? ?????!');
                 closeModal();
                 return true;
             }
 
             if (response.status === 422 && data.errors) {
-                const firstError = Object.values(data.errors)[0]?.[0] ?? 'تحقق من البيانات المدخلة';
+                const firstError = Object.values(data.errors)[0]?.[0] ?? '???? ?? ???????? ???????';
                 showToast(firstError, 'error');
                 console.error('Validation errors:', data.errors);
             } else {
-                showToast(data.message || 'حدث خطأ أثناء النشر', 'error');
+                showToast(data.message || '??? ??? ????? ?????', 'error');
                 if (data.errors) {
                     console.error(data.errors);
                 }
@@ -2256,7 +2442,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return false;
         } catch (error) {
             console.error(error);
-            showToast('حدث خطأ في الاتصال', 'error');
+            showToast('??? ??? ?? ???????', 'error');
             return false;
         } finally {
             setButtonLoading(button, false);
@@ -2274,7 +2460,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const updateLabel = () => {
             if (!label) return;
             const file = input.files?.[0];
-            label.textContent = file ? file.name : (label.dataset.placeholder || 'اختر ملفاً');
+            label.textContent = file ? file.name : (label.dataset.placeholder || '???? ?????');
             label.classList.toggle('has-file', !!file);
         };
         input.addEventListener('change', updateLabel);
@@ -2288,7 +2474,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const textInput = modal?.querySelector('#photo-text');
             
             if (!fileInput || !fileInput.files?.length) {
-                showToast('أضف صورة أولاً', 'error');
+                showToast('??? ???? ?????', 'error');
                 return;
             }
 
@@ -2301,7 +2487,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const success = await submitQuickPost({
                 formData,
                 button: photoPublishButton,
-                successMessage: 'تم نشر الصورة بنجاح!'
+                successMessage: '?? ??? ?????? ?????!'
             });
 
             if (success) {
@@ -2310,7 +2496,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (textInput) textInput.value = '';
                 const label = fileInput.closest('.composer-upload')?.querySelector('.composer-upload__label');
                 if (label) {
-                    label.textContent = label.dataset.placeholder || 'اختر أو اسحب صورة';
+                    label.textContent = label.dataset.placeholder || '???? ?? ???? ????';
                     label.classList.remove('has-file');
                 }
 
@@ -2330,7 +2516,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const description = bodyInput?.value?.trim() || '';
             if (!description) {
-                showToast('اكتب محتوى للمقال أولاً', 'error');
+                showToast('???? ????? ?????? ?????', 'error');
                 return;
             }
 
@@ -2351,7 +2537,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const success = await submitQuickPost({
                 formData,
                 button: articlePublishButton,
-                successMessage: 'تم نشر المقال!'
+                successMessage: '?? ??? ??????!'
             });
 
             if (success) {
@@ -2362,7 +2548,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     imageInput.value = '';
                     const label = imageInput.closest('.composer-upload')?.querySelector('.composer-upload__label');
                     if (label) {
-                        label.textContent = label.dataset.placeholder || 'اختر أو اسحب صورة';
+                        label.textContent = label.dataset.placeholder || '???? ?? ???? ????';
                         label.classList.remove('has-file');
                     }
                 }
@@ -2383,12 +2569,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const description = textInput?.value?.trim() || '';
 
             if (!link) {
-                showToast('أضف رابط الفيديو أولاً', 'error');
+                showToast('??? ???? ??????? ?????', 'error');
                 return;
             }
 
             if (!description) {
-                showToast('أضف نصاً يرافق الفيديو', 'error');
+                showToast('??? ???? ????? ???????', 'error');
                 return;
             }
 
@@ -2402,7 +2588,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const success = await submitQuickPost({
                 formData,
                 button: videoPublishButton,
-                successMessage: 'تم نشر الفيديو!'
+                successMessage: '?? ??? ???????!'
             });
 
             if (success) {
@@ -2454,7 +2640,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (error) {
             console.error(error);
             if (loader) {
-                loader.innerHTML = '<span class="text-red-500 font-semibold">تعذر تحميل المزيد</span>';
+                loader.innerHTML = '<span class="text-red-500 font-semibold">???? ????? ??????</span>';
             }
         } finally {
             feedShell.dataset.loading = 'false';

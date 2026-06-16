@@ -18,7 +18,7 @@ class AdminMiddleware
     public function handle(Request $request, Closure $next)
     {
         if (!Auth::check()) {
-            return redirect()->route('login');
+            return redirect()->guest(route('login', ['mode' => 'admin']));
         }
 
         if (!Auth::user()->isAdmin()) {

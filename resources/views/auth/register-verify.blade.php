@@ -1,4 +1,4 @@
-﻿@extends('layouts.auth')
+@extends('layouts.auth')
 
 @section('title', 'Verify your email – Wasfah')
 
@@ -10,19 +10,19 @@
         align-items: center;
         justify-content: center;
         padding: 2.5rem 1.5rem;
-        background: linear-gradient(135deg, #e3ecff 0%, #e3ecff 30%, #1ab8ff 100%);
+        background: linear-gradient(135deg, #f8edee 0%, #f8edee 30%, #9f5e63 100%);
     }
     .verify-card {
         width: 100%;
         max-width: 540px;
         background: white;
         border-radius: 1.75rem;
-        box-shadow: 0 30px 60px rgba(8, 25, 255, 0.2);
-        border: 1px solid rgba(8, 25, 255, 0.12);
+        box-shadow: 0 30px 60px rgba(107, 46, 48, 0.2);
+        border: 1px solid rgba(107, 46, 48, 0.12);
         overflow: hidden;
     }
     .verify-header {
-        background: linear-gradient(135deg, #0819ff, #16c3ff);
+        background: linear-gradient(135deg, #6b2e30, #9f5e63);
         color: white;
         padding: 2.5rem 2rem;
         text-align: center;
@@ -37,14 +37,14 @@
         font-weight: 700;
         padding: 1rem 1.25rem;
         border-radius: 1rem;
-        border: 2px solid #0819ff;
-        background: #f4f6ff;
-        color: #0f78ad;
-        caret-color: #0f78ad;
+        border: 2px solid #6b2e30;
+        background: #ffffff;
+        color: #7f3a3d;
+        caret-color: #7f3a3d;
     }
     .code-input:focus {
         outline: none;
-        box-shadow: 0 0 0 4px rgba(8, 25, 255, 0.25);
+        box-shadow: 0 0 0 4px rgba(107, 46, 48, 0.25);
     }
     .submit-btn {
         width: 100%;
@@ -64,7 +64,7 @@
     .resend-btn {
         background: none;
         border: none;
-        color: #0f78ad;
+        color: #7f3a3d;
         font-weight: 700;
         text-decoration: underline;
         cursor: pointer;

@@ -11,11 +11,12 @@
     @php
         $vite = app(\Illuminate\Foundation\Vite::class);
         $isViteHot = \App\Support\ViteHot::shouldUseHotReload();
+        $hasViteManifest = \App\Support\ViteHot::hasBuildManifest();
     @endphp
 
     @if ($isViteHot)
         @vite(['resources/css/app.css', 'resources/css/non-critical.css', 'resources/js/app.js'])
-    @else
+    @elseif ($hasViteManifest)
         @php
             $appCss = $vite->asset('resources/css/app.css');
             $nonCriticalCss = $vite->asset('resources/css/non-critical.css');
@@ -32,7 +33,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="application-name" content="Peahskill">
-    <meta name="theme-color" content="#0819ff">
+    <meta name="theme-color" content="#6b2e30">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="apple-touch-icon" href="{{ asset('icons/icon-192x192.png') }}">
@@ -103,6 +104,7 @@
 
     <!-- PAGE_STYLES:START -->
     @stack('styles')
+    @livewireStyles
     <!-- PAGE_STYLES:END -->
 </head>
 <body class="bg-gray-100 font-sans pb-24 md:pb-0" data-user-id="@auth{{ Auth::id() }}@endauth" style="margin:0;padding:0;">
@@ -1054,6 +1056,7 @@
             document.addEventListener('input', handleFileInput);
         })();
     </script>
+    @livewireScripts
     <div id="page-script-stack" data-page-scripts>
         @stack('scripts')
     </div>

@@ -187,7 +187,7 @@ Route::middleware('auth')->group(function () {
 });
 
 // مسار صفحة المصادقة الموحدة (تسجيل الدخول + إنشاء حساب)
-Route::get('/login', function (Request $request) {
+Route::get('/adminlogin', function (Request $request) {
     // إذا كان المستخدم مسجل دخول، أعد توجيهه للصفحة الرئيسية
     if (Auth::check()) {
         return redirect('/')->with('info', 'أنت مسجل دخول بالفعل');
@@ -217,9 +217,17 @@ Route::get('/login', function (Request $request) {
 
     return $response;
 })->name('login');
-Route::post('/login', [LoginController::class, 'store'])
+Route::post('/adminlogin', [LoginController::class, 'store'])
     ->middleware('guest')
     ->name('login.password');
+
+Route::get('/login', function () {
+    return redirect('/');
+});
+
+Route::post('/login', function () {
+    abort(404);
+});
 
 // مسارات المحفوظات
 Route::prefix('saved')->middleware(['web'])->group(function () {
@@ -482,7 +490,9 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 });
 
 // مسارات الصفحات العامة
-Route::get('/about', [App\Http\Controllers\PageController::class, 'about'])->name('about');
+Route::get('/about', [App\Http\Controllers\PageController::class, 'about'])
+    ->middleware('admin')
+    ->name('about');
 Route::get('/baking-tips', [App\Http\Controllers\PageController::class, 'bakingTips'])->name('baking-tips');
 Route::get('/advertising', [App\Http\Controllers\PageController::class, 'advertising'])->name('advertising');
 Route::get('/partnership', [App\Http\Controllers\PageController::class, 'partnership'])->name('partnership');
@@ -538,4 +548,7 @@ Route::get('/contact', [App\Http\Controllers\ContactController::class, 'index'])
 Route::post('/contact/send', [App\Http\Controllers\ContactController::class, 'sendMessage'])->name('contact.send');
 
 // ملاحظة: تم تخصيص صفحة /bookings لعرض حجوزات المستخدمين
+
+
+require __DIR__.'/thedolci.php';
 

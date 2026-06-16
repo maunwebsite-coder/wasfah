@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 return [
     'misc' => [
@@ -25,7 +25,7 @@ return [
                 'total' => 'Total time',
                 'servings' => 'Capacity / output',
                 'details' => [
-                    'prep_and_cook' => 'Prep :prep • Execute :cook',
+                    'prep_and_cook' => 'Prep :prep â€¢ Execute :cook',
                     'prep_only' => 'Prep :minutes',
                     'cook_only' => 'Execute :minutes',
                 ],
@@ -78,7 +78,7 @@ return [
 
     'tools' => [
         'title' => 'Tools & resources',
-        'price_label' => 'AED :price',
+        'price_label' => 'JOD :price',
         'price_unknown' => 'Not provided',
         'empty' => 'No tools were specified for this guide.',
         'actions' => [
@@ -91,9 +91,9 @@ return [
         ],
         'messages' => [
             'save_success' => 'Tool saved for later!',
-            'save_error' => 'We couldn’t save this tool. Please try again.',
+            'save_error' => 'We couldnâ€™t save this tool. Please try again.',
             'remove_success' => 'Tool removed from saved items!',
-            'remove_error' => 'We couldn’t remove this tool. Please try again.',
+            'remove_error' => 'We couldnâ€™t remove this tool. Please try again.',
         ],
     ],
 
@@ -104,7 +104,7 @@ return [
     'community' => [
         'title' => 'Community pulse',
         'question' => 'Did you try this guide?',
-        'count' => '{0} Be the first to try this guide! 🚀|{1} :count member tried this guide!|[2,*] :count members tried this guide!',
+        'count' => '{0} Be the first to try this guide! ðŸš€|{1} :count member tried this guide!|[2,*] :count members tried this guide!',
         'button' => [
             'default' => 'I tried it',
             'active' => 'Tried',
@@ -151,16 +151,16 @@ return [
             'login_required' => 'You need to sign in to rate this recipe.',
             'login_required_remove' => 'You need to sign in to remove the rating.',
             'submit_success' => 'Rating submitted successfully!',
-            'submit_error' => 'We couldn’t submit the rating. Please try again.',
+            'submit_error' => 'We couldnâ€™t submit the rating. Please try again.',
             'remove_success' => 'Rating removed successfully!',
-            'remove_error' => 'We couldn’t remove the rating. Please try again.',
+            'remove_error' => 'We couldnâ€™t remove the rating. Please try again.',
         ],
         'empty_state' => 'Please rate the recipe',
         'star_title' => '{1} :count star|[2,*] :count stars',
         'modal' => [
             'title' => 'Cancel rating',
             'question' => 'Are you sure you want to remove the rating?',
-            'hint' => 'Your save or “I made it” status will stay.',
+            'hint' => 'Your save or â€œI made itâ€ status will stay.',
             'cancel' => 'Cancel',
             'confirm' => 'Yes, remove rating',
         ],
@@ -186,3 +186,4 @@ return [
         'view_recipe' => 'View recipe',
     ],
 ];
+

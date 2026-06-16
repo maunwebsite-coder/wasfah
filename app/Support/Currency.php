@@ -8,7 +8,7 @@ class Currency
 
     public static function default(): string
     {
-        return strtoupper(config('finance.default_currency', 'USD'));
+        return strtoupper(config('finance.default_currency', 'JOD'));
     }
 
     public static function all(): array
@@ -17,11 +17,11 @@ class Currency
 
         if (empty($configured)) {
             return [
-                'USD' => [
-                    'label' => 'دولار أمريكي',
-                    'symbol' => '$',
+                'JOD' => [
+                    'label' => 'Jordanian Dinar',
+                    'symbol' => 'JOD',
                     'decimals' => self::DEFAULT_DECIMALS,
-                    'rate_to_usd' => 1.0,
+                    'rate_to_usd' => 1.41,
                 ],
             ];
         }

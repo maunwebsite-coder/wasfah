@@ -50,7 +50,7 @@ class EnhancedImageUploadService
                 ];
             }
 
-            $maxKilobytes = (int) config('content_moderation.image.max_kilobytes', 2048);
+            $maxKilobytes = (int) config('content_moderation.image.max_kilobytes', 25600);
             $maxBytes = $maxKilobytes * 1024;
 
             if (!$gdAvailable) {

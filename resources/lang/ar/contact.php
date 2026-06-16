@@ -136,8 +136,8 @@ return [
         'channels' => [
             [
                 'title' => 'إنستغرام',
-                'handle' => '@peahskill',
-                'url' => 'https://www.instagram.com/peahskill/',
+                'handle' => '@thedolci.jo',
+                'url' => 'https://www.instagram.com/thedolci.jo/',
             ],
         ],
     ],

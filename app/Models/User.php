@@ -524,7 +524,7 @@ class User extends Authenticatable
 
     public function getReferralCurrencyCodeAttribute(): string
     {
-        return $this->referral_commission_currency ?: (string) config('referrals.default_currency', 'USD');
+        return $this->referral_commission_currency ?: (string) config('referrals.default_currency', 'JOD');
     }
 
     public function getReferralCurrencySymbolAttribute(): string

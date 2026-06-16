@@ -271,7 +271,7 @@
                                    name="{{ $field }}"
                                    accept="image/*"
                                    class="block w-full text-sm text-gray-600 file:mr-4 file:rounded-full file:border-0 file:bg-orange-50 file:px-4 file:py-2 file:text-orange-600 hover:file:bg-orange-100"
-                                   data-max-size="5120"
+                                   data-max-size="25600"
                                    data-max-size-message="{{ __('chef.recipe_form.sections.media.max_size_message') }}"
                                    data-error-target="#chef_recipe_{{ $field }}_error">
                             <p class="mt-2 text-xs text-gray-500">{{ __('chef.recipe_form.sections.media.max_size_hint') }}</p>

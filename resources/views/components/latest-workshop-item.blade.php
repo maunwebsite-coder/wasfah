@@ -60,16 +60,16 @@
                 border: 1px solid transparent;
             }
             .latest-recipe-chip.latest-workshop-chip.is-online {
-                background: linear-gradient(135deg, #0819ff, #2c4dff);
+                background: linear-gradient(135deg, #6b2e30, #8f4a50);
                 color: #ffffff;
-                border-color: #0819ff;
-                box-shadow: 0 8px 18px rgba(8, 25, 255, 0.25);
+                border-color: #6b2e30;
+                box-shadow: 0 8px 18px rgba(107, 46, 48, 0.25);
             }
             .latest-recipe-chip.latest-workshop-chip.is-onsite {
-                background: linear-gradient(135deg, #0a1ece, #6b7fff);
+                background: linear-gradient(135deg, #5a2628, #b2767d);
                 color: #f8fafc;
-                border-color: #1e2dd8;
-                box-shadow: 0 8px 18px rgba(8, 25, 255, 0.18);
+                border-color: #6b2e30;
+                box-shadow: 0 8px 18px rgba(107, 46, 48, 0.18);
             }
         </style>
     @endpush

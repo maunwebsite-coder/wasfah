@@ -13,7 +13,7 @@ class HeroSlideImageService
     private const MAX_WIDTH = 1920;
     private const MAX_HEIGHT = 1920;
     private const QUALITY = 80;
-    public const MAX_FILE_SIZE_KB = 5120; // 5MB limit referenced in validation/UI.
+    public const MAX_FILE_SIZE_KB = 25600; // 25MB limit referenced in validation/UI.
 
     /**
      * Store an optimized hero slide asset.

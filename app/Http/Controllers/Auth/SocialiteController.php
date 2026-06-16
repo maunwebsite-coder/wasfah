@@ -50,12 +50,6 @@ class SocialiteController extends Controller
             $intent = User::ROLE_CUSTOMER;
         }
 
-        if ($flow === 'register_customer') {
-            $intent = User::ROLE_CUSTOMER;
-        } elseif ($flow === 'register_chef') {
-            $intent = User::ROLE_CHEF;
-        }
-
         session([
             'auth_login_intent' => $intent,
             'auth_login_flow' => $flow,
@@ -103,12 +97,6 @@ class SocialiteController extends Controller
                 $intent = User::ROLE_CUSTOMER;
             }
 
-            if ($flow === 'register_customer') {
-                $intent = User::ROLE_CUSTOMER;
-            } elseif ($flow === 'register_chef') {
-                $intent = User::ROLE_CHEF;
-            }
-
             // Check if user exists by email first
             $stage = 'find-existing-user';
             $existingUser = User::where('email', $socialUser->getEmail())->first();
@@ -136,21 +124,12 @@ class SocialiteController extends Controller
                     }
                 }
 
-                if (
-                    $flow === 'register_chef'
-                    && !$existingUser->isAdmin()
-                    && $existingUser->role !== User::ROLE_CHEF
-                ) {
-                    $updates['role'] = User::ROLE_CHEF;
-                    $updates['chef_status'] = $existingUser->chef_status ?? User::CHEF_STATUS_NEEDS_PROFILE;
-                }
-
                 $existingUser->update(array_merge($updates, $tokenPayload));
                 $user = $existingUser;
             } else {
                 if ($flow === 'login') {
                     $stage = 'no-user-found-login-flow';
-                    return redirect('/login')
+                    return redirect()->route('login')
                         ->with('error', 'لم نعثر على حساب مرتبط ببريدك الإلكتروني في وصفة. يرجى اختيار خيار إنشاء حساب جديد.');
                 }
 
@@ -164,6 +143,7 @@ class SocialiteController extends Controller
                     'provider_id' => $socialUser->getId(),
                     'provider_token' => $socialUser->token,
                     'password' => Hash::make(uniqid()), // Random password for social login users
+                    'is_admin' => false,
                     'role' => $intent === User::ROLE_CHEF ? User::ROLE_CHEF : User::ROLE_CUSTOMER,
                 ];
 
@@ -191,6 +171,7 @@ class SocialiteController extends Controller
 
             // Log the user in
             $stage = 'login-user:' . $flow;
+
             Auth::login($user);
 
             $successMessage = $this->successMessageFor($flow, $isNewUser);
@@ -253,7 +234,7 @@ class SocialiteController extends Controller
             ]);
             
             // Handle exceptions, e.g., redirect to login with an error message
-            return redirect('/login')->with('error', 'حدث خطأ أثناء تسجيل الدخول. يرجى المحاولة مرة أخرى.');
+            return redirect()->route('login')->with('error', 'حدث خطأ أثناء تسجيل الدخول. يرجى المحاولة مرة أخرى.');
         }
     }
 

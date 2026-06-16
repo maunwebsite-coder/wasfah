@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Support\ImageUploadConstraints;
-use App\Support\Currency;
 use App\Support\Timezones;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -425,7 +424,7 @@ class Workshop extends Model
     // Accessors
     public function getFormattedPriceAttribute()
     {
-        $currencyCode = $this->currency ?: 'USD';
+        $currencyCode = $this->currency ?: config('finance.default_currency', 'JOD');
 
         return number_format($this->price, 2) . ' ' . $currencyCode;
     }
@@ -574,8 +573,6 @@ class Workshop extends Model
      */
     public static function validationRules($workshopId = null)
     {
-        $currencyCodes = Currency::codes();
-
         $rules = [
             'title' => 'required|string|max:255',
             'description' => 'required|string',
@@ -585,7 +582,7 @@ class Workshop extends Model
             'duration' => 'required|integer|min:30',
             'max_participants' => 'required|integer|min:1|max:1000',
             'price' => 'required|numeric|min:0',
-            'currency' => 'required|string|in:' . implode(',', $currencyCodes),
+            'currency' => 'required|string|in:JOD',
             'start_date' => 'required|date',
             'end_date' => 'required|date|after:start_date',
             'location' => ['required_unless:is_online,1', 'nullable', 'string', 'max:255'],

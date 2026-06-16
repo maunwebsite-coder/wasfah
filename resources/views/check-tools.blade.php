@@ -1,4 +1,4 @@
-﻿@extends('layouts.app')
+@extends('layouts.app')
 
 @section('title', 'Check Tools')
 
@@ -19,7 +19,7 @@
         margin: 10px 0;
     }
     .check-error {
-        background: #f4f6ff;
+        background: #ffffff;
         border: 1px solid #f44336;
         padding: 15px;
         border-radius: 5px;
@@ -27,7 +27,7 @@
     }
     .check-warning {
         background: #fff3e0;
-        border: 1px solid #1ab8ff;
+        border: 1px solid #9f5e63;
         padding: 15px;
         border-radius: 5px;
         margin: 10px 0;
@@ -44,7 +44,7 @@
     }
     .recipe-info {
         background: #e3f2fd;
-        border: 1px solid #2196f3;
+        border: 1px solid #9f5e63;
         padding: 15px;
         border-radius: 5px;
         margin: 10px 0;

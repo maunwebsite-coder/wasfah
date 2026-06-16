@@ -45,7 +45,9 @@ export default defineConfig({
             input: [
                 'resources/css/app.css',
                 'resources/css/non-critical.css',
+                'resources/css/thedolci.css',
                 'resources/js/app.js',
+                'resources/js/thedolci.js',
             ],
             refresh: true,
         }),

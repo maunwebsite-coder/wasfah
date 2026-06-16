@@ -1,8 +1,8 @@
-<?php
+﻿<?php
 
 return [
     'meta' => [
-        'title' => 'Workshops – Wasfah',
+        'title' => 'Workshops â€“ Wasfah',
     ],
 
     'featured' => [
@@ -149,21 +149,21 @@ return [
         'button' => 'Book via WhatsApp',
         'followup_title' => 'Follow up on your WhatsApp booking',
         'helper' => 'One tap opens WhatsApp with a pre-filled message to our booking team.',
-        'note' => 'Note: Booking in person adds 1 USD to the workshop price, so online reservations keep the best rate.',
+        'note' => 'Note: Booking in person adds 1 JOD to the workshop price, so online reservations keep the best rate.',
         'inquiry_button' => 'Ask about my booking on WhatsApp',
         'inquiry_helper' => 'We include your booking reference so the Wasfah team can reply quicker.',
         'pending_badge' => 'Your request is awaiting Wasfah confirmation',
-        'pending_helper' => 'We will notify you as soon as it is reviewed. You can also track it from “My Bookings”.',
+        'pending_helper' => 'We will notify you as soon as it is reviewed. You can also track it from â€œMy Bookingsâ€.',
         'terms_fallback' => "Please note that bookings follow Wasfah's terms and cancellation policy: :url",
     ],
 
     'whatsapp_verification' => [
         'title' => 'WhatsApp Booking Confirmation',
         'button' => 'Verify WhatsApp Booking',
-        'helper' => 'Opens WhatsApp so you can follow up with the Wasfah team — and we still refresh the status for you.',
+        'helper' => 'Opens WhatsApp so you can follow up with the Wasfah team â€” and we still refresh the status for you.',
         'loading' => 'Checking...',
         'awaiting_confirmation' => 'Your WhatsApp request is logged and will be confirmed shortly.',
-        'success' => 'Current status: :status · Last update :updated_at.',
+        'success' => 'Current status: :status Â· Last update :updated_at.',
         'status_pending' => 'Pending review',
         'status_confirmed' => 'Confirmed',
         'not_found' => 'We could not find a WhatsApp booking linked to your account for this workshop.',
@@ -304,10 +304,10 @@ return [
         'timezones' => [
             'host_label' => 'Chef time',
             'viewer_label' => 'Your local time',
-            'viewer_placeholder' => 'Adjusting to your timezone…',
-            'viewer_timezone_template' => ':label :date (:offset · :timezone)',
+            'viewer_placeholder' => 'Adjusting to your timezoneâ€¦',
+            'viewer_timezone_template' => ':label :date (:offset Â· :timezone)',
             'viewer_timezone_fallback' => 'your timezone',
-            'host_timezone_template' => ':label :date (:offset · :timezone)',
+            'host_timezone_template' => ':label :date (:offset Â· :timezone)',
         ],
         'messages' => [
             'unexpected_error' => 'Something went wrong. Please try again later.',
@@ -319,3 +319,4 @@ return [
         ],
     ],
 ];
+

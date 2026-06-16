@@ -13,38 +13,62 @@ return new class extends Migration
     {
         Schema::create('workshops', function (Blueprint $table) {
             $table->id();
-            $table->string('title'); // عنوان الورشة
-            $table->text('description'); // وصف الورشة
-            $table->text('content')->nullable(); // محتوى الورشة التفصيلي
-            $table->string('instructor'); // اسم المدرب
-            $table->string('instructor_avatar')->nullable(); // صورة المدرب
-            $table->text('instructor_bio')->nullable(); // نبذة عن المدرب
-            $table->string('category'); // فئة الورشة (طبخ، حلويات، إلخ)
-            $table->string('level'); // مستوى الورشة (مبتدئ، متوسط، متقدم)
-            $table->integer('duration'); // مدة الورشة بالدقائق
-            $table->integer('max_participants')->default(20); // الحد الأقصى للمشاركين
-            $table->decimal('price', 8, 2); // سعر الورشة
-            $table->string('currency', 3)->default('USD'); // العملة
-            $table->string('image')->nullable(); // صورة الورشة
-            $table->json('images')->nullable(); // صور إضافية للورشة
-            $table->string('location'); // موقع الورشة
-            $table->string('address')->nullable(); // العنوان التفصيلي
-            $table->decimal('latitude', 10, 8)->nullable(); // خط العرض
-            $table->decimal('longitude', 11, 8)->nullable(); // خط الطول
-            $table->datetime('start_date'); // تاريخ ووقت بداية الورشة
-            $table->datetime('end_date'); // تاريخ ووقت انتهاء الورشة
-            $table->datetime('registration_deadline')->nullable(); // آخر موعد للتسجيل
-            $table->boolean('is_online')->default(false); // هل الورشة أونلاين؟
-            $table->string('meeting_link')->nullable(); // رابط الاجتماع (للورشات الأونلاين)
-            $table->text('requirements')->nullable(); // متطلبات الورشة
-            $table->text('what_you_will_learn')->nullable(); // ما سيتعلمه المشارك
-            $table->text('materials_needed')->nullable(); // المواد المطلوبة
-            $table->boolean('is_active')->default(true); // هل الورشة نشطة؟
-            $table->boolean('is_featured')->default(false); // هل الورشة مميزة؟
-            $table->integer('views_count')->default(0); // عدد المشاهدات
-            $table->integer('bookings_count')->default(0); // عدد الحجوزات
-            $table->decimal('rating', 3, 2)->default(0); // تقييم الورشة
-            $table->integer('reviews_count')->default(0); // عدد التقييمات
+
+            // Basic Info
+            $table->string('title'); // Ø¹Ù†ÙˆØ§Ù† Ø§Ù„ÙˆØ±Ø´Ø©
+            $table->text('description'); // ÙˆØµÙ Ø§Ù„ÙˆØ±Ø´Ø©
+            $table->text('content')->nullable(); // Ù…Ø­ØªÙˆÙ‰ Ø§Ù„ÙˆØ±Ø´Ø© Ø§Ù„ØªÙØµÙŠÙ„ÙŠ
+
+            // Instructor Info
+            $table->string('instructor'); // Ø§Ø³Ù… Ø§Ù„Ù…Ø¯Ø±Ø¨
+            $table->string('instructor_avatar')->nullable(); // ØµÙˆØ±Ø© Ø§Ù„Ù…Ø¯Ø±Ø¨
+            $table->text('instructor_bio')->nullable(); // Ù†Ø¨Ø°Ø© Ø¹Ù† Ø§Ù„Ù…Ø¯Ø±Ø¨
+
+            // Classification
+            $table->string('category'); // ÙØ¦Ø© Ø§Ù„ÙˆØ±Ø´Ø©
+            $table->string('level'); // Ù…Ø³ØªÙˆÙ‰ Ø§Ù„ÙˆØ±Ø´Ø©
+
+            // Duration & Capacity
+            $table->integer('duration'); // Ù…Ø¯Ø© Ø§Ù„ÙˆØ±Ø´Ø© Ø¨Ø§Ù„Ø¯Ù‚Ø§Ø¦Ù‚
+            $table->integer('max_participants')->default(20); // Ø§Ù„Ø­Ø¯ Ø§Ù„Ø£Ù‚ØµÙ‰ Ù„Ù„Ù…Ø´Ø§Ø±ÙƒÙŠÙ†
+
+            // Pricing
+            $table->decimal('price', 8, 2); // Ø³Ø¹Ø± Ø§Ù„ÙˆØ±Ø´Ø©
+            $table->string('currency', 3)->default('JOD'); // Ø§Ù„Ø¹Ù…Ù„Ø©
+
+            // Media
+            $table->string('image')->nullable(); // ØµÙˆØ±Ø© Ø§Ù„ÙˆØ±Ø´Ø©
+            $table->json('images')->nullable(); // ØµÙˆØ± Ø¥Ø¶Ø§ÙÙŠØ©
+
+            // Location
+            $table->string('location'); // Ù…ÙˆÙ‚Ø¹ Ø§Ù„ÙˆØ±Ø´Ø©
+            $table->string('address')->nullable(); // Ø§Ù„Ø¹Ù†ÙˆØ§Ù†
+            $table->decimal('latitude', 10, 8)->nullable(); // Ø®Ø· Ø§Ù„Ø¹Ø±Ø¶
+            $table->decimal('longitude', 11, 8)->nullable(); // Ø®Ø· Ø§Ù„Ø·ÙˆÙ„
+
+            // Dates
+            $table->dateTime('start_date'); // ØªØ§Ø±ÙŠØ® Ø§Ù„Ø¨Ø¯Ø§ÙŠØ©
+            $table->dateTime('end_date'); // ØªØ§Ø±ÙŠØ® Ø§Ù„Ù†Ù‡Ø§ÙŠØ©
+            $table->dateTime('registration_deadline')->nullable(); // Ø¢Ø®Ø± Ù…ÙˆØ¹Ø¯ ØªØ³Ø¬ÙŠÙ„
+
+            // Online Settings
+            $table->boolean('is_online')->default(false); // Ø£ÙˆÙ†Ù„Ø§ÙŠÙ†ØŸ
+            $table->string('meeting_link')->nullable(); // Ø±Ø§Ø¨Ø· Ø§Ù„Ø§Ø¬ØªÙ…Ø§Ø¹
+            $table->string('recording_url')->nullable(); // Ø±Ø§Ø¨Ø· ØªØ³Ø¬ÙŠÙ„ Ø§Ù„ÙˆØ±Ø´Ø© (Ù…Ù‡Ù… Ù„Ù„Ù…Ø§ÙŠØ¬Ø±ÙŠØ´Ù† Ø§Ù„ØªØ§Ù„ÙŠØ©)
+
+            // Content Details
+            $table->text('requirements')->nullable(); // Ù…ØªØ·Ù„Ø¨Ø§Øª
+            $table->text('what_you_will_learn')->nullable(); // Ù…Ø§Ø°Ø§ Ø³ÙŠØªØ¹Ù„Ù…
+            $table->text('materials_needed')->nullable(); // Ø§Ù„Ù…ÙˆØ§Ø¯ Ø§Ù„Ù…Ø·Ù„ÙˆØ¨Ø©
+
+            // Status & Stats
+            $table->boolean('is_active')->default(true); // Ù†Ø´Ø·Ø©ØŸ
+            $table->boolean('is_featured')->default(false); // Ù…Ù…ÙŠØ²Ø©ØŸ
+            $table->integer('views_count')->default(0); // Ø¹Ø¯Ø¯ Ø§Ù„Ù…Ø´Ø§Ù‡Ø¯Ø§Øª
+            $table->integer('bookings_count')->default(0); // Ø¹Ø¯Ø¯ Ø§Ù„Ø­Ø¬ÙˆØ²Ø§Øª
+            $table->decimal('rating', 3, 2)->default(0); // Ø§Ù„ØªÙ‚ÙŠÙŠÙ…
+            $table->integer('reviews_count')->default(0); // Ø¹Ø¯Ø¯ Ø§Ù„ØªÙ‚ÙŠÙŠÙ…Ø§Øª
+
             $table->timestamps();
         });
     }
@@ -57,3 +81,4 @@ return new class extends Migration
         Schema::dropIfExists('workshops');
     }
 };
+

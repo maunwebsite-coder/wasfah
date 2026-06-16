@@ -285,7 +285,7 @@ class WorkshopController extends Controller
         if (!$workshop->is_online || !$workshop->meeting_link) {
             return redirect()
                 ->route('chef.workshops.index')
-                ->with('error', 'هذه الورشة ليست أونلاين أو أن رابط الاجتماع غير متاح.');
+                ->with('error', 'Ù‡Ø°Ù‡ Ø§Ù„ÙˆØ±Ø´Ø© Ù„ÙŠØ³Øª Ø£ÙˆÙ†Ù„Ø§ÙŠÙ† Ø£Ùˆ Ø£Ù† Ø±Ø§Ø¨Ø· Ø§Ù„Ø§Ø¬ØªÙ…Ø§Ø¹ ØºÙŠØ± Ù…ØªØ§Ø­.');
         }
 
         if ($workshop->meeting_provider !== 'google_meet') {
@@ -325,14 +325,14 @@ class WorkshopController extends Controller
             $request->validate([
                 'confirm_host' => ['accepted'],
             ], [
-                'confirm_host.accepted' => 'يرجى تأكيد أنك المضيف قبل بدء الاجتماع.',
+                'confirm_host.accepted' => 'ÙŠØ±Ø¬Ù‰ ØªØ£ÙƒÙŠØ¯ Ø£Ù†Ùƒ Ø§Ù„Ù…Ø¶ÙŠÙ Ù‚Ø¨Ù„ Ø¨Ø¯Ø¡ Ø§Ù„Ø§Ø¬ØªÙ…Ø§Ø¹.',
             ]);
         }
 
         if (!$workshop->is_online || !$workshop->meeting_link) {
             return response()->json([
                 'success' => false,
-                'message' => 'لا يمكن بدء اجتماع لورشة غير أونلاين أو بدون رابط جاهز.',
+                'message' => 'Ù„Ø§ ÙŠÙ…ÙƒÙ† Ø¨Ø¯Ø¡ Ø§Ø¬ØªÙ…Ø§Ø¹ Ù„ÙˆØ±Ø´Ø© ØºÙŠØ± Ø£ÙˆÙ†Ù„Ø§ÙŠÙ† Ø£Ùˆ Ø¨Ø¯ÙˆÙ† Ø±Ø§Ø¨Ø· Ø¬Ø§Ù‡Ø².',
             ], 422);
         }
 
@@ -371,7 +371,7 @@ class WorkshopController extends Controller
             return response()->json($payload);
         }
 
-        return back()->with('success', $alreadyStarted ? 'تم بدء الاجتماع مسبقاً.' : 'تم فتح الغرفة ويمكن للمشاركين الدخول الآن.');
+        return back()->with('success', $alreadyStarted ? 'ØªÙ… Ø¨Ø¯Ø¡ Ø§Ù„Ø§Ø¬ØªÙ…Ø§Ø¹ Ù…Ø³Ø¨Ù‚Ø§Ù‹.' : 'ØªÙ… ÙØªØ­ Ø§Ù„ØºØ±ÙØ© ÙˆÙŠÙ…ÙƒÙ† Ù„Ù„Ù…Ø´Ø§Ø±ÙƒÙŠÙ† Ø§Ù„Ø¯Ø®ÙˆÙ„ Ø§Ù„Ø¢Ù†.');
     }
 
     public function resetHostDeviceLock(Request $request, Workshop $workshop): RedirectResponse
@@ -381,14 +381,14 @@ class WorkshopController extends Controller
         if (!$this->hostDeviceLockSupported()) {
             return redirect()
                 ->route('chef.workshops.join', $workshop)
-                ->with('info', 'لا يتطلب هذا الاجتماع إعادة تعيين للجهاز الموثوق.');
+                ->with('info', 'Ù„Ø§ ÙŠØªØ·Ù„Ø¨ Ù‡Ø°Ø§ Ø§Ù„Ø§Ø¬ØªÙ…Ø§Ø¹ Ø¥Ø¹Ø§Ø¯Ø© ØªØ¹ÙŠÙŠÙ† Ù„Ù„Ø¬Ù‡Ø§Ø² Ø§Ù„Ù…ÙˆØ«ÙˆÙ‚.');
         }
 
         $validator = Validator::make($request->all(), [
             'password' => ['required', 'current_password'],
         ], [
-            'password.required' => 'يرجى إدخال كلمة المرور لتأكيد الهوية.',
-            'password.current_password' => 'كلمة المرور المدخلة غير صحيحة.',
+            'password.required' => 'ÙŠØ±Ø¬Ù‰ Ø¥Ø¯Ø®Ø§Ù„ ÙƒÙ„Ù…Ø© Ø§Ù„Ù…Ø±ÙˆØ± Ù„ØªØ£ÙƒÙŠØ¯ Ø§Ù„Ù‡ÙˆÙŠØ©.',
+            'password.current_password' => 'ÙƒÙ„Ù…Ø© Ø§Ù„Ù…Ø±ÙˆØ± Ø§Ù„Ù…Ø¯Ø®Ù„Ø© ØºÙŠØ± ØµØ­ÙŠØ­Ø©.',
         ]);
 
         if ($validator->fails()) {
@@ -397,7 +397,7 @@ class WorkshopController extends Controller
                 ->withErrors($validator)
                 ->withInput($request->except('password'))
                 ->with([
-                    'error' => 'تعذر تأكيد الهوية. يرجى المحاولة مرة أخرى.',
+                    'error' => 'ØªØ¹Ø°Ø± ØªØ£ÙƒÙŠØ¯ Ø§Ù„Ù‡ÙˆÙŠØ©. ÙŠØ±Ø¬Ù‰ Ø§Ù„Ù…Ø­Ø§ÙˆÙ„Ø© Ù…Ø±Ø© Ø£Ø®Ø±Ù‰.',
                     'host_join_device_reset_workshop_slug' => $workshop->slug,
                     'host_join_device_reset_workshop_title' => $workshop->title,
                     'host_join_device_reset_reason' => 'manual_reset_validation_failed',
@@ -420,7 +420,7 @@ class WorkshopController extends Controller
 
         return redirect()
             ->route('chef.workshops.join', $workshop)
-            ->with('success', 'تمت إعادة تعيين الجهاز الموثوق. يمكنك الآن فتح غرفة الورشة من هذا الجهاز.');
+            ->with('success', 'ØªÙ…Øª Ø¥Ø¹Ø§Ø¯Ø© ØªØ¹ÙŠÙŠÙ† Ø§Ù„Ø¬Ù‡Ø§Ø² Ø§Ù„Ù…ÙˆØ«ÙˆÙ‚. ÙŠÙ…ÙƒÙ†Ùƒ Ø§Ù„Ø¢Ù† ÙØªØ­ ØºØ±ÙØ© Ø§Ù„ÙˆØ±Ø´Ø© Ù…Ù† Ù‡Ø°Ø§ Ø§Ù„Ø¬Ù‡Ø§Ø².');
     }
 
     public function updatePresence(Request $request, Workshop $workshop)
@@ -636,7 +636,7 @@ class WorkshopController extends Controller
         if (!$currentUser->hasGoogleCalendarCredentials()) {
             return response()->json([
                 'success' => false,
-                'message' => 'يرجى ربط حساب Google Calendar أولاً قبل توليد رابط الاجتماع.',
+                'message' => 'ÙŠØ±Ø¬Ù‰ Ø±Ø¨Ø· Ø­Ø³Ø§Ø¨ Google Calendar Ø£ÙˆÙ„Ø§Ù‹ Ù‚Ø¨Ù„ ØªÙˆÙ„ÙŠØ¯ Ø±Ø§Ø¨Ø· Ø§Ù„Ø§Ø¬ØªÙ…Ø§Ø¹.',
             ], 422);
         }
 
@@ -682,7 +682,7 @@ class WorkshopController extends Controller
 
             return response()->json([
                 'success' => false,
-                'message' => 'تعذر إنشاء اجتماع Google Meet في الوقت الحالي.',
+                'message' => 'ØªØ¹Ø°Ø± Ø¥Ù†Ø´Ø§Ø¡ Ø§Ø¬ØªÙ…Ø§Ø¹ Google Meet ÙÙŠ Ø§Ù„ÙˆÙ‚Øª Ø§Ù„Ø­Ø§Ù„ÙŠ.',
             ], 422);
         }
 
@@ -851,7 +851,7 @@ class WorkshopController extends Controller
             'duration' => ['required', 'integer', 'min:30', 'max:180'],
             'max_participants' => ['required', 'integer', 'min:1', 'max:500'],
             'price' => ['required', 'numeric', 'min:0'],
-            'currency' => ['required', Rule::in(['USD'])],
+            'currency' => ['required', Rule::in(['JOD'])],
             'start_date' => ['required', 'date'],
             'end_date' => ['required', 'date', 'after:start_date'],
             'location' => ['nullable', 'string', 'max:255'],
@@ -876,7 +876,7 @@ class WorkshopController extends Controller
         ];
 
         $messages = ImageUploadConstraints::messages('image', [
-            'ar' => 'صورة الورشة',
+            'ar' => 'ØµÙˆØ±Ø© Ø§Ù„ÙˆØ±Ø´Ø©',
             'en' => 'workshop image',
         ]);
 
@@ -888,13 +888,13 @@ class WorkshopController extends Controller
 
         if (!empty($data['is_online']) && empty($data['meeting_link']) && !$autoGenerationAvailable) {
             throw ValidationException::withMessages([
-                'meeting_link' => 'يرجى إدخال رابط اجتماع أو اختيار خيار توليد رابط Google Meet تلقائياً.',
+                'meeting_link' => 'ÙŠØ±Ø¬Ù‰ Ø¥Ø¯Ø®Ø§Ù„ Ø±Ø§Ø¨Ø· Ø§Ø¬ØªÙ…Ø§Ø¹ Ø£Ùˆ Ø§Ø®ØªÙŠØ§Ø± Ø®ÙŠØ§Ø± ØªÙˆÙ„ÙŠØ¯ Ø±Ø§Ø¨Ø· Google Meet ØªÙ„Ù‚Ø§Ø¦ÙŠØ§Ù‹.',
             ]);
         }
 
         if (empty($data['is_online']) && empty($data['location'])) {
             throw ValidationException::withMessages([
-                'location' => 'يرجى تحديد موقع الورشة الحضورية.',
+                'location' => 'ÙŠØ±Ø¬Ù‰ ØªØ­Ø¯ÙŠØ¯ Ù…ÙˆÙ‚Ø¹ Ø§Ù„ÙˆØ±Ø´Ø© Ø§Ù„Ø­Ø¶ÙˆØ±ÙŠØ©.',
             ]);
         }
 
@@ -988,7 +988,7 @@ class WorkshopController extends Controller
         ]);
 
         if (!$workshop->is_online && empty($workshop->location)) {
-            $workshop->location = 'سيتم تحديد الموقع لاحقاً';
+            $workshop->location = 'Ø³ÙŠØªÙ… ØªØ­Ø¯ÙŠØ¯ Ø§Ù„Ù…ÙˆÙ‚Ø¹ Ù„Ø§Ø­Ù‚Ø§Ù‹';
         }
     }
 
@@ -1099,7 +1099,7 @@ class WorkshopController extends Controller
 
             if (!$uploadResult['success']) {
                 throw ValidationException::withMessages([
-                    'image' => $uploadResult['error'] ?? 'تعذر رفع الصورة، يرجى المحاولة مرة أخرى.',
+                    'image' => $uploadResult['error'] ?? 'ØªØ¹Ø°Ø± Ø±ÙØ¹ Ø§Ù„ØµÙˆØ±Ø©ØŒ ÙŠØ±Ø¬Ù‰ Ø§Ù„Ù…Ø­Ø§ÙˆÙ„Ø© Ù…Ø±Ø© Ø£Ø®Ø±Ù‰.',
                 ]);
             }
 
@@ -1169,7 +1169,7 @@ class WorkshopController extends Controller
 
             if (!$hasHostCredentials) {
                 throw ValidationException::withMessages([
-                    'meeting_link' => 'يرجى ربط حساب Google Calendar الخاص بك لإنشاء رابط الاجتماع من حسابك.',
+                    'meeting_link' => 'ÙŠØ±Ø¬Ù‰ Ø±Ø¨Ø· Ø­Ø³Ø§Ø¨ Google Calendar Ø§Ù„Ø®Ø§Øµ Ø¨Ùƒ Ù„Ø¥Ù†Ø´Ø§Ø¡ Ø±Ø§Ø¨Ø· Ø§Ù„Ø§Ø¬ØªÙ…Ø§Ø¹ Ù…Ù† Ø­Ø³Ø§Ø¨Ùƒ.',
                 ]);
             }
 
@@ -1194,11 +1194,11 @@ class WorkshopController extends Controller
                 ]);
 
                 $error = Str::lower($exception->getMessage() ?? '');
-                $message = 'تعذّر إنشاء اجتماع Google Meet. أضف الرابط يدويًا أو أعد المحاولة لاحقًا. ' . $exception->getMessage();
+                $message = 'ØªØ¹Ø°Ù‘Ø± Ø¥Ù†Ø´Ø§Ø¡ Ø§Ø¬ØªÙ…Ø§Ø¹ Google Meet. Ø£Ø¶Ù Ø§Ù„Ø±Ø§Ø¨Ø· ÙŠØ¯ÙˆÙŠÙ‹Ø§ Ø£Ùˆ Ø£Ø¹Ø¯ Ø§Ù„Ù…Ø­Ø§ÙˆÙ„Ø© Ù„Ø§Ø­Ù‚Ù‹Ø§. ' . $exception->getMessage();
 
                 if (Str::contains($error, ['invalid_grant', 'unauthorized_client'])) {
                     Auth::user()?->disconnectGoogleCalendar();
-                    $message = 'انتهت صلاحية ربط Google Calendar. لقد قمنا بفصل الحساب، يرجى إعادة ربطه من النموذج أدناه ثم المحاولة مرة أخرى.';
+                    $message = 'Ø§Ù†ØªÙ‡Øª ØµÙ„Ø§Ø­ÙŠØ© Ø±Ø¨Ø· Google Calendar. Ù„Ù‚Ø¯ Ù‚Ù…Ù†Ø§ Ø¨ÙØµÙ„ Ø§Ù„Ø­Ø³Ø§Ø¨ØŒ ÙŠØ±Ø¬Ù‰ Ø¥Ø¹Ø§Ø¯Ø© Ø±Ø¨Ø·Ù‡ Ù…Ù† Ø§Ù„Ù†Ù…ÙˆØ°Ø¬ Ø£Ø¯Ù†Ø§Ù‡ Ø«Ù… Ø§Ù„Ù…Ø­Ø§ÙˆÙ„Ø© Ù…Ø±Ø© Ø£Ø®Ø±Ù‰.';
                 }
 
                 throw ValidationException::withMessages([
@@ -1208,7 +1208,7 @@ class WorkshopController extends Controller
 
             $workshop->meeting_link = $meeting['meeting_link'];
             $workshop->meeting_provider = $meeting['provider'] ?? 'google_meet';
-            $workshop->location = $workshop->location ?: 'أونلاين عبر Google Meet';
+            $workshop->location = $workshop->location ?: 'Ø£ÙˆÙ†Ù„Ø§ÙŠÙ† Ø¹Ø¨Ø± Google Meet';
             $workshop->meeting_code = Workshop::extractMeetingCode($workshop->meeting_link);
             $workshop->meeting_event_id = $meeting['event_id'] ?? null;
             $workshop->meeting_calendar_id = $meeting['calendar_id'] ?? ($hostCredentials['calendar_id'] ?? null);
@@ -1222,7 +1222,7 @@ class WorkshopController extends Controller
             $workshop->meeting_conference_id = null;
         } else {
             throw ValidationException::withMessages([
-                'meeting_link' => 'يرجى إدخال رابط الاجتماع أو تفعيل خيار توليد رابط Google Meet.',
+                'meeting_link' => 'ÙŠØ±Ø¬Ù‰ Ø¥Ø¯Ø®Ø§Ù„ Ø±Ø§Ø¨Ø· Ø§Ù„Ø§Ø¬ØªÙ…Ø§Ø¹ Ø£Ùˆ ØªÙØ¹ÙŠÙ„ Ø®ÙŠØ§Ø± ØªÙˆÙ„ÙŠØ¯ Ø±Ø§Ø¨Ø· Google Meet.',
             ]);
         }
     }
@@ -1230,7 +1230,7 @@ class WorkshopController extends Controller
     protected function authorizeWorkshop(Workshop $workshop): void
     {
         if ($workshop->user_id !== Auth::id() && !Auth::user()->isAdmin()) {
-            abort(403, 'غير مصرح لك بالوصول إلى هذه الورشة.');
+            abort(403, 'ØºÙŠØ± Ù…ØµØ±Ø­ Ù„Ùƒ Ø¨Ø§Ù„ÙˆØµÙˆÙ„ Ø¥Ù„Ù‰ Ù‡Ø°Ù‡ Ø§Ù„ÙˆØ±Ø´Ø©.');
         }
     }
 
@@ -1276,3 +1276,4 @@ class WorkshopController extends Controller
             || (Auth::user()?->hasGoogleCalendarCredentials() ?? false);
     }
 }
+

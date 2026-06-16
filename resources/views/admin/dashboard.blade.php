@@ -1,4 +1,4 @@
-﻿@extends('layouts.app')
+@extends('layouts.app')
 
 @section('title', 'لوحة التحكم - الإدارة')
 
@@ -16,7 +16,7 @@
         $recipeTrend = $recipeDailyAverage > 0 ? (($todayRecipes - $recipeDailyAverage) / $recipeDailyAverage) * 100 : 0;
         $bookingTrend = $bookingDailyAverage > 0 ? (($todayBookings - $bookingDailyAverage) / $bookingDailyAverage) * 100 : 0;
         $revenueTrend = $revenueDailyAverage > 0 ? (($todayRevenue - $revenueDailyAverage) / $revenueDailyAverage) * 100 : 0;
-        $defaultCurrency = config('finance.default_currency', 'USD');
+        $defaultCurrency = config('finance.default_currency', 'JOD');
     @endphp
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <!-- Header -->
@@ -1187,8 +1187,8 @@ if (periodCanvas && periodStatsData.length) {
                 type: 'line',
                 label: 'الإيرادات ({{ $defaultCurrency }})',
                 data: periodRevenue,
-                borderColor: 'rgb(8, 25, 255)',
-                backgroundColor: 'rgba(8, 25, 255, 0.15)',
+                borderColor: 'rgb(107, 46, 48)',
+                backgroundColor: 'rgba(107, 46, 48, 0.15)',
                 tension: 0.35,
                 fill: true,
                 yAxisID: 'y1',
@@ -1290,6 +1290,7 @@ setInterval(function() {
 }, 300000);
 </script>
 @endsection
+
 
 
 

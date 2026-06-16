@@ -78,7 +78,7 @@ return [
 
     'whatsapp_booking' => [
         'enabled' => (bool) env('WHATSAPP_BOOKING_ENABLED', false),
-        'number' => env('WHATSAPP_BOOKING_NUMBER'),
+        'number' => env('WHATSAPP_BOOKING_NUMBER', '962790553680'),
         'notes' => env('WHATSAPP_BOOKING_NOTES', 'WhatsApp booking'),
     ],
 

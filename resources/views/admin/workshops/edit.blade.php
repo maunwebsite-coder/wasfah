@@ -1,11 +1,11 @@
-﻿@extends('layouts.app')
+@extends('layouts.app')
 
 @section('title', 'تعديل الورشة - ' . $workshop->title)
 
 @push('styles')
 <style>
     body {
-        background: linear-gradient(135deg, #f8fafc 0%, #e0f2fe 40%, #f4f6ff 100%);
+        background: linear-gradient(135deg, #f8fafc 0%, #f9eff1 40%, #ffffff 100%);
         min-height: 100vh;
     }
 
@@ -39,7 +39,7 @@
     }
 
     .notification.warning {
-        background: linear-gradient(135deg, #1296d9, #050f9f);
+        background: linear-gradient(135deg, #8f4a50, #4d1f22);
     }
 
     .image-upload-area.has-image {
@@ -48,9 +48,9 @@
     }
 
     .recipe-item.selected {
-        border-color: rgba(8, 25, 255, 0.65);
-        background-color: #f4f6ff;
-        box-shadow: 0 20px 35px -25px rgba(8, 25, 255, 0.6);
+        border-color: rgba(107, 46, 48, 0.65);
+        background-color: #ffffff;
+        box-shadow: 0 20px 35px -25px rgba(107, 46, 48, 0.6);
     }
 
     .online-meeting-tools {
@@ -97,7 +97,7 @@
     }
 
     .meeting-status[data-state="manual"] {
-        background: #e3ecff;
+        background: #f8edee;
         color: #92400e;
     }
 
@@ -148,8 +148,8 @@
 <div class="py-10 md:py-16">
     <div class="container mx-auto px-4 max-w-6xl space-y-10">
         @php
-            $currencyOptions = \App\Support\Currency::all();
-            $currentCurrencyLabel = $currencyOptions[$workshop->currency]['label'] ?? $workshop->currency;
+            $currencyOptions = ['JOD' => \App\Support\Currency::meta('JOD')];
+            $currentCurrencyLabel = $currencyOptions['JOD']['label'] ?? 'JOD';
             $priceFormatted = number_format($workshop->price, 2);
             $isOnlineOld = old('is_online', $workshop->is_online);
             $forceAutoMeetingLinks = $forceAutoMeetingLinks ?? false;
@@ -619,7 +619,7 @@
                         <div>
                             <h2 class="text-xl font-black text-slate-900">الصورة الرئيسية</h2>
                             <p class="text-sm text-slate-500 mt-2">
-                                استخدم صورة جذابة تمثل أجواء الورشة. يدعم النظام صورًا حتى 5 ميجابايت مع ضغط تلقائي للحفاظ على الجودة.
+                                استخدم صورة جذابة تمثل أجواء الورشة. يدعم النظام صورًا حتى 25 ميجابايت مع ضغط تلقائي للحفاظ على الجودة.
                             </p>
                         </div>
                     </div>
@@ -650,7 +650,7 @@
                             <div class="flex flex-col items-center gap-3 text-slate-600">
                                 <i class="fas fa-cloud-upload-alt text-3xl text-purple-400"></i>
                                 <h3 class="text-lg font-semibold text-slate-800">اسحب وأفلت الصورة هنا</h3>
-                                <p class="text-sm text-slate-500">أو انقر للاختيار من جهازك (JPEG، PNG، GIF، WebP حتى 5MB)</p>
+                                <p class="text-sm text-slate-500">أو انقر للاختيار من جهازك (JPEG، PNG، GIF، WebP حتى 25MB)</p>
                                 <span class="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-purple-500 to-rose-500 px-4 py-2 text-sm font-semibold text-white shadow-md">
                                     <i class="fas fa-folder-open"></i>
                                     اختر صورة
@@ -664,8 +664,8 @@
                                accept="image/*"
                                class="hidden"
                                onchange="handleImageUpload(this)"
-                               data-max-size="5120"
-                               data-max-size-message="لا يمكن رفع صورة أكبر من 5 ميجابايت."
+                               data-max-size="25600"
+                               data-max-size-message="لا يمكن رفع صورة أكبر من 25 ميجابايت."
                                data-error-target="#admin_workshop_edit_image_error">
 
                         <div id="image-preview" class="hidden">
@@ -881,9 +881,9 @@ function handleImageUpload(input) {
         return;
     }
 
-    const maxSize = 5 * 1024 * 1024;
+    const maxSize = 25 * 1024 * 1024;
     if (file.size > maxSize) {
-        showNotification('حجم الصورة يجب أن يكون أقل من 5 ميجابايت', 'error');
+        showNotification('حجم الصورة يجب أن يكون أقل من 25 ميجابايت', 'error');
         input.value = '';
         return;
     }

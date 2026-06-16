@@ -16,7 +16,7 @@
     if (! $showAdminTools) {
         $footerLinks = array_values(array_filter(
             $footerLinks,
-            fn ($link) => ($link['route'] ?? null) !== 'tools'
+            fn ($link) => ! in_array(($link['route'] ?? null), ['tools', 'about'], true)
         ));
     }
 @endphp

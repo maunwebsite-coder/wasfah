@@ -32,7 +32,7 @@
         @php
             $formWorkshop = new \App\Models\Workshop();
             $formWorkshop->is_online = true;
-            $formWorkshop->currency = 'USD';
+            $formWorkshop->currency = 'JOD';
             $formWorkshop->level = 'beginner';
             $formDraftStorageKey = 'chef_workshop_create_' . (auth()->id() ?? 'guest');
         @endphp
@@ -61,4 +61,5 @@
     </div>
 </div>
 @endsection
+
 

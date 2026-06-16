@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
-@section('title', 'إضافة أداة شيف جديدة - لوحة الإدارة')
+@section('title', 'Ø¥Ø¶Ø§ÙØ© Ø£Ø¯Ø§Ø© Ø´ÙŠÙ Ø¬Ø¯ÙŠØ¯Ø© - Ù„ÙˆØ­Ø© Ø§Ù„Ø¥Ø¯Ø§Ø±Ø©')
 
 @push('styles')
 <style>
     .admin-card {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #a56970 0%, #8a4348 100%);
     }
     .form-section {
         background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
@@ -31,8 +31,8 @@
                     <i class="fas fa-arrow-right"></i>
                 </a>
                 <div>
-                    <h1 class="text-3xl font-bold mb-2">إضافة أداة شيف جديدة</h1>
-                    <p class="text-blue-100">أضف أداة شيف احترافية جديدة لصناعة الحلويات</p>
+                    <h1 class="text-3xl font-bold mb-2">Ø¥Ø¶Ø§ÙØ© Ø£Ø¯Ø§Ø© Ø´ÙŠÙ Ø¬Ø¯ÙŠØ¯Ø©</h1>
+                    <p class="text-blue-100">Ø£Ø¶Ù Ø£Ø¯Ø§Ø© Ø´ÙŠÙ Ø§Ø­ØªØ±Ø§ÙÙŠØ© Ø¬Ø¯ÙŠØ¯Ø© Ù„ØµÙ†Ø§Ø¹Ø© Ø§Ù„Ø­Ù„ÙˆÙŠØ§Øª</p>
                 </div>
             </div>
         </div>
@@ -47,10 +47,10 @@
                     
                     @if($errors->any())
                         <div class="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
-                            <h4 class="text-red-800 font-semibold mb-2">يرجى تصحيح الأخطاء التالية:</h4>
+                            <h4 class="text-red-800 font-semibold mb-2">ÙŠØ±Ø¬Ù‰ ØªØµØ­ÙŠØ­ Ø§Ù„Ø£Ø®Ø·Ø§Ø¡ Ø§Ù„ØªØ§Ù„ÙŠØ©:</h4>
                             <ul class="text-red-700 text-sm space-y-1">
                                 @foreach($errors->all() as $error)
-                                    <li>• {{ $error }}</li>
+                                    <li>â€¢ {{ $error }}</li>
                                 @endforeach
                             </ul>
                         </div>
@@ -65,12 +65,12 @@
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                         <!-- Basic Information -->
                         <div class="space-y-6">
-                            <h3 class="text-xl font-bold text-gray-800 mb-4">المعلومات الأساسية</h3>
+                            <h3 class="text-xl font-bold text-gray-800 mb-4">Ø§Ù„Ù…Ø¹Ù„ÙˆÙ…Ø§Øª Ø§Ù„Ø£Ø³Ø§Ø³ÙŠØ©</h3>
                             
                             <!-- Name -->
                             <div>
                                 <label for="name" class="block text-sm font-semibold text-gray-700 mb-2">
-                                    اسم الأداة <span class="text-red-500">*</span>
+                                    Ø§Ø³Ù… Ø§Ù„Ø£Ø¯Ø§Ø© <span class="text-red-500">*</span>
                                 </label>
                                 <input type="text" 
                                        id="name" 
@@ -86,7 +86,7 @@
                             <!-- Description -->
                             <div>
                                 <label for="description" class="block text-sm font-semibold text-gray-700 mb-2">
-                                    الوصف <span class="text-red-500">*</span>
+                                    Ø§Ù„ÙˆØµÙ <span class="text-red-500">*</span>
                                 </label>
                                 <textarea id="description" 
                                           name="description" 
@@ -101,13 +101,13 @@
                             <!-- Category -->
                             <div>
                                 <label for="category" class="block text-sm font-semibold text-gray-700 mb-2">
-                                    الفئة <span class="text-red-500">*</span>
+                                    Ø§Ù„ÙØ¦Ø© <span class="text-red-500">*</span>
                                 </label>
                                 <select id="category" 
                                         name="category" 
                                         class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
                                         required>
-                                    <option value="">اختر الفئة</option>
+                                    <option value="">Ø§Ø®ØªØ± Ø§Ù„ÙØ¦Ø©</option>
                                     @foreach($categories as $category)
                                         <option value="{{ $category }}" {{ old('category') == $category ? 'selected' : '' }}>
                                             {{ $category }}
@@ -122,7 +122,7 @@
                             <!-- Price -->
                             <div>
                                 <label for="price" class="block text-sm font-semibold text-gray-700 mb-2">
-                                    السعر (درهم) <span class="text-red-500">*</span>
+                                    Ø§Ù„Ø³Ø¹Ø± (Ø¯Ø±Ù‡Ù…) <span class="text-red-500">*</span>
                                 </label>
                                 <div class="relative">
                                     <input type="number" 
@@ -134,7 +134,7 @@
                                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
                                            required>
                                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                        <span class="text-gray-500 text-sm">AED</span>
+                                        <span class="text-gray-500 text-sm">JOD</span>
                                     </div>
                                 </div>
                                 <div id="price-conversion" class="mt-2 hidden"></div>
@@ -146,7 +146,7 @@
                             <!-- Rating -->
                             <div>
                                 <label for="rating" class="block text-sm font-semibold text-gray-700 mb-2">
-                                    التقييم (0-5)
+                                    Ø§Ù„ØªÙ‚ÙŠÙŠÙ… (0-5)
                                 </label>
                                 <input type="number" 
                                        id="rating" 
@@ -164,22 +164,22 @@
 
                         <!-- Additional Information -->
                         <div class="space-y-6">
-                            <h3 class="text-xl font-bold text-gray-800 mb-4">معلومات إضافية</h3>
+                            <h3 class="text-xl font-bold text-gray-800 mb-4">Ù…Ø¹Ù„ÙˆÙ…Ø§Øª Ø¥Ø¶Ø§ÙÙŠØ©</h3>
                             
                             <!-- Image -->
                             <div>
                                 <label for="image" class="block text-sm font-semibold text-gray-700 mb-2">
-                                    صورة الأداة
+                                    ØµÙˆØ±Ø© Ø§Ù„Ø£Ø¯Ø§Ø©
                                 </label>
                                 <input type="file" 
                                        id="image" 
                                        name="image" 
                                        accept="image/*"
                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
-                                       data-max-size="5120"
-                                       data-max-size-message="لا يمكن رفع صورة أكبر من 5 ميجابايت."
+                                       data-max-size="25600"
+                                       data-max-size-message="Ù„Ø§ ÙŠÙ…ÙƒÙ† Ø±ÙØ¹ ØµÙˆØ±Ø© Ø£ÙƒØ¨Ø± Ù…Ù† 25 Ù…ÙŠØ¬Ø§Ø¨Ø§ÙŠØª."
                                        data-error-target="#tool_image_error">
-                                <p class="text-sm text-gray-500 mt-2">الحد الأقصى لحجم الصورة هو 5 ميجابايت.</p>
+                                <p class="text-sm text-gray-500 mt-2">Ø§Ù„Ø­Ø¯ Ø§Ù„Ø£Ù‚ØµÙ‰ Ù„Ø­Ø¬Ù… Ø§Ù„ØµÙˆØ±Ø© Ù‡Ùˆ 25 Ù…ÙŠØ¬Ø§Ø¨Ø§ÙŠØª.</p>
                                 <p id="tool_image_error" class="text-sm text-red-600 mt-1 hidden"></p>
                                 @error('image')
                                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
@@ -199,7 +199,7 @@
                             <!-- Amazon URL -->
                             <div>
                                 <label for="amazon_url" class="block text-sm font-semibold text-gray-700 mb-2">
-                                    رابط Amazon <span class="text-blue-500 text-sm">(سيتم استخراج البيانات تلقائياً)</span>
+                                    Ø±Ø§Ø¨Ø· Amazon <span class="text-blue-500 text-sm">(Ø³ÙŠØªÙ… Ø§Ø³ØªØ®Ø±Ø§Ø¬ Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª ØªÙ„Ù‚Ø§Ø¦ÙŠØ§Ù‹)</span>
                                 </label>
                                 <div class="flex gap-2">
                                     <input type="url" 
@@ -212,7 +212,7 @@
                                             id="extract-amazon-data" 
                                             class="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-lg transition-colors flex items-center">
                                         <i class="fas fa-download ml-2"></i>
-                                        استخراج البيانات
+                                        Ø§Ø³ØªØ®Ø±Ø§Ø¬ Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª
                                     </button>
                                 </div>
                                 <div id="extraction-status" class="mt-2 text-sm hidden"></div>
@@ -224,7 +224,7 @@
                             <!-- Affiliate URL -->
                             <div>
                                 <label for="affiliate_url" class="block text-sm font-semibold text-gray-700 mb-2">
-                                    رابط الشراء المحلي
+                                    Ø±Ø§Ø¨Ø· Ø§Ù„Ø´Ø±Ø§Ø¡ Ø§Ù„Ù…Ø­Ù„ÙŠ
                                 </label>
                                 <input type="url" 
                                        id="affiliate_url" 
@@ -240,7 +240,7 @@
                             <!-- Sort Order -->
                             <div>
                                 <label for="sort_order" class="block text-sm font-semibold text-gray-700 mb-2">
-                                    ترتيب العرض
+                                    ØªØ±ØªÙŠØ¨ Ø§Ù„Ø¹Ø±Ø¶
                                 </label>
                                 <input type="number" 
                                        id="sort_order" 
@@ -261,7 +261,7 @@
                                            value="1"
                                            {{ old('is_active', true) ? 'checked' : '' }}
                                            class="w-5 h-5 text-purple-600 border-gray-300 rounded focus:ring-purple-500">
-                                    <span class="mr-3 text-sm font-semibold text-gray-700">تفعيل الأداة</span>
+                                    <span class="mr-3 text-sm font-semibold text-gray-700">ØªÙØ¹ÙŠÙ„ Ø§Ù„Ø£Ø¯Ø§Ø©</span>
                                 </label>
                                 @error('is_active')
                                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
@@ -272,12 +272,12 @@
 
                     <!-- Features Section -->
                     <div class="mt-8">
-                        <h3 class="text-xl font-bold text-gray-800 mb-4">المميزات</h3>
+                        <h3 class="text-xl font-bold text-gray-800 mb-4">Ø§Ù„Ù…Ù…ÙŠØ²Ø§Øª</h3>
                         <div id="features-container">
                             <div class="flex items-center space-x-2 rtl:space-x-reverse mb-3">
                                 <input type="text" 
                                        name="features[]" 
-                                       placeholder="أدخل ميزة جديدة..."
+                                       placeholder="Ø£Ø¯Ø®Ù„ Ù…ÙŠØ²Ø© Ø¬Ø¯ÙŠØ¯Ø©..."
                                        class="flex-1 feature-input px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
                                        onblur="validateFeature(this)">
                                 <button type="button" 
@@ -296,12 +296,12 @@
                     <div class="flex justify-end space-x-4 rtl:space-x-reverse mt-8 pt-6 border-t border-gray-200">
                         <a href="{{ route('admin.tools.index') }}" 
                            class="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-all">
-                            إلغاء
+                            Ø¥Ù„ØºØ§Ø¡
                         </a>
                         <button type="submit" 
                                 class="px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-all">
                             <i class="fas fa-save ml-2"></i>
-                            حفظ الأداة
+                            Ø­ÙØ¸ Ø§Ù„Ø£Ø¯Ø§Ø©
                         </button>
                     </div>
                 </form>
@@ -319,7 +319,7 @@ function addFeature() {
     newFeature.innerHTML = `
         <input type="text" 
                name="features[]" 
-               placeholder="أدخل ميزة جديدة..."
+               placeholder="Ø£Ø¯Ø®Ù„ Ù…ÙŠØ²Ø© Ø¬Ø¯ÙŠØ¯Ø©..."
                class="flex-1 feature-input px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
                onblur="validateFeature(this)">
         <button type="button" 
@@ -363,19 +363,19 @@ document.getElementById('extract-amazon-data').addEventListener('click', async f
     const button = this;
     
     if (!amazonUrl) {
-        showStatus('يرجى إدخال رابط Amazon أولاً', 'error');
+        showStatus('ÙŠØ±Ø¬Ù‰ Ø¥Ø¯Ø®Ø§Ù„ Ø±Ø§Ø¨Ø· Amazon Ø£ÙˆÙ„Ø§Ù‹', 'error');
         return;
     }
     
     if (!amazonUrl.includes('amazon.')) {
-        showStatus('يرجى إدخال رابط Amazon صحيح', 'error');
+        showStatus('ÙŠØ±Ø¬Ù‰ Ø¥Ø¯Ø®Ø§Ù„ Ø±Ø§Ø¨Ø· Amazon ØµØ­ÙŠØ­', 'error');
         return;
     }
     
     // Show loading state
     button.disabled = true;
-    button.innerHTML = '<i class="fas fa-spinner fa-spin ml-2"></i>جاري الاستخراج...';
-    showStatus('جاري استخراج البيانات من Amazon...', 'loading');
+    button.innerHTML = '<i class="fas fa-spinner fa-spin ml-2"></i>Ø¬Ø§Ø±ÙŠ Ø§Ù„Ø§Ø³ØªØ®Ø±Ø§Ø¬...';
+    showStatus('Ø¬Ø§Ø±ÙŠ Ø§Ø³ØªØ®Ø±Ø§Ø¬ Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª Ù…Ù† Amazon...', 'loading');
     
     try {
         const response = await fetch('/admin/tools/extract-amazon-data', {
@@ -427,17 +427,17 @@ document.getElementById('extract-amazon-data').addEventListener('click', async f
 
             updateImagePreview(primaryInput.value, galleryImages);
             
-            showStatus('تم استخراج البيانات بنجاح!', 'success');
+            showStatus('ØªÙ… Ø§Ø³ØªØ®Ø±Ø§Ø¬ Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª Ø¨Ù†Ø¬Ø§Ø­!', 'success');
         } else {
-            showStatus(data.message || 'فشل في استخراج البيانات', 'error');
+            showStatus(data.message || 'ÙØ´Ù„ ÙÙŠ Ø§Ø³ØªØ®Ø±Ø§Ø¬ Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª', 'error');
         }
     } catch (error) {
         console.error('Error:', error);
-        showStatus('حدث خطأ أثناء استخراج البيانات', 'error');
+        showStatus('Ø­Ø¯Ø« Ø®Ø·Ø£ Ø£Ø«Ù†Ø§Ø¡ Ø§Ø³ØªØ®Ø±Ø§Ø¬ Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª', 'error');
     } finally {
         // Reset button state
         button.disabled = false;
-        button.innerHTML = '<i class="fas fa-download ml-2"></i>استخراج البيانات';
+        button.innerHTML = '<i class="fas fa-download ml-2"></i>Ø§Ø³ØªØ®Ø±Ø§Ø¬ Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª';
     }
 });
 
@@ -496,18 +496,18 @@ function updateImagePreview(primaryUrl, galleryUrls = []) {
     previewDiv.classList.remove('hidden');
     const slides = images.map(url => `
         <div class="w-24 h-24 rounded-lg overflow-hidden border flex-shrink-0 bg-white">
-            <img src="${url}" alt="معاينة الصورة" class="w-full h-full object-cover" loading="lazy">
+            <img src="${url}" alt="Ù…Ø¹Ø§ÙŠÙ†Ø© Ø§Ù„ØµÙˆØ±Ø©" class="w-full h-full object-cover" loading="lazy">
         </div>
     `).join('');
 
     previewDiv.innerHTML = `
-        <h4 class="font-semibold text-gray-700 mb-2">معاينة الصور المستخرجة:</h4>
+        <h4 class="font-semibold text-gray-700 mb-2">Ù…Ø¹Ø§ÙŠÙ†Ø© Ø§Ù„ØµÙˆØ± Ø§Ù„Ù…Ø³ØªØ®Ø±Ø¬Ø©:</h4>
         <div class="flex gap-3 overflow-x-auto pb-2">${slides}</div>
-        <p class="text-sm text-gray-600 mt-2">يمكنك تحميل أي من هذه الصور أو اختيار صورة أخرى.</p>
+        <p class="text-sm text-gray-600 mt-2">ÙŠÙ…ÙƒÙ†Ùƒ ØªØ­Ù…ÙŠÙ„ Ø£ÙŠ Ù…Ù† Ù‡Ø°Ù‡ Ø§Ù„ØµÙˆØ± Ø£Ùˆ Ø§Ø®ØªÙŠØ§Ø± ØµÙˆØ±Ø© Ø£Ø®Ø±Ù‰.</p>
     `;
 }
 
-function showPriceConversion(usdPrice, aedPrice) {
+function showPriceConversion(usdPrice, jodPrice) {
     // Create price conversion info if it doesn't exist
     let conversionDiv = document.getElementById('price-conversion');
     if (!conversionDiv) {
@@ -520,14 +520,16 @@ function showPriceConversion(usdPrice, aedPrice) {
     conversionDiv.innerHTML = `
         <div class="flex items-center text-sm text-blue-700">
             <i class="fas fa-exchange-alt ml-2"></i>
-            <span>تم تحويل السعر: $${usdPrice} USD → ${aedPrice} AED</span>
+            <span>ØªÙ… ØªØ­ÙˆÙŠÙ„ Ø§Ù„Ø³Ø¹Ø±: ${usdPrice} USD â†’ ${jodPrice} JOD</span>
         </div>
         <div class="text-xs text-blue-600 mt-1">
-            معدل التحويل: 1 USD = 3.67 AED
+            Ù…Ø¹Ø¯Ù„ Ø§Ù„ØªØ­ÙˆÙŠÙ„: 1 USD = 0.709 JOD
         </div>
     `;
 }
 </script>
 @endpush
 @endsection
+
+
 

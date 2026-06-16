@@ -1,4 +1,4 @@
-﻿@extends('layouts.app')
+@extends('layouts.app')
 
 @section('title', __('workshops.meta.title'))
 
@@ -15,34 +15,10 @@
         box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
     }
     .filter-btn.active {
-        background-color: #0819ff;
+        background-color: #6b2e30;
         color: white;
-        border-color: #0819ff;
+        border-color: #6b2e30;
     }
-    .faq-question {
-        transition: background-color 0.3s ease;
-    }
-    .faq-answer {
-        transition: max-height 0.5s ease-in-out, padding 0.5s ease, opacity 0.5s ease;
-        max-height: 0;
-        overflow: hidden;
-        padding-top: 0;
-        padding-bottom: 0;
-        opacity: 0;
-    }
-    .faq-item.open .faq-answer {
-        max-height: 200px; /* Adjust as needed */
-        padding-top: 1.5rem;
-        padding-bottom: 1.5rem;
-        opacity: 1;
-    }
-    .faq-item.open .faq-icon {
-        transform: rotate(180deg);
-    }
-    .faq-icon {
-        transition: transform 0.3s ease;
-    }
-    
     /* Workshop Card Image Improvements */
     .workshop-card img {
         width: 100%;
@@ -91,117 +67,193 @@
         background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
     }
 
-    /* Why section */
-    .why-carousel {
+    /* Modern glass refresh */
+    :root {
+        --workshop-glass-surface: linear-gradient(145deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.62));
+        --workshop-glass-border: rgba(255, 255, 255, 0.64);
+        --workshop-glass-shadow: 0 26px 56px rgba(107, 46, 48, 0.14);
+    }
+
+    body {
+        background:
+            radial-gradient(circle at 10% 10%, rgba(143, 74, 80, 0.16), transparent 32%),
+            radial-gradient(circle at 88% 8%, rgba(107, 46, 48, 0.12), transparent 36%),
+            linear-gradient(180deg, #fffdfd 0%, #ffffff 46%, #fbfcff 100%);
+        background-attachment: fixed;
+    }
+
+    .workshops-page {
         position: relative;
         overflow: hidden;
+        background: transparent;
     }
 
-    .why-cards {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-        gap: 1.5rem;
-        align-items: stretch;
-    }
-
-    .why-card {
-        background: linear-gradient(140deg, #fff7ed 0%, #fef3c7 45%, #fffbeb 100%);
-        border: 1px solid #fde68a;
-        box-shadow: 0 10px 30px -18px rgba(249, 115, 22, 0.8);
-        border-radius: 1.25rem;
-        padding: 1.5rem;
-        min-height: 220px;
-        height: 100%;
-        text-align: left;
-        transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
-        display: flex;
-        flex-direction: column;
-        gap: 0.65rem;
-    }
-
-    .why-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 18px 40px -20px rgba(249, 115, 22, 0.8);
-        border-color: #f59e0b;
-    }
-
-    .why-card .why-icon {
-        width: 3.25rem;
-        height: 3.25rem;
-        border-radius: 9999px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        background: radial-gradient(circle at 30% 30%, #fb923c, #f97316);
-        color: #fff;
-        margin-bottom: 1rem;
-        box-shadow: 0 10px 25px -14px rgba(249, 115, 22, 0.9);
-    }
-
-    .why-card h3 {
-        font-size: 1.1rem;
-        font-weight: 800;
-        color: #111827;
-        margin-bottom: 0.4rem;
-    }
-
-    .why-card p {
-        color: #4b5563;
-        line-height: 1.55;
-    }
-
-    .why-fade {
-        display: none;
+    .workshops-page::before,
+    .workshops-page::after {
+        content: "";
         position: absolute;
-        top: 0;
-        bottom: 0;
-        width: 72px;
+        border-radius: 9999px;
         pointer-events: none;
-        background: linear-gradient(90deg, #ffffff 0%, rgba(255, 255, 255, 0) 100%);
+        z-index: 0;
     }
 
-    .why-fade-right {
-        right: -8px;
+    .workshops-page::before {
+        inset-inline-start: -130px;
+        inset-block-start: 10%;
+        width: clamp(240px, 24vw, 360px);
+        height: clamp(240px, 24vw, 360px);
+        background: radial-gradient(circle, rgba(107, 46, 48, 0.1), rgba(107, 46, 48, 0));
     }
 
-    .why-fade-left {
-        left: -8px;
-        transform: scaleX(-1);
+    .workshops-page::after {
+        inset-inline-end: -140px;
+        inset-block-end: 6%;
+        width: clamp(240px, 26vw, 380px);
+        height: clamp(240px, 26vw, 380px);
+        background: radial-gradient(circle, rgba(143, 74, 80, 0.14), rgba(143, 74, 80, 0));
     }
 
-    @media (max-width: 1024px) {
-        .why-cards {
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    .workshops-page > * {
+        position: relative;
+        z-index: 1;
+    }
+
+    .workshops-featured-card {
+        border: 1px solid rgba(255, 255, 255, 0.36);
+        box-shadow: 0 30px 66px rgba(7, 9, 24, 0.24);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+    }
+
+    .workshops-featured-card > .grid > div:first-child {
+        background: linear-gradient(140deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0));
+    }
+
+    .workshops-filters-section {
+        padding-top: 1.5rem;
+        padding-bottom: 1.75rem;
+    }
+
+    .workshops-filter-panel {
+        width: fit-content;
+        margin-inline: auto;
+        padding: 0.6rem;
+        border-radius: 9999px;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0.52));
+        border: 1px solid rgba(255, 255, 255, 0.64);
+        box-shadow: 0 18px 40px rgba(107, 46, 48, 0.12);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+    }
+
+    .filter-btn {
+        color: #334155;
+        border-color: rgba(107, 46, 48, 0.14);
+        background: rgba(255, 255, 255, 0.72);
+        box-shadow: 0 8px 18px rgba(15, 23, 42, 0.08);
+    }
+
+    .filter-btn:hover {
+        border-color: rgba(107, 46, 48, 0.34);
+        color: #6b2e30;
+        transform: translateY(-1px);
+    }
+
+    .filter-btn.active {
+        background: linear-gradient(135deg, #6b2e30, #8f4a50);
+        color: #ffffff;
+        border-color: transparent;
+        box-shadow: 0 14px 28px rgba(107, 46, 48, 0.3);
+    }
+
+    .workshops-list-section {
+        background:
+            radial-gradient(circle at 14% 0%, rgba(143, 74, 80, 0.11), transparent 32%),
+            linear-gradient(180deg, rgba(245, 248, 255, 0.66), rgba(255, 255, 255, 0.95));
+    }
+
+    .workshops-grid .workshop-card {
+        background: var(--workshop-glass-surface);
+        border: 1px solid var(--workshop-glass-border);
+        box-shadow: var(--workshop-glass-shadow);
+        backdrop-filter: blur(12px) saturate(132%);
+        -webkit-backdrop-filter: blur(12px) saturate(132%);
+        transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+
+    .workshops-grid .workshop-card:hover {
+        transform: translateY(-8px);
+        border-color: rgba(107, 46, 48, 0.28);
+        box-shadow: 0 30px 62px rgba(107, 46, 48, 0.2);
+    }
+
+    .workshops-grid .workshop-card > .relative::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(0, 0, 0, 0.1));
+        pointer-events: none;
+    }
+
+    .workshop-price-chip {
+        background: rgba(107, 46, 48, 0.72);
+        border: 1px solid rgba(255, 255, 255, 0.34);
+        box-shadow: 0 14px 30px rgba(107, 46, 48, 0.3);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+    }
+
+    .workshops-grid .workshop-card .bg-gray-100 {
+        background: rgba(255, 255, 255, 0.72);
+        border: 1px solid rgba(107, 46, 48, 0.12);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+    }
+
+    .workshops-featured-card,
+    .workshops-filter-panel,
+    .workshops-grid .workshop-card {
+        animation: workshops-fade-up 0.68s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+    }
+
+    .workshops-filter-panel {
+        animation-delay: 0.08s;
+    }
+
+    .workshops-grid .workshop-card {
+        animation-delay: 0.14s;
+    }
+
+    @keyframes workshops-fade-up {
+        0% {
+            opacity: 0;
+            transform: translate3d(0, 12px, 0) scale(0.99);
+        }
+        100% {
+            opacity: 1;
+            transform: translate3d(0, 0, 0) scale(1);
         }
     }
 
     @media (max-width: 768px) {
-        .why-cards {
-            display: flex;
-            gap: 1rem;
+        .workshops-filter-panel {
+            width: 100%;
+            border-radius: 1.1rem;
+            justify-content: flex-start;
             overflow-x: auto;
-            scroll-snap-type: x mandatory;
-            scroll-padding: 1rem;
-            padding: 0.5rem 1rem 1.25rem;
             scrollbar-width: none;
         }
 
-        .why-cards::-webkit-scrollbar {
+        .workshops-filter-panel::-webkit-scrollbar {
             display: none;
         }
+    }
 
-        .why-card {
-            min-width: 78vw;
-            max-width: 86vw;
-            flex: 0 0 auto;
-            scroll-snap-align: center;
-            scroll-snap-stop: always;
-            text-align: start;
-            min-height: 240px;
-        }
-
-        .why-fade {
-            display: none;
+    @media (prefers-reduced-motion: reduce) {
+        .workshops-featured-card,
+        .workshops-filter-panel,
+        .workshops-grid .workshop-card {
+            animation: none !important;
         }
     }
 </style>
@@ -210,10 +262,6 @@
 @section('content')
 @php
     $showAdminMetrics = auth()->check() && auth()->user()->isAdmin();
-    $faqItems = \Illuminate\Support\Facades\Lang::get('workshops.faq.items');
-    $whyItems = \Illuminate\Support\Facades\Lang::get('workshops.why.items');
-    $faqItems = is_array($faqItems) ? $faqItems : [];
-    $whyItems = is_array($whyItems) ? $whyItems : [];
     $whatsappBookingEnabled = data_get($whatsappBookingConfig ?? [], 'enabled', false);
     $whatsappBookingPayload = [
         'isLoggedIn' => data_get($whatsappBookingConfig ?? [], 'isLoggedIn', false),
@@ -224,12 +272,6 @@
         'registerUrl' => data_get($whatsappBookingConfig ?? [], 'registerUrl'),
         'user' => data_get($whatsappBookingConfig ?? [], 'user', []),
     ];
-    $whyIcons = [
-        'chefs' => 'fas fa-utensils',
-        'hands_on' => 'fas fa-chalkboard-teacher',
-        'ingredients' => 'fas fa-leaf',
-        'certificate' => 'fas fa-award',
-    ];
     $cardPlaceholderUrl = sprintf(
         'https://placehold.co/600x400/f87171/FFFFFF?text=%s',
         urlencode(__('workshops.labels.card_placeholder_text'))
@@ -239,7 +281,7 @@
         urlencode(__('workshops.labels.featured_placeholder_text'))
     );
 @endphp
-<div class="min-h-screen bg-gray-50">
+<div class="min-h-screen bg-gray-50 workshops-page">
 
     <!-- Featured Workshop -->
     @if($featuredWorkshop)
@@ -260,8 +302,8 @@
             ? $featuredWorkshop->start_date->format('d/m/Y h:i A')
             : __('workshops.labels.unspecified');
     @endphp
-    <section class="container mx-auto px-4 pt-10 md:pt-16 relative z-20">
-        <div class="bg-gradient-to-r from-amber-500 to-orange-600 rounded-3xl overflow-hidden shadow-2xl">
+    <section class="container mx-auto px-4 pt-10 md:pt-16 relative z-20 workshops-featured-section">
+        <div class="bg-gradient-to-r from-amber-500 to-orange-600 rounded-3xl overflow-hidden shadow-2xl workshops-featured-card">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-0">
                 <!-- Text content -->
                 <div class="p-5 sm:p-8 lg:p-12 text-white flex flex-col justify-center">
@@ -350,8 +392,8 @@
     </section>
     @else
     <!-- No upcoming workshop message -->
-    <section class="container mx-auto px-4 pt-10 md:pt-16 relative z-20">
-        <div class="bg-gradient-to-r from-amber-500 to-orange-600 rounded-3xl overflow-hidden shadow-2xl">
+    <section class="container mx-auto px-4 pt-10 md:pt-16 relative z-20 workshops-featured-section workshops-featured-section--empty">
+        <div class="bg-gradient-to-r from-amber-500 to-orange-600 rounded-3xl overflow-hidden shadow-2xl workshops-featured-card">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-0">
                 <!-- Text content -->
                 <div class="p-5 sm:p-8 lg:p-12 text-white flex flex-col justify-center">
@@ -392,9 +434,9 @@
     @endif
 
     <!-- Filters Section -->
-    <section class="py-12">
+    <section class="py-12 workshops-filters-section">
         <div class="container mx-auto px-4">
-            <div id="filter-buttons" class="flex flex-wrap justify-center items-center gap-3">
+            <div id="filter-buttons" class="flex flex-wrap justify-center items-center gap-3 workshops-filter-panel">
                 <button type="button" class="filter-btn active font-semibold px-5 py-2 border rounded-full transition-colors duration-300" data-filter="all">{{ __('workshops.filters.all') }}</button>
                 <button type="button" class="filter-btn font-semibold px-5 py-2 border rounded-full transition-colors duration-300" data-filter="online">{{ __('workshops.filters.online') }}</button>
                 <button type="button" class="filter-btn font-semibold px-5 py-2 border rounded-full transition-colors duration-300" data-filter="offline">{{ __('workshops.filters.offline') }}</button>
@@ -405,17 +447,17 @@
     </section>
 
     <!-- Workshops section -->
-    <section class="py-5 bg-gradient-to-br from-gray-50 to-white">
+    <section class="py-5 bg-gradient-to-br from-gray-50 to-white workshops-list-section">
         <div class="container mx-auto px-4">
             <!-- Header Section -->
-            <div class="text-center mb-12">
+            <div class="text-center mb-12 workshops-list-header">
                 <h2 class="text-4xl font-bold text-gray-800 mb-4">{{ __('workshops.premium.title') }}</h2>
                 <p class="text-gray-600 text-lg max-w-3xl mx-auto mb-6">{{ __('workshops.premium.subtitle') }}</p>
             </div>
             
             @if($workshops->count() > 0)
                 <!-- Workshops Grid -->
-                <div id="workshops-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                <div id="workshops-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 workshops-grid">
                     @foreach($workshops as $workshop)
                         @php 
                             $isFull = $workshop->bookings_count >= $workshop->max_participants; 
@@ -458,7 +500,7 @@
                                     </span>
                                 </div>
                                 @endif
-                                <div class="absolute top-4 right-4 bg-orange-500 text-white text-sm font-semibold px-3 py-1 rounded-full">{{ $workshop->price }} {{ $workshop->currency }}</div>
+                                <div class="absolute top-4 right-4 bg-orange-500 text-white text-sm font-semibold px-3 py-1 rounded-full workshop-price-chip">{{ $workshop->price }} {{ $workshop->currency }}</div>
                             </div>
                             
                             <div class="p-6 flex flex-col flex-grow">
@@ -536,52 +578,6 @@
         </div>
     </section>
 
-
-
-
-    <!-- Why Choose Us? Section -->
-    <section class="py-16 bg-white">
-        <div class="container mx-auto px-6">
-            <div class="text-center max-w-3xl mx-auto mb-10">
-                <h2 class="text-3xl font-bold text-gray-800">{{ __('workshops.why.title') }}</h2>
-            </div>
-            <div class="why-carousel">
-                <div class="why-cards" aria-label="{{ __('workshops.why.title') }}">
-                    @foreach($whyItems as $key => $item)
-                        <article class="why-card">
-                            <div class="why-icon">
-                                <i class="{{ $whyIcons[$key] ?? 'fas fa-star' }} text-xl"></i>
-                            </div>
-                            <h3>{{ $item['title'] ?? '' }}</h3>
-                            <p>{{ $item['description'] ?? '' }}</p>
-                        </article>
-                    @endforeach
-                </div>
-                <div class="why-fade why-fade-left" aria-hidden="true"></div>
-                <div class="why-fade why-fade-right" aria-hidden="true"></div>
-            </div>
-        </div>
-    </section>
-    
-    <!-- FAQ Section -->
-    <section class="py-20 bg-gray-50">
-        <div class="container mx-auto px-4">
-            <h2 class="text-4xl font-bold text-center mb-12 text-gray-800">{{ __('workshops.faq.title') }}</h2>
-            <div id="faq-container" class="max-w-4xl mx-auto space-y-4">
-                @foreach($faqItems as $faq)
-                <div class="faq-item border border-gray-200 rounded-xl overflow-hidden transition-all duration-300 hover:border-orange-300">
-                    <button class="faq-question w-full text-right p-6 bg-white hover:bg-orange-50 flex items-center justify-between focus:outline-none">
-                        <span class="font-semibold text-lg text-gray-800">{{ $faq['question'] ?? '' }}</span>
-                        <i class="fas fa-chevron-down faq-icon text-orange-500"></i>
-                    </button>
-                    <div class="faq-answer px-6 bg-white text-gray-600">
-                        <p>{{ $faq['answer'] ?? '' }}</p>
-                    </div>
-                </div>
-                @endforeach
-            </div>
-        </div>
-    </section>
 </div>
 @endsection
 
@@ -677,48 +673,6 @@ document.addEventListener('click', (event) => {
     filterWorkshops(filter);
 });
 
-const initFaqAccordion = () => {
-    const container = document.getElementById('faq-container');
-    if (!container) {
-        return;
-    }
-
-    if (container.dataset.accordionReady === 'true') {
-        return;
-    }
-    container.dataset.accordionReady = 'true';
-
-    const collapse = (answer) => {
-        answer.style.maxHeight = '0px';
-    };
-
-    const expand = (answer) => {
-        answer.style.maxHeight = `${answer.scrollHeight}px`;
-    };
-
-    container.addEventListener('click', (event) => {
-        const trigger = event.target.closest('.faq-question');
-        if (!trigger || !container.contains(trigger)) {
-            return;
-        }
-
-        const item = trigger.closest('.faq-item');
-        const answer = item?.querySelector('.faq-answer');
-        if (!item || !answer) {
-            return;
-        }
-
-        const isOpen = item.classList.toggle('open');
-        if (isOpen) {
-            expand(answer);
-        } else {
-            collapse(answer);
-        }
-    });
-
-    container.querySelectorAll('.faq-answer').forEach(collapse);
-};
-
 const bootstrapFilters = () => {
     ensureNoResultsElement();
     filterWorkshops(document.querySelector('.filter-btn.active')?.dataset.filter || 'all');
@@ -726,7 +680,6 @@ const bootstrapFilters = () => {
 
 const bootstrapPage = () => {
     bootstrapFilters();
-    initFaqAccordion();
 };
 
 if (document.readyState === 'loading') {

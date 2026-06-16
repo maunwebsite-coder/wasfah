@@ -38,7 +38,7 @@ class UserFactory extends Factory
             'youtube_followers' => 0,
             'is_referral_partner' => false,
             'referral_commission_rate' => 5,
-            'referral_commission_currency' => config('referrals.default_currency', 'USD'),
+            'referral_commission_currency' => config('referrals.default_currency', 'JOD'),
             'referrer_id' => null,
             'referral_partner_since_at' => null,
             'referral_admin_notes' => null,
@@ -59,3 +59,4 @@ class UserFactory extends Factory
         ]);
     }
 }
+

@@ -105,7 +105,7 @@ class RecipeSaveButton {
         this.saveCountElement.textContent = `${newCount} شخص حفظوا هذه الوصفة`;
         
         // تأثير بصري للتأكيد
-        this.saveCountElement.style.color = '#0819ff';
+        this.saveCountElement.style.color = '#6b2e30';
         this.saveCountElement.style.fontWeight = 'bold';
         this.saveCountElement.style.transform = 'scale(1.05)';
         this.saveCountElement.style.transition = 'all 0.3s ease';

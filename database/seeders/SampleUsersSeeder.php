@@ -46,7 +46,7 @@ class SampleUsersSeeder extends Seeder
                 'chef_status' => User::CHEF_STATUS_APPROVED,
                 'chef_approved_at' => now(),
                 'phone' => '+966500000001',
-                'instagram_url' => 'https://www.instagram.com/demo.chef',
+                'instagram_url' => 'https://www.instagram.com/thedolci.jo/',
                 'instagram_followers' => 1200,
                 'youtube_url' => 'https://www.youtube.com/@demo-chef',
                 'youtube_followers' => 2300,

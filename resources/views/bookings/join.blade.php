@@ -1,11 +1,11 @@
-﻿@extends('layouts.app')
+@extends('layouts.app')
 
 @section('title', __('bookings.join.meta_title', ['workshop' => $workshop->title]))
 
 @push('styles')
 <style>
     body {
-        background: linear-gradient(135deg, #f4f6ff 0%, #e3ecff 33%, #f1f5f9 100%);
+        background: linear-gradient(135deg, #ffffff 0%, #f8edee 33%, #f1f5f9 100%);
         min-height: 100vh;
     }
 
@@ -43,14 +43,14 @@
     }
 
     .action-btn.primary {
-        background: linear-gradient(120deg, #0819ff, #f43f5e);
+        background: linear-gradient(120deg, #6b2e30, #f43f5e);
         color: #fff;
-        box-shadow: 0 18px 40px rgba(8, 25, 255, 0.35);
+        box-shadow: 0 18px 40px rgba(107, 46, 48, 0.35);
     }
 
     .action-btn.review {
         position: relative;
-        background: linear-gradient(135deg, #f97316, #0ea5e9, #f43f5e, #f97316);
+        background: linear-gradient(135deg, #f97316, #b2767d, #f43f5e, #f97316);
         background-size: 240% 240%;
         color: #fff;
         box-shadow: 0 20px 50px rgba(244, 63, 94, 0.32);
@@ -103,7 +103,7 @@
 
     .status-badge.grace {
         background: rgba(59, 130, 246, 0.12);
-        color: #1d4ed8;
+        color: #8f4a50;
     }
 
     .status-badge.locked {

@@ -208,7 +208,7 @@
 }
 
 input:checked + .toggle-slider {
-    background-color: #2196F3;
+    background-color: #9f5e63;
 }
 
 input:checked + .toggle-slider:before {

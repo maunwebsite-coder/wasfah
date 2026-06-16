@@ -1,11 +1,11 @@
-﻿@extends('layouts.app')
+@extends('layouts.app')
 
 @section('title', 'إضافة ورشة جديدة - لوحة الإدارة')
 
 @push('styles')
 <style>
     body {
-        background: linear-gradient(135deg, #f8fafc 0%, #e0f2fe 40%, #f4f6ff 100%);
+        background: linear-gradient(135deg, #f8fafc 0%, #f9eff1 40%, #ffffff 100%);
         min-height: 100vh;
     }
 
@@ -39,7 +39,7 @@
     }
 
     .notification.warning {
-        background: linear-gradient(135deg, #1296d9, #050f9f);
+        background: linear-gradient(135deg, #8f4a50, #4d1f22);
     }
 
     .page-hero {
@@ -47,9 +47,9 @@
         overflow: hidden;
         background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(244, 246, 255, 0.95) 55%, rgba(224, 238, 255, 0.95) 100%);
         border-radius: 1.75rem;
-        border: 1px solid rgba(8, 25, 255, 0.16);
+        border: 1px solid rgba(107, 46, 48, 0.16);
         padding: 2.75rem 2.5rem;
-        box-shadow: 0 30px 60px -40px rgba(8, 25, 255, 0.6);
+        box-shadow: 0 30px 60px -40px rgba(107, 46, 48, 0.6);
     }
 
     .page-hero::before,
@@ -74,7 +74,7 @@
         height: 420px;
         bottom: -180px;
         right: -150px;
-        background: radial-gradient(circle, rgba(8, 25, 255, 0.28), transparent 68%);
+        background: radial-gradient(circle, rgba(107, 46, 48, 0.28), transparent 68%);
     }
 
     .page-hero > * {
@@ -170,8 +170,8 @@
         justify-content: center;
         font-size: 1.25rem;
         color: #fff;
-        background: linear-gradient(135deg, #0819ff 0%, #0f78ad 100%);
-        box-shadow: 0 12px 30px -20px rgba(8, 25, 255, 0.7);
+        background: linear-gradient(135deg, #6b2e30 0%, #7f3a3d 100%);
+        box-shadow: 0 12px 30px -20px rgba(107, 46, 48, 0.7);
     }
 
     .section-title {
@@ -195,7 +195,7 @@
     .section-divider {
         height: 1px;
         width: 100%;
-        background: linear-gradient(90deg, rgba(8, 25, 255, 0.1), rgba(148, 163, 184, 0.45), rgba(8, 25, 255, 0.1));
+        background: linear-gradient(90deg, rgba(107, 46, 48, 0.1), rgba(148, 163, 184, 0.45), rgba(107, 46, 48, 0.1));
         margin: 2.5rem 0;
     }
 
@@ -224,9 +224,9 @@
     .form-select:focus,
     .form-textarea:focus {
         outline: none;
-        border-color: #0819ff;
+        border-color: #6b2e30;
         background: #ffffff;
-        box-shadow: 0 0 0 4px rgba(8, 25, 255, 0.12);
+        box-shadow: 0 0 0 4px rgba(107, 46, 48, 0.12);
         transform: translateY(-1px);
     }
 
@@ -265,8 +265,8 @@
     }
 
     .image-upload-area:hover {
-        border-color: rgba(8, 25, 255, 0.55);
-        background: #f4f6ff;
+        border-color: rgba(107, 46, 48, 0.55);
+        background: #ffffff;
         transform: translateY(-2px);
     }
 
@@ -281,10 +281,10 @@
         gap: 0.5rem;
         padding: 0.55rem 1.1rem;
         border-radius: 9999px;
-        background: linear-gradient(135deg, #0819ff, #1296d9);
+        background: linear-gradient(135deg, #6b2e30, #8f4a50);
         color: #fff;
         font-weight: 700;
-        box-shadow: 0 18px 30px -25px rgba(8, 25, 255, 0.75);
+        box-shadow: 0 18px 30px -25px rgba(107, 46, 48, 0.75);
         margin-top: 1rem;
     }
 
@@ -299,8 +299,8 @@
         height: 160px;
         border-radius: 1.1rem;
         object-fit: cover;
-        border: 2px solid rgba(8, 25, 255, 0.4);
-        box-shadow: 0 20px 40px -25px rgba(8, 25, 255, 0.6);
+        border: 2px solid rgba(107, 46, 48, 0.4);
+        box-shadow: 0 20px 40px -25px rgba(107, 46, 48, 0.6);
     }
 
     .remove-preview-btn {
@@ -326,9 +326,9 @@
     .recipe-wrapper {
         background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(255, 237, 213, 0.9));
         border-radius: 1.5rem;
-        border: 1px solid rgba(8, 25, 255, 0.18);
+        border: 1px solid rgba(107, 46, 48, 0.18);
         padding: 2rem;
-        box-shadow: 0 40px 60px -50px rgba(8, 25, 255, 0.6);
+        box-shadow: 0 40px 60px -50px rgba(107, 46, 48, 0.6);
     }
 
     .recipe-tools {
@@ -369,9 +369,9 @@
     }
 
     .recipe-tools .select-all-btn {
-        background: linear-gradient(135deg, #0819ff, #0f78ad);
+        background: linear-gradient(135deg, #6b2e30, #7f3a3d);
         color: #fff;
-        box-shadow: 0 18px 30px -25px rgba(8, 25, 255, 0.75);
+        box-shadow: 0 18px 30px -25px rgba(107, 46, 48, 0.75);
     }
 
     .recipe-tools .clear-btn {
@@ -411,14 +411,14 @@
     }
 
     .recipe-item:hover {
-        border-color: rgba(8, 25, 255, 0.45);
+        border-color: rgba(107, 46, 48, 0.45);
         transform: translateY(-3px);
     }
 
     .recipe-item.selected {
-        border-color: rgba(8, 25, 255, 0.65);
-        background: #f4f6ff;
-        box-shadow: 0 26px 45px -32px rgba(8, 25, 255, 0.6);
+        border-color: rgba(107, 46, 48, 0.65);
+        background: #ffffff;
+        box-shadow: 0 26px 45px -32px rgba(107, 46, 48, 0.6);
     }
 
     .status-grid {
@@ -456,26 +456,26 @@
         width: 2.65rem;
         height: 2.65rem;
         border-radius: 0.9rem;
-        background: linear-gradient(135deg, #0819ff, #0f78ad);
+        background: linear-gradient(135deg, #6b2e30, #7f3a3d);
         color: #fff;
         display: flex;
         align-items: center;
         justify-content: center;
         font-size: 1.05rem;
-        box-shadow: 0 18px 24px -18px rgba(8, 25, 255, 0.75);
+        box-shadow: 0 18px 24px -18px rgba(107, 46, 48, 0.75);
         flex-shrink: 0;
     }
 
     .status-card input:checked + .status-card-content {
-        border-color: rgba(8, 25, 255, 0.55);
-        background: #f4f6ff;
+        border-color: rgba(107, 46, 48, 0.55);
+        background: #ffffff;
         transform: translateY(-2px);
-        box-shadow: 0 28px 40px -28px rgba(8, 25, 255, 0.55);
+        box-shadow: 0 28px 40px -28px rgba(107, 46, 48, 0.55);
     }
 
     .status-card input:checked + .status-card-content .status-card-icon {
-        background: linear-gradient(135deg, #0819ff, #1ab8ff);
-        box-shadow: 0 20px 30px -28px rgba(8, 25, 255, 0.6);
+        background: linear-gradient(135deg, #6b2e30, #9f5e63);
+        box-shadow: 0 20px 30px -28px rgba(107, 46, 48, 0.6);
     }
 
     .form-actions {
@@ -510,15 +510,15 @@
     }
 
     .button-primary {
-        background: linear-gradient(135deg, #0819ff 0%, #0f78ad 50%, #f472b6 100%);
+        background: linear-gradient(135deg, #6b2e30 0%, #7f3a3d 50%, #f472b6 100%);
         color: #fff;
-        box-shadow: 0 28px 45px -28px rgba(8, 25, 255, 0.65);
+        box-shadow: 0 28px 45px -28px rgba(107, 46, 48, 0.65);
         border: none;
     }
 
     .button-primary:hover {
         transform: translateY(-2px);
-        box-shadow: 0 32px 45px -25px rgba(8, 25, 255, 0.8);
+        box-shadow: 0 32px 45px -25px rgba(107, 46, 48, 0.8);
     }
 
     .button-primary:disabled {
@@ -584,7 +584,7 @@
     }
 
     .meeting-status[data-state="manual"] {
-        background: #e3ecff;
+        background: #f8edee;
         color: #92400e;
     }
 
@@ -654,8 +654,8 @@
                             : ($autoGenerateMeeting
                                 ? 'سيتم توليد رابط Google Meet تلقائياً بعد الحفظ.'
                                 : 'أدخل رابط الاجتماع المخصص يدوياً.'));
-            $currencyOptions = \App\Support\Currency::all();
-            $defaultCurrency = \App\Support\Currency::default();
+            $currencyOptions = ['JOD' => \App\Support\Currency::meta('JOD')];
+            $defaultCurrency = 'JOD';
         @endphp
 
         <div class="page-hero">
@@ -1085,7 +1085,7 @@
                         <div>
                             <h2 class="section-title">الصورة الرئيسية</h2>
                             <p class="section-description">
-                                اختر صورة جذابة تمثل أجواء الورشة. ندعم صوراً حتى 5 ميجابايت مع ضغط تلقائي للحفاظ على الجودة.
+                                اختر صورة جذابة تمثل أجواء الورشة. ندعم صوراً حتى 25 ميجابايت مع ضغط تلقائي للحفاظ على الجودة.
                             </p>
                         </div>
                     </div>
@@ -1095,7 +1095,7 @@
                             <div class="flex flex-col items-center gap-3 text-slate-600">
                                 <i class="fas fa-cloud-upload-alt text-3xl text-purple-400"></i>
                                 <h3 class="text-lg font-semibold text-slate-800">اسحب وأفلت الصورة هنا</h3>
-                                <p class="text-sm text-slate-500">أو انقر للاختيار من جهازك (JPEG، PNG، GIF، WebP حتى 5MB)</p>
+                                <p class="text-sm text-slate-500">أو انقر للاختيار من جهازك (JPEG، PNG، GIF، WebP حتى 25MB)</p>
                                 <span class="upload-badge">
                                     <i class="fas fa-folder-open"></i>
                                     اختر صورة
@@ -1109,8 +1109,8 @@
                                accept="image/*"
                                class="hidden"
                                onchange="handleImageUpload(this)"
-                               data-max-size="5120"
-                               data-max-size-message="لا يمكن رفع صورة أكبر من 5 ميجابايت."
+                               data-max-size="25600"
+                               data-max-size-message="لا يمكن رفع صورة أكبر من 25 ميجابايت."
                                data-error-target="#admin_workshop_image_error">
 
                         <div id="image-preview" class="hidden">
@@ -1323,9 +1323,9 @@ function handleImageUpload(input) {
         return;
     }
 
-    const maxSize = 5 * 1024 * 1024;
+    const maxSize = 25 * 1024 * 1024;
     if (file.size > maxSize) {
-        showNotification('حجم الصورة يجب أن يكون أقل من 5 ميجابايت', 'error');
+        showNotification('حجم الصورة يجب أن يكون أقل من 25 ميجابايت', 'error');
         input.value = '';
         return;
     }

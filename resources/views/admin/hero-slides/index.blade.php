@@ -1,14 +1,14 @@
-﻿@extends('layouts.app')
+@extends('layouts.app')
 
 @section('title', 'إدارة سلايدر الهيرو')
 
 @push('styles')
 <style>
     .hero-admin-card {
-        background: linear-gradient(135deg, #0819ff, #16c3ff);
+        background: linear-gradient(135deg, #6b2e30, #9f5e63);
     }
     .hero-slide-row:hover {
-        background: rgba(8, 25, 255, 0.05);
+        background: rgba(107, 46, 48, 0.05);
     }
     .status-pill {
         padding: 0.25rem 0.85rem;

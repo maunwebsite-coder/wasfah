@@ -397,7 +397,7 @@ document.addEventListener("DOMContentLoaded", () => {
 				</div>
 
 				<div class="text-sm sm:text-lg font-bold text-orange-600 mb-2 sm:mb-3">
-					${priceValue.toLocaleString('ar-AE', { minimumFractionDigits: 2 })} درهم إماراتي
+					${priceValue.toLocaleString('ar-JO', { minimumFractionDigits: 2 })} دينار أردني
 				</div>
 
 				<div class="w-full mt-auto space-y-2">
@@ -779,13 +779,13 @@ document.addEventListener("DOMContentLoaded", () => {
 						.print-header {
 							text-align: center;
 							margin-bottom: 30px;
-							border-bottom: 3px solid #0819ff;
+							border-bottom: 3px solid #6b2e30;
 							padding-bottom: 20px;
 						}
 						
 						.print-title {
 							font-size: 2.8em;
-							color: #0819ff;
+							color: #6b2e30;
 							margin-bottom: 15px;
 							font-weight: bold;
 							text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
@@ -806,7 +806,7 @@ document.addEventListener("DOMContentLoaded", () => {
 							background: #f8f9fa;
 							padding: 15px;
 							border-radius: 8px;
-							border-right: 4px solid #0819ff;
+							border-right: 4px solid #6b2e30;
 						}
 						
 						.print-section {
@@ -816,9 +816,9 @@ document.addEventListener("DOMContentLoaded", () => {
 						
 						.print-section h2 {
 							font-size: 2em;
-							color: #0819ff;
+							color: #6b2e30;
 							margin-bottom: 20px;
-							border-bottom: 2px solid #0819ff;
+							border-bottom: 2px solid #6b2e30;
 							padding-bottom: 8px;
 							text-align: center;
 						}
@@ -841,7 +841,7 @@ document.addEventListener("DOMContentLoaded", () => {
 						}
 						
 						.print-info-item i {
-							color: #0819ff;
+							color: #6b2e30;
 							margin-left: 8px;
 							font-size: 1.3em;
 						}
@@ -868,7 +868,7 @@ document.addEventListener("DOMContentLoaded", () => {
 						
 						.print-ingredients li:before {
 							content: "•";
-							color: #0819ff;
+							color: #6b2e30;
 							font-weight: bold;
 							position: absolute;
 							right: 0;
@@ -909,7 +909,7 @@ document.addEventListener("DOMContentLoaded", () => {
 							position: absolute;
 							right: -25px;
 							top: 15px;
-							background: #0819ff;
+							background: #6b2e30;
 							color: white;
 							width: 25px;
 							height: 25px;
@@ -925,7 +925,7 @@ document.addEventListener("DOMContentLoaded", () => {
 							text-align: center;
 							margin-top: 50px;
 							padding-top: 20px;
-							border-top: 2px solid #0819ff;
+							border-top: 2px solid #6b2e30;
 							color: #666;
 							font-size: 1em;
 							background: #f8f9fa;
@@ -1067,6 +1067,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	init(); // تشغيل التطبيق
 });
+
 
 
 
